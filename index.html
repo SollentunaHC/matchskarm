@@ -174,11 +174,12 @@ async function fetchExcelData() {
         const response = await fetch(excelUrl);
         let text = await response.text();
 
-        // SUPERFIX: Ta bort ALLA dolda tecken
+        // Ta bort BOM, CR, tabbar, citattecken
         text = text
-            .replace(/\uFEFF/g, "")   // BOM
-            .replace(/\r/g, "")       // CR
-            .replace(/\t/g, "")       // Tabbar
+            .replace(/\uFEFF/g, "")
+            .replace(/\r/g, "")
+            .replace(/\t/g, "")
+            .replace(/"/g, "")   // ← SUPERFIX: tar bort alla citattecken
             .trim();
 
         const rows = text.split("\n").map(r => r.split(";"));
