@@ -159,11 +159,11 @@
         </div>
     </div>
 
-    <div class="sponsor-slider">
-        <img id="sponsor-img" src="sponsor1.png" alt="Sponsor" />
-    </div>
+  //  <div class="sponsor-slider">
+    //    <img id="sponsor-img" src="sponsor1.png" alt="Sponsor" />
+  //  </div>
 
-</div>
+//</div>
 
 <script>
 const excelUrl = "matcher.csv";
@@ -262,13 +262,13 @@ async function loadMatches() {
 
 loadMatches();
 
-const sponsorImages = ["sponsor1.png", "sponsor2.png", "sponsor3.png"];
-let sponsorIndex = 0;
+//const sponsorImages = ["sponsor1.png", "sponsor2.png", "sponsor3.png"];
+//let sponsorIndex = 0;
 
-setInterval(() => {
-    sponsorIndex = (sponsorIndex + 1) % sponsorImages.length;
-    document.getElementById("sponsor-img").src = sponsorImages[sponsorIndex];
-}, 6000);
+//setInterval(() => {
+//    sponsorIndex = (sponsorIndex + 1) % sponsorImages.length;
+//    document.getElementById("sponsor-img").src = sponsorImages[sponsorIndex];
+//}, 6000);
 </script>
 
 </body>
