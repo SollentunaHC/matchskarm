@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta http-equiv="refresh" content="300">
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Sollentuna Hockey – Matchskärm 1.3</title>
+<title>Sollentuna Hockey – Matchskärm 1.5</title>
 
 <style>
     body {
@@ -110,28 +110,12 @@
     .match strong {
         color: #c8102e;
     }
-
-    .sponsor-slider {
-        flex: 0 0 15vh;
-        width: 100%;
-        background: #ffffff;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        border-top: 2px solid #ddd;
-    }
-
-    .sponsor-slider img {
-        max-height: 12vh;
-        max-width: 90%;
-        object-fit: contain;
-    }
 </style>
 </head>
 
 <body>
 
-<header>SOLLENTUNA HOCKEY – MATCHSKÄRM 1.4</header>
+<header>SOLLENTUNA HOCKEY – MATCHSKÄRM 1.5</header>
 
 <div class="layout">
 
@@ -159,27 +143,22 @@
         </div>
     </div>
 
-  //  <div class="sponsor-slider">
-    //    <img id="sponsor-img" src="sponsor1.png" alt="Sponsor" />
-  //  </div>
-
-//</div>
+</div>
 
 <script>
 const excelUrl = "matcher.csv";
 
-
 async function fetchExcelData() {
     try {
         const response = await fetch(excelUrl);
+        if (!response.ok) throw new Error("CSV saknas");
         let text = await response.text();
 
-        // Ta bort BOM, CR, tabbar, citattecken
         text = text
             .replace(/\uFEFF/g, "")
             .replace(/\r/g, "")
             .replace(/\t/g, "")
-            .replace(/"/g, "")   // ← SUPERFIX: tar bort alla citattecken
+            .replace(/"/g, "")
             .trim();
 
         const rows = text.split("\n").map(r => r.split(";"));
@@ -238,14 +217,12 @@ async function loadMatches() {
         .filter(m => isUpcoming(m[0]))
         .sort((a, b) => parseDate(a[0]) - parseDate(b[0]));
 
-    // FALLBACK: senaste spelade match
     const pastMatches = data
         .filter(m => parseDate(m[0]) < new Date())
         .sort((a, b) => parseDate(b[0]) - parseDate(a[0]));
 
     const lastPlayed = pastMatches[0] || null;
 
-    // Bestäm vad som ska visas som "Nästa match"
     let next = upcomingMatches[0] || todayMatches[0] || lastPlayed;
 
     if (next) {
@@ -261,14 +238,6 @@ async function loadMatches() {
 }
 
 loadMatches();
-
-//const sponsorImages = ["sponsor1.png", "sponsor2.png", "sponsor3.png"];
-//let sponsorIndex = 0;
-
-//setInterval(() => {
-//    sponsorIndex = (sponsorIndex + 1) % sponsorImages.length;
-//    document.getElementById("sponsor-img").src = sponsorImages[sponsorIndex];
-//}, 6000);
 </script>
 
 </body>
