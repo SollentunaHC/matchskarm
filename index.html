@@ -2,9 +2,9 @@
 <html lang="sv">
 <head>
 <meta charset="UTF-8" />
-<meta http-equiv="refresh" content="300"> <!-- Auto-refresh var 5:e minut -->
+<meta http-equiv="refresh" content="300">
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Sollentuna Hockey – Matchskärm</title>
+<title>Sollentuna Hockey – Matchskärm ver 0.1</title>
 
 <style>
     body {
@@ -16,7 +16,7 @@
     }
 
     header {
-        background: #002f6c; /* SHC blå */
+        background: #002f6c;
         color: white;
         padding: 10px 20px;
         text-align: left;
@@ -29,8 +29,6 @@
         flex-direction: column;
         height: calc(100vh - 60px);
     }
-
-    /* NÄSTA MATCH – HELSKÄRM TOPPDEL */
 
     .next-match-container {
         flex: 0 0 40vh;
@@ -77,8 +75,6 @@
         opacity: 0.9;
     }
 
-    /* MATCHLISTOR */
-
     .content-row {
         flex: 1 1 auto;
         display: flex;
@@ -112,10 +108,8 @@
     }
 
     .match strong {
-        color: #c8102e; /* SHC röd */
+        color: #c8102e;
     }
-
-    /* SPONSOR-SLIDER */
 
     .sponsor-slider {
         flex: 0 0 15vh;
@@ -141,7 +135,6 @@
 
 <div class="layout">
 
-    <!-- NÄSTA MATCH -->
     <div id="next-match" class="next-match-container">
         <div class="nm-title">NÄSTA MATCH</div>
         <div class="nm-teams">
@@ -155,7 +148,6 @@
         <div class="nm-arena" id="nm-arena">–</div>
     </div>
 
-    <!-- DAGENS / KOMMANDE MATCHER -->
     <div class="content-row">
         <div class="column">
             <div class="section-title">DAGENS MATCHER</div>
@@ -167,7 +159,6 @@
         </div>
     </div>
 
-    <!-- SPONSOR-SLIDES -->
     <div class="sponsor-slider">
         <img id="sponsor-img" src="sponsor1.png" alt="Sponsor" />
     </div>
@@ -175,62 +166,40 @@
 </div>
 
 <script>
-// ===============================
-// 1. HÄMTA DATA FRÅN EXCEL ONLINE
-// ===============================
-
 const excelUrl = "https://sollentunahc-my.sharepoint.com/:x:/g/personal/gunnar_sollentunahockey_com/IQA6KPTEYK18S6O_-x8bORm9AUh4lXec4DJBTAatnSAt86w?download=1";
 
 async function fetchExcelData() {
     try {
         const response = await fetch(excelUrl);
         const text = await response.text();
-
-        // Dela på rad + semikolon
         const rows = text.trim().split("\n").map(r => r.split(";"));
-
-        return rows.slice(1); // hoppa över header
+        return rows.slice(1);
     } catch (e) {
         console.error("Fel vid hämtning:", e);
         return [];
     }
 }
 
-// ===============================
-// 2. DATUMHANTERING
-// ===============================
-
 function parseDate(dateStr) {
     const months = {
         "jan": 0, "feb": 1, "mar": 2, "apr": 3, "maj": 4, "jun": 5,
         "jul": 6, "aug": 7, "sep": 8, "okt": 9, "nov": 10, "dec": 11
     };
-
     const [day, mon] = dateStr.split("-");
     const monthIndex = months[mon.toLowerCase()];
     const year = new Date().getFullYear();
-
     return new Date(year, monthIndex, parseInt(day));
 }
 
 function isToday(dateStr) {
     const d = parseDate(dateStr);
     const today = new Date();
-
-    return d.getFullYear() === today.getFullYear() &&
-           d.getMonth() === today.getMonth() &&
-           d.getDate() === today.getDate();
+    return d.toDateString() === today.toDateString();
 }
 
 function isUpcoming(dateStr) {
-    const d = parseDate(dateStr);
-    const today = new Date();
-    return d > today;
+    return parseDate(dateStr) > new Date();
 }
-
-// ===============================
-// 3. VISA MATCHER
-// ===============================
 
 function renderMatches(matches, containerId) {
     const container = document.getElementById(containerId);
@@ -238,7 +207,6 @@ function renderMatches(matches, containerId) {
         container.innerHTML = "<div class='match'>Inga matcher</div>";
         return;
     }
-
     container.innerHTML = matches.map(m => `
         <div class="match">
             <strong>${m[2]}</strong> vs <strong>${m[3]}</strong><br>
@@ -248,10 +216,6 @@ function renderMatches(matches, containerId) {
     `).join("");
 }
 
-// ===============================
-// 4. NÄSTA MATCH + LISTOR
-// ===============================
-
 async function loadMatches() {
     const data = await fetchExcelData();
 
@@ -260,13 +224,7 @@ async function loadMatches() {
         .filter(m => isUpcoming(m[0]))
         .sort((a, b) => parseDate(a[0]) - parseDate(b[0]));
 
-    // Nästa match = första kommande, annars första dagens
-    let next = null;
-    if (upcomingMatches.length > 0) {
-        next = upcomingMatches[0];
-    } else if (todayMatches.length > 0) {
-        next = todayMatches[0];
-    }
+    let next = upcomingMatches[0] || todayMatches[0] || null;
 
     if (next) {
         document.getElementById("nm-home").textContent = next[2];
@@ -274,12 +232,6 @@ async function loadMatches() {
         document.getElementById("nm-date").textContent = next[0];
         document.getElementById("nm-time").textContent = next[1];
         document.getElementById("nm-arena").textContent = next[4];
-    } else {
-        document.getElementById("nm-home").textContent = "INGEN MATCH";
-        document.getElementById("nm-away").textContent = "";
-        document.getElementById("nm-date").textContent = "";
-        document.getElementById("nm-time").textContent = "";
-        document.getElementById("nm-arena").textContent = "";
     }
 
     renderMatches(todayMatches, "today");
@@ -288,22 +240,13 @@ async function loadMatches() {
 
 loadMatches();
 
-// ===============================
-// 5. SPONSOR-SLIDES
-// ===============================
-
-const sponsorImages = [
-    "sponsor1.png",
-    "sponsor2.png",
-    "sponsor3.png"
-];
-
+const sponsorImages = ["sponsor1.png", "sponsor2.png", "sponsor3.png"];
 let sponsorIndex = 0;
 
 setInterval(() => {
     sponsorIndex = (sponsorIndex + 1) % sponsorImages.length;
     document.getElementById("sponsor-img").src = sponsorImages[sponsorIndex];
-}, 6000); // byt var 6:e sekund
+}, 6000);
 </script>
 
 </body>
