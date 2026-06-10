@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta http-equiv="refresh" content="300">
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Sollentuna Hockey – Matchskärm ver 0.6</title>
+<title>Sollentuna Hockey – Matchskärm 1.0</title>
 
 <style>
     body {
@@ -131,7 +131,7 @@
 
 <body>
 
-<header>SOLLENTUNA HOCKEY – MATCHSKÄRM ver 0.6</header>
+<header>SOLLENTUNA HOCKEY – MATCHSKÄRM 1.0</header>
 
 <div class="layout">
 
@@ -166,13 +166,22 @@
 </div>
 
 <script>
-const excelUrl = "https://sollentunahc-my.sharepoint.com/personal/gunnar_sollentunahockey_com/_layouts/15/download.aspx?SourceUrl=/personal/gunnar_sollentunahockey_com/Documents/Digital/matcher.csv";
+const excelUrl =
+"https://sollentunahc-my.sharepoint.com/personal/gunnar_sollentunahockey_com/_layouts/15/download.aspx?SourceUrl=/personal/gunnar_sollentunahockey_com/Documents/Digital/matcher.csv";
 
 async function fetchExcelData() {
     try {
         const response = await fetch(excelUrl);
-        const text = await response.text();
-        const rows = text.trim().split(/\r?\n/).map(r => r.split(";"));
+        let text = await response.text();
+
+        // SUPERFIX: Ta bort ALLA dolda tecken
+        text = text
+            .replace(/\uFEFF/g, "")   // BOM
+            .replace(/\r/g, "")       // CR
+            .replace(/\t/g, "")       // Tabbar
+            .trim();
+
+        const rows = text.split("\n").map(r => r.split(";"));
         return rows.slice(1);
     } catch (e) {
         console.error("Fel vid hämtning:", e);
@@ -181,14 +190,17 @@ async function fetchExcelData() {
 }
 
 function parseDate(dateStr) {
-    const clean = dateStr.replace(/\r|\s/g, "").trim();
+    const clean = dateStr.replace(/[^0-9a-zA-ZåäöÅÄÖ-]/g, "").trim();
+
     const months = {
         "jan": 0, "feb": 1, "mar": 2, "apr": 3, "maj": 4, "jun": 5,
         "jul": 6, "aug": 7, "sep": 8, "okt": 9, "nov": 10, "dec": 11
     };
+
     const [day, mon] = clean.split("-");
     const monthIndex = months[mon?.toLowerCase()];
     const year = new Date().getFullYear();
+
     return new Date(year, monthIndex, parseInt(day));
 }
 
@@ -225,7 +237,15 @@ async function loadMatches() {
         .filter(m => isUpcoming(m[0]))
         .sort((a, b) => parseDate(a[0]) - parseDate(b[0]));
 
-    let next = upcomingMatches[0] || todayMatches[0] || null;
+    // FALLBACK: senaste spelade match
+    const pastMatches = data
+        .filter(m => parseDate(m[0]) < new Date())
+        .sort((a, b) => parseDate(b[0]) - parseDate(a[0]));
+
+    const lastPlayed = pastMatches[0] || null;
+
+    // Bestäm vad som ska visas som "Nästa match"
+    let next = upcomingMatches[0] || todayMatches[0] || lastPlayed;
 
     if (next) {
         document.getElementById("nm-home").textContent = next[2];
