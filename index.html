@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta http-equiv="refresh" content="300">
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Sollentuna Hockey – Matchskärm ver 0.5</title>
+<title>Sollentuna Hockey – Matchskärm ver 0.6</title>
 
 <style>
     body {
@@ -131,7 +131,7 @@
 
 <body>
 
-<header>SOLLENTUNA HOCKEY – MATCHSKÄRM ver 0.5</header>
+<header>SOLLENTUNA HOCKEY – MATCHSKÄRM ver 0.6</header>
 
 <div class="layout">
 
@@ -168,12 +168,11 @@
 <script>
 const excelUrl = "https://sollentunahc-my.sharepoint.com/personal/gunnar_sollentunahockey_com/_layouts/15/download.aspx?SourceUrl=/personal/gunnar_sollentunahockey_com/Documents/Digital/matcher.csv";
 
-
 async function fetchExcelData() {
     try {
         const response = await fetch(excelUrl);
         const text = await response.text();
-        const rows = text.trim().split("\n").map(r => r.split(";"));
+        const rows = text.trim().split(/\r?\n/).map(r => r.split(";"));
         return rows.slice(1);
     } catch (e) {
         console.error("Fel vid hämtning:", e);
@@ -182,12 +181,13 @@ async function fetchExcelData() {
 }
 
 function parseDate(dateStr) {
+    const clean = dateStr.replace(/\r|\s/g, "").trim();
     const months = {
         "jan": 0, "feb": 1, "mar": 2, "apr": 3, "maj": 4, "jun": 5,
         "jul": 6, "aug": 7, "sep": 8, "okt": 9, "nov": 10, "dec": 11
     };
-    const [day, mon] = dateStr.split("-");
-    const monthIndex = months[mon.toLowerCase()];
+    const [day, mon] = clean.split("-");
+    const monthIndex = months[mon?.toLowerCase()];
     const year = new Date().getFullYear();
     return new Date(year, monthIndex, parseInt(day));
 }
