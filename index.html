@@ -1,1 +1,137 @@
-<html></html>
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8" />
+<meta http-equiv="refresh" content="300"> <!-- Auto-refresh var 5:e minut -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Sollentuna Hockey – Matchskärm</title>
+
+<style>
+    body {
+        margin: 0;
+        background: #ffffff;
+        font-family: Arial, sans-serif;
+        color: #000;
+    }
+
+    header {
+        background: #002f6c; /* SHC blå */
+        color: white;
+        padding: 20px;
+        text-align: center;
+        font-size: 48px;
+        font-weight: bold;
+    }
+
+    .section-title {
+        font-size: 36px;
+        margin: 40px 0 10px 20px;
+        font-weight: bold;
+        color: #002f6c;
+    }
+
+    .match-list {
+        margin: 0 20px;
+        font-size: 32px;
+    }
+
+    .match {
+        padding: 20px;
+        border-bottom: 2px solid #ddd;
+    }
+
+    .match strong {
+        color: #c8102e; /* SHC röd */
+    }
+</style>
+</head>
+
+<body>
+
+<header>DAGENS MATCHER</header>
+
+<div id="today" class="match-list">Laddar...</div>
+
+<div class="section-title">KOMMANDE MATCHER</div>
+<div id="upcoming" class="match-list">Laddar...</div>
+
+<script>
+// ===============================
+// 1. HÄMTA DATA FRÅN EXCEL ONLINE
+// ===============================
+
+// 👉 Byt ut denna URL mot din riktiga OneDrive/SharePoint Excel-fil
+const excelUrl = "https://sollentunahc-my.sharepoint.com/:x:/g/personal/gunnar_sollentunahockey_com/IQA6KPTEYK18S6O_-x8bORm9AUh4lXec4DJBTAatnSAt86w?download=1";
+
+async function fetchExcelData() {
+    try {
+        const response = await fetch(excelUrl);
+        const text = await response.text();
+
+        // Konvertera CSV → rader
+        const rows = text.split("\n").map(r => r.split(","));
+
+        // Förväntade kolumner:
+        // Datum, Tid, Hemmalag, Bortalag, Hall
+        return rows.slice(1); // hoppa över header
+    } catch (e) {
+        console.error("Fel vid hämtning:", e);
+        return [];
+    }
+}
+
+// ===============================
+// 2. FILTRERA MATCHER
+// ===============================
+
+function isToday(dateStr) {
+    const today = new Date();
+    const d = new Date(dateStr);
+    return d.toDateString() === today.toDateString();
+}
+
+function isUpcoming(dateStr) {
+    const today = new Date();
+    const d = new Date(dateStr);
+    return d > today;
+}
+
+// ===============================
+// 3. VISA MATCHER
+// ===============================
+
+function renderMatches(matches, containerId) {
+    const container = document.getElementById(containerId);
+    if (matches.length === 0) {
+        container.innerHTML = "<div class='match'>Inga matcher</div>";
+        return;
+    }
+
+    container.innerHTML = matches.map(m => `
+        <div class="match">
+            <strong>${m[2]}</strong> vs <strong>${m[3]}</strong><br>
+            ${m[0]} – ${m[1]}<br>
+            Hall: ${m[4]}
+        </div>
+    `).join("");
+}
+
+// ===============================
+// 4. HUVUDFUNKTION
+// ===============================
+
+async function loadMatches() {
+    const data = await fetchExcelData();
+
+    const todayMatches = data.filter(m => isToday(m[0]));
+    const upcomingMatches = data.filter(m => isUpcoming(m[0])).slice(0, 10);
+
+    renderMatches(todayMatches, "today");
+    renderMatches(upcomingMatches, "upcoming");
+}
+
+loadMatches();
+</script>
+
+</body>
+</html>
