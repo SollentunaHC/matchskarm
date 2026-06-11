@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <title>Sollentuna Hockey – Matcher</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <style>
 body{margin:0;background-color:#081a3a;color:#fff;font-family:'Roboto Condensed',Arial,sans-serif;overflow:hidden}
 .container{border:8px solid #c8102e;height:100vh;box-sizing:border-box;display:flex;flex-direction:column;align-items:center;position:relative;padding-top:20px;padding-bottom:140px}
@@ -21,9 +22,9 @@ tr:nth-child(even){background-color:rgba(0,60,135,0.85)}
 @keyframes scrollSponsors{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
 </style>
 </head>
-
 <body>
 <div class="container">
+
 <img id="watermark" src="drake.png" alt="SHC-drake">
 <div id="clock">--:--</div>
 
@@ -42,8 +43,8 @@ tr:nth-child(even){background-color:rgba(0,60,135,0.85)}
 </table>
 
 <div id="sponsorBar"><div id="sponsorTrack"></div></div>
-</div>
 
+</div>
 <script>
 function updateClock(){
     const now=new Date();
@@ -140,7 +141,6 @@ async function getWeather(){
     const icon=getWeatherIcon(now.weathercode);
     return `${icon} Sollentuna ${temp}°C`;
 }
-
 /* RSS – AllOrigins FIX */
 async function fetchRSS(url){
     const proxy="https://api.allorigins.win/get?url=";
