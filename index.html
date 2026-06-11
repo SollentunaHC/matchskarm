@@ -2,28 +2,26 @@
 <html lang="sv">
 <head>
 <meta charset="UTF-8">
-<title>Dagens matcher – Sollentuna Hockey</title>
+<title>Sollentuna Hockey – Matcher</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
     body {
         margin: 0;
-        background-color: #002f6c; /* SHC blå */
+        background-color: #002f6c;
         color: #ffffff;
         font-family: 'Oswald', Arial, sans-serif;
         overflow: hidden;
 
-        /* SHC-draken som watermark */
-        background-image: url('drake.png'); /* lägg drake.png i samma mapp */
+        background-image: url('drake.png');
         background-repeat: no-repeat;
         background-position: center;
         background-size: 85%;
     }
 
-    /* Pulsande drake */
     @keyframes pulseDragon {
         0%   { opacity: 0.10; }
-        50%  { opacity: 0.22; }
+        50%  { opacity: 0.18; }
         100% { opacity: 0.10; }
     }
 
@@ -45,15 +43,15 @@
     }
 
     .container {
-        border: 8px solid #c8102e; /* SHC röd */
+        border: 8px solid #c8102e;
         height: 100vh;
         box-sizing: border-box;
         display: flex;
         flex-direction: column;
-        justify-content: flex-start;
         align-items: center;
         position: relative;
-        z-index: 2; /* ovanpå draken */
+        z-index: 2;
+        padding-top: 20px;
     }
 
     #clock {
@@ -62,50 +60,45 @@
         right: 40px;
         font-size: 28px;
         opacity: 0.85;
-        font-weight: 300;
     }
 
     h1 {
-        font-size: 72px;
-        font-weight: 700;
-        margin: 40px 0 20px 0;
-        text-align: center;
+        font-size: 60px;
+        margin: 10px 0 20px 0;
         text-transform: uppercase;
         letter-spacing: 2px;
-        text-shadow: 0 0 10px rgba(255,255,255,0.3);
+    }
+
+    h2 {
+        font-size: 40px;
+        margin: 20px 0 10px 0;
+        text-transform: uppercase;
+        letter-spacing: 1px;
     }
 
     table {
         width: 90%;
         border-collapse: collapse;
-        font-size: 26px;
-        background-color: rgba(0, 47, 108, 0.9);
-        box-shadow: 0 0 20px rgba(0,0,0,0.3);
+        font-size: 24px;
+        background-color: rgba(0, 47, 108, 0.92);
+        margin-bottom: 20px;
     }
 
     th {
         background-color: #c8102e;
-        color: #ffffff;
-        padding: 12px;
-        text-align: center;
-        font-weight: 700;
+        padding: 10px;
         border: 1px solid #ffffff;
         text-transform: uppercase;
     }
 
     td {
-        padding: 10px;
-        text-align: center;
+        padding: 8px;
         border: 1px solid #ffffff;
+        text-align: center;
     }
 
     tr:nth-child(even) {
         background-color: #003b8e;
-    }
-
-    tr:hover {
-        background-color: #0048a8;
-        transition: background-color 0.3s ease;
     }
 </style>
 </head>
@@ -116,26 +109,39 @@
 
     <div id="clock">--:--</div>
 
-    <h1>Dagens matcher</h1>
+    <h1>Sollentuna Hockey</h1>
 
+    <h2>Dagens matcher</h2>
     <table>
         <thead>
             <tr>
+                <th>Datum</th>
                 <th>Tid</th>
                 <th>Hemmalag</th>
                 <th>Bortalag</th>
                 <th>Hall</th>
             </tr>
         </thead>
-        <tbody id="matchTable">
-            <!-- Fylls automatiskt nedan -->
-        </tbody>
+        <tbody id="todayTable"></tbody>
+    </table>
+
+    <h2>Kommande matcher denna vecka</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Datum</th>
+                <th>Tid</th>
+                <th>Hemmalag</th>
+                <th>Bortalag</th>
+                <th>Hall</th>
+            </tr>
+        </thead>
+        <tbody id="weekTable"></tbody>
     </table>
 
 </div>
 
 <script>
-/* Klocka */
 function updateClock() {
     const now = new Date();
     const hh = now.getHours().toString().padStart(2, "0");
@@ -145,26 +151,77 @@ function updateClock() {
 setInterval(updateClock, 1000);
 updateClock();
 
-/* Exempelmatcher – byt till fetch från CSV om du vill */
-const matcher = [
-    { tid: "18:00", hemma: "SHC A-lag", borta: "Vallentuna", hall: "Qyloq Arena" },
-    { tid: "19:00", hemma: "U20 H", borta: "Väsby", hall: "Qyloq Arena" },
-    { tid: "20:00", hemma: "U18 H", borta: "Arlanda", hall: "Qyloq Arena" },
-    { tid: "21:00", hemma: "U16", borta: "Wings", hall: "Qyloq Arena" }
-];
+async function loadCSV() {
+    const response = await fetch("Matcher.csv");
+    const text = await response.text();
 
-const table = document.getElementById("matchTable");
+    const rows = text
+        .replace(/\r/g, "")
+        .trim()
+        .split("\n")
+        .slice(1)
+        .map(r => r.split(";"));
 
-matcher.forEach(m => {
-    const row = document.createElement("tr");
-    row.innerHTML = `
+    return rows.map(r => ({
+        datum: r[0],
+        tid: r[1],
+        hemma: r[2],
+        borta: r[3],
+        hall: r[4]
+    }));
+}
+
+function parseDate(d) {
+    const [day, mon] = d.split("-");
+    const months = {
+        "jan":0,"feb":1,"mar":2,"apr":3,"maj":4,"jun":5,
+        "jul":6,"aug":7,"sep":8,"okt":9,"nov":10,"dec":11
+    };
+    const year = new Date().getFullYear();
+    return new Date(year, months[mon], parseInt(day));
+}
+
+function sameDay(a, b) {
+    return a.getFullYear() === b.getFullYear() &&
+           a.getMonth() === b.getMonth() &&
+           a.getDate() === b.getDate();
+}
+
+function sameWeek(date) {
+    const now = new Date();
+    const weekEnd = new Date();
+    weekEnd.setDate(now.getDate() + (7 - now.getDay()));
+    return date >= now && date <= weekEnd;
+}
+
+function addRow(table, m) {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+        <td>${m.datum}</td>
         <td>${m.tid}</td>
         <td>${m.hemma}</td>
         <td>${m.borta}</td>
         <td>${m.hall}</td>
     `;
-    table.appendChild(row);
-});
+    table.appendChild(tr);
+}
+
+async function init() {
+    const data = await loadCSV();
+    const today = new Date();
+
+    const todayTable = document.getElementById("todayTable");
+    const weekTable = document.getElementById("weekTable");
+
+    data.forEach(m => {
+        const d = parseDate(m.datum);
+
+        if (sameDay(d, today)) addRow(todayTable, m);
+        else if (sameWeek(d)) addRow(weekTable, m);
+    });
+}
+
+init();
 </script>
 
 </body>
