@@ -12,7 +12,7 @@
 
 body {
     margin: 0;
-    background-color: #0f326b; /* Ljusare arena-blå */
+    background-color: #0a1f45; /* MÖRKARE ARENA-BLÅ */
     color: #ffffff;
     font-family: 'Roboto Condensed', Arial, sans-serif;
     overflow: hidden;
@@ -109,34 +109,6 @@ h2::after {
 }
 
 /* ----------------------------- */
-/* NÄSTA MATCH-MODUL             */
-/* ----------------------------- */
-
-#nextMatchBox {
-    width: 90%;
-    background: rgba(0,0,0,0.35);
-    border: 3px solid rgba(255,255,255,0.25);
-    border-radius: 10px;
-    padding: 20px;
-    margin-top: 10px;
-    margin-bottom: 25px;
-    text-align: center;
-    box-shadow: 0 0 25px rgba(0,0,0,0.45);
-    animation: fadeIn 1.3s ease-out;
-}
-
-#nextMatchTitle {
-    font-size: 48px;
-    font-family: 'Oswald';
-    margin-bottom: 10px;
-}
-
-#nextMatchContent {
-    font-size: 32px;
-    line-height: 1.4;
-}
-
-/* ----------------------------- */
 /* TABELLER                      */
 /* ----------------------------- */
 
@@ -181,12 +153,12 @@ tr:nth-child(even) {
     left: 0;
     width: 100%;
     height: 120px;
-    background: rgba(0,0,0,0.45);
+    background: rgba(255,255,255,0.15); /* LJUSARE BAKGRUND */
     display: flex;
     justify-content: space-between;
     align-items: center;
     overflow: hidden;
-    border-top: 3px solid rgba(255,255,255,0.25);
+    border-top: 3px solid rgba(255,255,255,0.35);
     box-shadow: 0 -5px 20px rgba(0,0,0,0.4);
     padding: 0 40px;
 }
@@ -206,8 +178,8 @@ tr:nth-child(even) {
     max-width: 100%;
     position: absolute;
     opacity: 0;
-    transform: translateX(120px);
-    transition: opacity 1s ease, transform 1s ease;
+    transform: translateX(-200px); /* STARTA FRÅN VÄNSTER */
+    transition: opacity 1s ease, transform 1.2s ease;
 }
 
 .sponsorImg.visible {
@@ -232,12 +204,6 @@ tr:nth-child(even) {
     <div id="clock">--:--</div>
 
     <h1>Sollentuna Hockey</h1>
-
-    <!-- NÄSTA MATCH -->
-    <div id="nextMatchBox">
-        <div id="nextMatchTitle">Nästa match</div>
-        <div id="nextMatchContent">Laddar...</div>
-    </div>
 
     <h2>Dagens matcher</h2>
     <table>
@@ -322,7 +288,7 @@ const months = {
     "jul":"juli","aug":"augusti","sep":"september","okt":"oktober","nov":"november","dec":"december"
 };
 
-const weekdays = ["söndag","måndag","tisdag","onsdag","torsdag","fredag","lördag"];
+const weekdays = ["söndag","måndag","tisdag","onsdag","torsdag","freddag","lördag"];
 
 function formatDate(d) {
     const day = d.getDate();
@@ -370,7 +336,7 @@ function sameWeek(date) {
 }
 
 /* ----------------------------- */
-/* TABELLER + NÄSTA MATCH        */
+/* TABELLER                      */
 /* ----------------------------- */
 
 function addRow(table, m, d) {
@@ -392,24 +358,11 @@ async function init() {
     const todayTable = document.getElementById("todayTable");
     const weekTable = document.getElementById("weekTable");
 
-    let nextMatch = null;
-
     data.forEach(m => {
         const d = parseDate(m.datum);
-
-        if (!nextMatch || d < parseDate(nextMatch.datum)) {
-            nextMatch = m;
-        }
-
         if (sameDay(d, today)) addRow(todayTable, m, d);
         else if (sameWeek(d)) addRow(weekTable, m, d);
     });
-
-    if (nextMatch) {
-        const d = parseDate(nextMatch.datum);
-        document.getElementById("nextMatchContent").innerHTML =
-            `${formatDate(d)} – ${nextMatch.tid}<br>${nextMatch.hemma} vs ${nextMatch.borta}<br>${nextMatch.hall}`;
-    }
 }
 
 init();
