@@ -303,43 +303,26 @@ init();
 /* VÄDERIKONER */
 function getWeatherIcon(code) {
     if (code === 0) return "☀️";
-    if ([1,2].includes(code)) return "🌤";
-    if (code === 3) return "☁️";
-    if ([45,48].includes(code)) return "🌫";
-    if ([51,53,55].includes(code)) return "🌦";
-    if ([61,63,65].includes(code)) return "🌧";
+    if ([1,2,3].includes(code)) return "🌤";
+    if ([51,53,55,61,63,65].includes(code)) return "🌧";
     if ([71,73,75].includes(code)) return "❄️";
-    if ([95,96,99].includes(code)) return "⛈";
-    return "🌡";
+    return "☁️";
 }
 
-/* VÄDER + 3-TIMMARS PROGNOS */
+/* VÄDER – ENKEL PLATTA */
 async function getWeather() {
-    const url = "https://api.open-meteo.com/v1/forecast?latitude=59.428&longitude=17.950&current_weather=true&hourly=temperature_2m,weathercode,windspeed_10m";
+    const url = "https://api.open-meteo.com/v1/forecast?latitude=59.428&longitude=17.950&current_weather=true";
     const response = await fetch(url);
     const data = await response.json();
 
     const now = data.current_weather;
-    const hourly = data.hourly;
+    const temp = Math.round(now.temperature);
+    const icon = getWeatherIcon(now.weathercode);
 
-    const tempNow = Math.round(now.temperature);
-    const windNow = Math.round(now.windspeed);
-    const iconNow = getWeatherIcon(now.weathercode);
-
-    const nextHours = [];
-    const currentIndex = hourly.time.indexOf(now.time);
-
-    for (let i = 1; i <= 3; i++) {
-        const t = Math.round(hourly.temperature_2m[currentIndex + i]);
-        const w = Math.round(hourly.windspeed_10m[currentIndex + i]);
-        const ic = getWeatherIcon(hourly.weathercode[currentIndex + i]);
-        nextHours.push(`${ic} +${i}h ${t}°C`);
-    }
-
-    return `${iconNow} Sollentuna ${tempNow}°C • Vind ${windNow} m/s • ${nextHours.join(" • ")}`;
+    return { icon, temp };
 }
 
-/* SÖMLÖS SPONSOR-SCROLL + VÄDER */
+/* SÖMLÖS SPONSOR-SCROLL + VÄDERPLATTA */
 async function initSponsors() {
     const repoOwner = "SollentunaHC";
     const repoName = "matchskarm";
@@ -356,8 +339,8 @@ async function initSponsors() {
             value: `https://sollentunahc.github.io/${repoName}/${folderPath}/${item.name}`
         }));
 
-    const weatherText = await getWeather();
-    items.push({ type: "text", value: weatherText });
+    const weather = await getWeather();
+    items.push({ type: "weather", icon: weather.icon, temp: weather.temp });
 
     items = [...items, ...items];
 
@@ -369,15 +352,21 @@ async function initSponsors() {
             const img = document.createElement("img");
             img.src = item.value;
             track.appendChild(img);
-        } else {
-            const div = document.createElement("div");
-            div.textContent = item.value;
-            div.style.fontSize = "40px";
-            div.style.fontWeight = "600";
-            div.style.color = "#fff";
-            div.style.textShadow = "0 0 10px rgba(0,0,0,0.6)";
-            div.style.whiteSpace = "nowrap";
-            track.appendChild(div);
+        } else if (item.type === "weather") {
+            const box = document.createElement("div");
+            box.style.display = "flex";
+            box.style.alignItems = "center";
+            box.style.justifyContent = "center";
+            box.style.background = "rgba(0,0,0,0.35)";
+            box.style.padding = "10px 25px";
+            box.style.borderRadius = "10px";
+            box.style.fontSize = "42px";
+            box.style.fontWeight = "700";
+            box.style.color = "#fff";
+            box.style.textShadow = "0 0 10px rgba(0,0,0,0.6)";
+            box.style.whiteSpace = "nowrap";
+            box.textContent = `${item.icon} Sollentuna ${item.temp}°C`;
+            track.appendChild(box);
         }
     });
 }
