@@ -228,6 +228,7 @@ function formatDate(d) {
     const weekday = weekdays[d.getDay()];
     const monthKey = d.toLocaleString("sv-SE", { month: "short" })
         .replace(".", "")
+        .substring(0,3)
         .toLowerCase();
     const month = months[monthKey] || "";
     return `${weekday} ${day} ${month}`;
