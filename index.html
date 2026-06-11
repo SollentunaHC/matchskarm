@@ -4,377 +4,207 @@
 <meta charset="UTF-8">
 <title>Sollentuna Hockey – Matcher</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <style>
-/* GLOBALT */
-body {
-    margin: 0;
-    background-color: #081a3a;
-    color: #ffffff;
-    font-family: 'Roboto Condensed', Arial, sans-serif;
-    overflow: hidden;
-}
-.container {
-    border: 8px solid #c8102e;
-    height: 100vh;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: relative;
-    padding-top: 20px;
-    padding-bottom: 140px;
-}
-
-/* WATERMARK */
-#watermark {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 75%;
-    opacity: 0.015;
-    filter: brightness(0.6);
-    transform: translate(-50%, -50%);
-    pointer-events: none;
-}
-
-/* KLOCKA */
-#clock {
-    position: absolute;
-    top: 20px;
-    right: 40px;
-    font-size: 32px;
-    opacity: 0.9;
-    font-weight: 300;
-    text-shadow: 0 0 8px rgba(255,255,255,0.4);
-}
-
-/* RUBRIKER */
-h1 {
-    font-family: 'Oswald', sans-serif;
-    font-size: 100px;
-    margin: 10px 0 10px 0;
-    text-transform: uppercase;
-    letter-spacing: 4px;
-}
-h2 {
-    font-family: 'Oswald', sans-serif;
-    font-size: 58px;
-    margin: 25px 0 5px 0;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-}
-
-/* TABELLER */
-table {
-    width: 90%;
-    border-collapse: collapse;
-    font-size: 26px;
-    background: rgba(0, 47, 108, 0.85);
-    margin-bottom: 25px;
-    border-radius: 8px;
-    overflow: hidden;
-}
-th {
-    background: linear-gradient(180deg, #e01b2f, #b50f22);
-    padding: 14px;
-    border-bottom: 2px solid #ffffff;
-    text-transform: uppercase;
-    font-size: 24px;
-}
-td {
-    padding: 12px;
-    text-align: center;
-    border-bottom: 1px solid rgba(255,255,255,0.25);
-}
-tr:nth-child(even) {
-    background-color: rgba(0, 60, 135, 0.85);
-}
-
-/* SPONSOR-SCROLL */
-#sponsorBar {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 120px;
-    background: rgba(255,255,255,0.25);
-    overflow: hidden;
-    border-top: 3px solid rgba(255,255,255,0.35);
-    display: flex;
-    align-items: center;
-}
-#sponsorTrack {
-    display: flex;
-    gap: 80px;
-    animation: scrollSponsors 25s linear infinite;
-}
-#sponsorTrack img {
-    height: 80px;
-    object-fit: contain;
-    filter: drop-shadow(0 0 6px rgba(0,0,0,0.4));
-}
-@keyframes scrollSponsors {
-    0%   { transform: translateX(0); }
-    100% { transform: translateX(-50%); }
-}
+body{margin:0;background-color:#081a3a;color:#fff;font-family:'Roboto Condensed',Arial,sans-serif;overflow:hidden}
+.container{border:8px solid #c8102e;height:100vh;box-sizing:border-box;display:flex;flex-direction:column;align-items:center;position:relative;padding-top:20px;padding-bottom:140px}
+#watermark{position:absolute;top:50%;left:50%;width:75%;opacity:0.015;filter:brightness(0.6);transform:translate(-50%,-50%);pointer-events:none}
+#clock{position:absolute;top:20px;right:40px;font-size:32px;opacity:0.9;font-weight:300;text-shadow:0 0 8px rgba(255,255,255,0.4)}
+h1{font-family:'Oswald',sans-serif;font-size:100px;margin:10px 0;text-transform:uppercase;letter-spacing:4px}
+h2{font-family:'Oswald',sans-serif;font-size:58px;margin:25px 0 5px 0;text-transform:uppercase;letter-spacing:2px}
+table{width:90%;border-collapse:collapse;font-size:26px;background:rgba(0,47,108,0.85);margin-bottom:25px;border-radius:8px;overflow:hidden}
+th{background:linear-gradient(180deg,#e01b2f,#b50f22);padding:14px;border-bottom:2px solid #fff;text-transform:uppercase;font-size:24px}
+td{padding:12px;text-align:center;border-bottom:1px solid rgba(255,255,255,0.25)}
+tr:nth-child(even){background-color:rgba(0,60,135,0.85)}
+#sponsorBar{position:absolute;bottom:0;left:0;width:100%;height:120px;background:rgba(255,255,255,0.25);overflow:hidden;border-top:3px solid rgba(255,255,255,0.35);display:flex;align-items:center}
+#sponsorTrack{display:flex;gap:80px;animation:scrollSponsors 25s linear infinite}
+#sponsorTrack img{height:80px;object-fit:contain;filter:drop-shadow(0 0 6px rgba(0,0,0,0.4))}
+@keyframes scrollSponsors{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
 </style>
 </head>
 
 <body>
-
 <div class="container">
+<img id="watermark" src="drake.png" alt="SHC-drake">
+<div id="clock">--:--</div>
 
-    <img id="watermark" src="drake.png" alt="SHC-drake">
+<h1>Sollentuna Hockey</h1>
 
-    <div id="clock">--:--</div>
+<h2>Dagens matcher</h2>
+<table>
+<thead><tr><th>Datum</th><th>Tid</th><th>Hemmalag</th><th>Bortalag</th><th>Hall</th></tr></thead>
+<tbody id="todayTable"></tbody>
+</table>
 
-    <h1>Sollentuna Hockey</h1>
+<h2>Kommande matcher</h2>
+<table>
+<thead><tr><th>Datum</th><th>Tid</th><th>Hemmalag</th><th>Bortalag</th><th>Hall</th></tr></thead>
+<tbody id="weekTable"></tbody>
+</table>
 
-    <h2>Dagens matcher</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>Datum</th>
-                <th>Tid</th>
-                <th>Hemmalag</th>
-                <th>Bortalag</th>
-                <th>Hall</th>
-            </tr>
-        </thead>
-        <tbody id="todayTable"></tbody>
-    </table>
-
-    <h2>Kommande matcher</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>Datum</th>
-                <th>Tid</th>
-                <th>Hemmalag</th>
-                <th>Bortalag</th>
-                <th>Hall</th>
-            </tr>
-        </thead>
-        <tbody id="weekTable"></tbody>
-    </table>
-
-    <div id="sponsorBar">
-        <div id="sponsorTrack"></div>
-    </div>
-
+<div id="sponsorBar"><div id="sponsorTrack"></div></div>
 </div>
 
 <script>
-/* KLOCKA */
-function updateClock() {
-    const now = new Date();
-    const hh = now.getHours().toString().padStart(2, "0");
-    const mm = now.getMinutes().toString().padStart(2, "0");
-    document.getElementById("clock").textContent = `${hh}:${mm}`;
+function updateClock(){
+    const now=new Date();
+    const hh=now.getHours().toString().padStart(2,"0");
+    const mm=now.getMinutes().toString().padStart(2,"0");
+    document.getElementById("clock").textContent=`${hh}:${mm}`;
 }
-setInterval(updateClock, 1000);
-updateClock();
+setInterval(updateClock,1000);updateClock();
 
-/* CSV-LOADING */
-async function loadCSV() {
-    const response = await fetch("Matcher.csv");
-    const text = await response.text();
-
-    const rows = text
-        .replace(/\r/g, "")
-        .trim()
-        .split("\n")
-        .slice(1)
-        .map(r => r.split(";"));
-
-    return rows.map(r => ({
-        datum: r[0],
-        tid: r[1],
-        hemma: r[2],
-        borta: r[3],
-        hall: r[4]
-    }));
+async function loadCSV(){
+    const response=await fetch("Matcher.csv");
+    const text=await response.text();
+    const rows=text.replace(/\r/g,"").trim().split("\n").slice(1).map(r=>r.split(";"));
+    return rows.map(r=>({datum:r[0],tid:r[1],hemma:r[2],borta:r[3],hall:r[4]}));
 }
 
-/* DATUMFORMAT */
-const months = {
-    "jan":"januari","feb":"februari","mar":"mars","apr":"april","maj":"maj","jun":"juni",
-    "jul":"juli","aug":"augusti","sep":"september","okt":"oktober","nov":"november","dec":"december"
-};
-const weekdays = ["söndag","måndag","tisdag","onsdag","torsdag","fredag","lördag"];
+const months={"jan":"januari","feb":"februari","mar":"mars","apr":"april","maj":"maj","jun":"juni","jul":"juli","aug":"augusti","sep":"september","okt":"oktober","nov":"november","dec":"december"};
+const weekdays=["söndag","måndag","tisdag","onsdag","torsdag","fredag","lördag"];
 
-function formatDate(d) {
-    const day = d.getDate();
-    const weekday = weekdays[d.getDay()];
-    const monthKey = d.toLocaleString("sv-SE", { month: "short" })
-        .replace(".", "")
-        .substring(0,3)
-        .toLowerCase();
-    const month = months[monthKey] || "";
+function formatDate(d){
+    const day=d.getDate();
+    const weekday=weekdays[d.getDay()];
+    const monthKey=d.toLocaleString("sv-SE",{month:"short"}).replace(".","").substring(0,3).toLowerCase();
+    const month=months[monthKey]||"";
     return `${weekday} ${day} ${month}`;
 }
 
-function parseDate(d) {
-    d = d.trim().replace(/"/g, "");
-
-    if (/^\d{4}-\d{2}-\d{2}$/.test(d)) return new Date(d);
-
-    const parts = d.split("-");
-    if (parts.length === 2) {
-        const day = parseInt(parts[0]);
-        const monKey = parts[1].toLowerCase();
-        const monName = months[monKey];
-        const monthIndex = Object.values(months).indexOf(monName);
-        const year = new Date().getFullYear();
-        return new Date(year, monthIndex, day);
+function parseDate(d){
+    d=d.trim().replace(/"/g,"");
+    if(/^\d{4}-\d{2}-\d{2}$/.test(d))return new Date(d);
+    const parts=d.split("-");
+    if(parts.length===2){
+        const day=parseInt(parts[0]);
+        const monKey=parts[1].toLowerCase();
+        const monName=months[monKey];
+        const monthIndex=Object.values(months).indexOf(monName);
+        const year=new Date().getFullYear();
+        return new Date(year,monthIndex,day);
     }
-
-    const slash = d.split("/");
-    if (slash.length >= 2) {
-        const day = parseInt(slash[0]);
-        const month = parseInt(slash[1]) - 1;
-        const year = slash[2] ? parseInt(slash[2]) : new Date().getFullYear();
-        return new Date(year, month, day);
+    const slash=d.split("/");
+    if(slash.length>=2){
+        const day=parseInt(slash[0]);
+        const month=parseInt(slash[1])-1;
+        const year=slash[2]?parseInt(slash[2]):new Date().getFullYear();
+        return new Date(year,month,day);
     }
-
     return new Date();
 }
 
-function sameDay(a, b) {
-    return a.getFullYear() === b.getFullYear() &&
-           a.getMonth() === b.getMonth() &&
-           a.getDate() === b.getDate();
+function sameDay(a,b){
+    return a.getFullYear()===b.getFullYear()&&a.getMonth()===b.getMonth()&&a.getDate()===b.getDate();
 }
-function sameWeek(date) {
-    const now = new Date();
-    const weekEnd = new Date();
-    weekEnd.setDate(now.getDate() + (7 - now.getDay()));
-    return date >= now && date <= weekEnd;
+function sameWeek(date){
+    const now=new Date();
+    const weekEnd=new Date();
+    weekEnd.setDate(now.getDate()+(7-now.getDay()));
+    return date>=now&&date<=weekEnd;
 }
 
-/* TABELLER */
-function addRow(table, m, d) {
-    const tr = document.createElement("tr");
-    tr.innerHTML = `
-        <td>${formatDate(d)}</td>
-        <td>${m.tid}</td>
-        <td>${m.hemma}</td>
-        <td>${m.borta}</td>
-        <td>${m.hall}</td>
-    `;
+function addRow(table,m,d){
+    const tr=document.createElement("tr");
+    tr.innerHTML=`<td>${formatDate(d)}</td><td>${m.tid}</td><td>${m.hemma}</td><td>${m.borta}</td><td>${m.hall}</td>`;
     table.appendChild(tr);
 }
 
-async function init() {
-    const data = await loadCSV();
-    const today = new Date();
-
-    const todayTable = document.getElementById("todayTable");
-    const weekTable = document.getElementById("weekTable");
-
-    data.forEach(m => {
-        const d = parseDate(m.datum);
-        if (sameDay(d, today)) addRow(todayTable, m, d);
-        else if (sameWeek(d)) addRow(weekTable, m, d);
+async function init(){
+    const data=await loadCSV();
+    const today=new Date();
+    const todayTable=document.getElementById("todayTable");
+    const weekTable=document.getElementById("weekTable");
+    data.forEach(m=>{
+        const d=parseDate(m.datum);
+        if(sameDay(d,today))addRow(todayTable,m,d);
+        else if(sameWeek(d))addRow(weekTable,m,d);
     });
 }
 init();
 
 /* VÄDER */
-function getWeatherIcon(code) {
-    if (code === 0) return "☀️";
-    if ([1,2,3].includes(code)) return "🌤";
-    if ([51,53,55,61,63,65].includes(code)) return "🌧";
-    if ([71,73,75].includes(code)) return "❄️";
-    return "☁️";
+function getWeatherIcon(code){
+    if(code===0)return"☀️";
+    if([1,2,3].includes(code))return"🌤";
+    if([51,53,55,61,63,65].includes(code))return"🌧";
+    if([71,73,75].includes(code))return"❄️";
+    return"☁️";
 }
 
-async function getWeather() {
-    const url = "https://api.open-meteo.com/v1/forecast?latitude=59.428&longitude=17.950&current_weather=true";
-    const response = await fetch(url);
-    const data = await response.json();
-
-    const now = data.current_weather;
-    const temp = Math.round(now.temperature);
-    const icon = getWeatherIcon(now.weathercode);
-
+async function getWeather(){
+    const url="https://api.open-meteo.com/v1/forecast?latitude=59.428&longitude=17.950&current_weather=true";
+    const response=await fetch(url);
+    const data=await response.json();
+    const now=data.current_weather;
+    const temp=Math.round(now.temperature);
+    const icon=getWeatherIcon(now.weathercode);
     return `${icon} Sollentuna ${temp}°C`;
 }
 
-/* RSS-HÄMTNING (SVT Nyheter + Sport) – CORS-FIX */
-async function fetchRSS(url) {
-    const proxy = "https://api.codetabs.com/v1/proxy?url=";
-const response = await fetch(proxy + encodeURIComponent(url));
-
-    const text = await response.text();
-
-    const xml = new window.DOMParser().parseFromString(text, "text/xml");
-    const items = [...xml.querySelectorAll("item")].slice(0, 5);
-    return items.map(i => i.querySelector("title").textContent);
+/* RSS – AllOrigins FIX */
+async function fetchRSS(url){
+    const proxy="https://api.allorigins.win/get?url=";
+    const response=await fetch(proxy+encodeURIComponent(url));
+    const data=await response.json();
+    const xml=new window.DOMParser().parseFromString(data.contents,"text/xml");
+    const items=[...xml.querySelectorAll("item")].slice(0,5);
+    return items.map(i=>i.querySelector("title").textContent);
 }
 
-async function getNewsItems() {
-    const nyheterURL = "https://www.svt.se/nyheter/rss.xml";
-    const sportURL = "https://www.svt.se/sport/rss.xml";
-
-    const nyheter = await fetchRSS(nyheterURL);
-    const sport = await fetchRSS(sportURL);
-
-    const formattedNyheter = nyheter.map(t => `SVT Nyheter: ${t}`);
-    const formattedSport = sport.map(t => `SVT Sport: ${t}`);
-
-    return [...formattedNyheter, ...formattedSport];
+async function getNewsItems(){
+    const nyheterURL="https://www.svt.se/nyheter/rss.xml";
+    const sportURL="https://www.svt.se/sport/rss.xml";
+    const nyheter=await fetchRSS(nyheterURL);
+    const sport=await fetchRSS(sportURL);
+    const formattedNyheter=nyheter.map(t=>`SVT Nyheter: ${t}`);
+    const formattedSport=sport.map(t=>`SVT Sport: ${t}`);
+    return [...formattedNyheter,...formattedSport];
 }
 
 /* SPONSOR-SCROLL */
-async function initSponsors() {
-    const repoOwner = "SollentunaHC";
-    const repoName = "matchskarm";
-    const folderPath = "sponsors";
+async function initSponsors(){
+    const repoOwner="SollentunaHC";
+    const repoName="matchskarm";
+    const folderPath="sponsors";
+    const apiUrl=`https://api.github.com/repos/${repoOwner}/${repoName}/contents/${folderPath}`;
+    const response=await fetch(apiUrl);
+    const data=await response.json();
 
-    const apiUrl = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/${folderPath}`;
-    const response = await fetch(apiUrl);
-    const data = await response.json();
+    let items=data
+        .filter(item=>item.type==="file"&&/\.(png|jpg|jpeg|gif)$/i.test(item.name))
+        .map(item=>({type:"image",value:`https://sollentunahc.github.io/${repoName}/${folderPath}/${item.name}`}));
 
-    let items = data
-        .filter(item => item.type === "file" && /\.(png|jpg|jpeg|gif)$/i.test(item.name))
-        .map(item => ({
-            type: "image",
-            value: `https://sollentunahc.github.io/${repoName}/${folderPath}/${item.name}`
-        }));
+    const weatherText=await getWeather();
+    items.push({type:"text",value:weatherText});
 
-    const weatherText = await getWeather();
-    items.push({ type: "text", value: weatherText });
+    const newsItems=await getNewsItems();
+    newsItems.forEach(n=>items.push({type:"text",value:n}));
 
-    const newsItems = await getNewsItems();
-    newsItems.forEach(n => items.push({ type: "text", value: n }));
+    items=[...items,...items];
 
-    items = [...items, ...items];
+    const track=document.getElementById("sponsorTrack");
+    track.innerHTML="";
 
-    const track = document.getElementById("sponsorTrack");
-    track.innerHTML = "";
-
-    items.forEach(item => {
-        if (item.type === "image") {
-            const img = document.createElement("img");
-            img.src = item.value;
+    items.forEach(item=>{
+        if(item.type==="image"){
+            const img=document.createElement("img");
+            img.src=item.value;
             track.appendChild(img);
         } else {
-            const div = document.createElement("div");
-            div.textContent = item.value;
-            div.style.fontSize = "40px";
-            div.style.fontWeight = "600";
-            div.style.color = "#fff";
-            div.style.textShadow = "0 0 10px rgba(0,0,0,0.6)";
-            div.style.whiteSpace = "nowrap";
+            const div=document.createElement("div");
+            div.textContent=item.value;
+            div.style.fontSize="40px";
+            div.style.fontWeight="600";
+            div.style.color="#fff";
+            div.style.textShadow="0 0 10px rgba(0,0,0,0.6)";
+            div.style.whiteSpace="nowrap";
             track.appendChild(div);
         }
     });
 }
 
 initSponsors();
-setInterval(initSponsors, 10 * 60 * 1000);
+setInterval(initSponsors,10*60*1000);
 </script>
 
 </body>
