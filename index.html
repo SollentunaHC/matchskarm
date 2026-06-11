@@ -6,24 +6,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-/* ----------------------------- */
-/* GLOBALT + INTRO-ANIMATION     */
-/* ----------------------------- */
-
+/* GLOBALT + INTRO */
 body {
     margin: 0;
-    background-color: #0a1f45; /* MÖRKARE ARENA-BLÅ */
+    background-color: #081a3a; /* mörkare arena-blå */
     color: #ffffff;
     font-family: 'Roboto Condensed', Arial, sans-serif;
     overflow: hidden;
     animation: introFade 1.8s ease-out;
 }
-
 @keyframes introFade {
     from { opacity: 0; transform: scale(1.03); }
     to   { opacity: 1; transform: scale(1); }
 }
-
 .container {
     border: 8px solid #c8102e;
     height: 100vh;
@@ -36,31 +31,25 @@ body {
     padding-bottom: 140px;
 }
 
-/* ----------------------------- */
-/* SHC-DRAKE WATERMARK           */
-/* ----------------------------- */
-
+/* SHC-DRAKE WATERMARK */
 #watermark {
     position: absolute;
     top: 50%;
     left: 50%;
     width: 70%;
-    opacity: 0.06;
+    opacity: 0.015;          /* nedtonad */
+    filter: brightness(0.6); /* dämpad */
     transform: translate(-50%, -50%);
     animation: pulse 12s ease-in-out infinite;
     pointer-events: none;
 }
-
 @keyframes pulse {
-    0%   { opacity: 0.04; }
-    50%  { opacity: 0.09; }
-    100% { opacity: 0.04; }
+    0%   { opacity: 0.01; }
+    50%  { opacity: 0.02; }
+    100% { opacity: 0.01; }
 }
 
-/* ----------------------------- */
-/* KLOCKA                        */
-/* ----------------------------- */
-
+/* KLOCKA */
 #clock {
     position: absolute;
     top: 20px;
@@ -71,10 +60,7 @@ body {
     text-shadow: 0 0 8px rgba(255,255,255,0.4);
 }
 
-/* ----------------------------- */
-/* RUBRIKER                      */
-/* ----------------------------- */
-
+/* RUBRIKER */
 h1 {
     font-family: 'Oswald', sans-serif;
     font-size: 70px;
@@ -84,7 +70,6 @@ h1 {
     text-shadow: 0 0 18px rgba(255,255,255,0.35);
     animation: fadeIn 1.2s ease-out;
 }
-
 h2 {
     font-family: 'Oswald', sans-serif;
     font-size: 42px;
@@ -95,7 +80,6 @@ h2 {
     position: relative;
     animation: fadeIn 1.4s ease-out;
 }
-
 h2::after {
     content: "";
     position: absolute;
@@ -108,10 +92,7 @@ h2::after {
     border-radius: 2px;
 }
 
-/* ----------------------------- */
-/* TABELLER                      */
-/* ----------------------------- */
-
+/* TABELLER */
 table {
     width: 90%;
     border-collapse: collapse;
@@ -123,7 +104,6 @@ table {
     box-shadow: 0 0 25px rgba(0,0,0,0.45);
     animation: fadeIn 1.6s ease-out;
 }
-
 th {
     background: linear-gradient(180deg, #e01b2f, #b50f22);
     padding: 12px;
@@ -132,64 +112,46 @@ th {
     font-size: 22px;
     letter-spacing: 1px;
 }
-
 td {
     padding: 10px;
     text-align: center;
     border-bottom: 1px solid rgba(255,255,255,0.25);
 }
-
 tr:nth-child(even) {
     background-color: rgba(0, 60, 135, 0.85);
 }
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(15px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
 
-/* ----------------------------- */
-/* LED-LISTA (TVÅ LOGGOR)        */
-/* ----------------------------- */
-
+/* LED-LISTA – SÖMLÖS SCROLL */
 #sponsorBar {
     position: absolute;
     bottom: 0;
     left: 0;
     width: 100%;
     height: 120px;
-    background: rgba(255,255,255,0.15); /* LJUSARE BAKGRUND */
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    background: rgba(255,255,255,0.25); /* ljusare fält */
     overflow: hidden;
     border-top: 3px solid rgba(255,255,255,0.35);
     box-shadow: 0 -5px 20px rgba(0,0,0,0.4);
-    padding: 0 40px;
-}
-
-.sponsorSlot {
-    width: 45%;
-    height: 90px;
     display: flex;
-    justify-content: center;
     align-items: center;
-    overflow: hidden;
-    position: relative;
 }
-
-.sponsorImg {
-    max-height: 80px;
-    max-width: 100%;
-    position: absolute;
-    opacity: 0;
-    transform: translateX(-200px); /* STARTA FRÅN VÄNSTER */
-    transition: opacity 1s ease, transform 1.2s ease;
+#sponsorTrack {
+    display: flex;
+    gap: 80px;
+    animation: scrollSponsors 25s linear infinite;
 }
-
-.sponsorImg.visible {
-    opacity: 1;
-    transform: translateX(0);
+#sponsorTrack img {
+    height: 80px;
+    object-fit: contain;
+    filter: drop-shadow(0 0 6px rgba(0,0,0,0.4));
 }
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(15px); }
-    to   { opacity: 1; transform: translateY(0); }
+@keyframes scrollSponsors {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
 }
 </style>
 </head>
@@ -198,8 +160,7 @@ tr:nth-child(even) {
 
 <div class="container">
 
-    <!-- SHC WATERMARK -->
-    <img id="watermark" src="drake.png">
+    <img id="watermark" src="drake.png" alt="SHC-drake">
 
     <div id="clock">--:--</div>
 
@@ -233,19 +194,14 @@ tr:nth-child(even) {
         <tbody id="weekTable"></tbody>
     </table>
 
-    <!-- LED-LIST MED TVÅ LOGGOR -->
     <div id="sponsorBar">
-        <div class="sponsorSlot"><img class="sponsorImg" id="s1"></div>
-        <div class="sponsorSlot"><img class="sponsorImg" id="s2"></div>
+        <div id="sponsorTrack"></div>
     </div>
 
 </div>
 
 <script>
-/* ----------------------------- */
-/* KLOCKA                        */
-/* ----------------------------- */
-
+/* KLOCKA */
 function updateClock() {
     const now = new Date();
     const hh = now.getHours().toString().padStart(2, "0");
@@ -255,10 +211,7 @@ function updateClock() {
 setInterval(updateClock, 1000);
 updateClock();
 
-/* ----------------------------- */
-/* CSV-LOADING                   */
-/* ----------------------------- */
-
+/* CSV-LOADING */
 async function loadCSV() {
     const response = await fetch("Matcher.csv");
     const text = await response.text();
@@ -279,21 +232,20 @@ async function loadCSV() {
     }));
 }
 
-/* ----------------------------- */
-/* DATUMFORMAT + VECKODAG        */
-/* ----------------------------- */
-
+/* DATUMFORMAT + VECKODAG */
 const months = {
     "jan":"januari","feb":"februari","mar":"mars","apr":"april","maj":"maj","jun":"juni",
     "jul":"juli","aug":"augusti","sep":"september","okt":"oktober","nov":"november","dec":"december"
 };
-
-const weekdays = ["söndag","måndag","tisdag","onsdag","torsdag","freddag","lördag"];
+const weekdays = ["söndag","måndag","tisdag","onsdag","torsdag","fredag","lördag"];
 
 function formatDate(d) {
     const day = d.getDate();
     const weekday = weekdays[d.getDay()];
-    const month = months[d.toLocaleString("sv-SE",{month:"short"}).toLowerCase()];
+    const monthKey = d.toLocaleString("sv-SE", { month: "short" })
+        .replace(".", "")
+        .toLowerCase();
+    const month = months[monthKey] || "";
     return `${weekday} ${day} ${month}`;
 }
 
@@ -305,8 +257,9 @@ function parseDate(d) {
     const parts = d.split("-");
     if (parts.length === 2) {
         const day = parseInt(parts[0]);
-        const mon = months[parts[1].toLowerCase()];
-        const monthIndex = Object.values(months).indexOf(mon);
+        const monKey = parts[1].toLowerCase();
+        const monName = months[monKey];
+        const monthIndex = Object.values(months).indexOf(monName);
         const year = new Date().getFullYear();
         return new Date(year, monthIndex, day);
     }
@@ -327,7 +280,6 @@ function sameDay(a, b) {
            a.getMonth() === b.getMonth() &&
            a.getDate() === b.getDate();
 }
-
 function sameWeek(date) {
     const now = new Date();
     const weekEnd = new Date();
@@ -335,10 +287,7 @@ function sameWeek(date) {
     return date >= now && date <= weekEnd;
 }
 
-/* ----------------------------- */
-/* TABELLER                      */
-/* ----------------------------- */
-
+/* TABELLER */
 function addRow(table, m, d) {
     const tr = document.createElement("tr");
     tr.innerHTML = `
@@ -364,17 +313,10 @@ async function init() {
         else if (sameWeek(d)) addRow(weekTable, m, d);
     });
 }
-
 init();
 
-/* ----------------------------- */
-/* SPONSOR AUTO-LOADER           */
-/* ----------------------------- */
-
-let sponsors = [];
-let index = 0;
-
-async function loadSponsors() {
+/* SÖMLÖS SPONSOR-SCROLL */
+async function initSponsors() {
     const repoOwner = "SollentunaHC";
     const repoName = "matchskarm";
     const folderPath = "sponsors";
@@ -383,39 +325,21 @@ async function loadSponsors() {
     const response = await fetch(apiUrl);
     const data = await response.json();
 
-    sponsors = data
+    let sponsors = data
         .filter(item => item.type === "file" && /\.(png|jpg|jpeg|gif)$/i.test(item.name))
         .map(item => `https://sollentunahc.github.io/${repoName}/${folderPath}/${item.name}`);
 
-    sponsors = sponsors.sort(() => Math.random() - 0.5);
+    sponsors = [...sponsors, ...sponsors]; // duplicera för sömlös loop
+
+    const track = document.getElementById("sponsorTrack");
+    track.innerHTML = "";
+
+    sponsors.forEach(src => {
+        const img = document.createElement("img");
+        img.src = src;
+        track.appendChild(img);
+    });
 }
-
-function showSponsors() {
-    if (sponsors.length < 2) return;
-
-    const s1 = document.getElementById("s1");
-    const s2 = document.getElementById("s2");
-
-    s1.classList.remove("visible");
-    s2.classList.remove("visible");
-
-    setTimeout(() => {
-        s1.src = sponsors[index % sponsors.length];
-        s2.src = sponsors[(index + 1) % sponsors.length];
-
-        s1.classList.add("visible");
-        s2.classList.add("visible");
-
-        index += 2;
-    }, 300);
-}
-
-async function initSponsors() {
-    await loadSponsors();
-    showSponsors();
-    setInterval(showSponsors, 6000);
-}
-
 initSponsors();
 </script>
 
