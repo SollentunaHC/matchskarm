@@ -8,7 +8,7 @@
 <style>
     body {
         margin: 0;
-        background-color: #001a3d; /* mörkare arena-blå */
+        background-color: #001a3d;
         color: #ffffff;
         font-family: 'Roboto Condensed', Arial, sans-serif;
         overflow: hidden;
@@ -23,10 +23,9 @@
         align-items: center;
         position: relative;
         padding-top: 20px;
-        padding-bottom: 100px; /* plats för sponsorbar */
+        padding-bottom: 100px;
     }
 
-    /* KLOCKA */
     #clock {
         position: absolute;
         top: 20px;
@@ -37,7 +36,6 @@
         text-shadow: 0 0 8px rgba(255,255,255,0.4);
     }
 
-    /* RUBRIKER */
     h1 {
         font-family: 'Oswald', sans-serif;
         font-size: 70px;
@@ -71,7 +69,6 @@
         border-radius: 2px;
     }
 
-    /* TABELLER */
     table {
         width: 90%;
         border-collapse: collapse;
@@ -103,13 +100,11 @@
         background-color: rgba(0, 60, 135, 0.85);
     }
 
-    /* ANIMATIONER */
     @keyframes fadeIn {
         from { opacity: 0; transform: translateY(15px); }
         to   { opacity: 1; transform: translateY(0); }
     }
 
-    /* SPONSOR-ROTATION */
     #sponsorBar {
         position: absolute;
         bottom: 0;
@@ -177,7 +172,6 @@
 </div>
 
 <script>
-/* KLOCKA */
 function updateClock() {
     const now = new Date();
     const hh = now.getHours().toString().padStart(2, "0");
@@ -187,7 +181,6 @@ function updateClock() {
 setInterval(updateClock, 1000);
 updateClock();
 
-/* CSV-LOADING */
 async function loadCSV() {
     const response = await fetch("Matcher.csv");
     const text = await response.text();
@@ -208,7 +201,6 @@ async function loadCSV() {
     }));
 }
 
-/* DATUMTOLKNING */
 function parseDate(d) {
     d = d.trim().replace(/"/g, "");
 
@@ -278,18 +270,25 @@ async function init() {
 
 init();
 
-/* SPONSOR-ROTATION */
-const sponsors = [
-    "sponsors/sponsor1.png",
-    "sponsors/sponsor2.png",
-    "sponsors/sponsor3.png",
-    "sponsors/sponsor4.png"
-];
-
-let sponsorIndex = 0;
+/* SPONSOR AUTO-LOADER */
+let sponsors = [];
 const sponsorImg = document.getElementById("sponsorImage");
 
+async function loadSponsorList() {
+    const response = await fetch("sponsors/list.txt");
+    const text = await response.text();
+    sponsors = text
+        .split("\n")
+        .map(x => x.trim())
+        .filter(x => x.length > 0)
+        .map(x => "sponsors/" + x);
+}
+
+let sponsorIndex = 0;
+
 function rotateSponsors() {
+    if (sponsors.length === 0) return;
+
     sponsorImg.style.opacity = 0;
 
     setTimeout(() => {
@@ -301,8 +300,13 @@ function rotateSponsors() {
     }, 1000);
 }
 
-setInterval(rotateSponsors, 6000);
-rotateSponsors();
+async function initSponsors() {
+    await loadSponsorList();
+    rotateSponsors();
+    setInterval(rotateSponsors, 6000);
+}
+
+initSponsors();
 </script>
 
 </body>
