@@ -300,7 +300,46 @@ async function init() {
 }
 init();
 
-/* SÖMLÖS SPONSOR-SCROLL */
+/* VÄDERIKONER */
+function getWeatherIcon(code) {
+    if (code === 0) return "☀️";
+    if ([1,2].includes(code)) return "🌤";
+    if (code === 3) return "☁️";
+    if ([45,48].includes(code)) return "🌫";
+    if ([51,53,55].includes(code)) return "🌦";
+    if ([61,63,65].includes(code)) return "🌧";
+    if ([71,73,75].includes(code)) return "❄️";
+    if ([95,96,99].includes(code)) return "⛈";
+    return "🌡";
+}
+
+/* VÄDER + 3-TIMMARS PROGNOS */
+async function getWeather() {
+    const url = "https://api.open-meteo.com/v1/forecast?latitude=59.428&longitude=17.950&current_weather=true&hourly=temperature_2m,weathercode,windspeed_10m";
+    const response = await fetch(url);
+    const data = await response.json();
+
+    const now = data.current_weather;
+    const hourly = data.hourly;
+
+    const tempNow = Math.round(now.temperature);
+    const windNow = Math.round(now.windspeed);
+    const iconNow = getWeatherIcon(now.weathercode);
+
+    const nextHours = [];
+    const currentIndex = hourly.time.indexOf(now.time);
+
+    for (let i = 1; i <= 3; i++) {
+        const t = Math.round(hourly.temperature_2m[currentIndex + i]);
+        const w = Math.round(hourly.windspeed_10m[currentIndex + i]);
+        const ic = getWeatherIcon(hourly.weathercode[currentIndex + i]);
+        nextHours.push(`${ic} +${i}h ${t}°C`);
+    }
+
+    return `${iconNow} Sollentuna ${tempNow}°C • Vind ${windNow} m/s • ${nextHours.join(" • ")}`;
+}
+
+/* SÖMLÖS SPONSOR-SCROLL + VÄDER */
 async function initSponsors() {
     const repoOwner = "SollentunaHC";
     const repoName = "matchskarm";
@@ -310,22 +349,41 @@ async function initSponsors() {
     const response = await fetch(apiUrl);
     const data = await response.json();
 
-    let sponsors = data
+    let items = data
         .filter(item => item.type === "file" && /\.(png|jpg|jpeg|gif)$/i.test(item.name))
-        .map(item => `https://sollentunahc.github.io/${repoName}/${folderPath}/${item.name}`);
+        .map(item => ({
+            type: "image",
+            value: `https://sollentunahc.github.io/${repoName}/${folderPath}/${item.name}`
+        }));
 
-    sponsors = [...sponsors, ...sponsors];
+    const weatherText = await getWeather();
+    items.push({ type: "text", value: weatherText });
+
+    items = [...items, ...items];
 
     const track = document.getElementById("sponsorTrack");
     track.innerHTML = "";
 
-    sponsors.forEach(src => {
-        const img = document.createElement("img");
-        img.src = src;
-        track.appendChild(img);
+    items.forEach(item => {
+        if (item.type === "image") {
+            const img = document.createElement("img");
+            img.src = item.value;
+            track.appendChild(img);
+        } else {
+            const div = document.createElement("div");
+            div.textContent = item.value;
+            div.style.fontSize = "40px";
+            div.style.fontWeight = "600";
+            div.style.color = "#fff";
+            div.style.textShadow = "0 0 10px rgba(0,0,0,0.6)";
+            div.style.whiteSpace = "nowrap";
+            track.appendChild(div);
+        }
     });
 }
+
 initSponsors();
+setInterval(initSponsors, 10 * 60 * 1000);
 </script>
 
 </body>
