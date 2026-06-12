@@ -142,53 +142,94 @@ async function loadMatches(){
     const url = "https://api.allorigins.win/raw?url=" +
                 encodeURIComponent("https://adm.swehockey.se/Feeds/Club.ashx?id=518");
 
-    const xmlText=await fetch(url).then(r=>r.text());
-    const xml=new DOMParser().parseFromString(xmlText,"text/xml");
+    try{
+        const xmlText=await fetch(url).then(r=>r.text());
+        const xml=new DOMParser().parseFromString(xmlText,"text/xml");
 
-    return [...xml.querySelectorAll("Match")].map(m=>({
-        date:m.querySelector("Date").textContent,
-        time:m.querySelector("Time").textContent,
-        home:m.querySelector("HomeTeam").textContent,
-        away:m.querySelector("AwayTeam").textContent,
-        arena:m.querySelector("Arena").textContent,
-        status:m.querySelector("Status").textContent,
-        group:m.querySelector("Group").textContent
-    }));
+        const matches = [...xml.querySelectorAll("Match")].map(m=>({
+            date:m.querySelector("Date")?.textContent ?? "",
+            time:m.querySelector("Time")?.textContent ?? "",
+            home:m.querySelector("HomeTeam")?.textContent ?? "",
+            away:m.querySelector("AwayTeam")?.textContent ?? "",
+            arena:m.querySelector("Arena")?.textContent ?? "",
+            status:m.querySelector("Status")?.textContent ?? "",
+            group:m.querySelector("Group")?.textContent ?? ""
+        }));
+
+        console.log("Antal matcher i feeden:", matches.length);
+        return matches;
+    }catch(e){
+        console.error("Fel vid hämtning av SweHockey-feed:", e);
+        return [];
+    }
 }
 
 /* DATUMFORMAT */
-const weekdays=["söndag","måndag","tisdag","onsdag","torsdag","fredag","lördag"];
+const weekdays=["söndag","måndag","tisdag","onsdag","torsdag","freddag","lördag"];
 const months=["januari","februari","mars","april","maj","juni","juli","augusti","september","oktober","november","december"];
 
 function formatDate(d){
     return `${weekdays[d.getDay()]} ${d.getDate()} ${months[d.getMonth()]}`;
 }
 
+/* Robust datumtolkning */
+function parseSweDate(dateStr){
+    if(!dateStr) return null;
+    dateStr = dateStr.trim();
+
+    if(dateStr.includes("T")){
+        const [datePart] = dateStr.split("T");
+        const [y,m,d] = datePart.split("-").map(n=>parseInt(n,10));
+        return new Date(y,m-1,d);
+    }
+
+    if(dateStr.includes(" ")){
+        const [datePart] = dateStr.split(" ");
+        const [y,m,d] = datePart.split("-").map(n=>parseInt(n,10));
+        return new Date(y,m-1,d);
+    }
+
+    if(dateStr.match(/^\d{4}-\d{2}-\d{2}$/)){
+        const [y,m,d] = dateStr.split("-").map(n=>parseInt(n,10));
+        return new Date(y,m-1,d);
+    }
+
+    const d = new Date(dateStr);
+    return isNaN(d.getTime()) ? null : d;
+}
+
 /* INIT */
 async function init(){
     const data=await loadMatches();
-    const today=new Date();
+    const now=new Date();
+    const today=new Date(now.getFullYear(),now.getMonth(),now.getDate());
+
     const todayTable=document.getElementById("todayTable");
     const weekTableBody=document.getElementById("weekTableBody");
 
     let upcoming=[];
 
     data.forEach(m=>{
-        const d=new Date(m.date);
+        const d=parseSweDate(m.date);
+        if(!d) return;
 
-        if(d.toDateString()===today.toDateString()){
+        const matchDay = new Date(d.getFullYear(),d.getMonth(),d.getDate());
+        const diffDays=(matchDay - today)/(1000*60*60*24);
+
+        if(matchDay.getTime()===today.getTime()){
             addRow(todayTable,m,d);
             return;
         }
 
-        const diff=(d - today)/(1000*60*60*24);
-        if(diff>0 && diff<=3){
+        /* ⭐ 90 DAGAR ⭐ */
+        if(diffDays>0 && diffDays<=90){
             upcoming.push({m,d});
         }
     });
 
-    upcoming.sort((a,b)=>a.d - b.d);
+    console.log("Kommande matcher (90 dagar):", upcoming.length);
 
+    upcoming.sort((a,b)=>a.d - b.d);
     const limited=upcoming.slice(0,10);
 
     limited.forEach(item=>addRow(weekTableBody,item.m,item.d));
