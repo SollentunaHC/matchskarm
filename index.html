@@ -14,39 +14,32 @@ h1{font-family:'Oswald',sans-serif;font-size:100px;margin:10px 0;text-transform:
 h2{font-family:'Oswald',sans-serif;font-size:58px;margin:25px 0 5px 0;text-transform:uppercase;letter-spacing:2px}
 #noMatches{font-size:32px;margin-top:40px;opacity:0.8;text-align:center}
 
-/* TABELLER */
 table{width:90%;border-collapse:collapse;font-size:26px;background:rgba(0,47,108,0.85);margin-bottom:25px;border-radius:8px;overflow:hidden}
 th{padding:14px;border-bottom:2px solid #fff;text-transform:uppercase;font-size:22px}
 td{padding:12px;text-align:center;border-bottom:1px solid rgba(255,255,255,0.25)}
 tr:nth-child(even){background-color:rgba(0,60,135,0.85)}
 
-/* STATUSFÄRGER */
 .status-kommande{color:#00ff88;font-weight:bold}
 .status-spelad{color:#ffd700;font-weight:bold}
 .status-inställd{color:#ff4444;font-weight:bold}
 
-/* FAST RUBRIK + RULLGARDIN */
 #weekTable{width:90%;border-collapse:collapse;font-size:26px;background:rgba(0,47,108,0.85);border-radius:8px;overflow:hidden;position:relative}
 #weekTable thead{display:table;width:100%;table-layout:fixed;background:linear-gradient(180deg,#e01b2f,#b50f22);position:sticky;top:0;z-index:2}
 #weekTable tbody{display:block;height:350px;overflow:hidden;animation:scrollUp 22s linear infinite}
 #weekTable tr{display:table;width:100%;table-layout:fixed}
 #weekTable td,#weekTable th{text-align:center;padding:10px 0}
 
-@keyframes scrollUp{
-    0%{transform:translateY(0)}
-    100%{transform:translateY(-100%)}
-}
+@keyframes scrollUp{0%{transform:translateY(0)}100%{transform:translateY(-100%)}}
 
-/* SPONSORREMSA */
 #sponsorBar{position:absolute;bottom:0;left:0;width:100%;height:120px;background:rgba(255,255,255,0.55);backdrop-filter:blur(4px);overflow:hidden;border-top:3px solid rgba(255,255,255,0.65);display:flex;align-items:center}
 #sponsorTrack{display:flex;gap:80px;animation:scrollSponsors 25s linear infinite}
 #sponsorTrack img{height:80px;object-fit:contain;filter:drop-shadow(0 0 6px rgba(0,0,0,0.4))}
 @keyframes scrollSponsors{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
 </style>
 </head>
+
 <body>
 <div class="container">
-
     <img id="watermark" src="drake.png" alt="SHC-drake">
     <div id="clock">--:--</div>
 
@@ -56,13 +49,7 @@ tr:nth-child(even){background-color:rgba(0,60,135,0.85)}
     <table>
         <thead>
             <tr>
-                <th>Datum</th>
-                <th>Tid</th>
-                <th>Hemmalag</th>
-                <th>Bortalag</th>
-                <th>Hall</th>
-                <th>Status</th>
-                <th>Group</th>
+                <th>Datum</th><th>Tid</th><th>Hemmalag</th><th>Bortalag</th><th>Hall</th><th>Status</th><th>Group</th>
             </tr>
         </thead>
         <tbody id="todayTable"></tbody>
@@ -72,13 +59,7 @@ tr:nth-child(even){background-color:rgba(0,60,135,0.85)}
     <table id="weekTable">
         <thead>
             <tr>
-                <th>Datum</th>
-                <th>Tid</th>
-                <th>Hemmalag</th>
-                <th>Bortalag</th>
-                <th>Hall</th>
-                <th>Status</th>
-                <th>Group</th>
+                <th>Datum</th><th>Tid</th><th>Hemmalag</th><th>Bortalag</th><th>Hall</th><th>Status</th><th>Group</th>
             </tr>
         </thead>
         <tbody id="weekTableBody"></tbody>
@@ -86,10 +67,7 @@ tr:nth-child(even){background-color:rgba(0,60,135,0.85)}
 
     <div id="noMatches"></div>
 
-    <div id="sponsorBar">
-        <div id="sponsorTrack"></div>
-    </div>
-
+    <div id="sponsorBar"><div id="sponsorTrack"></div></div>
 </div>
 <script>
 /* KLOCKA */
@@ -101,7 +79,7 @@ function updateClock(){
 }
 setInterval(updateClock,1000);updateClock();
 
-/* SWEHOCKEY VIA DIN CLOUDFLARE-PROXY */
+/* ICS-feed via Cloudflare Worker */
 async function loadMatches(){
     const url="https://dry-shadow-d9c2.gunnar-127.workers.dev";
 
@@ -128,98 +106,105 @@ async function loadMatches(){
     }
 }
 
+/* ICS-parser */
+function parseICS(text){
+    const events=[];
+    const blocks=text.split("BEGIN:VEVENT").slice(1);
 
-/* DATUMFORMAT */
+    for(const block of blocks){
+        const end=block.indexOf("END:VEVENT");
+        const vevent=block.substring(0,end);
+
+        const get=(tag)=>{
+            const match=vevent.match(new RegExp(tag+":(.*)"));
+            return match?match[1].trim():"";
+        };
+
+        const dt=get("DTSTART");
+        const summary=get("SUMMARY");
+        const location=get("LOCATION");
+        const description=get("DESCRIPTION");
+
+        let date="",time="";
+        if(dt){
+            const year=dt.substring(0,4);
+            const month=dt.substring(4,6);
+            const day=dt.substring(6,8);
+            const hour=dt.substring(9,11);
+            const minute=dt.substring(11,13);
+
+            date=`${year}-${month}-${day}`;
+            time=`${hour}:${minute}`;
+        }
+
+        events.push({date,time,summary,location,description});
+    }
+
+    return events.sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time));
+}
+
+/* Datumformat */
 const weekdays=["söndag","måndag","tisdag","onsdag","torsdag","fredag","lördag"];
 const months=["januari","februari","mars","april","maj","juni","juli","augusti","september","oktober","november","december"];
 function formatDate(d){return `${weekdays[d.getDay()]} ${d.getDate()} ${months[d.getMonth()]}`}
 
-/* Robust datumtolkning */
-function parseSweDate(dateStr){
-    if(!dateStr)return null;
-    dateStr=dateStr.trim();
-
-    if(dateStr.includes("T")){
-        const [datePart]=dateStr.split("T");
-        const[y,m,d]=datePart.split("-").map(n=>parseInt(n,10));
-        return new Date(y,m-1,d);
-    }
-
-    if(dateStr.includes(" ")){
-        const[datePart]=dateStr.split(" ");
-        const[y,m,d]=datePart.split("-").map(n=>parseInt(n,10));
-        return new Date(y,m-1,d);
-    }
-
-    if(/^\d{4}-\d{2}-\d{2}$/.test(dateStr)){
-        const[y,m,d]=dateStr.split("-").map(n=>parseInt(n,10));
-        return new Date(y,m-1,d);
-    }
-
-    const d=new Date(dateStr);
-    return isNaN(d.getTime())?null:d;
-}
-
-/* STATUSFÄRG */
+/* Statusfärg */
 function statusClass(status){
     const s=status.toLowerCase();
     if(s.includes("inst")) return "status-inställd";
     if(s.includes("spel")) return "status-spelad";
     return "status-kommande";
 }
-
 /* INIT */
 async function init(){
-    const data=await loadMatches();
-    const now=new Date();
-    const today=new Date(now.getFullYear(),now.getMonth(),now.getDate());
+    const data = await loadMatches();
 
-    const todayTable=document.getElementById("todayTable");
-    const weekTableBody=document.getElementById("weekTableBody");
-    const noMatches=document.getElementById("noMatches");
+    const now = new Date();
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 
-    let upcoming=[];
+    const todayTable = document.getElementById("todayTable");
+    const weekTableBody = document.getElementById("weekTableBody");
+    const noMatches = document.getElementById("noMatches");
 
-    if(data.length===0){
-        console.warn("Feeden är tom – SweHockey svarade inte korrekt.");
-        noMatches.textContent="Inga matcher kunde hämtas just nu.";
+    let upcoming = [];
+
+    if(data.length === 0){
+        noMatches.textContent = "Inga matcher kunde hämtas just nu.";
         return;
     }
 
-    data.forEach(m=>{
-        const d=parseSweDate(m.date);
-        if(!d) return;
+    data.forEach(m => {
+        const d = new Date(m.date);
+        if(isNaN(d)) return;
 
-        const matchDay=new Date(d.getFullYear(),d.getMonth(),d.getDate());
-        const diffDays=(matchDay-today)/(1000*60*60*24);
+        const matchDay = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+        const diffDays = (matchDay - today) / (1000*60*60*24);
 
-        if(matchDay.getTime()===today.getTime()){
-            addRow(todayTable,m,d);
+        if(matchDay.getTime() === today.getTime()){
+            addRow(todayTable, m, d);
             return;
         }
 
-        if(diffDays>0 && diffDays<=90){
-            upcoming.push({m,d});
+        if(diffDays > 0 && diffDays <= 90){
+            upcoming.push({m, d});
         }
     });
 
-    console.log("Kommande matcher (90 dagar):", upcoming.length);
-
-    if(upcoming.length===0){
-        noMatches.textContent="Inga kommande matcher inom 90 dagar.";
+    if(upcoming.length === 0){
+        noMatches.textContent = "Inga kommande matcher inom 90 dagar.";
         return;
     }
 
-    upcoming.sort((a,b)=>a.d-b.d);
-    const limited=upcoming.slice(0,10);
+    upcoming.sort((a,b) => a.d - b.d);
+    const limited = upcoming.slice(0, 10);
 
-    limited.forEach(item=>addRow(weekTableBody,item.m,item.d));
+    limited.forEach(item => addRow(weekTableBody, item.m, item.d));
 }
 
 /* RADSKAPARE */
-function addRow(table,m,d){
-    const tr=document.createElement("tr");
-    tr.innerHTML=
+function addRow(table, m, d){
+    const tr = document.createElement("tr");
+    tr.innerHTML =
         `<td>${formatDate(d)}</td>
          <td>${m.time}</td>
          <td>${m.home}</td>
@@ -234,31 +219,32 @@ init();
 
 /* SPONSOR-SCROLL */
 async function initSponsors(){
-    const repoOwner="SollentunaHC";
-    const repoName="matchskarm";
-    const folderPath="sponsors";
-    const apiUrl=`https://api.github.com/repos/${repoOwner}/${repoName}/contents/${folderPath}`;
-    const response=await fetch(apiUrl);
-    const data=await response.json();
+    const repoOwner = "SollentunaHC";
+    const repoName = "matchskarm";
+    const folderPath = "sponsors";
 
-    let items=data
-        .filter(item=>item.type==="file"&&/\.(png|jpg|jpeg|gif)$/i.test(item.name))
-        .map(item=>({value:`https://sollentunahc.github.io/${repoName}/${folderPath}/${item.name}`}));
+    const apiUrl = `https://api.github.com/repos/${repoOwner}/${repoName}/contents/${folderPath}`;
+    const response = await fetch(apiUrl);
+    const data = await response.json();
 
-    const track=document.getElementById("sponsorTrack");
-    track.innerHTML="";
+    let items = data
+        .filter(item => item.type === "file" && /\.(png|jpg|jpeg|gif)$/i.test(item.name))
+        .map(item => ({ value: `https://sollentunahc.github.io/${repoName}/${folderPath}/${item.name}` }));
 
-    items=[...items,...items];
+    const track = document.getElementById("sponsorTrack");
+    track.innerHTML = "";
 
-    items.forEach(item=>{
-        const img=document.createElement("img");
-        img.src=item.value;
+    items = [...items, ...items];
+
+    items.forEach(item => {
+        const img = document.createElement("img");
+        img.src = item.value;
         track.appendChild(img);
     });
 }
 
 initSponsors();
-setInterval(initSponsors,10*60*1000);
+setInterval(initSponsors, 10 * 60 * 1000);
 </script>
 
 </body>
