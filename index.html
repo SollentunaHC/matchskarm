@@ -106,36 +106,28 @@ async function loadMatches(){
     const url="https://dry-shadow-d9c2.gunnar-127.workers.dev";
 
     try{
-        const xmlText=await fetch(url).then(r=>r.text());
+        const icsText = await fetch(url).then(r => r.text());
+        const events = parseICS(icsText);
 
-        // Om SweHockey svarar med HTML eller feltext
-        if(!xmlText.trim().startsWith("<")){
-            console.error("SweHockey returnerade felaktigt innehåll:", xmlText.slice(0,200));
-            document.getElementById("noMatches").textContent="SweHockey-servern svarar inte korrekt just nu.";
-            return [];
-        }
+        console.log("Antal matcher i ICS:", events.length);
 
-        const xml=new DOMParser().parseFromString(xmlText,"text/xml");
-
-        const matches=[...xml.querySelectorAll("Match")].map(m=>({
-            date:m.querySelector("Date")?.textContent??"",
-            time:m.querySelector("Time")?.textContent??"",
-            home:m.querySelector("HomeTeam")?.textContent??"",
-            away:m.querySelector("AwayTeam")?.textContent??"",
-            arena:m.querySelector("Arena")?.textContent??"",
-            status:m.querySelector("Status")?.textContent??"",
-            group:m.querySelector("Group")?.textContent??""
+        return events.map(e => ({
+            date: e.date,
+            time: e.time,
+            home: e.summary.split(" - ")[0] || "",
+            away: e.summary.split(" - ")[1] || "",
+            arena: e.location,
+            status: "Kommande",
+            group: e.description || ""
         }));
 
-        console.log("Antal matcher i feeden:", matches.length);
-        return matches;
-
     }catch(e){
-        console.error("Fel vid hämtning av SweHockey-feed:", e);
+        console.error("Fel vid hämtning av ICS-feed:", e);
         document.getElementById("noMatches").textContent="Fel vid hämtning av matcher.";
         return [];
     }
 }
+
 
 /* DATUMFORMAT */
 const weekdays=["söndag","måndag","tisdag","onsdag","torsdag","fredag","lördag"];
