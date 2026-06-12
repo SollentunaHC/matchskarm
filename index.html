@@ -117,55 +117,32 @@ function updateClock(){
 }
 setInterval(updateClock,1000);updateClock();
 
-/* CSV-LOADING */
-async function loadCSV(){
-    const response=await fetch("Matcher.csv");
-    const text=await response.text();
-    const rows=text.replace(/\r/g,"").trim().split("\n").slice(1).map(r=>r.split(";"));
-    return rows.map(r=>({datum:r[0],tid:r[1],hemma:r[2],borta:r[3],hall:r[4]}));
+/* SWEHOCKEY VIA PROXY */
+async function loadMatches(){
+    const url="https://sollentunahc.github.io/matchskarm/proxy/swehockey.js";
+    const xmlText=await fetch(url).then(r=>r.text());
+    const xml=new DOMParser().parseFromString(xmlText,"text/xml");
+
+    return [...xml.querySelectorAll("Match")].map(m=>({
+        date:m.querySelector("Date").textContent,
+        time:m.querySelector("Time").textContent,
+        home:m.querySelector("HomeTeam").textContent,
+        away:m.querySelector("AwayTeam").textContent,
+        arena:m.querySelector("Arena").textContent
+    }));
 }
 
 /* DATUMFORMAT */
-const months={"jan":"januari","feb":"februari","mar":"mars","apr":"april","maj":"maj","jun":"juni","jul":"juli","aug":"augusti","sep":"september","okt":"oktober","nov":"november","dec":"december"};
 const weekdays=["söndag","måndag","tisdag","onsdag","torsdag","fredag","lördag"];
+const months=["januari","februari","mars","april","maj","juni","juli","augusti","september","oktober","november","december"];
 
 function formatDate(d){
-    const day=d.getDate();
-    const weekday=weekdays[d.getDay()];
-    const monthKey=d.toLocaleString("sv-SE",{month:"short"}).replace(".","").substring(0,3).toLowerCase();
-    const month=months[monthKey]||"";
-    return `${weekday} ${day} ${month}`;
-}
-
-function parseDate(d){
-    d=d.trim().replace(/"/g,"");
-    if(/^\d{4}-\d{2}-\d{2}$/.test(d))return new Date(d);
-    const parts=d.split("-");
-    if(parts.length===2){
-        const day=parseInt(parts[0]);
-        const monKey=parts[1].toLowerCase();
-        const monName=months[monKey];
-        const monthIndex=Object.values(months).indexOf(monName);
-        const year=new Date().getFullYear();
-        return new Date(year,monthIndex,day);
-    }
-    const slash=d.split("/");
-    if(slash.length>=2){
-        const day=parseInt(slash[0]);
-        const month=parseInt(slash[1])-1;
-        const year=slash[2]?parseInt(slash[2]):new Date().getFullYear();
-        return new Date(year,month,day);
-    }
-    return new Date();
-}
-
-function sameDay(a,b){
-    return a.getFullYear()===b.getFullYear()&&a.getMonth()===b.getMonth()&&a.getDate()===b.getDate();
+    return `${weekdays[d.getDay()]} ${d.getDate()} ${months[d.getMonth()]}`;
 }
 
 /* INIT */
 async function init(){
-    const data=await loadCSV();
+    const data=await loadMatches();
     const today=new Date();
     const todayTable=document.getElementById("todayTable");
     const weekTableBody=document.getElementById("weekTableBody");
@@ -173,9 +150,9 @@ async function init(){
     let upcoming=[];
 
     data.forEach(m=>{
-        const d=parseDate(m.datum);
+        const d=new Date(m.date);
 
-        if(sameDay(d,today)){
+        if(d.toDateString()===today.toDateString()){
             addRow(todayTable,m,d);
             return;
         }
@@ -195,7 +172,7 @@ async function init(){
 
 function addRow(table,m,d){
     const tr=document.createElement("tr");
-    tr.innerHTML=`<td>${formatDate(d)}</td><td>${m.tid}</td><td>${m.hemma}</td><td>${m.borta}</td><td>${m.hall}</td>`;
+    tr.innerHTML=`<td>${formatDate(d)}</td><td>${m.time}</td><td>${m.home}</td><td>${m.away}</td><td>${m.arena}</td>`;
     table.appendChild(tr);
 }
 
@@ -212,7 +189,7 @@ async function initSponsors(){
 
     let items=data
         .filter(item=>item.type==="file"&&/\.(png|jpg|jpeg|gif)$/i.test(item.name))
-        .map(item=>({type:"image",value:`https://sollentunahc.github.io/${repoName}/${folderPath}/${item.name}`}));
+        .map(item=>({value:`https://sollentunahc.github.io/${repoName}/${folderPath}/${item.name}`}));
 
     const track=document.getElementById("sponsorTrack");
     track.innerHTML="";
