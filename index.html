@@ -15,7 +15,7 @@ h2{font-family:'Oswald',sans-serif;font-size:58px;margin:25px 0 5px 0;text-trans
 
 /* TABELLER */
 table{width:90%;border-collapse:collapse;font-size:26px;background:rgba(0,47,108,0.85);margin-bottom:25px;border-radius:8px;overflow:hidden}
-th{padding:14px;border-bottom:2px solid #fff;text-transform:uppercase;font-size:24px}
+th{padding:14px;border-bottom:2px solid #fff;text-transform:uppercase;font-size:22px}
 td{padding:12px;text-align:center;border-bottom:1px solid rgba(255,255,255,0.25)}
 tr:nth-child(even){background-color:rgba(0,60,135,0.85)}
 
@@ -93,13 +93,33 @@ tr:nth-child(even){background-color:rgba(0,60,135,0.85)}
 
 <h2>Dagens matcher</h2>
 <table>
-<thead><tr><th>Datum</th><th>Tid</th><th>Hemmalag</th><th>Bortalag</th><th>Hall</th></tr></thead>
+<thead>
+<tr>
+<th>Datum</th>
+<th>Tid</th>
+<th>Hemmalag</th>
+<th>Bortalag</th>
+<th>Hall</th>
+<th>Status</th>
+<th>Group</th>
+</tr>
+</thead>
 <tbody id="todayTable"></tbody>
 </table>
 
 <h2>Kommande matcher</h2>
 <table id="weekTable">
-<thead><tr><th>Datum</th><th>Tid</th><th>Hemmalag</th><th>Bortalag</th><th>Hall</th></tr></thead>
+<thead>
+<tr>
+<th>Datum</th>
+<th>Tid</th>
+<th>Hemmalag</th>
+<th>Bortalag</th>
+<th>Hall</th>
+<th>Status</th>
+<th>Group</th>
+</tr>
+</thead>
 <tbody id="weekTableBody"></tbody>
 </table>
 
@@ -128,7 +148,9 @@ async function loadMatches(){
         time:m.querySelector("Time").textContent,
         home:m.querySelector("HomeTeam").textContent,
         away:m.querySelector("AwayTeam").textContent,
-        arena:m.querySelector("Arena").textContent
+        arena:m.querySelector("Arena").textContent,
+        status:m.querySelector("Status").textContent,
+        group:m.querySelector("Group").textContent
     }));
 }
 
@@ -172,7 +194,14 @@ async function init(){
 
 function addRow(table,m,d){
     const tr=document.createElement("tr");
-    tr.innerHTML=`<td>${formatDate(d)}</td><td>${m.time}</td><td>${m.home}</td><td>${m.away}</td><td>${m.arena}</td>`;
+    tr.innerHTML=
+        `<td>${formatDate(d)}</td>
+         <td>${m.time}</td>
+         <td>${m.home}</td>
+         <td>${m.away}</td>
+         <td>${m.arena}</td>
+         <td>${m.status}</td>
+         <td>${m.group}</td>`;
     table.appendChild(tr);
 }
 
