@@ -12,6 +12,7 @@ body{margin:0;background-color:#081a3a;color:#fff;font-family:'Roboto Condensed'
 #clock{position:absolute;top:20px;right:40px;font-size:32px;opacity:0.9;font-weight:300;text-shadow:0 0 8px rgba(255,255,255,0.4)}
 h1{font-family:'Oswald',sans-serif;font-size:100px;margin:10px 0;text-transform:uppercase;letter-spacing:4px}
 h2{font-family:'Oswald',sans-serif;font-size:58px;margin:25px 0 5px 0;text-transform:uppercase;letter-spacing:2px}
+#noMatches{font-size:32px;margin-top:40px;opacity:0.8;text-align:center}
 
 /* TABELLER */
 table{width:90%;border-collapse:collapse;font-size:26px;background:rgba(0,47,108,0.85);margin-bottom:25px;border-radius:8px;overflow:hidden}
@@ -19,44 +20,17 @@ th{padding:14px;border-bottom:2px solid #fff;text-transform:uppercase;font-size:
 td{padding:12px;text-align:center;border-bottom:1px solid rgba(255,255,255,0.25)}
 tr:nth-child(even){background-color:rgba(0,60,135,0.85)}
 
+/* STATUSFÄRGER */
+.status-kommande{color:#00ff88;font-weight:bold}
+.status-spelad{color:#ffd700;font-weight:bold}
+.status-inställd{color:#ff4444;font-weight:bold}
+
 /* FAST RUBRIK + RULLGARDIN */
-#weekTable{
-    width:90%;
-    border-collapse:collapse;
-    font-size:26px;
-    background:rgba(0,47,108,0.85);
-    border-radius:8px;
-    overflow:hidden;
-    position:relative;
-}
-
-#weekTable thead{
-    display:table;
-    width:100%;
-    table-layout:fixed;
-    background:linear-gradient(180deg,#e01b2f,#b50f22);
-    position:sticky;
-    top:0;
-    z-index:2;
-}
-
-#weekTable tbody{
-    display:block;
-    height:350px;
-    overflow:hidden;
-    animation:scrollUp 22s linear infinite;
-}
-
-#weekTable tr{
-    display:table;
-    width:100%;
-    table-layout:fixed;
-}
-
-#weekTable td, #weekTable th{
-    text-align:center;
-    padding:10px 0;
-}
+#weekTable{width:90%;border-collapse:collapse;font-size:26px;background:rgba(0,47,108,0.85);border-radius:8px;overflow:hidden;position:relative}
+#weekTable thead{display:table;width:100%;table-layout:fixed;background:linear-gradient(180deg,#e01b2f,#b50f22);position:sticky;top:0;z-index:2}
+#weekTable tbody{display:block;height:350px;overflow:hidden;animation:scrollUp 22s linear infinite}
+#weekTable tr{display:table;width:100%;table-layout:fixed}
+#weekTable td,#weekTable th{text-align:center;padding:10px 0}
 
 @keyframes scrollUp{
     0%{transform:translateY(0)}
@@ -64,69 +38,59 @@ tr:nth-child(even){background-color:rgba(0,60,135,0.85)}
 }
 
 /* SPONSORREMSA */
-#sponsorBar{
-    position:absolute;
-    bottom:0;
-    left:0;
-    width:100%;
-    height:120px;
-    background:rgba(255,255,255,0.55);
-    backdrop-filter:blur(4px);
-    overflow:hidden;
-    border-top:3px solid rgba(255,255,255,0.65);
-    display:flex;
-    align-items:center;
-}
+#sponsorBar{position:absolute;bottom:0;left:0;width:100%;height:120px;background:rgba(255,255,255,0.55);backdrop-filter:blur(4px);overflow:hidden;border-top:3px solid rgba(255,255,255,0.65);display:flex;align-items:center}
 #sponsorTrack{display:flex;gap:80px;animation:scrollSponsors 25s linear infinite}
 #sponsorTrack img{height:80px;object-fit:contain;filter:drop-shadow(0 0 6px rgba(0,0,0,0.4))}
 @keyframes scrollSponsors{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
 </style>
 </head>
-
 <body>
 <div class="container">
 
-<img id="watermark" src="drake.png" alt="SHC-drake">
-<div id="clock">--:--</div>
+    <img id="watermark" src="drake.png" alt="SHC-drake">
+    <div id="clock">--:--</div>
 
-<h1>Sollentuna Hockey</h1>
+    <h1>Sollentuna Hockey</h1>
 
-<h2>Dagens matcher</h2>
-<table>
-<thead>
-<tr>
-<th>Datum</th>
-<th>Tid</th>
-<th>Hemmalag</th>
-<th>Bortalag</th>
-<th>Hall</th>
-<th>Status</th>
-<th>Group</th>
-</tr>
-</thead>
-<tbody id="todayTable"></tbody>
-</table>
+    <h2>Dagens matcher</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Datum</th>
+                <th>Tid</th>
+                <th>Hemmalag</th>
+                <th>Bortalag</th>
+                <th>Hall</th>
+                <th>Status</th>
+                <th>Group</th>
+            </tr>
+        </thead>
+        <tbody id="todayTable"></tbody>
+    </table>
 
-<h2>Kommande matcher</h2>
-<table id="weekTable">
-<thead>
-<tr>
-<th>Datum</th>
-<th>Tid</th>
-<th>Hemmalag</th>
-<th>Bortalag</th>
-<th>Hall</th>
-<th>Status</th>
-<th>Group</th>
-</tr>
-</thead>
-<tbody id="weekTableBody"></tbody>
-</table>
+    <h2>Kommande matcher</h2>
+    <table id="weekTable">
+        <thead>
+            <tr>
+                <th>Datum</th>
+                <th>Tid</th>
+                <th>Hemmalag</th>
+                <th>Bortalag</th>
+                <th>Hall</th>
+                <th>Status</th>
+                <th>Group</th>
+            </tr>
+        </thead>
+        <tbody id="weekTableBody"></tbody>
+    </table>
 
-<div id="sponsorBar"><div id="sponsorTrack"></div></div>
+    <div id="noMatches"></div>
+
+    <div id="sponsorBar">
+        <div id="sponsorTrack"></div>
+    </div>
 
 </div>
-
 <script>
 /* KLOCKA */
 function updateClock(){
@@ -139,26 +103,36 @@ setInterval(updateClock,1000);updateClock();
 
 /* SWEHOCKEY VIA DIN CLOUDFLARE-PROXY */
 async function loadMatches(){
-    const url = "https://dry-shadow-d9c2.gunnar-127.workers.dev";
+    const url="https://dry-shadow-d9c2.gunnar-127.workers.dev";
 
     try{
         const xmlText=await fetch(url).then(r=>r.text());
+
+        // Om SweHockey svarar med HTML eller feltext
+        if(!xmlText.trim().startsWith("<")){
+            console.error("SweHockey returnerade felaktigt innehåll:", xmlText.slice(0,200));
+            document.getElementById("noMatches").textContent="SweHockey-servern svarar inte korrekt just nu.";
+            return [];
+        }
+
         const xml=new DOMParser().parseFromString(xmlText,"text/xml");
 
-        const matches = [...xml.querySelectorAll("Match")].map(m=>({
-            date:m.querySelector("Date")?.textContent ?? "",
-            time:m.querySelector("Time")?.textContent ?? "",
-            home:m.querySelector("HomeTeam")?.textContent ?? "",
-            away:m.querySelector("AwayTeam")?.textContent ?? "",
-            arena:m.querySelector("Arena")?.textContent ?? "",
-            status:m.querySelector("Status")?.textContent ?? "",
-            group:m.querySelector("Group")?.textContent ?? ""
+        const matches=[...xml.querySelectorAll("Match")].map(m=>({
+            date:m.querySelector("Date")?.textContent??"",
+            time:m.querySelector("Time")?.textContent??"",
+            home:m.querySelector("HomeTeam")?.textContent??"",
+            away:m.querySelector("AwayTeam")?.textContent??"",
+            arena:m.querySelector("Arena")?.textContent??"",
+            status:m.querySelector("Status")?.textContent??"",
+            group:m.querySelector("Group")?.textContent??""
         }));
 
         console.log("Antal matcher i feeden:", matches.length);
         return matches;
+
     }catch(e){
         console.error("Fel vid hämtning av SweHockey-feed:", e);
+        document.getElementById("noMatches").textContent="Fel vid hämtning av matcher.";
         return [];
     }
 }
@@ -166,35 +140,40 @@ async function loadMatches(){
 /* DATUMFORMAT */
 const weekdays=["söndag","måndag","tisdag","onsdag","torsdag","fredag","lördag"];
 const months=["januari","februari","mars","april","maj","juni","juli","augusti","september","oktober","november","december"];
-
-function formatDate(d){
-    return `${weekdays[d.getDay()]} ${d.getDate()} ${months[d.getMonth()]}`;
-}
+function formatDate(d){return `${weekdays[d.getDay()]} ${d.getDate()} ${months[d.getMonth()]}`}
 
 /* Robust datumtolkning */
 function parseSweDate(dateStr){
-    if(!dateStr) return null;
-    dateStr = dateStr.trim();
+    if(!dateStr)return null;
+    dateStr=dateStr.trim();
 
     if(dateStr.includes("T")){
-        const [datePart] = dateStr.split("T");
-        const [y,m,d] = datePart.split("-").map(n=>parseInt(n,10));
+        const [datePart]=dateStr.split("T");
+        const[y,m,d]=datePart.split("-").map(n=>parseInt(n,10));
         return new Date(y,m-1,d);
     }
 
     if(dateStr.includes(" ")){
-        const [datePart] = dateStr.split(" ");
-        const [y,m,d] = datePart.split("-").map(n=>parseInt(n,10));
+        const[datePart]=dateStr.split(" ");
+        const[y,m,d]=datePart.split("-").map(n=>parseInt(n,10));
         return new Date(y,m-1,d);
     }
 
-    if(dateStr.match(/^\d{4}-\d{2}-\d{2}$/)){
-        const [y,m,d] = dateStr.split("-").map(n=>parseInt(n,10));
+    if(/^\d{4}-\d{2}-\d{2}$/.test(dateStr)){
+        const[y,m,d]=dateStr.split("-").map(n=>parseInt(n,10));
         return new Date(y,m-1,d);
     }
 
-    const d = new Date(dateStr);
-    return isNaN(d.getTime()) ? null : d;
+    const d=new Date(dateStr);
+    return isNaN(d.getTime())?null:d;
+}
+
+/* STATUSFÄRG */
+function statusClass(status){
+    const s=status.toLowerCase();
+    if(s.includes("inst")) return "status-inställd";
+    if(s.includes("spel")) return "status-spelad";
+    return "status-kommande";
 }
 
 /* INIT */
@@ -205,22 +184,28 @@ async function init(){
 
     const todayTable=document.getElementById("todayTable");
     const weekTableBody=document.getElementById("weekTableBody");
+    const noMatches=document.getElementById("noMatches");
 
     let upcoming=[];
+
+    if(data.length===0){
+        console.warn("Feeden är tom – SweHockey svarade inte korrekt.");
+        noMatches.textContent="Inga matcher kunde hämtas just nu.";
+        return;
+    }
 
     data.forEach(m=>{
         const d=parseSweDate(m.date);
         if(!d) return;
 
-        const matchDay = new Date(d.getFullYear(),d.getMonth(),d.getDate());
-        const diffDays=(matchDay - today)/(1000*60*60*24);
+        const matchDay=new Date(d.getFullYear(),d.getMonth(),d.getDate());
+        const diffDays=(matchDay-today)/(1000*60*60*24);
 
         if(matchDay.getTime()===today.getTime()){
             addRow(todayTable,m,d);
             return;
         }
 
-        /* ⭐ 90 DAGAR ⭐ */
         if(diffDays>0 && diffDays<=90){
             upcoming.push({m,d});
         }
@@ -228,12 +213,18 @@ async function init(){
 
     console.log("Kommande matcher (90 dagar):", upcoming.length);
 
-    upcoming.sort((a,b)=>a.d - b.d);
+    if(upcoming.length===0){
+        noMatches.textContent="Inga kommande matcher inom 90 dagar.";
+        return;
+    }
+
+    upcoming.sort((a,b)=>a.d-b.d);
     const limited=upcoming.slice(0,10);
 
     limited.forEach(item=>addRow(weekTableBody,item.m,item.d));
 }
 
+/* RADSKAPARE */
 function addRow(table,m,d){
     const tr=document.createElement("tr");
     tr.innerHTML=
@@ -242,7 +233,7 @@ function addRow(table,m,d){
          <td>${m.home}</td>
          <td>${m.away}</td>
          <td>${m.arena}</td>
-         <td>${m.status}</td>
+         <td class="${statusClass(m.status)}">${m.status}</td>
          <td>${m.group}</td>`;
     table.appendChild(tr);
 }
