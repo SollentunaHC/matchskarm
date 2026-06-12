@@ -22,6 +22,7 @@ tr:nth-child(even){background-color:rgba(0,60,135,0.85)}
 @keyframes scrollSponsors{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
 </style>
 </head>
+
 <body>
 <div class="container">
 
@@ -45,7 +46,9 @@ tr:nth-child(even){background-color:rgba(0,60,135,0.85)}
 <div id="sponsorBar"><div id="sponsorTrack"></div></div>
 
 </div>
+
 <script>
+/* KLOCKA */
 function updateClock(){
     const now=new Date();
     const hh=now.getHours().toString().padStart(2,"0");
@@ -54,6 +57,7 @@ function updateClock(){
 }
 setInterval(updateClock,1000);updateClock();
 
+/* CSV-LOADING */
 async function loadCSV(){
     const response=await fetch("Matcher.csv");
     const text=await response.text();
@@ -61,6 +65,7 @@ async function loadCSV(){
     return rows.map(r=>({datum:r[0],tid:r[1],hemma:r[2],borta:r[3],hall:r[4]}));
 }
 
+/* DATUMFORMAT */
 const months={"jan":"januari","feb":"februari","mar":"mars","apr":"april","maj":"maj","jun":"juni","jul":"juli","aug":"augusti","sep":"september","okt":"oktober","nov":"november","dec":"december"};
 const weekdays=["söndag","måndag","tisdag","onsdag","torsdag","fredag","lördag"];
 
@@ -141,25 +146,6 @@ async function getWeather(){
     const icon=getWeatherIcon(now.weathercode);
     return `${icon} Sollentuna ${temp}°C`;
 }
-/* RSS – AllOrigins FIX */
-async function fetchRSS(url){
-    const proxy="https://api.allorigins.win/get?url=";
-    const response=await fetch(proxy+encodeURIComponent(url));
-    const data=await response.json();
-    const xml=new window.DOMParser().parseFromString(data.contents,"text/xml");
-    const items=[...xml.querySelectorAll("item")].slice(0,5);
-    return items.map(i=>i.querySelector("title").textContent);
-}
-
-async function getNewsItems(){
-    const nyheterURL="https://www.svt.se/nyheter/rss.xml";
-    const sportURL="https://www.svt.se/sport/rss.xml";
-    const nyheter=await fetchRSS(nyheterURL);
-    const sport=await fetchRSS(sportURL);
-    const formattedNyheter=nyheter.map(t=>`SVT Nyheter: ${t}`);
-    const formattedSport=sport.map(t=>`SVT Sport: ${t}`);
-    return [...formattedNyheter,...formattedSport];
-}
 
 /* SPONSOR-SCROLL */
 async function initSponsors(){
@@ -176,9 +162,6 @@ async function initSponsors(){
 
     const weatherText=await getWeather();
     items.push({type:"text",value:weatherText});
-
-    const newsItems=await getNewsItems();
-    newsItems.forEach(n=>items.push({type:"text",value:n}));
 
     items=[...items,...items];
 
