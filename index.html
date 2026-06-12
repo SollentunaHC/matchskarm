@@ -137,10 +137,9 @@ function updateClock(){
 }
 setInterval(updateClock,1000);updateClock();
 
-/* SWEHOCKEY VIA ALLORIGINS */
+/* SWEHOCKEY VIA DIN CLOUDFLARE-PROXY */
 async function loadMatches(){
-    const url = "https://api.allorigins.win/raw?url=" +
-                encodeURIComponent("https://adm.swehockey.se/Feeds/Club.ashx?id=518");
+    const url = "https://dry-shadow-d9c2.gunnar-127.workers.dev";
 
     try{
         const xmlText=await fetch(url).then(r=>r.text());
@@ -165,7 +164,7 @@ async function loadMatches(){
 }
 
 /* DATUMFORMAT */
-const weekdays=["söndag","måndag","tisdag","onsdag","torsdag","freddag","lördag"];
+const weekdays=["söndag","måndag","tisdag","onsdag","torsdag","fredag","lördag"];
 const months=["januari","februari","mars","april","maj","juni","juli","augusti","september","oktober","november","december"];
 
 function formatDate(d){
