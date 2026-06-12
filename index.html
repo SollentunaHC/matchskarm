@@ -16,10 +16,40 @@ table{width:90%;border-collapse:collapse;font-size:26px;background:rgba(0,47,108
 th{background:linear-gradient(180deg,#e01b2f,#b50f22);padding:14px;border-bottom:2px solid #fff;text-transform:uppercase;font-size:24px}
 td{padding:12px;text-align:center;border-bottom:1px solid rgba(255,255,255,0.25)}
 tr:nth-child(even){background-color:rgba(0,60,135,0.85)}
-#sponsorBar{position:absolute;bottom:0;left:0;width:100%;height:120px;background:rgba(255,255,255,0.25);overflow:hidden;border-top:3px solid rgba(255,255,255,0.35);display:flex;align-items:center}
+
+/* LJUSARE SPONSORREMSA */
+#sponsorBar{
+    position:absolute;
+    bottom:0;
+    left:0;
+    width:100%;
+    height:120px;
+    background:rgba(255,255,255,0.55);
+    backdrop-filter:blur(4px);
+    overflow:hidden;
+    border-top:3px solid rgba(255,255,255,0.65);
+    display:flex;
+    align-items:center;
+}
 #sponsorTrack{display:flex;gap:80px;animation:scrollSponsors 25s linear infinite}
 #sponsorTrack img{height:80px;object-fit:contain;filter:drop-shadow(0 0 6px rgba(0,0,0,0.4))}
 @keyframes scrollSponsors{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+/* RULLGARDIN FÖR KOMMANDE MATCHER */
+#weekTable{
+    display:block;
+    height:350px;
+    overflow:hidden;
+    position:relative;
+}
+#weekTable tbody{
+    display:block;
+    animation:scrollUp 22s linear infinite;
+}
+@keyframes scrollUp{
+    0%{transform:translateY(0)}
+    100%{transform:translateY(-100%)}
+}
 </style>
 </head>
 
@@ -38,9 +68,9 @@ tr:nth-child(even){background-color:rgba(0,60,135,0.85)}
 </table>
 
 <h2>Kommande matcher</h2>
-<table>
+<table id="weekTable">
 <thead><tr><th>Datum</th><th>Tid</th><th>Hemmalag</th><th>Bortalag</th><th>Hall</th></tr></thead>
-<tbody id="weekTable"></tbody>
+<tbody id="weekTableBody"></tbody>
 </table>
 
 <div id="sponsorBar"><div id="sponsorTrack"></div></div>
@@ -102,11 +132,35 @@ function parseDate(d){
 function sameDay(a,b){
     return a.getFullYear()===b.getFullYear()&&a.getMonth()===b.getMonth()&&a.getDate()===b.getDate();
 }
-function sameWeek(date){
-    const now=new Date();
-    const weekEnd=new Date();
-    weekEnd.setDate(now.getDate()+(7-now.getDay()));
-    return date>=now&&date<=weekEnd;
+
+/* INIT */
+async function init(){
+    const data=await loadCSV();
+    const today=new Date();
+    const todayTable=document.getElementById("todayTable");
+    const weekTableBody=document.getElementById("weekTableBody");
+
+    let upcoming=[];
+
+    data.forEach(m=>{
+        const d=parseDate(m.datum);
+
+        if(sameDay(d,today)){
+            addRow(todayTable,m,d);
+            return;
+        }
+
+        const diff=(d - today)/(1000*60*60*24);
+        if(diff>0 && diff<=3){
+            upcoming.push({m,d});
+        }
+    });
+
+    upcoming.sort((a,b)=>a.d - b.d);
+
+    const limited=upcoming.slice(0,10);
+
+    limited.forEach(item=>addRow(weekTableBody,item.m,item.d));
 }
 
 function addRow(table,m,d){
@@ -115,37 +169,7 @@ function addRow(table,m,d){
     table.appendChild(tr);
 }
 
-async function init(){
-    const data=await loadCSV();
-    const today=new Date();
-    const todayTable=document.getElementById("todayTable");
-    const weekTable=document.getElementById("weekTable");
-    data.forEach(m=>{
-        const d=parseDate(m.datum);
-        if(sameDay(d,today))addRow(todayTable,m,d);
-        else if(sameWeek(d))addRow(weekTable,m,d);
-    });
-}
 init();
-
-/* VÄDER */
-function getWeatherIcon(code){
-    if(code===0)return"☀️";
-    if([1,2,3].includes(code))return"🌤";
-    if([51,53,55,61,63,65].includes(code))return"🌧";
-    if([71,73,75].includes(code))return"❄️";
-    return"☁️";
-}
-
-async function getWeather(){
-    const url="https://api.open-meteo.com/v1/forecast?latitude=59.428&longitude=17.950&current_weather=true";
-    const response=await fetch(url);
-    const data=await response.json();
-    const now=data.current_weather;
-    const temp=Math.round(now.temperature);
-    const icon=getWeatherIcon(now.weathercode);
-    return `${icon} Sollentuna ${temp}°C`;
-}
 
 /* SPONSOR-SCROLL */
 async function initSponsors(){
@@ -160,29 +184,15 @@ async function initSponsors(){
         .filter(item=>item.type==="file"&&/\.(png|jpg|jpeg|gif)$/i.test(item.name))
         .map(item=>({type:"image",value:`https://sollentunahc.github.io/${repoName}/${folderPath}/${item.name}`}));
 
-    const weatherText=await getWeather();
-    items.push({type:"text",value:weatherText});
-
-    items=[...items,...items];
-
     const track=document.getElementById("sponsorTrack");
     track.innerHTML="";
 
+    items=[...items,...items];
+
     items.forEach(item=>{
-        if(item.type==="image"){
-            const img=document.createElement("img");
-            img.src=item.value;
-            track.appendChild(img);
-        } else {
-            const div=document.createElement("div");
-            div.textContent=item.value;
-            div.style.fontSize="40px";
-            div.style.fontWeight="600";
-            div.style.color="#fff";
-            div.style.textShadow="0 0 10px rgba(0,0,0,0.6)";
-            div.style.whiteSpace="nowrap";
-            track.appendChild(div);
-        }
+        const img=document.createElement("img");
+        img.src=item.value;
+        track.appendChild(img);
     });
 }
 
