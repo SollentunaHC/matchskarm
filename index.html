@@ -137,9 +137,11 @@ function updateClock(){
 }
 setInterval(updateClock,1000);updateClock();
 
-/* SWEHOCKEY VIA PROXY */
+/* SWEHOCKEY VIA ALLORIGINS */
 async function loadMatches(){
-    const url="https://sollentunahc.github.io/matchskarm/proxy/swehockey.js";
+    const url = "https://api.allorigins.win/raw?url=" +
+                encodeURIComponent("https://adm.swehockey.se/Feeds/Club.ashx?id=518");
+
     const xmlText=await fetch(url).then(r=>r.text());
     const xml=new DOMParser().parseFromString(xmlText,"text/xml");
 
