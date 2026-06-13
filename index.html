@@ -2,7 +2,7 @@
 <html lang="sv">
 <head>
   <meta charset="UTF-8">
-  <title>Sollentuna Hockey – Arena Style 9.4 SHC</title>
+  <title>Sollentuna Hockey – Arena Style 9.5 SHC</title>
   <meta http-equiv="refresh" content="300">
   <style>
     body {
@@ -77,6 +77,19 @@
       display: flex;
       flex-direction: column;
       justify-content: flex-start;
+    }
+
+    /* Rullning för kommande matcher */
+    #upcomingBody.scrolling {
+      display: block;
+      height: 320px;
+      overflow: hidden;
+      animation: scrollUp 22s linear infinite;
+    }
+
+    @keyframes scrollUp {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(-50%); }
     }
 
     footer {
@@ -168,7 +181,6 @@
   <div class="ad-bar">
     <div class="ad-track" id="sponsorTrack"></div>
   </div>
-
 <script>
   function updateClock() {
     const now = new Date();
@@ -200,10 +212,13 @@
 
     for (let i = 1; i < lines.length; i++) {
       const cols = lines[i].split(";");
+      if (!cols[idx.Speldatum]) continue;
 
-      if (!cols[idx.Hemma] || !cols[idx.Hemma].includes("Sollentuna")) continue;
+      const cleanSerie = cols[idx.Serie].replace(/
 
-      const cleanSerie = cols[idx.Serie].replace(/\[[0-9]+\]/g, "").trim();
+\[[0-9]+\]
+
+/g, "").trim();
 
       matches.push({
         date: cols[idx.Speldatum],
@@ -221,12 +236,26 @@
     });
 
     const today = new Date().toISOString().split("T")[0];
-    const todayMatch = matches.filter(m => m.date === today);
-    const upcoming = matches.filter(m => m.date > today).slice(0, 10);
 
+    const todayMatch = matches.filter(m => m.date === today);
+
+    // Grupp efter datum
+    const grouped = {};
+    matches.forEach(m => {
+      if (!grouped[m.date]) grouped[m.date] = [];
+      grouped[m.date].push(m);
+    });
+
+    // Max 5 datum
+    const nextDates = Object.keys(grouped).filter(d => d > today).slice(0, 5);
+
+    // Platta ut matcherna
+    const upcoming = nextDates.flatMap(d => grouped[d]);
+
+    // Dagens matcher
     document.getElementById("todayMatchBody").innerHTML =
       todayMatch.length === 0
-        ? "<tr><td colspan='6'>Ingen hemmamatch idag.</td></tr>"
+        ? "<tr><td colspan='6'>Ingen match idag.</td></tr>"
         : todayMatch.map(m => `
           <tr>
             <td>${m.date}</td>
@@ -238,9 +267,10 @@
           </tr>
         `).join("");
 
+    // Kommande matcher
     document.getElementById("upcomingBody").innerHTML =
       upcoming.length === 0
-        ? "<tr><td colspan='6'>Inga kommande hemmamatcher.</td></tr>"
+        ? "<tr><td colspan='6'>Inga kommande matcher.</td></tr>"
         : upcoming.map(m => `
           <tr>
             <td>${m.date}</td>
@@ -251,6 +281,11 @@
             <td>${m.arena}</td>
           </tr>
         `).join("");
+
+    // Aktivera rullning om fler än 10 matcher
+    if (upcoming.length > 10) {
+      document.getElementById("upcomingBody").classList.add("scrolling");
+    }
 
     document.getElementById("updatedInfo").textContent =
       "Senast uppdaterad: " + new Date().toLocaleString("sv-SE");
