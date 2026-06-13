@@ -78,18 +78,20 @@
     }
 
     /* Rullande reklambanner – max 10% höjd */
-    .ad-bar {
-      width: 100%;
-      height: 10vh;
-      overflow: hidden;
-      background: #0a1733;
-      border-top: 3px solid #c62828;
-      display: flex;
-      align-items: center;
-      position: absolute;
-      bottom: 0;
-      left: 0;
-    }
+   .ad-bar {
+  width: 100%;
+  height: 10vh;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.35); /* MYCKET LJUSARE */
+  backdrop-filter: blur(6px);            /* Glas-effekt */
+  border-top: 3px solid rgba(255,255,255,0.65);
+  display: flex;
+  align-items: center;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
 
     .ad-track {
       display: flex;
