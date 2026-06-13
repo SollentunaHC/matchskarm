@@ -155,8 +155,8 @@ table.match-table {
 }
 
 /* Arena vs Annex auto-color */
-.arena-blue { color: var(--arena-blue); font-weight: 900; }
-.arena-red  { color: var(--annex-red);  font-weight: 900; }
+/.arena-blue { color: var(--arena-blue); font-weight: 900; }/
+/.arena-red  { color: var(--annex-red);  font-weight: 900; }/
 
 /* Live status tags */
 .status-tag {
@@ -322,14 +322,6 @@ function getStatus(dateStr, timeStr) {
   }
 
   return "";
-}
-
-/* ARENA COLOR */
-function arenaColor(arena) {
-  if (!arena) return "";
-  var lower = arena.toLowerCase();
-  if (lower.indexOf("annex") !== -1) return "arena-red";
-  return "arena-blue";
 }
 
 /* CYLOQ LOGO + COLOR */
