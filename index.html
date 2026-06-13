@@ -2,7 +2,7 @@
 <html lang="sv">
 <head>
   <meta charset="UTF-8">
-  <title>Sollentuna Hockey – Arena Style 9.6 SHC</title>
+  <title>Sollentuna Hockey – Arena Style 9.7 SHC</title>
   <meta http-equiv="refresh" content="300">
   <style>
     body {
@@ -213,7 +213,9 @@
 
     for (let i = 1; i < lines.length; i++) {
       const cols = lines[i].split(";");
-      if (!cols[idx.Speldatum]) continue;
+
+      // ENDAST Sollentuna som hemmalag
+      if (!cols[idx.Hemma] || !cols[idx.Hemma].includes("Sollentuna")) continue;
 
       const cleanSerie = cols[idx.Serie].replace(/
 
@@ -256,7 +258,7 @@
     // Dagens matcher
     document.getElementById("todayMatchBody").innerHTML =
       todayMatch.length === 0
-        ? "<tr><td colspan='6'>Ingen match idag.</td></tr>"
+        ? "<tr><td colspan='6'>Ingen hemmamatch idag.</td></tr>"
         : todayMatch.map(m => `
           <tr>
             <td>${m.date}</td>
@@ -271,7 +273,7 @@
     // Kommande matcher
     document.getElementById("upcomingBody").innerHTML =
       upcoming.length === 0
-        ? "<tr><td colspan='6'>Inga kommande matcher.</td></tr>"
+        ? "<tr><td colspan='6'>Inga kommande hemmamatcher.</td></tr>"
         : upcoming.map(m => `
           <tr>
             <td>${m.date}</td>
