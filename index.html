@@ -2,7 +2,7 @@
 <html lang="sv">
 <head>
   <meta charset="UTF-8">
-  <title>Sollentuna Hockey – Arena Style 9.3 SHC</title>
+  <title>Sollentuna Hockey – Arena Style 9.4 SHC</title>
   <meta http-equiv="refresh" content="300">
   <style>
     body {
@@ -13,13 +13,12 @@
       overflow: hidden;
     }
 
-    /* Klocka */
     #clock {
       position: fixed;
       top: 10px;
       left: 20px;
-      font-size: 30px;
-      font-weight: 800;
+      font-size: 32px;
+      font-weight: 900;
       color: #ffffff;
       z-index: 1000;
     }
@@ -42,7 +41,6 @@
       color: #ffffff;
     }
 
-    /* Flytta upp tabellerna */
     h2 + table {
       margin-top: -8px;
     }
@@ -88,7 +86,6 @@
       margin: 5px 40px 0;
     }
 
-    /* Sponsorbanner – 10% höjd, ljus */
     .ad-bar {
       width: 100%;
       height: 10vh;
@@ -202,13 +199,16 @@
 
     for (let i = 1; i < lines.length; i++) {
       const cols = lines[i].split(";");
+
       if (!cols[idx.Hemma] || !cols[idx.Hemma].includes("Sollentuna")) continue;
 
-      const cleanSerie = cols[idx.Serie].replace(/\s*
+      const cleanSerie = cols[idx.Serie]
+        .replace(/
 
-\[\d+\]
+\[[0-9]+\]
 
-\s*/g, "");
+/g, "")
+        .trim();
 
       matches.push({
         date: cols[idx.Speldatum],
