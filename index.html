@@ -214,11 +214,7 @@
       const cols = lines[i].split(";");
       if (!cols[idx.Speldatum]) continue;
 
-      const cleanSerie = cols[idx.Serie].replace(/
-
-\[[0-9]+\]
-
-/g, "").trim();
+      const cleanSerie = cols[idx.Serie].replace(/\[[0-9]+\]/g, "").trim();
 
       matches.push({
         date: cols[idx.Speldatum],
