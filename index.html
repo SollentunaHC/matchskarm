@@ -201,10 +201,13 @@
       const todayMatch = matches.filter(m => m.date === today);
       const upcoming = matches.filter(m => m.date > today).slice(0, 10);
 
-      document.getElementById("todayMatchBody").innerHTML =
-        todayMatch.length === 0
-          ? "<tr><td colspan='5'>Ingen hemmamatch idag.</td></tr>"
-          : todayMatch.map(row).join("");
+     if (todayMatch.length === 0) {
+  document.getElementById("todayMatchBody").innerHTML =
+    "<tr><td colspan='5'>Ingen hemmamatch idag.</td></tr>";
+} else {
+  document.getElementById("todayMatchBody").innerHTML =
+    todayMatch.map(row).join("");
+}
 
       document.getElementById("upcomingBody").innerHTML =
         upcoming.length === 0
