@@ -413,18 +413,51 @@ async function loadMatches() {
     return parseInt(p[1], 10) === todayMonth && parseInt(p[2], 10) === todayDay;
   });
 
-  /* UPCOMING MATCHES — ALSO IGNORE YEAR */
-  var upcoming = matches.filter(m => {
-    var p = m.date.split("-");
-    var mMonth = parseInt(p[1], 10);
-    var mDay = parseInt(p[2], 10);
+ /* UPCOMING MATCHES — IGNORE YEAR BUT GROUP BY DATE */
+var upcomingGrouped = {};
 
-    if (mMonth === todayMonth && mDay === todayDay) return false;
-    if (mMonth > todayMonth) return true;
-    if (mMonth === todayMonth && mDay > todayDay) return true;
+matches.forEach(function(m){
+  var parts = m.date.split("-");
+  var mMonth = parseInt(parts[1], 10);
+  var mDay = parseInt(parts[2], 10);
 
-    return false;
+  // hoppa över dagens datum
+  if (mMonth === todayMonth && mDay === todayDay) return;
+
+  // framtida datum (ignorera år)
+  if (mMonth > todayMonth || (mMonth === todayMonth && mDay > todayDay)) {
+    var key = mMonth + "-" + mDay;
+    if (!upcomingGrouped[key]) upcomingGrouped[key] = [];
+    upcomingGrouped[key].push(m);
+  }
+});
+
+var upcomingKeys = Object.keys(upcomingGrouped).slice(0, 5);
+var upcomingHTML = "";
+
+if (upcomingKeys.length === 0) {
+  upcomingHTML = "<tr><td colspan='6'>Inga kommande hemmamatcher.</td></tr>";
+} else {
+  upcomingKeys.forEach(function(key){
+    upcomingGrouped[key].forEach(function(m){
+      upcomingHTML += "<tr>" +
+        "<td>" + formatDate(m.date) + "</td>" +
+        "<td>" + m.time + " " + getStatus(m.date, m.time) + "</td>" +
+        "<td>" + m.series + "</td>" +
+        "<td>" + m.home + "</td>" +
+        "<td>" + m.away + "</td>" +
+        "<td>" + hallWithLogo(m.arena) + "</td>" +
+      "</tr>";
+    });
   });
+}
+
+document.getElementById("upcomingBody").innerHTML = upcomingHTML;
+
+if (upcomingKeys.length > 10) {
+  document.getElementById("upcomingBody").classList.add("scrolling");
+}
+);
 
   /* TODAY TABLE */
   var todayHTML = "";
