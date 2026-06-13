@@ -2,7 +2,7 @@
 <html lang="sv">
 <head>
 <meta charset="UTF-8">
-<title>Sollentuna Hockey – Arena Style 10.3 SHC</title>
+<title>Sollentuna Hockey – Arena Style 10.4 SHC</title>
 <meta http-equiv="refresh" content="300">
 
 <style>
@@ -94,10 +94,10 @@ h2 {
 table.match-table {
   width: 92%;
   border-collapse: collapse;
-  font-size: 1.5vw;
   background: rgba(0,0,0,0.15);
   border-radius: 8px;
   overflow: hidden;
+  table-layout: fixed;
 }
 
 .match-table th, .match-table td {
@@ -105,6 +105,8 @@ table.match-table {
   font-size: 1.5vw;
   font-weight: 600;
   white-space: nowrap;
+  text-align: center;
+  vertical-align: middle;
 }
 
 .match-table th {
@@ -117,6 +119,14 @@ table.match-table {
 .match-table tbody tr:nth-child(even) { background: var(--bg-row-even); }
 .match-table tbody tr:nth-child(odd)  { background: var(--bg-row-odd); }
 
+/* Column widths */
+.match-table th:nth-child(1), .match-table td:nth-child(1) { width: 12%; }
+.match-table th:nth-child(2), .match-table td:nth-child(2) { width: 10%; }
+.match-table th:nth-child(3), .match-table td:nth-child(3) { width: 26%; }
+.match-table th:nth-child(4), .match-table td:nth-child(4) { width: 20%; }
+.match-table th:nth-child(5), .match-table td:nth-child(5) { width: 20%; }
+.match-table th:nth-child(6), .match-table td:nth-child(6) { width: 12%; }
+
 /* Larger CYLOQ logo */
 .hall-logo {
   display: inline-block;
@@ -125,7 +135,7 @@ table.match-table {
   background-size: contain;
   background-repeat: no-repeat;
   vertical-align: middle;
-  margin-right: 10px;
+  margin-right: 6px;
 }
 
 .hall-cyloq {
@@ -145,7 +155,7 @@ table.match-table {
   100% { transform: translateY(-50%); }
 }
 
-/* Banner at absolute bottom */
+/* Banner fixed at bottom */
 .ad-bar {
   width: 100%;
   height: 10vh;
@@ -302,8 +312,11 @@ async function loadMatches() {
 
     var cleanSerie = "";
     try {
-      cleanSerie = cols[idx.Serie].toString().replace(/\[[0-9]+\]/g, "").trim();
-      
+      cleanSerie = cols[idx.Serie].toString().replace(/
+
+\[[0-9]+\]
+
+/g, "").trim();
     } catch (e) {
       cleanSerie = cols[idx.Serie] || "";
     }
