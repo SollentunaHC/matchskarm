@@ -130,8 +130,8 @@ table.match-table {
 /* CYLOQ logo perfectly centered */
 .hall-logo {
   display: inline-block;
-  width: 54px;
-  height: 54px;
+  width: 50px;
+  height: 50px;
   background-size: contain;
   background-repeat: no-repeat;
   vertical-align: middle;
@@ -347,7 +347,7 @@ function getStatus(dateStr, timeStr) {
   return "";
 }
 
-/* CYLOQ LOGO ONLY (no color coding) */
+/* CYLOQ LOGO ONLY */
 function hallWithLogo(arena) {
   if (!arena) return "";
 
@@ -422,9 +422,20 @@ async function loadMatches() {
     return a.date.localeCompare(b.date);
   });
 
-  var today = new Date().toISOString().split("T")[0];
+  /* TODAY MATCHES — IGNORE YEAR */
+  var now = new Date();
+  var todayMonth = now.getMonth() + 1;
+  var todayDay = now.getDate();
 
-  var todayMatch = matches.filter(function(m){ return m.date === today; });
+  var todayMatch = matches.filter(function(m){
+    var parts = m.date.split("-");
+    var mMonth = parseInt(parts[1], 10);
+    var mDay = parseInt(parts[2], 10);
+    return mMonth === todayMonth && mDay === todayDay;
+  });
+
+  /* UPCOMING MATCHES — STILL USE FULL DATE */
+  var todayISO = now.toISOString().split("T")[0];
 
   var grouped = {};
   matches.forEach(function(m){
@@ -432,14 +443,14 @@ async function loadMatches() {
     grouped[m.date].push(m);
   });
 
-  var nextDates = Object.keys(grouped).filter(function(d){ return d > today; }).slice(0, 5);
+  var nextDates = Object.keys(grouped).filter(function(d){ return d > todayISO; }).slice(0, 5);
 
   var upcoming = [];
   nextDates.forEach(function(d){
     upcoming = upcoming.concat(grouped[d]);
   });
 
-  /* TODAY */
+  /* TODAY TABLE */
   var todayHTML = "";
   if (todayMatch.length === 0) {
     todayHTML = "<tr><td colspan='6' style='color:#ffeb3b; font-weight:900;'>Ingen match idag.</td></tr>";
@@ -457,7 +468,7 @@ async function loadMatches() {
   }
   document.getElementById("todayMatchBody").innerHTML = todayHTML;
 
-  /* UPCOMING */
+  /* UPCOMING TABLE */
   var upcomingHTML = "";
   if (upcoming.length === 0) {
     upcomingHTML = "<tr><td colspan='6'>Inga kommande hemmamatcher.</td></tr>";
@@ -509,6 +520,7 @@ async function loadSponsors() {
 
 loadSponsors();
 </script>
+
 
 </body>
 </html>
