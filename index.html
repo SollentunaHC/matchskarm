@@ -2,7 +2,7 @@
 <html lang="sv">
 <head>
   <meta charset="UTF-8">
-  <title>Sollentuna Hockey – Arena Style 10.0 SHC</title>
+  <title>Sollentuna Hockey – Arena Style 10.1 SHC</title>
   <meta http-equiv="refresh" content="300">
 
   <style>
@@ -12,7 +12,6 @@
       --bg-row-odd: #14244a;
       --bg-header: #c62828;
       --text-main: #ffffff;
-      --highlight-today: #b71c1c;
     }
 
     * {
@@ -130,13 +129,6 @@
     tbody tr:nth-child(even) { background: var(--bg-row-even); }
     tbody tr:nth-child(odd)  { background: var(--bg-row-odd); }
 
-    /* Highlight dagens match */
-    .today-highlight {
-      background: var(--highlight-today) !important;
-      color: #fff !important;
-      font-weight: 900;
-    }
-
     /* Rullning för kommande matcher */
     #upcomingBody.scrolling {
       display: block;
@@ -208,7 +200,7 @@
       td { font-size: 1.8vw; }
     }
 
-    /* Om du testar på mobil – inte primärt för hallen, men funkar */
+    /* Mobiltest (inte primärt för hallen) */
     @media (max-width: 900px) {
       #clock { font-size: 4vw; }
       header { font-size: 7vw; letter-spacing: 0.2vw; }
@@ -307,8 +299,18 @@
         const cols = lines[i].split(";");
 
         // Robust hemmalagsmatchning – alla varianter av Sollentuna
-        const home = (cols[idx.Hemma] || "").toLowerCase().trim();
-        if (!home.includes("sollentuna")) continue;
+        let home = (cols[idx.Hemma] || "")
+          .toLowerCase()
+          .replace(/\u00A0/g, " ")   // non-breaking space → space
+          .replace(/\s+/g, " ")      // flera mellanslag → ett
+          .trim();
+
+        if (
+          !home.includes("sollentuna") &&
+          !home.includes("sollentuna hc") &&
+          !home.includes("sollentuna hockey") &&
+          !home.includes("shc")
+        ) continue;
 
         // Felsäker regex för serie
         let cleanSerie = "";
@@ -350,12 +352,12 @@
       // Platta ut matcherna
       const upcoming = nextDates.flatMap(d => grouped[d]);
 
-      // Dagens matcher
+      // Dagens matcher – ingen röd highlight längre
       document.getElementById("todayMatchBody").innerHTML =
         todayMatch.length === 0
           ? "<tr><td colspan='6'>Ingen hemmamatch idag.</td></tr>"
           : todayMatch.map(m => `
-            <tr class="today-highlight">
+            <tr>
               <td>${m.date}</td>
               <td>${m.time}</td>
               <td>${m.series}</td>
