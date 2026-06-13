@@ -2,7 +2,7 @@
 <html lang="sv">
 <head>
 <meta charset="UTF-8">
-<title>Sollentuna Hockey – Arena Style 10.8 SHC</title>
+<title>Sollentuna Hockey – Arena Style 10.9 SHC</title>
 <meta http-equiv="refresh" content="300">
 
 <style>
@@ -130,21 +130,21 @@ table.match-table {
 /* CYLOQ logo perfectly centered */
 .hall-logo {
   display: inline-block;
-  width: 60px;
-  height: 60px;
+  width: 50px;
+  height: 50px;
   background-size: contain;
   background-repeat: no-repeat;
   vertical-align: middle;
   margin-right: 6px;
   position: relative;
-  top: 18px; /* perfect centering for compact rows */
+  top: 8px; /* lowered for perfect centering */
 }
 
 @media (min-width: 2000px) {
   .hall-logo {
     width: 64px;
     height: 64px;
-    top: 3px; /* perfect centering on 4K */
+    top: 7px; /* perfect centering on 4K */
   }
 }
 
@@ -297,6 +297,35 @@ function updateClock() {
 setInterval(updateClock, 1000);
 updateClock();
 
+/* FORMAT DATE → "14 juni" */
+function formatDate(dateStr) {
+  if (!dateStr) return "";
+
+  var parts = dateStr.split("-");
+  if (parts.length !== 3) return dateStr;
+
+  var year = parts[0];
+  var month = parts[1];
+  var day = parts[2];
+
+  var months = {
+    "01": "januari",
+    "02": "februari",
+    "03": "mars",
+    "04": "april",
+    "05": "maj",
+    "06": "juni",
+    "07": "juli",
+    "08": "augusti",
+    "09": "september",
+    "10": "oktober",
+    "11": "november",
+    "12": "december"
+  };
+
+  return parseInt(day, 10) + " " + months[month];
+}
+
 /* LIVE STATUS */
 function getStatus(dateStr, timeStr) {
   if (!dateStr || !timeStr) return "";
@@ -417,7 +446,7 @@ async function loadMatches() {
   } else {
     todayMatch.forEach(function(m){
       todayHTML += "<tr>" +
-        "<td>" + m.date + "</td>" +
+        "<td>" + formatDate(m.date) + "</td>" +
         "<td>" + m.time + " " + getStatus(m.date, m.time) + "</td>" +
         "<td>" + m.series + "</td>" +
         "<td>" + m.home + "</td>" +
@@ -435,7 +464,7 @@ async function loadMatches() {
   } else {
     upcoming.forEach(function(m){
       upcomingHTML += "<tr>" +
-        "<td>" + m.date + "</td>" +
+        "<td>" + formatDate(m.date) + "</td>" +
         "<td>" + m.time + " " + getStatus(m.date, m.time) + "</td>" +
         "<td>" + m.series + "</td>" +
         "<td>" + m.home + "</td>" +
