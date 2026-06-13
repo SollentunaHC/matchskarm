@@ -370,7 +370,7 @@
       // Kommande matcher
       document.getElementById("upcomingBody").innerHTML =
         upcoming.length === 0
-          ? "<tr><td colspan='6'>Inga kommande hemmamatcher.</td></tr>"
+          ? ? "<tr><td colspan='6' style='color:#ffeb3b; font-weight:900;'>Ingen match idag.</td></tr>"
           : upcoming.map(m => `
             <tr>
               <td>${m.date}</td>
