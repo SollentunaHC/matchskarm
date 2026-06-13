@@ -203,12 +203,8 @@
 
       if (!cols[idx.Hemma] || !cols[idx.Hemma].includes("Sollentuna")) continue;
 
-      const cleanSerie = cols[idx.Serie]
-        .replace(/
+      const cleanSerie = cols[idx.Serie].replace(/\[[0-9]+\]/g, "").trim();
 
-\[[0-9]+\]
-
-/g, "")
         .trim();
 
       matches.push({
