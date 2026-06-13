@@ -168,6 +168,7 @@
   <div class="ad-bar">
     <div class="ad-track" id="sponsorTrack"></div>
   </div>
+
 <script>
   function updateClock() {
     const now = new Date();
@@ -202,10 +203,13 @@
 
       if (!cols[idx.Hemma] || !cols[idx.Hemma].includes("Sollentuna")) continue;
 
-     const cleanSerie = cols[idx.Serie].replace(/
-\[[0-9]+\]
-/g, "").trim();
+      const cleanSerie = cols[idx.Serie]
+        .replace(/
 
+\[[0-9]+\]
+
+/g, "")
+        .trim();
 
       matches.push({
         date: cols[idx.Speldatum],
