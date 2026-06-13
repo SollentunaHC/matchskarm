@@ -85,6 +85,15 @@ async function loadMatches() {
 
   try {
     const xmlText = await fetch(url).then(r => r.text());
+
+    // 🟨 Om Workern returnerar felmeddelande
+    if (xmlText.includes("<error>")) {
+      document.getElementById("noMatches").textContent =
+        "SweHockey svarar inte just nu – försök igen om en stund.";
+      console.warn("Worker returnerade felmeddelande.");
+      return [];
+    }
+
     const parser = new DOMParser();
     const xmlDoc = parser.parseFromString(xmlText, "application/xml");
 
@@ -98,16 +107,23 @@ async function loadMatches() {
       group: m.getElementsByTagName("Group")[0]?.textContent || ""
     }));
 
-    // ⭐ Endast matcher där Sollentuna är hemmalag
-   return matches;
+    // ⭐ Visa både hemma och borta för Sollentuna
+    const filtered = matches.filter(m =>
+      m.home.toLowerCase().includes("sollentuna") ||
+      m.away.toLowerCase().includes("sollentuna")
+    );
 
+    console.log("Antal Sollentuna-matcher:", filtered.length);
+    return filtered;
 
   } catch (e) {
     console.error("Fel vid hämtning av XML-feed:", e);
-    document.getElementById("noMatches").textContent = "Fel vid hämtning av matcher.";
+    document.getElementById("noMatches").textContent =
+      "Fel vid hämtning av matcher – kontrollera anslutningen.";
     return [];
   }
 }
+
 
 /* Datumformat */
 const weekdays=["söndag","måndag","tisdag","onsdag","torsdag","fredag","lördag"];
