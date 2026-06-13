@@ -2,7 +2,7 @@
 <html lang="sv">
 <head>
   <meta charset="UTF-8">
-  <title>Sollentuna Hockey – Arena Style 9.5 SHC</title>
+  <title>Sollentuna Hockey – Arena Style 9.6 SHC</title>
   <meta http-equiv="refresh" content="300">
   <style>
     body {
@@ -181,6 +181,7 @@
   <div class="ad-bar">
     <div class="ad-track" id="sponsorTrack"></div>
   </div>
+
 <script>
   function updateClock() {
     const now = new Date();
@@ -214,7 +215,11 @@
       const cols = lines[i].split(";");
       if (!cols[idx.Speldatum]) continue;
 
-      const cleanSerie = cols[idx.Serie].replace(/\[[0-9]+\]/g, "").trim();
+      const cleanSerie = cols[idx.Serie].replace(/
+
+\[[0-9]+\]
+
+/g, "").trim();
 
       matches.push({
         date: cols[idx.Speldatum],
