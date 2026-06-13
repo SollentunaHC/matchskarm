@@ -11,6 +11,18 @@
       background: #0b1a3a;
       color: #fff;
     }
+
+    /* Klocka */
+    #clock {
+      position: fixed;
+      top: 10px;
+      left: 20px;
+      font-size: 24px;
+      font-weight: 600;
+      color: #ffffff;
+      z-index: 1000;
+    }
+
     header {
       text-align: center;
       padding: 30px 0 10px;
@@ -19,6 +31,7 @@
       letter-spacing: 2px;
       color: #ffffff;
     }
+
     h2 {
       text-align: center;
       font-size: 28px;
@@ -26,12 +39,14 @@
       margin: 20px 0 10px;
       color: #ffffff;
     }
+
     table {
       width: 90%;
       margin: auto;
       border-collapse: collapse;
       font-size: 20px;
     }
+
     th {
       background: #c62828;
       color: #fff;
@@ -39,31 +54,61 @@
       text-align: left;
       font-weight: 700;
     }
+
     td {
       padding: 10px;
       border-bottom: 1px solid rgba(255,255,255,0.1);
     }
-    tr:nth-child(even) {
-      background: #1e2f5c;
-    }
-    tr:nth-child(odd) {
-      background: #14244a;
-    }
+
+    tr:nth-child(even) { background: #1e2f5c; }
+    tr:nth-child(odd)  { background: #14244a; }
+
     .scroll-box {
       max-height: 420px;
       overflow-y: auto;
       margin-bottom: 40px;
       border: 1px solid rgba(255,255,255,0.1);
     }
+
     footer {
       text-align: right;
       font-size: 12px;
       opacity: 0.7;
       margin: 10px 40px 20px;
     }
+
+    /* Rullande reklambanner – Version 4.0 style */
+    .ad-bar {
+      width: 100%;
+      overflow: hidden;
+      background: #0a1733;
+      border-top: 3px solid #c62828;
+      padding: 15px 0;
+      position: relative;
+    }
+
+    .ad-track {
+      display: flex;
+      gap: 60px;
+      white-space: nowrap;
+      animation: scrollAds 35s linear infinite;
+    }
+
+    .ad-track img {
+      height: 70px;
+      object-fit: contain;
+      filter: drop-shadow(0 0 4px rgba(0,0,0,0.5));
+    }
+
+    @keyframes scrollAds {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
   </style>
 </head>
 <body>
+
+  <div id="clock"></div>
 
   <header>SOLLENTUNA HOCKEY</header>
 
@@ -95,7 +140,33 @@
 
   <footer id="updatedInfo"></footer>
 
+  <!-- RULLANDE REKLAMBANNER – VERSION 4.0 STYLE -->
+  <div class="ad-bar">
+    <div class="ad-track">
+      <img src="https://via.placeholder.com/250x70?text=Sponsor+1" alt="">
+      <img src="https://via.placeholder.com/250x70?text=Sponsor+2" alt="">
+      <img src="https://via.placeholder.com/250x70?text=Sponsor+3" alt="">
+      <img src="https://via.placeholder.com/250x70?text=Sponsor+4" alt="">
+      <img src="https://via.placeholder.com/250x70?text=Sponsor+5" alt="">
+
+      <!-- Loop-kopia -->
+      <img src="https://via.placeholder.com/250x70?text=Sponsor+1" alt="">
+      <img src="https://via.placeholder.com/250x70?text=Sponsor+2" alt="">
+      <img src="https://via.placeholder.com/250x70?text=Sponsor+3" alt="">
+      <img src="https://via.placeholder.com/250x70?text=Sponsor+4" alt="">
+      <img src="https://via.placeholder.com/250x70?text=Sponsor+5" alt="">
+    </div>
+  </div>
+
   <script>
+    function updateClock() {
+      const now = new Date();
+      document.getElementById("clock").textContent =
+        now.toLocaleTimeString("sv-SE", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
     async function loadMatches() {
       const url = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/Spelschema_2627.csv";
 
@@ -117,6 +188,7 @@
 
       for (let i = 1; i < lines.length; i++) {
         const cols = lines[i].split(";");
+
         if (!cols[idx.Hemma] || !cols[idx.Hemma].includes("Sollentuna")) continue;
 
         matches.push({
@@ -134,16 +206,15 @@
       const todayMatch = matches.filter(m => m.date === today);
       const upcoming = matches.filter(m => m.date > today).slice(0, 10);
 
-      const todayBody = document.getElementById("todayMatchBody");
-      const upcomingBody = document.getElementById("upcomingBody");
+      document.getElementById("todayMatchBody").innerHTML =
+        todayMatch.length === 0
+          ? "<tr><td colspan='5'>Ingen hemmamatch idag.</td></tr>"
+          : todayMatch.map(row).join("");
 
-      todayBody.innerHTML = todayMatch.length === 0
-        ? "<tr><td colspan='5'>Ingen hemmamatch idag.</td></tr>"
-        : todayMatch.map(m => row(m)).join("");
-
-      upcomingBody.innerHTML = upcoming.length === 0
-        ? "<tr><td colspan='5'>Inga kommande hemmamatcher.</td></tr>"
-        : upcoming.map(m => row(m)).join("");
+      document.getElementById("upcomingBody").innerHTML =
+        upcoming.length === 0
+          ? "<tr><td colspan='5'>Inga kommande hemmamatcher.</td></tr>"
+          : upcoming.map(row).join("");
 
       document.getElementById("updatedInfo").textContent =
         "Senast uppdaterad: " + new Date().toLocaleString("sv-SE");
