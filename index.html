@@ -2,7 +2,7 @@
 <html lang="sv">
 <head>
 <meta charset="UTF-8">
-<title>Sollentuna Hockey – Arena Style 10.4 SHC</title>
+<title>Sollentuna Hockey – Arena Style 10.6 SHC</title>
 <meta http-equiv="refresh" content="300">
 
 <style>
@@ -13,6 +13,8 @@
   --bg-header: #c62828;
   --text-main: #ffffff;
   --yellow: #ffeb3b;
+  --arena-blue: #1e88e5;
+  --annex-red: #e53935;
 }
 
 * { box-sizing: border-box; }
@@ -127,22 +129,52 @@ table.match-table {
 .match-table th:nth-child(5), .match-table td:nth-child(5) { width: 20%; }
 .match-table th:nth-child(6), .match-table td:nth-child(6) { width: 12%; }
 
-/* Larger CYLOQ logo */
+/* CYLOQ logo centered vertically */
 .hall-logo {
   display: inline-block;
   width: 48px;
   height: 48px;
   background-size: contain;
   background-repeat: no-repeat;
-  vertical-align: middle;   /* viktig */
+  vertical-align: middle;
   margin-right: 6px;
   position: relative;
-  top: 4px;                 /* flyttar ned loggan lite */
+  top: 6px;
 }
 
+@media (min-width: 2000px) {
+  .hall-logo {
+    width: 64px;
+    height: 64px;
+    top: 8px;
+  }
+}
 
 .hall-cyloq {
   background-image: url('https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/sponsors/Cyloq.png');
+}
+
+/* Arena vs Annex auto-color */
+.arena-blue { color: var(--arena-blue); font-weight: 900; }
+.arena-red  { color: var(--annex-red);  font-weight: 900; }
+
+/* Live status tags */
+.status-tag {
+  font-weight: 900;
+  padding: 2px 8px;
+  border-radius: 6px;
+  margin-left: 6px;
+  font-size: 1.2vw;
+}
+
+.status-soon {
+  background: #ffeb3b;
+  color: #000000;
+}
+
+.status-live {
+  background: #4caf50;
+  color: #ffffff;
 }
 
 /* Scrolling upcoming matches */
@@ -266,16 +298,50 @@ function updateClock() {
 setInterval(updateClock, 1000);
 updateClock();
 
+/* LIVE STATUS */
+function getStatus(dateStr, timeStr) {
+  if (!dateStr || !timeStr) return "";
+
+  var now = new Date();
+  var start = new Date(dateStr + "T" + timeStr);
+
+  var diffMinutes = (start - now) / 60000;
+  var diffSinceStart = (now - start) / 60000;
+
+  if (diffMinutes > 0 && diffMinutes <= 60) {
+    return "<span class='status-tag status-soon'>SNART</span>";
+  }
+
+  if (diffSinceStart >= 0 && diffSinceStart <= 120) {
+    return "<span class='status-tag status-live'>PAGAR</span>";
+  }
+
+  return "";
+}
+
+/* ARENA COLOR */
+function arenaColor(arena) {
+  if (!arena) return "";
+  var lower = arena.toLowerCase();
+  if (lower.indexOf("annex") !== -1) return "arena-red";
+  return "arena-blue";
+}
+
+/* CYLOQ LOGO */
 function hallWithLogo(arena) {
   if (!arena) return "";
   var lower = arena.toLowerCase();
+  var colorClass = arenaColor(arena);
+
   if (lower.indexOf("cyloq") === 0) {
     var suffix = arena.replace(/cyloq\s*/i, "");
-    return "<span class='hall-logo hall-cyloq'></span>" + suffix.trim();
+    return "<span class='hall-logo hall-cyloq'></span><span class='" + colorClass + "'>" + suffix.trim() + "</span>";
   }
-  return arena;
+
+  return "<span class='" + colorClass + "'>" + arena + "</span>";
 }
 
+/* LOAD MATCHES */
 async function loadMatches() {
   var url = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/Spelschema_2627.csv";
 
@@ -353,6 +419,7 @@ async function loadMatches() {
     upcoming = upcoming.concat(grouped[d]);
   });
 
+  /* TODAY */
   var todayHTML = "";
   if (todayMatch.length === 0) {
     todayHTML = "<tr><td colspan='6' style='color:#ffeb3b; font-weight:900;'>Ingen match idag.</td></tr>";
@@ -360,7 +427,7 @@ async function loadMatches() {
     todayMatch.forEach(function(m){
       todayHTML += "<tr>" +
         "<td>" + m.date + "</td>" +
-        "<td>" + m.time + "</td>" +
+        "<td>" + m.time + " " + getStatus(m.date, m.time) + "</td>" +
         "<td>" + m.series + "</td>" +
         "<td>" + m.home + "</td>" +
         "<td>" + m.away + "</td>" +
@@ -370,6 +437,7 @@ async function loadMatches() {
   }
   document.getElementById("todayMatchBody").innerHTML = todayHTML;
 
+  /* UPCOMING */
   var upcomingHTML = "";
   if (upcoming.length === 0) {
     upcomingHTML = "<tr><td colspan='6'>Inga kommande hemmamatcher.</td></tr>";
@@ -377,7 +445,7 @@ async function loadMatches() {
     upcoming.forEach(function(m){
       upcomingHTML += "<tr>" +
         "<td>" + m.date + "</td>" +
-        "<td>" + m.time + "</td>" +
+        "<td>" + m.time + " " + getStatus(m.date, m.time) + "</td>" +
         "<td>" + m.series + "</td>" +
         "<td>" + m.home + "</td>" +
         "<td>" + m.away + "</td>" +
@@ -397,6 +465,7 @@ async function loadMatches() {
 
 loadMatches();
 
+/* SPONSORS */
 async function loadSponsors() {
   var apiUrl = "https://api.github.com/repos/SollentunaHC/matchskarm/contents/sponsors";
 
