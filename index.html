@@ -2,7 +2,7 @@
 <html lang="sv">
 <head>
   <meta charset="UTF-8">
-  <title>Sollentuna Hockey – Arena Style 9.2</title>
+  <title>Sollentuna Hockey – Arena Style 9.3</title>
   <meta http-equiv="refresh" content="300">
   <style>
     body {
@@ -18,15 +18,15 @@
       position: fixed;
       top: 10px;
       left: 20px;
-      font-size: 24px;
-      font-weight: 600;
+      font-size: 26px;
+      font-weight: 700;
       color: #ffffff;
       z-index: 1000;
     }
 
     header {
       text-align: center;
-      padding: 30px 0 10px;
+      padding: 20px 0 5px;
       font-size: 52px;
       font-weight: 800;
       letter-spacing: 2px;
@@ -35,12 +35,44 @@
 
     h2 {
       text-align: center;
-      font-size: 28px;
+      font-size: 30px;
       font-weight: 700;
       margin: 10px 0;
       color: #ffffff;
     }
 
+    /* --- Dagens matcher: stora matchkort --- */
+    .today-container {
+      width: 90%;
+      margin: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .match-card {
+      background: linear-gradient(135deg, #1f3d7a, #14244a);
+      padding: 20px;
+      border-radius: 12px;
+      border: 2px solid rgba(255,255,255,0.25);
+      box-shadow: 0 0 12px rgba(0,0,0,0.4);
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      font-size: 26px;
+      font-weight: 600;
+    }
+
+    .match-card div {
+      padding: 5px 10px;
+    }
+
+    .series-tag {
+      font-size: 22px;
+      font-weight: 700;
+      color: #ffeb3b;
+    }
+
+    /* --- Kommande matcher tabell --- */
     table {
       width: 90%;
       margin: auto;
@@ -64,19 +96,13 @@
     tr:nth-child(even) { background: #1e2f5c; }
     tr:nth-child(odd)  { background: #14244a; }
 
-    /* Större rader för dagens matcher */
-    .today-highlight td {
-      font-size: 26px;
-      padding: 16px;
-      font-weight: 600;
-      background: #1f3d7a;
-      border-bottom: 2px solid rgba(255,255,255,0.25);
-    }
-
-    /* Kommande matcher – ingen scrollbar */
-    .upcoming-box {
-      height: 35vh;
+    /* --- Layout: 90% matchinfo, 10% banner --- */
+    .content-area {
+      height: 90vh;
       overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
     }
 
     footer {
@@ -86,7 +112,7 @@
       margin: 10px 40px 20px;
     }
 
-    /* Rullande reklambanner – max 10% höjd, ljus bakgrund */
+    /* --- Sponsorbanner --- */
     .ad-bar {
       width: 100%;
       height: 10vh;
@@ -126,25 +152,14 @@
 
   <header>SOLLENTUNA HOCKEY</header>
 
-  <h2>DAGENS MATCHER</h2>
-  <table>
-    <thead>
-      <tr>
-        <th>DATUM</th>
-        <th>TID</th>
-        <th>SERIE</th>
-        <th>HEMMALAG</th>
-        <th>BORTALAG</th>
-        <th>HALL</th>
-      </tr>
-    </thead>
-    <tbody id="todayMatchBody">
-      <tr><td colspan="6">Laddar…</td></tr>
-    </tbody>
-  </table>
+  <div class="content-area">
 
-  <h2>KOMMANDE MATCHER</h2>
-  <div class="upcoming-box">
+    <h2>DAGENS MATCHER</h2>
+    <div class="today-container" id="todayMatchCards">
+      <div style="text-align:center;">Laddar…</div>
+    </div>
+
+    <h2>KOMMANDE MATCHER</h2>
     <table>
       <thead>
         <tr>
@@ -160,11 +175,12 @@
         <tr><td colspan="6">Laddar…</td></tr>
       </tbody>
     </table>
+
   </div>
 
   <footer id="updatedInfo"></footer>
 
-  <!-- RULLANDE SPONSORBANNER -->
+  <!-- Sponsorbanner -->
   <div class="ad-bar">
     <div class="ad-track" id="sponsorTrack"></div>
   </div>
@@ -225,30 +241,41 @@
 
       const upcoming = matches.filter(m => m.date > today).slice(0, 10);
 
-      document.getElementById("todayMatchBody").innerHTML =
-        todayMatch.length === 0
-          ? "<tr><td colspan='6'>Ingen hemmamatch idag.</td></tr>"
-          : todayMatch.map(m => row(m, true)).join("");
+      /* --- Dagens matchkort --- */
+      const todayContainer = document.getElementById("todayMatchCards");
 
+      if (todayMatch.length === 0) {
+        todayContainer.innerHTML = "<div style='text-align:center;'>Ingen hemmamatch idag.</div>";
+      } else {
+        todayContainer.innerHTML = todayMatch.map(m => `
+          <div class="match-card">
+            <div>${m.date}</div>
+            <div>${m.time}</div>
+            <div class="series-tag">${m.series}</div>
+            <div>${m.home}</div>
+            <div>${m.away}</div>
+            <div>${m.arena}</div>
+          </div>
+        `).join("");
+      }
+
+      /* --- Kommande matcher --- */
       document.getElementById("upcomingBody").innerHTML =
         upcoming.length === 0
           ? "<tr><td colspan='6'>Inga kommande hemmamatcher.</td></tr>"
-          : upcoming.map(m => row(m, false)).join("");
+          : upcoming.map(m => `
+            <tr>
+              <td>${m.date}</td>
+              <td>${m.time}</td>
+              <td>${m.series}</td>
+              <td>${m.home}</td>
+              <td>${m.away}</td>
+              <td>${m.arena}</td>
+            </tr>
+          `).join("");
 
       document.getElementById("updatedInfo").textContent =
         "Senast uppdaterad: " + new Date().toLocaleString("sv-SE");
-    }
-
-    function row(m, highlight = false) {
-      return `
-        <tr class="${highlight ? 'today-highlight' : ''}">
-          <td>${m.date}</td>
-          <td>${m.time}</td>
-          <td>${m.series}</td>
-          <td>${m.home}</td>
-          <td>${m.away}</td>
-          <td>${m.arena}</td>
-        </tr>`;
     }
 
     loadMatches();
