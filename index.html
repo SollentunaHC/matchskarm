@@ -2,7 +2,7 @@
 <html lang="sv">
 <head>
   <meta charset="UTF-8">
-  <title>Sollentuna Hockey – Arena Style 10.1 SHC</title>
+  <title>Sollentuna Hockey – Arena Style 10.2 SHC</title>
   <meta http-equiv="refresh" content="300">
 
   <style>
@@ -12,11 +12,10 @@
       --bg-row-odd: #14244a;
       --bg-header: #c62828;
       --text-main: #ffffff;
+      --yellow: #ffeb3b;
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
@@ -102,12 +101,6 @@
       overflow: hidden;
     }
 
-    thead {
-      position: sticky;
-      top: 0;
-      z-index: 5;
-    }
-
     th {
       background: var(--bg-header);
       color: #fff;
@@ -128,6 +121,21 @@
 
     tbody tr:nth-child(even) { background: var(--bg-row-even); }
     tbody tr:nth-child(odd)  { background: var(--bg-row-odd); }
+
+    /* CYLOQ logga */
+    .hall-logo {
+      display: inline-block;
+      width: 32px;
+      height: 32px;
+      background-size: contain;
+      background-repeat: no-repeat;
+      vertical-align: middle;
+      margin-right: 8px;
+    }
+
+    .hall-cyloq {
+      background-image: url('https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/sponsors/Cyloq.png');
+    }
 
     /* Rullning för kommande matcher */
     #upcomingBody.scrolling {
@@ -182,32 +190,6 @@
     @keyframes scrollAds {
       0%   { transform: translateX(0); }
       100% { transform: translateX(-50%); }
-    }
-
-    /* TV / stora skärmar (4K, ultrawide) */
-    @media (min-width: 2000px) {
-      header { font-size: 4vw; }
-      h2 { font-size: 2.2vw; }
-      th { font-size: 1.7vw; }
-      td { font-size: 1.4vw; }
-    }
-
-    /* Mindre laptops / mindre skärmar */
-    @media (max-width: 1400px) {
-      header { font-size: 5.4vw; }
-      h2 { font-size: 3vw; }
-      th { font-size: 2.1vw; }
-      td { font-size: 1.8vw; }
-    }
-
-    /* Mobiltest (inte primärt för hallen) */
-    @media (max-width: 900px) {
-      #clock { font-size: 4vw; }
-      header { font-size: 7vw; letter-spacing: 0.2vw; }
-      h2 { font-size: 4.2vw; }
-      table { font-size: 3vw; }
-      th { font-size: 3.4vw; }
-      td { font-size: 3vw; }
     }
   </style>
 </head>
@@ -275,6 +257,16 @@
     setInterval(updateClock, 1000);
     updateClock();
 
+    /* CYLOQ logga + suffix */
+    function hallWithLogo(arena) {
+      if (!arena) return "";
+      if (arena.toLowerCase().startsWith("cyloq")) {
+        const suffix = arena.replace(/cyloq\s*/i, "");
+        return `<span class="hall-logo hall-cyloq"></span>${suffix.trim()}`;
+      }
+      return arena;
+    }
+
     async function loadMatches() {
       const url = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/Spelschema_2627.csv";
 
@@ -298,11 +290,10 @@
       for (let i = 1; i < lines.length; i++) {
         const cols = lines[i].split(";");
 
-        // Robust hemmalagsmatchning – alla varianter av Sollentuna
         let home = (cols[idx.Hemma] || "")
           .toLowerCase()
-          .replace(/\u00A0/g, " ")   // non-breaking space → space
-          .replace(/\s+/g, " ")      // flera mellanslag → ett
+          .replace(/\u00A0/g, " ")
+          .replace(/\s+/g, " ")
           .trim();
 
         if (
@@ -312,7 +303,6 @@
           !home.includes("shc")
         ) continue;
 
-        // Felsäker regex för serie
         let cleanSerie = "";
         try {
           cleanSerie = cols[idx.Serie].toString().replace(/\[[0-9]+\]/g, "").trim();
@@ -339,23 +329,20 @@
 
       const todayMatch = matches.filter(m => m.date === today);
 
-      // Grupp efter datum
       const grouped = {};
       matches.forEach(m => {
         if (!grouped[m.date]) grouped[m.date] = [];
         grouped[m.date].push(m);
       });
 
-      // Max 5 datum framåt
       const nextDates = Object.keys(grouped).filter(d => d > today).slice(0, 5);
 
-      // Platta ut matcherna
       const upcoming = nextDates.flatMap(d => grouped[d]);
 
-      // Dagens matcher – ingen röd highlight längre
+      /* Dagens matcher – gul text vid ingen match */
       document.getElementById("todayMatchBody").innerHTML =
         todayMatch.length === 0
-          ? "<tr><td colspan='6'>Ingen hemmamatch idag.</td></tr>"
+          ? "<tr><td colspan='6' style='color:#ffeb3b; font-weight:900;'>Ingen match idag.</td></tr>"
           : todayMatch.map(m => `
             <tr>
               <td>${m.date}</td>
@@ -363,14 +350,14 @@
               <td>${m.series}</td>
               <td>${m.home}</td>
               <td>${m.away}</td>
-              <td>${m.arena}</td>
+              <td>${hallWithLogo(m.arena)}</td>
             </tr>
           `).join("");
 
-      // Kommande matcher
+      /* Kommande matcher */
       document.getElementById("upcomingBody").innerHTML =
         upcoming.length === 0
-          ? ? "<tr><td colspan='6' style='color:#ffeb3b; font-weight:900;'>Ingen match idag.</td></tr>"
+          ? "<tr><td colspan='6'>Inga kommande hemmamatcher.</td></tr>"
           : upcoming.map(m => `
             <tr>
               <td>${m.date}</td>
@@ -378,11 +365,10 @@
               <td>${m.series}</td>
               <td>${m.home}</td>
               <td>${m.away}</td>
-              <td>${m.arena}</td>
+              <td>${hallWithLogo(m.arena)}</td>
             </tr>
           `).join("");
 
-      // Aktivera rullning om fler än 10 matcher
       if (upcoming.length > 10) {
         document.getElementById("upcomingBody").classList.add("scrolling");
       }
