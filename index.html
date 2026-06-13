@@ -84,19 +84,25 @@ async function loadMatches() {
   const url = "https://dry-shadow-d9c2.gunnar-127.workers.dev/";
 
   try {
-    const xmlText = await fetch(url).then(r => r.text());
-
-    // 🟨 Om Workern returnerar felmeddelande
-    if (xmlText.includes("<error>")) {
+    const response = await fetch(url);
+    if (!response.ok) {
       document.getElementById("noMatches").textContent =
         "SweHockey svarar inte just nu – försök igen om en stund.";
-      console.warn("Worker returnerade felmeddelande.");
+      console.warn("Worker svarade med status:", response.status);
+      return [];
+    }
+
+    const xmlText = await response.text();
+
+    if (!xmlText || xmlText.trim() === "" || xmlText.includes("<error>")) {
+      document.getElementById("noMatches").textContent =
+        "SweHockey svarar inte just nu – försök igen om en stund.";
+      console.warn("Tomt eller felaktigt svar från Worker.");
       return [];
     }
 
     const parser = new DOMParser();
     const xmlDoc = parser.parseFromString(xmlText, "application/xml");
-
     const matches = Array.from(xmlDoc.getElementsByTagName("Match")).map(m => ({
       date: m.getElementsByTagName("Date")[0]?.textContent || "",
       time: m.getElementsByTagName("Time")[0]?.textContent || "",
@@ -107,7 +113,6 @@ async function loadMatches() {
       group: m.getElementsByTagName("Group")[0]?.textContent || ""
     }));
 
-    // ⭐ Visa både hemma och borta för Sollentuna
     const filtered = matches.filter(m =>
       m.home.toLowerCase().includes("sollentuna") ||
       m.away.toLowerCase().includes("sollentuna")
