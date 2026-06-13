@@ -81,7 +81,8 @@ setInterval(updateClock,1000);updateClock();
 
 /* ICS-feed via Cloudflare Worker */
 async function loadMatches(){
-    const url = "Trollhattans_HC-Traningsmatcher_U15_Vastergotland-kalender.ics";
+   const url = "https://din-worker-url.workers.dev";
+
 
     try{
         const icsText = await fetch(url).then(r => r.text());
