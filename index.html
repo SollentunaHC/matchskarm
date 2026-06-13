@@ -2,40 +2,41 @@
 <html lang="sv">
 <head>
   <meta charset="UTF-8">
-  <title>Sollentuna HC – Spelschema</title>
+  <title>Sollentuna HC – Arena Style 9.0</title>
   <meta http-equiv="refresh" content="300">
   <style>
     body {
       margin: 0;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-family: "Segoe UI", sans-serif;
       background: #001633;
       color: #fff;
     }
-    h1 {
+    header {
       text-align: center;
-      margin: 20px 0 10px;
-      font-size: 32px;
-    }
-    .wrapper {
-      padding: 10px 40px 40px;
+      padding: 20px 0 10px;
+      font-size: 36px;
+      font-weight: 700;
+      color: #ff2a2a;
+      text-shadow: 0 0 10px rgba(255, 0, 0, 0.6);
     }
     table {
-      width: 100%;
+      width: 90%;
+      margin: auto;
       border-collapse: collapse;
       font-size: 18px;
-      background: rgba(0,0,0,0.25);
+      background: rgba(255, 255, 255, 0.05);
     }
-    th, td {
-      padding: 8px 10px;
-      border-bottom: 1px solid rgba(255,255,255,0.15);
+    th, td {
+      padding: 10px 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.15);
       text-align: left;
     }
     th {
-      background: rgba(255,255,255,0.08);
+      background: rgba(255, 255, 255, 0.1);
       font-weight: 600;
     }
     tr:nth-child(even) {
-      background: rgba(255,255,255,0.03);
+      background: rgba(255, 255, 255, 0.03);
     }
     .home {
       color: #4cff7a;
@@ -46,37 +47,37 @@
       font-weight: 600;
     }
     .arena-cyloq {
-      font-weight: 600;
       color: #4cb8ff;
+      font-weight: 600;
     }
-    .updated {
-      margin-top: 8px;
+    footer {
+      text-align: right;
       font-size: 12px;
       opacity: 0.7;
-      text-align: right;
+      margin: 10px 40px 20px;
     }
   </style>
 </head>
 <body>
-  <h1>Sollentuna HC – Spelschema 26/27</h1>
-  <div class="wrapper">
-    <table>
-      <thead>
-        <tr>
-          <th>Datum</th>
-          <th>Tid</th>
-          <th>Hemma</th>
-          <th>Borta</th>
-          <th>Arena</th>
-          <th>Serie</th>
-        </tr>
-      </thead>
-      <tbody id="matchTableBody">
-        <tr><td colspan="6">Laddar matcher…</td></tr>
-      </tbody>
-    </table>
-    <div class="updated" id="updatedInfo"></div>
-  </div>
+  <header>Sollentuna HC – Spelschema 26/27</header>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Datum</th>
+        <th>Tid</th>
+        <th>Hemma</th>
+        <th>Borta</th>
+        <th>Arena</th>
+        <th>Serie</th>
+      </tr>
+    </thead>
+    <tbody id="matchTableBody">
+      <tr><td colspan="6">Laddar matcher…</td></tr>
+    </tbody>
+  </table>
+
+  <footer id="updatedInfo"></footer>
 
   <script>
     async function loadMatches() {
@@ -113,8 +114,7 @@
           const home = cols[idx.Hemma] || "";
           const away = cols[idx.Borta] || "";
 
-          // Endast matcher där Sollentuna HC är med
-          if (!home.includes("Sollentuna HC") && !away.includes("Sollentuna HC")) continue;
+          if (!home.includes("Sollentuna HC") && !away.includes("Sollentuna HC")) continue;
 
           matches.push({
             date: cols[idx.Speldatum],
@@ -126,42 +126,41 @@
           });
         }
 
-        // Sortera på datum
-        matches.sort((a, b) => new Date(a.date) - new Date(b.date));
+        matches.sort((a, b) => new Date(a.date) - new Date(b.date));
 
-        const tbody = document.getElementById("matchTableBody");
-        tbody.innerHTML = "";
+        const tbody = document.getElementById("matchTableBody");
+        tbody.innerHTML = "";
 
-        if (matches.length === 0) {
-          tbody.innerHTML = "<tr><td colspan='6'>Inga Sollentuna-matcher hittades.</td></tr>";
-        } else {
-          for (const m of matches) {
-            const homeClass = m.home.includes("Sollentuna HC") ? "home" : "away";
-            const awayClass = m.away.includes("Sollentuna HC") ? "home" : "away";
-            const arenaClass = m.arena.toLowerCase().includes("cyloq") ? "arena-cyloq" : "";
+        if (matches.length === 0) {
+          tbody.innerHTML = "<tr><td colspan='6'>Inga Sollentuna‑matcher hittades.</td></tr>";
+        } else {
+          for (const m of matches) {
+            const homeClass = m.home.includes("Sollentuna HC") ? "home" : "away";
+            const awayClass = m.away.includes("Sollentuna HC") ? "home" : "away";
+            const arenaClass = m.arena.toLowerCase().includes("cyloq") ? "arena-cyloq" : "";
 
-            tbody.innerHTML += `
+            tbody.innerHTML += `
               <tr>
                 <td>${m.date}</td>
                 <td>${m.time}</td>
-                <td class="${homeClass}">${m.home}</td>
-                <td class="${awayClass}">${m.away}</td>
-                <td class="${arenaClass}">${m.arena}</td>
+                <td class="${homeClass}">${m.home}</td>
+                <td class="${awayClass}">${m.away}</td>
+                <td class="${arenaClass}">${m.arena}</td>
                 <td>${m.series}</td>
               </tr>`;
           }
         }
 
-        const now = new Date();
-        document.getElementById("updatedInfo").textContent =
-          "Senast uppdaterad: " +
-          now.toLocaleDateString("sv-SE") + " " +
+        const now = new Date();
+        document.getElementById("updatedInfo").textContent =
+          "Senast uppdaterad: " +
+          now.toLocaleDateString("sv-SE") + " " +
           now.toLocaleTimeString("sv-SE");
 
-      } catch (err) {
+      } catch (err) {
         console.error(err);
-        document.getElementById("matchTableBody").innerHTML =
-          "<tr><td colspan='6'>Fel vid hämtning av spelschema.</td></tr>";
+        document.getElementById("matchTableBody").innerHTML =
+          "<tr><td colspan='6'>Fel vid hämtning av spelschema.</td></tr>";
       }
     }
 
