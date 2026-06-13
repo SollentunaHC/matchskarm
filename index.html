@@ -312,11 +312,8 @@ async function loadMatches() {
 
     var cleanSerie = "";
     try {
-      cleanSerie = cols[idx.Serie].toString().replace(/
-
-\[[0-9]+\]
-
-/g, "").trim();
+      cleanSerie = cols[idx.Serie].toString().replace(/\[[0-9]+\]/g, "").trim();
+      
     } catch (e) {
       cleanSerie = cols[idx.Serie] || "";
     }
