@@ -2,7 +2,7 @@
 <html lang="sv">
 <head>
   <meta charset="UTF-8">
-  <title>Sollentuna Hockey – Arena Style 9.3</title>
+  <title>Sollentuna Hockey – Arena Style 9.3 SHC</title>
   <meta http-equiv="refresh" content="300">
   <style>
     body {
@@ -18,26 +18,26 @@
       position: fixed;
       top: 10px;
       left: 20px;
-      font-size: 26px;
-      font-weight: 700;
+      font-size: 30px;
+      font-weight: 800;
       color: #ffffff;
       z-index: 1000;
     }
 
     header {
       text-align: center;
-      padding: 20px 0 5px;
-      font-size: 52px;
-      font-weight: 800;
-      letter-spacing: 2px;
+      padding: 25px 0 10px;
+      font-size: 72px;
+      font-weight: 900;
+      letter-spacing: 3px;
       color: #ffffff;
     }
 
     h2 {
       text-align: center;
-      font-size: 28px;
-      font-weight: 700;
-      margin: 10px 0;
+      font-size: 36px;
+      font-weight: 900;
+      margin: 15px 0;
       color: #ffffff;
     }
 
@@ -52,35 +52,31 @@
       width: 90%;
       margin: auto;
       border-collapse: collapse;
-      font-size: 20px;
+      font-size: 24px;
     }
 
     th {
       background: #c62828;
       color: #fff;
-      padding: 10px;
+      padding: 14px;
       text-align: left;
-      font-weight: 700;
+      font-weight: 900;
+      font-size: 26px;
     }
 
     td {
-      padding: 10px;
+      padding: 14px;
       border-bottom: 1px solid rgba(255,255,255,0.1);
+      font-size: 24px;
+      font-weight: 600;
     }
 
     tr:nth-child(even) { background: #1e2f5c; }
     tr:nth-child(odd)  { background: #14244a; }
 
-    /* Dagens matcher lite större */
-    #todayMatchBody td {
-      font-size: 22px;
-      padding: 14px 10px;
-      font-weight: 600;
-    }
-
     footer {
       text-align: right;
-      font-size: 12px;
+      font-size: 14px;
       opacity: 0.7;
       margin: 5px 40px 0;
     }
@@ -165,73 +161,76 @@
 
   <footer id="updatedInfo"></footer>
 
-  <!-- Sponsorbanner -->
   <div class="ad-bar">
     <div class="ad-track" id="sponsorTrack"></div>
   </div>
+<script>
+  /* Klocka */
+  function updateClock() {
+    const now = new Date();
+    document.getElementById("clock").textContent =
+      now.toLocaleTimeString("sv-SE", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+  }
+  setInterval(updateClock, 1000);
+  updateClock();
 
-  <script>
-    /* Klocka */
-    function updateClock() {
-      const now = new Date();
-      document.getElementById("clock").textContent =
-        now.toLocaleTimeString("sv-SE", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
-    }
-    setInterval(updateClock, 1000);
-    updateClock();
+  /* Hämta matcher */
+  async function loadMatches() {
+    const url = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/Spelschema_2627.csv";
 
-    /* Hämta matcher */
-    async function loadMatches() {
-      const url = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/Spelschema_2627.csv";
+    const resp = await fetch(url);
+    const text = await resp.text();
 
-      const resp = await fetch(url);
-      const text = await resp.text();
+    const lines = text.split(/\r?\n/).filter(l => l.trim() !== "");
+    const headers = lines[0].split(";");
 
-      const lines = text.split(/\r?\n/).filter(l => l.trim() !== "");
-      const headers = lines[0].split(";");
+    const idx = {
+      Speldatum: headers.indexOf("Speldatum"),
+      Tid: headers.indexOf("Tid"),
+      Hemma: headers.indexOf("Hemma"),
+      Borta: headers.indexOf("Borta"),
+      Arena: headers.indexOf("Arena"),
+      Serie: headers.indexOf("Serie")
+    };
 
-      const idx = {
-        Speldatum: headers.indexOf("Speldatum"),
-        Tid: headers.indexOf("Tid"),
-        Hemma: headers.indexOf("Hemma"),
-        Borta: headers.indexOf("Borta"),
-        Arena: headers.indexOf("Arena"),
-        Serie: headers.indexOf("Serie")
-      };
+    let matches = [];
 
-      let matches = [];
+    for (let i = 1; i < lines.length; i++) {
+      const cols = lines[i].split(";");
+      if (!cols[idx.Hemma] || !cols[idx.Hemma].includes("Sollentuna")) continue;
 
-      for (let i = 1; i < lines.length; i++) {
-        const cols = lines[i].split(";");
-        if (!cols[idx.Hemma] || !cols[idx.Hemma].includes("Sollentuna")) continue;
+      // Ta bort serienummer [xxxx]
+      const cleanSerie = cols[idx.Serie].replace(/\s*
 
-        matches.push({
-          date: cols[idx.Speldatum],
-          time: cols[idx.Tid],
-          series: cols[idx.Serie],
-          home: cols[idx.Hemma],
-          away: cols[idx.Borta],
-          arena: cols[idx.Arena]
-        });
-      }
+\[\d+\]
 
-      // Sortera alla matcher på datum först
-      matches.sort((a, b) => {
-        if (a.date === b.date) return a.time.localeCompare(b.time);
-        return a.date.localeCompare(b.date);
+\s*/g, "");
+
+      matches.push({
+        date: cols[idx.Speldatum],
+        time: cols[idx.Tid],
+        series: cleanSerie,
+        home: cols[idx.Hemma],
+        away: cols[idx.Borta],
+        arena: cols[idx.Arena]
       });
+    }
 
-      const today = new Date().toISOString().split("T")[0];
+    matches.sort((a, b) => {
+      if (a.date === b.date) return a.time.localeCompare(b.time);
+      return a.date.localeCompare(b.date);
+    });
 
-      const todayMatch = matches.filter(m => m.date === today);
-      const upcoming = matches.filter(m => m.date > today).slice(0, 10);
+    const today = new Date().toISOString().split("T")[0];
+    const todayMatch = matches.filter(m => m.date === today);
+    const upcoming = matches.filter(m => m.date > today).slice(0, 10);
 
-      // Dagens matcher – alla, sorterade på tid
-      const todayBody = document.getElementById("todayMatchBody");
-      if (todayMatch.length === 0) {
-        todayBody.innerHTML = "<tr><td colspan='6'>Ingen hemmamatch idag.</td></tr>";
-      } else {
-        todayBody.innerHTML = todayMatch.map(m => `
+    // Dagens matcher
+    const todayBody = document.getElementById("todayMatchBody");
+    todayBody.innerHTML =
+      todayMatch.length === 0
+        ? "<tr><td colspan='6'>Ingen hemmamatch idag.</td></tr>"
+        : todayMatch.map(m => `
           <tr>
             <td>${m.date}</td>
             <td>${m.time}</td>
@@ -241,14 +240,13 @@
             <td>${m.arena}</td>
           </tr>
         `).join("");
-      }
 
-      // Kommande matcher
-      const upcomingBody = document.getElementById("upcomingBody");
-      if (upcoming.length === 0) {
-        upcomingBody.innerHTML = "<tr><td colspan='6'>Inga kommande hemmamatcher.</td></tr>";
-      } else {
-        upcomingBody.innerHTML = upcoming.map(m => `
+    // Kommande matcher
+    const upcomingBody = document.getElementById("upcomingBody");
+    upcomingBody.innerHTML =
+      upcoming.length === 0
+        ? "<tr><td colspan='6'>Inga kommande hemmamatcher.</td></tr>"
+        : upcoming.map(m => `
           <tr>
             <td>${m.date}</td>
             <td>${m.time}</td>
@@ -258,38 +256,37 @@
             <td>${m.arena}</td>
           </tr>
         `).join("");
-      }
 
-      document.getElementById("updatedInfo").textContent =
-        "Senast uppdaterad: " + new Date().toLocaleString("sv-SE");
-    }
+    document.getElementById("updatedInfo").textContent =
+      "Senast uppdaterad: " + new Date().toLocaleString("sv-SE");
+  }
 
-    loadMatches();
+  loadMatches();
 
-    /* Hämta sponsorer från GitHub-mappen /sponsors */
-    async function loadSponsors() {
-      const apiUrl = "https://api.github.com/repos/SollentunaHC/matchskarm/contents/sponsors";
+  /* Sponsorer */
+  async function loadSponsors() {
+    const apiUrl = "https://api.github.com/repos/SollentunaHC/matchskarm/contents/sponsors";
 
-      const resp = await fetch(apiUrl);
-      const files = await resp.json();
+    const resp = await fetch(apiUrl);
+    const files = await resp.json();
 
-      const track = document.getElementById("sponsorTrack");
+    const track = document.getElementById("sponsorTrack");
 
-      const images = files.filter(f =>
-        f.name.match(/\.(png|jpg|jpeg|svg|webp)$/i)
-      );
+    const images = files.filter(f =>
+      f.name.match(/\.(png|jpg|jpeg|svg|webp)$/i)
+    );
 
-      const loopImages = [...images, ...images];
+    const loopImages = [...images, ...images];
 
-      loopImages.forEach(img => {
-        const el = document.createElement("img");
-        el.src = img.download_url;
-        track.appendChild(el);
-      });
-    }
+    loopImages.forEach(img => {
+      const el = document.createElement("img");
+      el.src = img.download_url;
+      track.appendChild(el);
+    });
+  }
 
-    loadSponsors();
-  </script>
+  loadSponsors();
+</script>
 
 </body>
 </html>
