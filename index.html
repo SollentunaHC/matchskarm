@@ -99,12 +99,8 @@ async function loadMatches() {
     }));
 
     // ⭐ Endast matcher där Sollentuna är hemmalag
-    const filtered = matches.filter(m =>
-      m.home.toLowerCase().includes("sollentuna")
-    );
+   return matches;
 
-    console.log("Antal Sollentuna-hemmamatcher:", filtered.length);
-    return filtered;
 
   } catch (e) {
     console.error("Fel vid hämtning av XML-feed:", e);
