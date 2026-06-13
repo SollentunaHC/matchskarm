@@ -113,46 +113,6 @@ async function loadMatches() {
   }
 }
 
-
-
-
-/* ICS-parser */
-function parseICS(text){
-    const events=[];
-    const blocks=text.split("BEGIN:VEVENT").slice(1);
-
-    for(const block of blocks){
-        const end=block.indexOf("END:VEVENT");
-        const vevent=block.substring(0,end);
-
-        const get=(tag)=>{
-            const match=vevent.match(new RegExp(tag+":(.*)"));
-            return match?match[1].trim():"";
-        };
-
-        const dt=get("DTSTART");
-        const summary=get("SUMMARY");
-        const location=get("LOCATION");
-        const description=get("DESCRIPTION");
-
-        let date="",time="";
-        if(dt){
-            const year=dt.substring(0,4);
-            const month=dt.substring(4,6);
-            const day=dt.substring(6,8);
-            const hour=dt.substring(9,11);
-            const minute=dt.substring(11,13);
-
-            date=`${year}-${month}-${day}`;
-            time=`${hour}:${minute}`;
-        }
-
-        events.push({date,time,summary,location,description});
-    }
-
-    return events.sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time));
-}
-
 /* Datumformat */
 const weekdays=["söndag","måndag","tisdag","onsdag","torsdag","fredag","lördag"];
 const months=["januari","februari","mars","april","maj","juni","juli","augusti","september","oktober","november","december"];
