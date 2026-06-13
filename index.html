@@ -98,14 +98,21 @@ async function loadMatches() {
       group: m.getElementsByTagName("Group")[0]?.textContent || ""
     }));
 
-    console.log("Antal matcher i XML:", matches.length);
-    return matches;
+    // ⭐ Endast matcher där Sollentuna är hemmalag
+    const filtered = matches.filter(m =>
+      m.home.toLowerCase().includes("sollentuna")
+    );
+
+    console.log("Antal Sollentuna-hemmamatcher:", filtered.length);
+    return filtered;
+
   } catch (e) {
     console.error("Fel vid hämtning av XML-feed:", e);
     document.getElementById("noMatches").textContent = "Fel vid hämtning av matcher.";
     return [];
   }
 }
+
 
 
 /* ICS-parser */
