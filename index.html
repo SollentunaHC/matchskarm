@@ -2,7 +2,7 @@
 <html lang="sv">
 <head>
 <meta charset="UTF-8">
-<title>Sollentuna Hockey – Arena Style 10.7 SHC</title>
+<title>Sollentuna Hockey – Arena Style 10.8 SHC</title>
 <meta http-equiv="refresh" content="300">
 
 <style>
@@ -13,8 +13,6 @@
   --bg-header: #c62828;
   --text-main: #ffffff;
   --yellow: #ffeb3b;
-  --arena-blue: #1e88e5;
-  --annex-red: #e53935;
 }
 
 * { box-sizing: border-box; }
@@ -129,7 +127,7 @@ table.match-table {
 .match-table th:nth-child(5), .match-table td:nth-child(5) { width: 20%; }
 .match-table th:nth-child(6), .match-table td:nth-child(6) { width: 12%; }
 
-/* CYLOQ logo centered vertically */
+/* CYLOQ logo perfectly centered */
 .hall-logo {
   display: inline-block;
   width: 48px;
@@ -139,24 +137,20 @@ table.match-table {
   vertical-align: middle;
   margin-right: 6px;
   position: relative;
-  top: 2px;
+  top: 2px; /* perfect centering for compact rows */
 }
 
 @media (min-width: 2000px) {
   .hall-logo {
     width: 64px;
     height: 64px;
-    top: 8px;
+    top: 3px; /* perfect centering on 4K */
   }
 }
 
 .hall-cyloq {
   background-image: url('https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/sponsors/Cyloq.png');
 }
-
-/* Arena vs Annex auto-color */
-/.arena-blue { color: var(--arena-blue); font-weight: 900; }/
-/.arena-red  { color: var(--annex-red);  font-weight: 900; }/
 
 /* Live status tags */
 .status-tag {
@@ -324,25 +318,25 @@ function getStatus(dateStr, timeStr) {
   return "";
 }
 
-/* CYLOQ LOGO + COLOR */
+/* CYLOQ LOGO ONLY (no color coding) */
 function hallWithLogo(arena) {
   if (!arena) return "";
+
   var lower = arena.toLowerCase();
-  var colorClass = arenaColor(arena);
 
   if (lower.indexOf("cyloq") === 0) {
     var suffix = arena.replace(/cyloq\s*/i, "");
-    return "<span class='hall-logo hall-cyloq'></span><span class='" + colorClass + "'>" + suffix.trim() + "</span>";
+    return "<span class='hall-logo hall-cyloq'></span>" + suffix.trim();
   }
 
-  return "<span class='" + colorClass + "'>" + arena + "</span>";
+  return arena;
 }
 
 /* LOAD MATCHES */
 async function loadMatches() {
   var url = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/Spelschema_2627.csv";
 
-  var resp = await fetch(url);
+  var resp = await fetch(url + "?nocache=" + Date.now(), { cache: "no-store" });
   var text = await resp.text();
 
   var lines = text.split(/\r?\n/).filter(function(l){ return l.trim() !== ""; });
@@ -489,4 +483,3 @@ loadSponsors();
 
 </body>
 </html>
-
