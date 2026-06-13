@@ -81,9 +81,8 @@ setInterval(updateClock,1000);updateClock();
 
 /* ICS-feed via Cloudflare Worker */
 async function loadMatches(){
-   const url = "https://din-worker-url.workers.dev";
-
-
+   const url = "https://dry-shadow-d9c2.gunnar-127.workers.dev/";
+    
     try{
         const icsText = await fetch(url).then(r => r.text());
         const events = parseICS(icsText);
