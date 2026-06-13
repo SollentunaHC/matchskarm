@@ -2,15 +2,28 @@
 <html lang="sv">
 <head>
   <meta charset="UTF-8">
-  <title>Sollentuna Hockey – Arena Style 9.8 SHC</title>
+  <title>Sollentuna Hockey – Arena Style 10.0 SHC</title>
   <meta http-equiv="refresh" content="300">
 
   <style>
+    :root {
+      --bg-main: #0b1a3a;
+      --bg-row-even: #1e2f5c;
+      --bg-row-odd: #14244a;
+      --bg-header: #c62828;
+      --text-main: #ffffff;
+      --highlight-today: #b71c1c;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
       font-family: "Segoe UI", sans-serif;
-      background: #0b1a3a;
-      color: #fff;
+      background: var(--bg-main);
+      color: var(--text-main);
       overflow: hidden;
       position: relative;
     }
@@ -19,10 +32,12 @@
     body::before {
       content: "";
       position: absolute;
-      top: 20%;
+      top: 18%;
       left: 50%;
-      width: 600px;
-      height: 600px;
+      width: 38vw;
+      height: 38vw;
+      max-width: 650px;
+      max-height: 650px;
       background: url('https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/shc_draken.png') no-repeat center;
       background-size: contain;
       opacity: 0.06;
@@ -33,87 +48,99 @@
 
     #clock {
       position: fixed;
-      top: 10px;
-      left: 20px;
-      font-size: 32px;
+      top: 1.2vh;
+      left: 1.5vw;
+      font-size: 2.2vw;
       font-weight: 900;
-      color: #ffffff;
+      color: var(--text-main);
       z-index: 1000;
+      text-shadow: 0 0 8px rgba(0,0,0,0.7);
     }
 
     header {
       text-align: center;
-      padding: 25px 0 5px;
-      font-size: 78px;
+      padding: 2.2vh 0 1.2vh;
+      font-size: 4.6vw;
       font-weight: 900;
-      letter-spacing: 3px;
-      color: #ffffff;
+      letter-spacing: 0.35vw;
+      color: var(--text-main);
       z-index: 10;
       position: relative;
+      text-shadow: 0 0 12px rgba(0,0,0,0.8);
+    }
+
+    .content-area {
+      position: relative;
+      z-index: 10;
+      height: 80vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      gap: 2vh;
     }
 
     h2 {
       text-align: center;
-      font-size: 40px;
+      font-size: 2.6vw;
       font-weight: 900;
-      margin-top: 5px;
-      margin-bottom: 0px;
-      color: #ffffff;
-      z-index: 10;
-      position: relative;
+      margin: 0.5vh 0 0.3vh;
+      color: var(--text-main);
+      text-shadow: 0 0 8px rgba(0,0,0,0.7);
     }
 
-    h2 + table {
-      margin-top: -8px;
+    .table-wrapper {
+      width: 100%;
+      display: flex;
+      justify-content: center;
     }
 
     table {
-      width: 90%;
-      margin: auto;
+      width: 92%;
       border-collapse: collapse;
-      font-size: 26px;
-      margin-top: 0;
-      z-index: 10;
-      position: relative;
+      font-size: 1.5vw;
+      background: rgba(0,0,0,0.15);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    thead {
+      position: sticky;
+      top: 0;
+      z-index: 5;
     }
 
     th {
-      background: #c62828;
+      background: var(--bg-header);
       color: #fff;
-      padding: 16px 10px;
+      padding: 1.1vh 0.8vw;
       text-align: left;
       font-weight: 900;
-      font-size: 30px;
+      font-size: 1.8vw;
+      white-space: nowrap;
     }
 
     td {
-      padding: 16px 10px;
-      border-bottom: 1px solid rgba(255,255,255,0.1);
-      font-size: 26px;
+      padding: 1.1vh 0.8vw;
+      border-bottom: 1px solid rgba(255,255,255,0.12);
+      font-size: 1.5vw;
       font-weight: 600;
+      white-space: nowrap;
     }
 
-    tr:nth-child(even) { background: #1e2f5c; }
-    tr:nth-child(odd)  { background: #14244a; }
+    tbody tr:nth-child(even) { background: var(--bg-row-even); }
+    tbody tr:nth-child(odd)  { background: var(--bg-row-odd); }
 
     /* Highlight dagens match */
     .today-highlight {
-      background: #b71c1c !important;
+      background: var(--highlight-today) !important;
       color: #fff !important;
       font-weight: 900;
     }
 
-    /* Serie-färgkodning */
-    .serie-u16 { color: #ffeb3b; font-weight: 900; }
-    .serie-u15 { color: #4caf50; font-weight: 900; }
-    .serie-u14 { color: #29b6f6; font-weight: 900; }
-    .serie-u13 { color: #ff9800; font-weight: 900; }
-    .serie-default { color: #ffffff; }
-
     /* Rullning för kommande matcher */
     #upcomingBody.scrolling {
       display: block;
-      height: 320px;
+      max-height: 30vh;
       overflow: hidden;
       animation: scrollUp 22s linear infinite;
     }
@@ -125,9 +152,9 @@
 
     footer {
       text-align: right;
-      font-size: 14px;
+      font-size: 1vw;
       opacity: 0.7;
-      margin: 5px 40px 0;
+      margin: 0.8vh 3vw 0;
       z-index: 10;
       position: relative;
     }
@@ -149,7 +176,7 @@
 
     .ad-track {
       display: flex;
-      gap: 60px;
+      gap: 4vw;
       white-space: nowrap;
       animation: scrollAds 35s linear infinite;
     }
@@ -164,6 +191,32 @@
       0%   { transform: translateX(0); }
       100% { transform: translateX(-50%); }
     }
+
+    /* TV / stora skärmar (4K, ultrawide) */
+    @media (min-width: 2000px) {
+      header { font-size: 4vw; }
+      h2 { font-size: 2.2vw; }
+      th { font-size: 1.7vw; }
+      td { font-size: 1.4vw; }
+    }
+
+    /* Mindre laptops / mindre skärmar */
+    @media (max-width: 1400px) {
+      header { font-size: 5.4vw; }
+      h2 { font-size: 3vw; }
+      th { font-size: 2.1vw; }
+      td { font-size: 1.8vw; }
+    }
+
+    /* Om du testar på mobil – inte primärt för hallen, men funkar */
+    @media (max-width: 900px) {
+      #clock { font-size: 4vw; }
+      header { font-size: 7vw; letter-spacing: 0.2vw; }
+      h2 { font-size: 4.2vw; }
+      table { font-size: 3vw; }
+      th { font-size: 3.4vw; }
+      td { font-size: 3vw; }
+    }
   </style>
 </head>
 
@@ -176,38 +229,42 @@
   <div class="content-area">
 
     <h2>DAGENS MATCHER</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>DATUM</th>
-          <th>TID</th>
-          <th>SERIE</th>
-          <th>HEMMALAG</th>
-          <th>BORTALAG</th>
-          <th>HALL</th>
-        </tr>
-      </thead>
-      <tbody id="todayMatchBody">
-        <tr><td colspan="6">Laddar…</td></tr>
-      </tbody>
-    </table>
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>DATUM</th>
+            <th>TID</th>
+            <th>SERIE</th>
+            <th>HEMMALAG</th>
+            <th>BORTALAG</th>
+            <th>HALL</th>
+          </tr>
+        </thead>
+        <tbody id="todayMatchBody">
+          <tr><td colspan="6">Laddar…</td></tr>
+        </tbody>
+      </table>
+    </div>
 
     <h2>KOMMANDE MATCHER</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>DATUM</th>
-          <th>TID</th>
-          <th>SERIE</th>
-          <th>HEMMALAG</th>
-          <th>BORTALAG</th>
-          <th>HALL</th>
-        </tr>
-      </thead>
-      <tbody id="upcomingBody">
-        <tr><td colspan="6">Laddar…</td></tr>
-      </tbody>
-    </table>
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>DATUM</th>
+            <th>TID</th>
+            <th>SERIE</th>
+            <th>HEMMALAG</th>
+            <th>BORTALAG</th>
+            <th>HALL</th>
+          </tr>
+        </thead>
+        <tbody id="upcomingBody">
+          <tr><td colspan="6">Laddar…</td></tr>
+        </tbody>
+      </table>
+    </div>
 
   </div>
 
@@ -216,159 +273,151 @@
   <div class="ad-bar">
     <div class="ad-track" id="sponsorTrack"></div>
   </div>
-<script>
-  function updateClock() {
-    const now = new Date();
-    document.getElementById("clock").textContent =
-      now.toLocaleTimeString("sv-SE", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
-  }
-  setInterval(updateClock, 1000);
-  updateClock();
 
-  async function loadMatches() {
-    const url = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/Spelschema_2627.csv";
+  <script>
+    function updateClock() {
+      const now = new Date();
+      document.getElementById("clock").textContent =
+        now.toLocaleTimeString("sv-SE", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
 
-    const resp = await fetch(url);
-    const text = await resp.text();
+    async function loadMatches() {
+      const url = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/Spelschema_2627.csv";
 
-    const lines = text.split(/\r?\n/).filter(l => l.trim() !== "");
-    const headers = lines[0].split(";");
+      const resp = await fetch(url);
+      const text = await resp.text();
 
-    const idx = {
-      Speldatum: headers.indexOf("Speldatum"),
-      Tid: headers.indexOf("Tid"),
-      Hemma: headers.indexOf("Hemma"),
-      Borta: headers.indexOf("Borta"),
-      Arena: headers.indexOf("Arena"),
-      Serie: headers.indexOf("Serie")
-    };
+      const lines = text.split(/\r?\n/).filter(l => l.trim() !== "");
+      const headers = lines[0].split(";");
 
-    let matches = [];
+      const idx = {
+        Speldatum: headers.indexOf("Speldatum"),
+        Tid: headers.indexOf("Tid"),
+        Hemma: headers.indexOf("Hemma"),
+        Borta: headers.indexOf("Borta"),
+        Arena: headers.indexOf("Arena"),
+        Serie: headers.indexOf("Serie")
+      };
 
-    for (let i = 1; i < lines.length; i++) {
-      const cols = lines[i].split(";");
+      let matches = [];
 
-      // ENDAST Sollentuna som hemmalag
-      if (!cols[idx.Hemma] || !cols[idx.Hemma].includes("Sollentuna")) continue;
+      for (let i = 1; i < lines.length; i++) {
+        const cols = lines[i].split(";");
 
-      // Felsäker regex
-      let cleanSerie = "";
-      try {
-        cleanSerie = cols[idx.Serie].toString().replace(/
+        // Robust hemmalagsmatchning – alla varianter av Sollentuna
+        const home = (cols[idx.Hemma] || "").toLowerCase().trim();
+        if (!home.includes("sollentuna")) continue;
+
+        // Felsäker regex för serie
+        let cleanSerie = "";
+        try {
+          cleanSerie = cols[idx.Serie].toString().replace(/
 
 \[[0-9]+\]
 
 /g, "").trim();
-      } catch {
-        cleanSerie = cols[idx.Serie] ?? "";
+        } catch {
+          cleanSerie = cols[idx.Serie] ?? "";
+        }
+
+        matches.push({
+          date: cols[idx.Speldatum],
+          time: cols[idx.Tid],
+          series: cleanSerie,
+          home: cols[idx.Hemma],
+          away: cols[idx.Borta],
+          arena: cols[idx.Arena]
+        });
       }
 
-      matches.push({
-        date: cols[idx.Speldatum],
-        time: cols[idx.Tid],
-        series: cleanSerie,
-        home: cols[idx.Hemma],
-        away: cols[idx.Borta],
-        arena: cols[idx.Arena]
+      matches.sort((a, b) => {
+        if (a.date === b.date) return a.time.localeCompare(b.time);
+        return a.date.localeCompare(b.date);
+      });
+
+      const today = new Date().toISOString().split("T")[0];
+
+      const todayMatch = matches.filter(m => m.date === today);
+
+      // Grupp efter datum
+      const grouped = {};
+      matches.forEach(m => {
+        if (!grouped[m.date]) grouped[m.date] = [];
+        grouped[m.date].push(m);
+      });
+
+      // Max 5 datum framåt
+      const nextDates = Object.keys(grouped).filter(d => d > today).slice(0, 5);
+
+      // Platta ut matcherna
+      const upcoming = nextDates.flatMap(d => grouped[d]);
+
+      // Dagens matcher
+      document.getElementById("todayMatchBody").innerHTML =
+        todayMatch.length === 0
+          ? "<tr><td colspan='6'>Ingen hemmamatch idag.</td></tr>"
+          : todayMatch.map(m => `
+            <tr class="today-highlight">
+              <td>${m.date}</td>
+              <td>${m.time}</td>
+              <td>${m.series}</td>
+              <td>${m.home}</td>
+              <td>${m.away}</td>
+              <td>${m.arena}</td>
+            </tr>
+          `).join("");
+
+      // Kommande matcher
+      document.getElementById("upcomingBody").innerHTML =
+        upcoming.length === 0
+          ? "<tr><td colspan='6'>Inga kommande hemmamatcher.</td></tr>"
+          : upcoming.map(m => `
+            <tr>
+              <td>${m.date}</td>
+              <td>${m.time}</td>
+              <td>${m.series}</td>
+              <td>${m.home}</td>
+              <td>${m.away}</td>
+              <td>${m.arena}</td>
+            </tr>
+          `).join("");
+
+      // Aktivera rullning om fler än 10 matcher
+      if (upcoming.length > 10) {
+        document.getElementById("upcomingBody").classList.add("scrolling");
+      }
+
+      document.getElementById("updatedInfo").textContent =
+        "Senast uppdaterad: " + new Date().toLocaleString("sv-SE");
+    }
+
+    loadMatches();
+
+    async function loadSponsors() {
+      const apiUrl = "https://api.github.com/repos/SollentunaHC/matchskarm/contents/sponsors";
+
+      const resp = await fetch(apiUrl);
+      const files = await resp.json();
+
+      const track = document.getElementById("sponsorTrack");
+
+      const images = files.filter(f =>
+        f.name.match(/\.(png|jpg|jpeg|svg|webp)$/i)
+      );
+
+      const loopImages = [...images, ...images];
+
+      loopImages.forEach(img => {
+        const el = document.createElement("img");
+        el.src = img.download_url;
+        track.appendChild(el);
       });
     }
 
-    matches.sort((a, b) => {
-      if (a.date === b.date) return a.time.localeCompare(b.time);
-      return a.date.localeCompare(b.date);
-    });
-
-    const today = new Date().toISOString().split("T")[0];
-
-    const todayMatch = matches.filter(m => m.date === today);
-
-    // Grupp efter datum
-    const grouped = {};
-    matches.forEach(m => {
-      if (!grouped[m.date]) grouped[m.date] = [];
-      grouped[m.date].push(m);
-    });
-
-    // Max 5 datum
-    const nextDates = Object.keys(grouped).filter(d => d > today).slice(0, 5);
-
-    // Platta ut matcherna
-    const upcoming = nextDates.flatMap(d => grouped[d]);
-
-    // Serie-färgkodning
-    function serieClass(serie) {
-      const s = serie.toLowerCase();
-      if (s.includes("u16")) return "serie-u16";
-      if (s.includes("u15")) return "serie-u15";
-      if (s.includes("u14")) return "serie-u14";
-      if (s.includes("u13")) return "serie-u13";
-      return "serie-default";
-    }
-
-    // Dagens matcher
-    document.getElementById("todayMatchBody").innerHTML =
-      todayMatch.length === 0
-        ? "<tr><td colspan='6'>Ingen hemmamatch idag.</td></tr>"
-        : todayMatch.map(m => `
-          <tr class="today-highlight">
-            <td>${m.date}</td>
-            <td>${m.time}</td>
-            <td class="${serieClass(m.series)}">${m.series}</td>
-            <td>${m.home}</td>
-            <td>${m.away}</td>
-            <td>${m.arena}</td>
-          </tr>
-        `).join("");
-
-    // Kommande matcher
-    document.getElementById("upcomingBody").innerHTML =
-      upcoming.length === 0
-        ? "<tr><td colspan='6'>Inga kommande hemmamatcher.</td></tr>"
-        : upcoming.map(m => `
-          <tr>
-            <td>${m.date}</td>
-            <td>${m.time}</td>
-            <td class="${serieClass(m.series)}">${m.series}</td>
-            <td>${m.home}</td>
-            <td>${m.away}</td>
-            <td>${m.arena}</td>
-          </tr>
-        `).join("");
-
-    // Aktivera rullning om fler än 10 matcher
-    if (upcoming.length > 10) {
-      document.getElementById("upcomingBody").classList.add("scrolling");
-    }
-
-    document.getElementById("updatedInfo").textContent =
-      "Senast uppdaterad: " + new Date().toLocaleString("sv-SE");
-  }
-
-  loadMatches();
-
-  async function loadSponsors() {
-    const apiUrl = "https://api.github.com/repos/SollentunaHC/matchskarm/contents/sponsors";
-
-    const resp = await fetch(apiUrl);
-    const files = await resp.json();
-
-    const track = document.getElementById("sponsorTrack");
-
-    const images = files.filter(f =>
-      f.name.match(/\.(png|jpg|jpeg|svg|webp)$/i)
-    );
-
-    const loopImages = [...images, ...images];
-
-    loopImages.forEach(img => {
-      const el = document.createElement("img");
-      el.src = img.download_url;
-      track.appendChild(el);
-    });
-  }
-
-  loadSponsors();
-</script>
+    loadSponsors();
+  </script>
 
 </body>
 </html>
