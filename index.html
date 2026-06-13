@@ -35,44 +35,19 @@
 
     h2 {
       text-align: center;
-      font-size: 30px;
+      font-size: 28px;
       font-weight: 700;
       margin: 10px 0;
       color: #ffffff;
     }
 
-    /* --- Dagens matcher: stora matchkort --- */
-    .today-container {
-      width: 90%;
-      margin: auto;
+    .content-area {
+      height: 90vh;
       display: flex;
       flex-direction: column;
-      gap: 20px;
+      justify-content: flex-start;
     }
 
-    .match-card {
-      background: linear-gradient(135deg, #1f3d7a, #14244a);
-      padding: 20px;
-      border-radius: 12px;
-      border: 2px solid rgba(255,255,255,0.25);
-      box-shadow: 0 0 12px rgba(0,0,0,0.4);
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      font-size: 26px;
-      font-weight: 600;
-    }
-
-    .match-card div {
-      padding: 5px 10px;
-    }
-
-    .series-tag {
-      font-size: 22px;
-      font-weight: 700;
-      color: #ffeb3b;
-    }
-
-    /* --- Kommande matcher tabell --- */
     table {
       width: 90%;
       margin: auto;
@@ -96,23 +71,21 @@
     tr:nth-child(even) { background: #1e2f5c; }
     tr:nth-child(odd)  { background: #14244a; }
 
-    /* --- Layout: 90% matchinfo, 10% banner --- */
-    .content-area {
-      height: 90vh;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
+    /* Dagens matcher lite större */
+    #todayMatchBody td {
+      font-size: 22px;
+      padding: 14px 10px;
+      font-weight: 600;
     }
 
     footer {
       text-align: right;
       font-size: 12px;
       opacity: 0.7;
-      margin: 10px 40px 20px;
+      margin: 5px 40px 0;
     }
 
-    /* --- Sponsorbanner --- */
+    /* Sponsorbanner – 10% höjd, ljus */
     .ad-bar {
       width: 100%;
       height: 10vh;
@@ -155,9 +128,21 @@
   <div class="content-area">
 
     <h2>DAGENS MATCHER</h2>
-    <div class="today-container" id="todayMatchCards">
-      <div style="text-align:center;">Laddar…</div>
-    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>DATUM</th>
+          <th>TID</th>
+          <th>SERIE</th>
+          <th>HEMMALAG</th>
+          <th>BORTALAG</th>
+          <th>HALL</th>
+        </tr>
+      </thead>
+      <tbody id="todayMatchBody">
+        <tr><td colspan="6">Laddar…</td></tr>
+      </tbody>
+    </table>
 
     <h2>KOMMANDE MATCHER</h2>
     <table>
@@ -218,7 +203,6 @@
 
       for (let i = 1; i < lines.length; i++) {
         const cols = lines[i].split(";");
-
         if (!cols[idx.Hemma] || !cols[idx.Hemma].includes("Sollentuna")) continue;
 
         matches.push({
@@ -231,48 +215,50 @@
         });
       }
 
-      matches.sort((a, b) => new Date(a.date) - new Date(b.date));
+      // Sortera alla matcher på datum först
+      matches.sort((a, b) => {
+        if (a.date === b.date) return a.time.localeCompare(b.time);
+        return a.date.localeCompare(b.date);
+      });
 
       const today = new Date().toISOString().split("T")[0];
+
       const todayMatch = matches.filter(m => m.date === today);
-
-      /* Sortera dagens matcher efter tid */
-      todayMatch.sort((a, b) => a.time.localeCompare(b.time));
-
       const upcoming = matches.filter(m => m.date > today).slice(0, 10);
 
-      /* --- Dagens matchkort --- */
-      const todayContainer = document.getElementById("todayMatchCards");
-
+      // Dagens matcher – alla, sorterade på tid
+      const todayBody = document.getElementById("todayMatchBody");
       if (todayMatch.length === 0) {
-        todayContainer.innerHTML = "<div style='text-align:center;'>Ingen hemmamatch idag.</div>";
+        todayBody.innerHTML = "<tr><td colspan='6'>Ingen hemmamatch idag.</td></tr>";
       } else {
-        todayContainer.innerHTML = todayMatch.map(m => `
-          <div class="match-card">
-            <div>${m.date}</div>
-            <div>${m.time}</div>
-            <div class="series-tag">${m.series}</div>
-            <div>${m.home}</div>
-            <div>${m.away}</div>
-            <div>${m.arena}</div>
-          </div>
+        todayBody.innerHTML = todayMatch.map(m => `
+          <tr>
+            <td>${m.date}</td>
+            <td>${m.time}</td>
+            <td>${m.series}</td>
+            <td>${m.home}</td>
+            <td>${m.away}</td>
+            <td>${m.arena}</td>
+          </tr>
         `).join("");
       }
 
-      /* --- Kommande matcher --- */
-      document.getElementById("upcomingBody").innerHTML =
-        upcoming.length === 0
-          ? "<tr><td colspan='6'>Inga kommande hemmamatcher.</td></tr>"
-          : upcoming.map(m => `
-            <tr>
-              <td>${m.date}</td>
-              <td>${m.time}</td>
-              <td>${m.series}</td>
-              <td>${m.home}</td>
-              <td>${m.away}</td>
-              <td>${m.arena}</td>
-            </tr>
-          `).join("");
+      // Kommande matcher
+      const upcomingBody = document.getElementById("upcomingBody");
+      if (upcoming.length === 0) {
+        upcomingBody.innerHTML = "<tr><td colspan='6'>Inga kommande hemmamatcher.</td></tr>";
+      } else {
+        upcomingBody.innerHTML = upcoming.map(m => `
+          <tr>
+            <td>${m.date}</td>
+            <td>${m.time}</td>
+            <td>${m.series}</td>
+            <td>${m.home}</td>
+            <td>${m.away}</td>
+            <td>${m.arena}</td>
+          </tr>
+        `).join("");
+      }
 
       document.getElementById("updatedInfo").textContent =
         "Senast uppdaterad: " + new Date().toLocaleString("sv-SE");
