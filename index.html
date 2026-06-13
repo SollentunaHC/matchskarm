@@ -79,32 +79,34 @@ function updateClock(){
 }
 setInterval(updateClock,1000);updateClock();
 
-/* ICS-feed via Cloudflare Worker */
-async function loadMatches(){
-   const url = "https://dry-shadow-d9c2.gunnar-127.workers.dev/";
-    
-    try{
-        const icsText = await fetch(url).then(r => r.text());
-        const events = parseICS(icsText);
+/* XML-feed via Cloudflare Worker */
+async function loadMatches() {
+  const url = "https://dry-shadow-d9c2.gunnar-127.workers.dev/";
 
-        console.log("Antal matcher i ICS:", events.length);
+  try {
+    const xmlText = await fetch(url).then(r => r.text());
+    const parser = new DOMParser();
+    const xmlDoc = parser.parseFromString(xmlText, "application/xml");
 
-        return events.map(e => ({
-            date: e.date,
-            time: e.time,
-            home: e.summary.split(" - ")[0] || "",
-            away: e.summary.split(" - ")[1] || "",
-            arena: e.location,
-            status: "Kommande",
-            group: e.description || ""
-        }));
+    const matches = Array.from(xmlDoc.getElementsByTagName("Match")).map(m => ({
+      date: m.getElementsByTagName("Date")[0]?.textContent || "",
+      time: m.getElementsByTagName("Time")[0]?.textContent || "",
+      home: m.getElementsByTagName("HomeTeam")[0]?.textContent || "",
+      away: m.getElementsByTagName("AwayTeam")[0]?.textContent || "",
+      arena: m.getElementsByTagName("Arena")[0]?.textContent || "",
+      status: m.getElementsByTagName("Status")[0]?.textContent || "Kommande",
+      group: m.getElementsByTagName("Group")[0]?.textContent || ""
+    }));
 
-    }catch(e){
-        console.error("Fel vid hämtning av ICS-feed:", e);
-        document.getElementById("noMatches").textContent="Fel vid hämtning av matcher.";
-        return [];
-    }
+    console.log("Antal matcher i XML:", matches.length);
+    return matches;
+  } catch (e) {
+    console.error("Fel vid hämtning av XML-feed:", e);
+    document.getElementById("noMatches").textContent = "Fel vid hämtning av matcher.";
+    return [];
+  }
 }
+
 
 /* ICS-parser */
 function parseICS(text){
