@@ -97,12 +97,12 @@ async function loadMatches() {
       status: m.getElementsByTagName("Status")[0]?.textContent || "Kommande",
       group: m.getElementsByTagName("Group")[0]?.textContent || ""
     }));
-
+/
     // ⭐ Endast matcher där Sollentuna är hemmalag
     const filtered = matches.filter(m =>
       m.home.toLowerCase().includes("sollentuna")
     );
-
+/
     console.log("Antal Sollentuna-hemmamatcher:", filtered.length);
     return filtered;
 
