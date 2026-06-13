@@ -304,10 +304,6 @@ function formatDate(dateStr) {
   var parts = dateStr.split("-");
   if (parts.length !== 3) return dateStr;
 
-  var year = parts[0];
-  var month = parts[1];
-  var day = parts[2];
-
   var months = {
     "01": "januari",
     "02": "februari",
@@ -323,7 +319,7 @@ function formatDate(dateStr) {
     "12": "december"
   };
 
-  return parseInt(day, 10) + " " + months[month];
+  return parseInt(parts[2], 10) + " " + months[parts[1]];
 }
 
 /* LIVE STATUS */
@@ -350,14 +346,12 @@ function getStatus(dateStr, timeStr) {
 /* CYLOQ LOGO ONLY */
 function hallWithLogo(arena) {
   if (!arena) return "";
-
   var lower = arena.toLowerCase();
 
   if (lower.indexOf("cyloq") === 0) {
     var suffix = arena.replace(/cyloq\s*/i, "");
     return "<span class='hall-logo hall-cyloq'></span>" + suffix.trim();
   }
-
   return arena;
 }
 
@@ -368,7 +362,7 @@ async function loadMatches() {
   var resp = await fetch(url + "?nocache=" + Date.now(), { cache: "no-store" });
   var text = await resp.text();
 
-  var lines = text.split(/\r?\n/).filter(function(l){ return l.trim() !== ""; });
+  var lines = text.split(/\r?\n/).filter(l => l.trim() !== "");
   var headers = lines[0].split(";");
 
   var idx = {
@@ -385,27 +379,17 @@ async function loadMatches() {
   for (var i = 1; i < lines.length; i++) {
     var cols = lines[i].split(";");
 
-    var home = (cols[idx.Hemma] || "").toLowerCase();
-    home = home.replace(/\u00A0/g, " ");
-    home = home.replace(/\s+/g, " ");
-    home = home.trim();
+    var home = (cols[idx.Hemma] || "").toLowerCase().replace(/\u00A0/g, " ").replace(/\s+/g, " ").trim();
 
     if (
       home.indexOf("sollentuna") === -1 &&
       home.indexOf("sollentuna hc") === -1 &&
       home.indexOf("sollentuna hockey") === -1 &&
       home.indexOf("shc") === -1
-    ) {
-      continue;
-    }
+    ) continue;
 
-    var cleanSerie = "";
-    try {
-      cleanSerie = cols[idx.Serie].toString().replace(/\[[0-9]+\]/g, "").trim();
-      
-    } catch (e) {
-      cleanSerie = cols[idx.Serie] || "";
-    }
+    var cleanSerie = (cols[idx.Serie] || "").replace(/\[[0-9]+\]/g, "").trim();
+    
 
     matches.push({
       date: cols[idx.Speldatum],
@@ -417,48 +401,29 @@ async function loadMatches() {
     });
   }
 
-  matches.sort(function(a, b) {
-    if (a.date === b.date) return a.time.localeCompare(b.time);
-    return a.date.localeCompare(b.date);
-  });
+  matches.sort((a, b) => a.date === b.date ? a.time.localeCompare(b.time) : a.date.localeCompare(b.date));
 
   /* TODAY MATCHES — IGNORE YEAR */
   var now = new Date();
   var todayMonth = now.getMonth() + 1;
   var todayDay = now.getDate();
 
-  var todayMatch = matches.filter(function(m){
-    var parts = m.date.split("-");
-    var mMonth = parseInt(parts[1], 10);
-    var mDay = parseInt(parts[2], 10);
-    return mMonth === todayMonth && mDay === todayDay;
+  var todayMatch = matches.filter(m => {
+    var p = m.date.split("-");
+    return parseInt(p[1], 10) === todayMonth && parseInt(p[2], 10) === todayDay;
   });
 
-  /* UPCOMING MATCHES — STILL USE FULL DATE */
- var upcoming = matches.filter(function(m){
-  var parts = m.date.split("-");
-  var mMonth = parseInt(parts[1], 10);
-  var mDay = parseInt(parts[2], 10);
+  /* UPCOMING MATCHES — ALSO IGNORE YEAR */
+  var upcoming = matches.filter(m => {
+    var p = m.date.split("-");
+    var mMonth = parseInt(p[1], 10);
+    var mDay = parseInt(p[2], 10);
 
-  // dagens datum
-  if (mMonth === todayMonth && mDay === todayDay) return false;
+    if (mMonth === todayMonth && mDay === todayDay) return false;
+    if (mMonth > todayMonth) return true;
+    if (mMonth === todayMonth && mDay > todayDay) return true;
 
-  // match efter idag (ignorera år)
-  if (mMonth > todayMonth) return true;
-  if (mMonth === todayMonth && mDay > todayDay) return true;
-
-  return false;
-});
-
-// begränsa till 5 datum (visuellt)
-upcoming = upcoming.slice(0, 40); // 40 rader räcker för 5 datum
-
-
-  var nextDates = Object.keys(grouped).filter(function(d){ return d > todayISO; }).slice(0, 5);
-
-  var upcoming = [];
-  nextDates.forEach(function(d){
-    upcoming = upcoming.concat(grouped[d]);
+    return false;
   });
 
   /* TODAY TABLE */
@@ -466,7 +431,7 @@ upcoming = upcoming.slice(0, 40); // 40 rader räcker för 5 datum
   if (todayMatch.length === 0) {
     todayHTML = "<tr><td colspan='6' style='color:#ffeb3b; font-weight:900;'>Ingen match idag.</td></tr>";
   } else {
-    todayMatch.forEach(function(m){
+    todayMatch.forEach(m => {
       todayHTML += "<tr>" +
         "<td>" + formatDate(m.date) + "</td>" +
         "<td>" + m.time + " " + getStatus(m.date, m.time) + "</td>" +
@@ -484,7 +449,7 @@ upcoming = upcoming.slice(0, 40); // 40 rader räcker för 5 datum
   if (upcoming.length === 0) {
     upcomingHTML = "<tr><td colspan='6'>Inga kommande hemmamatcher.</td></tr>";
   } else {
-    upcoming.forEach(function(m){
+    upcoming.forEach(m => {
       upcomingHTML += "<tr>" +
         "<td>" + formatDate(m.date) + "</td>" +
         "<td>" + m.time + " " + getStatus(m.date, m.time) + "</td>" +
@@ -516,13 +481,10 @@ async function loadSponsors() {
 
   var track = document.getElementById("sponsorTrack");
 
-  var images = files.filter(function(f){
-    return f.name.match(/\.(png|jpg|jpeg|svg|webp)$/i);
-  });
-
+  var images = files.filter(f => f.name.match(/\.(png|jpg|jpeg|svg|webp)$/i));
   var loopImages = images.concat(images);
 
-  loopImages.forEach(function(img){
+  loopImages.forEach(img => {
     var el = document.createElement("img");
     el.src = img.download_url;
     track.appendChild(el);
