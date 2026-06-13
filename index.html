@@ -2,8 +2,9 @@
 <html lang="sv">
 <head>
   <meta charset="UTF-8">
-  <title>Sollentuna Hockey – Arena Style 9.7 SHC</title>
+  <title>Sollentuna Hockey – Arena Style 9.8 SHC</title>
   <meta http-equiv="refresh" content="300">
+
   <style>
     body {
       margin: 0;
@@ -11,6 +12,23 @@
       background: #0b1a3a;
       color: #fff;
       overflow: hidden;
+      position: relative;
+    }
+
+    /* SHC-draken som watermark */
+    body::before {
+      content: "";
+      position: absolute;
+      top: 20%;
+      left: 50%;
+      width: 600px;
+      height: 600px;
+      background: url('https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/shc_draken.png') no-repeat center;
+      background-size: contain;
+      opacity: 0.06;
+      transform: translateX(-50%);
+      pointer-events: none;
+      z-index: 0;
     }
 
     #clock {
@@ -30,6 +48,8 @@
       font-weight: 900;
       letter-spacing: 3px;
       color: #ffffff;
+      z-index: 10;
+      position: relative;
     }
 
     h2 {
@@ -39,6 +59,8 @@
       margin-top: 5px;
       margin-bottom: 0px;
       color: #ffffff;
+      z-index: 10;
+      position: relative;
     }
 
     h2 + table {
@@ -51,6 +73,8 @@
       border-collapse: collapse;
       font-size: 26px;
       margin-top: 0;
+      z-index: 10;
+      position: relative;
     }
 
     th {
@@ -72,12 +96,19 @@
     tr:nth-child(even) { background: #1e2f5c; }
     tr:nth-child(odd)  { background: #14244a; }
 
-    .content-area {
-      height: 90vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
+    /* Highlight dagens match */
+    .today-highlight {
+      background: #b71c1c !important;
+      color: #fff !important;
+      font-weight: 900;
     }
+
+    /* Serie-färgkodning */
+    .serie-u16 { color: #ffeb3b; font-weight: 900; }
+    .serie-u15 { color: #4caf50; font-weight: 900; }
+    .serie-u14 { color: #29b6f6; font-weight: 900; }
+    .serie-u13 { color: #ff9800; font-weight: 900; }
+    .serie-default { color: #ffffff; }
 
     /* Rullning för kommande matcher */
     #upcomingBody.scrolling {
@@ -97,6 +128,8 @@
       font-size: 14px;
       opacity: 0.7;
       margin: 5px 40px 0;
+      z-index: 10;
+      position: relative;
     }
 
     .ad-bar {
@@ -111,6 +144,7 @@
       position: absolute;
       bottom: 0;
       left: 0;
+      z-index: 10;
     }
 
     .ad-track {
@@ -132,6 +166,7 @@
     }
   </style>
 </head>
+
 <body>
 
   <div id="clock"></div>
@@ -181,7 +216,6 @@
   <div class="ad-bar">
     <div class="ad-track" id="sponsorTrack"></div>
   </div>
-
 <script>
   function updateClock() {
     const now = new Date();
@@ -217,7 +251,17 @@
       // ENDAST Sollentuna som hemmalag
       if (!cols[idx.Hemma] || !cols[idx.Hemma].includes("Sollentuna")) continue;
 
-      const cleanSerie = cols[idx.Serie].replace(/\[[0-9]+\]/g, "").trim();
+      // Felsäker regex
+      let cleanSerie = "";
+      try {
+        cleanSerie = cols[idx.Serie].toString().replace(/
+
+\[[0-9]+\]
+
+/g, "").trim();
+      } catch {
+        cleanSerie = cols[idx.Serie] ?? "";
+      }
 
       matches.push({
         date: cols[idx.Speldatum],
@@ -251,15 +295,25 @@
     // Platta ut matcherna
     const upcoming = nextDates.flatMap(d => grouped[d]);
 
+    // Serie-färgkodning
+    function serieClass(serie) {
+      const s = serie.toLowerCase();
+      if (s.includes("u16")) return "serie-u16";
+      if (s.includes("u15")) return "serie-u15";
+      if (s.includes("u14")) return "serie-u14";
+      if (s.includes("u13")) return "serie-u13";
+      return "serie-default";
+    }
+
     // Dagens matcher
     document.getElementById("todayMatchBody").innerHTML =
       todayMatch.length === 0
         ? "<tr><td colspan='6'>Ingen hemmamatch idag.</td></tr>"
         : todayMatch.map(m => `
-          <tr>
+          <tr class="today-highlight">
             <td>${m.date}</td>
             <td>${m.time}</td>
-            <td>${m.series}</td>
+            <td class="${serieClass(m.series)}">${m.series}</td>
             <td>${m.home}</td>
             <td>${m.away}</td>
             <td>${m.arena}</td>
@@ -274,7 +328,7 @@
           <tr>
             <td>${m.date}</td>
             <td>${m.time}</td>
-            <td>${m.series}</td>
+            <td class="${serieClass(m.series)}">${m.series}</td>
             <td>${m.home}</td>
             <td>${m.away}</td>
             <td>${m.arena}</td>
