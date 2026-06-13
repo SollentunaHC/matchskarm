@@ -26,8 +26,8 @@
 
     header {
       text-align: center;
-      padding: 25px 0 10px;
-      font-size: 72px;
+      padding: 25px 0 5px;
+      font-size: 78px;
       font-weight: 900;
       letter-spacing: 3px;
       color: #ffffff;
@@ -35,11 +35,44 @@
 
     h2 {
       text-align: center;
-      font-size: 36px;
+      font-size: 40px;
       font-weight: 900;
-      margin: 15px 0;
+      margin-top: 5px;
+      margin-bottom: 0px;
       color: #ffffff;
     }
+
+    /* Flytta upp tabellerna */
+    h2 + table {
+      margin-top: -8px;
+    }
+
+    table {
+      width: 90%;
+      margin: auto;
+      border-collapse: collapse;
+      font-size: 26px;
+      margin-top: 0;
+    }
+
+    th {
+      background: #c62828;
+      color: #fff;
+      padding: 16px 10px;
+      text-align: left;
+      font-weight: 900;
+      font-size: 30px;
+    }
+
+    td {
+      padding: 16px 10px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      font-size: 26px;
+      font-weight: 600;
+    }
+
+    tr:nth-child(even) { background: #1e2f5c; }
+    tr:nth-child(odd)  { background: #14244a; }
 
     .content-area {
       height: 90vh;
@@ -47,32 +80,6 @@
       flex-direction: column;
       justify-content: flex-start;
     }
-
-    table {
-      width: 90%;
-      margin: auto;
-      border-collapse: collapse;
-      font-size: 24px;
-    }
-
-    th {
-      background: #c62828;
-      color: #fff;
-      padding: 14px;
-      text-align: left;
-      font-weight: 900;
-      font-size: 26px;
-    }
-
-    td {
-      padding: 14px;
-      border-bottom: 1px solid rgba(255,255,255,0.1);
-      font-size: 24px;
-      font-weight: 600;
-    }
-
-    tr:nth-child(even) { background: #1e2f5c; }
-    tr:nth-child(odd)  { background: #14244a; }
 
     footer {
       text-align: right;
@@ -165,7 +172,6 @@
     <div class="ad-track" id="sponsorTrack"></div>
   </div>
 <script>
-  /* Klocka */
   function updateClock() {
     const now = new Date();
     document.getElementById("clock").textContent =
@@ -174,7 +180,6 @@
   setInterval(updateClock, 1000);
   updateClock();
 
-  /* Hämta matcher */
   async function loadMatches() {
     const url = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/Spelschema_2627.csv";
 
@@ -199,7 +204,6 @@
       const cols = lines[i].split(";");
       if (!cols[idx.Hemma] || !cols[idx.Hemma].includes("Sollentuna")) continue;
 
-      // Ta bort serienummer [xxxx]
       const cleanSerie = cols[idx.Serie].replace(/\s*
 
 \[\d+\]
@@ -225,9 +229,7 @@
     const todayMatch = matches.filter(m => m.date === today);
     const upcoming = matches.filter(m => m.date > today).slice(0, 10);
 
-    // Dagens matcher
-    const todayBody = document.getElementById("todayMatchBody");
-    todayBody.innerHTML =
+    document.getElementById("todayMatchBody").innerHTML =
       todayMatch.length === 0
         ? "<tr><td colspan='6'>Ingen hemmamatch idag.</td></tr>"
         : todayMatch.map(m => `
@@ -241,9 +243,7 @@
           </tr>
         `).join("");
 
-    // Kommande matcher
-    const upcomingBody = document.getElementById("upcomingBody");
-    upcomingBody.innerHTML =
+    document.getElementById("upcomingBody").innerHTML =
       upcoming.length === 0
         ? "<tr><td colspan='6'>Inga kommande hemmamatcher.</td></tr>"
         : upcoming.map(m => `
@@ -263,7 +263,6 @@
 
   loadMatches();
 
-  /* Sponsorer */
   async function loadSponsors() {
     const apiUrl = "https://api.github.com/repos/SollentunaHC/matchskarm/contents/sponsors";
 
