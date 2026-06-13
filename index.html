@@ -435,13 +435,24 @@ async function loadMatches() {
   });
 
   /* UPCOMING MATCHES — STILL USE FULL DATE */
-  var todayISO = now.toISOString().split("T")[0];
+ var upcoming = matches.filter(function(m){
+  var parts = m.date.split("-");
+  var mMonth = parseInt(parts[1], 10);
+  var mDay = parseInt(parts[2], 10);
 
-  var grouped = {};
-  matches.forEach(function(m){
-    if (!grouped[m.date]) grouped[m.date] = [];
-    grouped[m.date].push(m);
-  });
+  // dagens datum
+  if (mMonth === todayMonth && mDay === todayDay) return false;
+
+  // match efter idag (ignorera år)
+  if (mMonth > todayMonth) return true;
+  if (mMonth === todayMonth && mDay > todayDay) return true;
+
+  return false;
+});
+
+// begränsa till 5 datum (visuellt)
+upcoming = upcoming.slice(0, 40); // 40 rader räcker för 5 datum
+
 
   var nextDates = Object.keys(grouped).filter(function(d){ return d > todayISO; }).slice(0, 5);
 
