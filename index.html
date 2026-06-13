@@ -2,7 +2,7 @@
 <html lang="sv">
 <head>
 <meta charset="UTF-8">
-<title>Sollentuna Hockey – Arena Style 10.6 SHC</title>
+<title>Sollentuna Hockey – Arena Style 10.7 SHC</title>
 <meta http-equiv="refresh" content="300">
 
 <style>
@@ -177,6 +177,12 @@ table.match-table {
   color: #ffffff;
 }
 
+/* Reduced row height ONLY for upcoming matches */
+#upcomingBody td {
+  padding-top: 0.3vh;
+  padding-bottom: 0.3vh;
+}
+
 /* Scrolling upcoming matches */
 #upcomingBody.scrolling {
   display: block;
@@ -288,7 +294,6 @@ footer {
 <div class="ad-bar">
 <div class="ad-track" id="sponsorTrack"></div>
 </div>
-
 <script>
 function updateClock() {
   var now = new Date();
@@ -327,7 +332,7 @@ function arenaColor(arena) {
   return "arena-blue";
 }
 
-/* CYLOQ LOGO */
+/* CYLOQ LOGO + COLOR */
 function hallWithLogo(arena) {
   if (!arena) return "";
   var lower = arena.toLowerCase();
@@ -492,3 +497,4 @@ loadSponsors();
 
 </body>
 </html>
+
