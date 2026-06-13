@@ -2,7 +2,7 @@
 <html lang="sv">
 <head>
   <meta charset="UTF-8">
-  <title>Sollentuna HC – Arena Style 9.0</title>
+  <title>Sollentuna HC – Arena Style 9.1</title>
   <meta http-equiv="refresh" content="300">
   <style>
     body {
@@ -47,7 +47,7 @@
     .away { color: #ffb84c; font-weight: 600; }
     .arena-cyloq { color: #4cb8ff; font-weight: 600; }
 
-    /* Rullgardin */
+    /* Scrollbox för kommande matcher */
     .scroll-box {
       max-height: 420px;
       overflow-y: auto;
@@ -65,9 +65,9 @@
 </head>
 <body>
 
-  <h1>Sollentuna HC – Arena Style 9.0</h1>
+  <h1>Sollentuna HC – Arena Style 9.1</h1>
 
-  <h2>Dagens match</h2>
+  <h2>Dagens hemmamatch</h2>
   <table>
     <thead>
       <tr>
@@ -79,7 +79,7 @@
     </tbody>
   </table>
 
-  <h2>Kommande matcher</h2>
+  <h2>Kommande hemmamatcher</h2>
   <div class="scroll-box">
     <table>
       <thead>
@@ -118,16 +118,15 @@
 
       for (let i = 1; i < lines.length; i++) {
         const cols = lines[i].split(";");
-        const home = cols[idx.Hemma] || "";
-        const away = cols[idx.Borta] || "";
 
-        if (!home.includes("Sollentuna HC") && !away.includes("Sollentuna HC")) continue;
+        // Endast Sollentunas hemmamatcher
+        if (!cols[idx.Hemma] || !cols[idx.Hemma].includes("Sollentuna HC")) continue;
 
         matches.push({
           date: cols[idx.Speldatum],
           time: cols[idx.Tid],
-          home,
-          away,
+          home: cols[idx.Hemma],
+          away: cols[idx.Borta],
           arena: cols[idx.Arena],
           series: cols[idx.Serie]
         });
@@ -140,18 +139,18 @@
       const todayMatch = matches.filter(m => m.date === today);
       const upcoming = matches.filter(m => m.date > today);
 
-      // Begränsa till 10 kommande matcher
+      // Begränsa kommande matcher till 10
       const upcomingLimited = upcoming.slice(0, 10);
 
       const todayBody = document.getElementById("todayMatchBody");
       const upcomingBody = document.getElementById("upcomingBody");
 
       todayBody.innerHTML = todayMatch.length === 0
-        ? "<tr><td colspan='6'>Ingen match idag.</td></tr>"
+        ? "<tr><td colspan='6'>Ingen hemmamatch idag.</td></tr>"
         : todayMatch.map(m => row(m)).join("");
 
       upcomingBody.innerHTML = upcomingLimited.length === 0
-        ? "<tr><td colspan='6'>Inga kommande matcher.</td></tr>"
+        ? "<tr><td colspan='6'>Inga kommande hemmamatcher.</td></tr>"
         : upcomingLimited.map(m => row(m)).join("");
 
       document.getElementById("updatedInfo").textContent =
@@ -159,16 +158,14 @@
     }
 
     function row(m) {
-      const homeClass = m.home.includes("Sollentuna HC") ? "home" : "away";
-      const awayClass = m.away.includes("Sollentuna HC") ? "home" : "away";
       const arenaClass = m.arena.toLowerCase().includes("cyloq") ? "arena-cyloq" : "";
 
       return `
         <tr>
           <td>${m.date}</td>
           <td>${m.time}</td>
-          <td class="${homeClass}">${m.home}</td>
-          <td class="${awayClass}">${m.away}</td>
+          <td class="home">${m.home}</td>
+          <td class="away">${m.away}</td>
           <td class="${arenaClass}">${m.arena}</td>
           <td>${m.series}</td>
         </tr>`;
