@@ -49,4 +49,73 @@
 
     .card img {
       max-width: 90%;
-      max-height
+      max-height: 90%;
+      object-fit: contain;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">Tack till våra sponsorer</div>
+
+  <div class="grid" id="grid"></div>
+
+  <script>
+    const grid = document.getElementById("grid");
+    const SLOTS = 6;
+    const INTERVAL = 15000;
+
+    // RÄTT API-URL FÖR DIN STRUKTUR
+    const API_URL =
+      "https://api.github.com/repos/sollentunahc/matchskarm/contents/sponsorscreen/logos";
+
+    async function loadLogos() {
+      const response = await fetch(API_URL);
+      const files = await response.json();
+
+      return files
+        .filter(f => f.type === "file")
+        .filter(f => /\.(png|jpg|jpeg|svg|webp)$/i.test(f.name))
+        .map(f => f.download_url);
+    }
+
+    function shuffle(arr) {
+      return arr
+        .map(x => ({ x, r: Math.random() }))
+        .sort((a, b) => a.r - b.r)
+        .map(o => o.x);
+    }
+
+    function render(urls) {
+      grid.style.opacity = 0;
+
+      setTimeout(() => {
+        grid.innerHTML = "";
+        const selected = shuffle(urls).slice(0, SLOTS);
+
+        selected.forEach(url => {
+          const card = document.createElement("div");
+          card.className = "card";
+
+          const img = document.createElement("img");
+          img.src = url;
+
+          card.appendChild(img);
+          grid.appendChild(card);
+        });
+
+        grid.style.opacity = 1;
+      }, 600);
+    }
+
+    async function start() {
+      const logos = await loadLogos();
+      render(logos);
+      setInterval(() => render(logos), INTERVAL);
+    }
+
+    start();
+  </script>
+
+</body>
+</html>
