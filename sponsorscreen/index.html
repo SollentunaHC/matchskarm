@@ -148,9 +148,14 @@
 
   <script>
     const grid = document.getElementById("grid");
-    const INTERVAL = 5000;
 
-    /* ✔ RÄTT SÖKVÄG */
+    /* Layoutrotation var 15 sek */
+    const LAYOUT_INTERVAL = 15000;
+
+    /* Bildbyte var 5 sek */
+    const IMAGE_INTERVAL = 5000;
+
+    /* Din korrekta sökväg */
     const API_URL =
       "https://api.github.com/repos/sollentunahc/matchskarm/contents/sponsorscreen/logos";
 
@@ -187,12 +192,22 @@
       return layout.cols * layout.rows;
     }
 
-    function render(urls) {
+    function render(urls, changeLayout = true) {
       grid.style.opacity = 0;
 
       setTimeout(() => {
         grid.innerHTML = "";
-        const cellCount = applyLayout();
+
+        let cellCount;
+
+        if (changeLayout) {
+          cellCount = applyLayout();
+        } else {
+          const cols = getComputedStyle(grid).gridTemplateColumns.split(" ").length;
+          const rows = getComputedStyle(grid).gridTemplateRows.split(" ").length;
+          cellCount = cols * rows;
+        }
+
         const selected = shuffle(urls).slice(0, cellCount);
 
         selected.forEach(url => {
@@ -213,8 +228,15 @@
 
     async function start() {
       const logos = await loadLogos();
+
+      /* Första visningen */
       render(logos);
-      setInterval(() => render(logos), INTERVAL);
+
+      /* Byt layout + bilder var 15 sek */
+      setInterval(() => render(logos, true), LAYOUT_INTERVAL);
+
+      /* Byt bara bilder var 5 sek */
+      setInterval(() => render(logos, false), IMAGE_INTERVAL);
     }
 
     start();
