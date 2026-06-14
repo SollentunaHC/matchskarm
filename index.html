@@ -357,16 +357,15 @@ function hallWithLogo(arena) {
 
 /* LOAD MATCHES */
 async function loadMatches() {
-  var url = "https://raw.githubusercontent.com/SollentunaHC/SollentunaHC/main/Spelschema_2627.csv";
+  const url = "https://raw.githubusercontent.com/SollentunaHC/SollentunaHC/main/Spelschema_2627.csv";
 
+  const resp = await fetch(url + "?nocache=" + Date.now(), { cache: "no-store" });
+  const text = await resp.text();
 
-  var resp = await fetch(url + "?nocache=" + Date.now(), { cache: "no-store" });
-  var text = await resp.text();
+  const lines = text.split(/\r?\n/).filter(l => l.trim() !== "");
+  const headers = lines[0].split(";");
 
-  var lines = text.split(/\r?\n/).filter(l => l.trim() !== "");
-  var headers = lines[0].split(";");
-
-  var idx = {
+  const idx = {
     Speldatum: headers.indexOf("Speldatum"),
     Tid: headers.indexOf("Tid"),
     Hemma: headers.indexOf("Hemma"),
@@ -375,12 +374,16 @@ async function loadMatches() {
     Serie: headers.indexOf("Serie")
   };
 
-  var matches = [];
+  const matches = [];
 
-  for (var i = 1; i < lines.length; i++) {
-    var cols = lines[i].split(";");
+  for (let i = 1; i < lines.length; i++) {
+    const cols = lines[i].split(";");
 
-    var home = (cols[idx.Hemma] || "").toLowerCase().replace(/\u00A0/g, " ").replace(/\s+/g, " ").trim();
+    const home = (cols[idx.Hemma] || "")
+      .toLowerCase()
+      .replace(/\u00A0/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
 
     if (
       home.indexOf("sollentuna") === -1 &&
@@ -389,58 +392,32 @@ async function loadMatches() {
       home.indexOf("shc") === -1
     ) continue;
 
-    var cleanSerie = (cols[idx.Serie] || "").replace(/\[[0-9]+\]/g, "").trim();
-
     matches.push({
-  date: cols[idx.Speldatum],
-});
-
-return parseInt(parts[1], 10) === todayMonth && parseInt(parts[2], 10) === todayDay;
-}
-
- /* UPCOMING MATCHES — IGNORE YEAR BUT GROUP BY DATE */
-var upcomingGrouped = {};
-  /* UPCOMING MATCHES — IGNORE YEAR + GROUP BY DATE */
-  var upcomingGrouped = {};
-
-matches.forEach(function(m){
-  var parts = m.date.split("-");
-  var mMonth = parseInt(parts[1], 10);
-  var mDay = parseInt(parts[2], 10);
-  matches.forEach(function(m){
-    var p = m.date.split("-");
-    var mMonth = parseInt(p[1], 10);
-    var mDay = parseInt(p[2], 10);
-
-  // hoppa över dagens datum
-  if (mMonth === todayMonth && mDay === todayDay) return;
-    if (mMonth === todayMonth && mDay === todayDay) return;
-
-  // framtida datum (ignorera år)
-  if (mMonth > todayMonth || (mMonth === todayMonth && mDay > todayDay)) {
-    var key = mMonth + "-" + mDay;
-    if (!upcomingGrouped[key]) upcomingGrouped[key] = [];
-    upcomingGrouped[key].push(m);
+      date: cols[idx.Speldatum],
+      time: cols[idx.Tid],
+      home: cols[idx.Hemma],
+      away: cols[idx.Borta],
+      arena: cols[idx.Arena],
+      series: (cols[idx.Serie] || "").replace(/\[[0-9]+\]/g, "").trim()
+    });
   }
-});
-    if (mMonth > todayMonth || (mMonth === todayMonth && mDay > todayDay)) {
-      var key = mMonth + "-" + mDay;
-      if (!upcomingGrouped[key]) upcomingGrouped[key] = [];
-      upcomingGrouped[key].push(m);
-    }
+
+  // --- TODAY ---
+  const now = new Date();
+  const todayMonth = now.getMonth() + 1;
+  const todayDay = now.getDate();
+
+  const todayMatches = matches.filter(m => {
+    const p = m.date.split("-");
+    return parseInt(p[1], 10) === todayMonth && parseInt(p[2], 10) === todayDay;
   });
 
-var upcomingKeys = Object.keys(upcomingGrouped).slice(0, 5);
-var upcomingHTML = "";
-  var upcomingKeys = Object.keys(upcomingGrouped).slice(0, 5);
-  var upcomingHTML = "";
-
-if (upcomingKeys.length === 0) {
-  upcomingHTML = "<tr><td colspan='6'>Inga kommande hemmamatcher.</td></tr>";
-} else {
-  upcomingKeys.forEach(function(key){
-    upcomingGrouped[key].forEach(function(m){
-      upcomingHTML += "<tr>" +
+  let todayHTML = "";
+  if (todayMatches.length === 0) {
+    todayHTML = "<tr><td colspan='6'>Inga matcher idag.</td></tr>";
+  } else {
+    todayMatches.forEach(m => {
+      todayHTML += "<tr>" +
         "<td>" + formatDate(m.date) + "</td>" +
         "<td>" + m.time + " " + getStatus(m.date, m.time) + "</td>" +
         "<td>" + m.series + "</td>" +
@@ -448,11 +425,36 @@ if (upcomingKeys.length === 0) {
         "<td>" + m.away + "</td>" +
         "<td>" + hallWithLogo(m.arena) + "</td>" +
       "</tr>";
+    });
+  }
+
+  document.getElementById("todayMatchBody").innerHTML = todayHTML;
+
+  // --- UPCOMING ---
+  const upcomingGrouped = {};
+
+  matches.forEach(m => {
+    const p = m.date.split("-");
+    const mMonth = parseInt(p[1], 10);
+    const mDay = parseInt(p[2], 10);
+
+    if (mMonth === todayMonth && mDay === todayDay) return;
+
+    if (mMonth > todayMonth || (mMonth === todayMonth && mDay > todayDay)) {
+      const key = mMonth + "-" + mDay;
+      if (!upcomingGrouped[key]) upcomingGrouped[key] = [];
+      upcomingGrouped[key].push(m);
+    }
+  });
+
+  const upcomingKeys = Object.keys(upcomingGrouped).slice(0, 5);
+  let upcomingHTML = "";
+
   if (upcomingKeys.length === 0) {
     upcomingHTML = "<tr><td colspan='6'>Inga kommande hemmamatcher.</td></tr>";
   } else {
-    upcomingKeys.forEach(function(key){
-      upcomingGrouped[key].forEach(function(m){
+    upcomingKeys.forEach(key => {
+      upcomingGrouped[key].forEach(m => {
         upcomingHTML += "<tr>" +
           "<td>" + formatDate(m.date) + "</td>" +
           "<td>" + m.time + " " + getStatus(m.date, m.time) + "</td>" +
@@ -463,13 +465,18 @@ if (upcomingKeys.length === 0) {
         "</tr>";
       });
     });
+  }
 
-document.getElementById("upcomingBody").innerHTML = upcomingHTML;
+  document.getElementById("upcomingBody").innerHTML = upcomingHTML;
 
-if (upcomingKeys.length > 10) {
-  document.getElementById("upcomingBody").classList.add("scrolling");
+  if (upcomingKeys.length > 10) {
+    document.getElementById("upcomingBody").classList.add("scrolling");
+  }
+
+  document.getElementById("updatedInfo").textContent =
+    "Senast uppdaterad: " + new Date().toLocaleString("sv-SE");
 }
-
+  
 /* TODAY TABLE */
 var todayHTML = "";
 document.getElementById("todayMatchBody").innerHTML = todayHTML;
