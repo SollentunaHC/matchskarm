@@ -289,10 +289,15 @@ footer {
 <div class="ad-track" id="sponsorTrack"></div>
 </div>
 <script>
+/* DIGITAL CLOCK */
 function updateClock() {
-  var now = new Date();
+  const now = new Date();
   document.getElementById("clock").textContent =
-    now.toLocaleTimeString("sv-SE", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+    now.toLocaleTimeString("sv-SE", {
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit"
+    });
 }
 setInterval(updateClock, 1000);
 updateClock();
@@ -300,23 +305,13 @@ updateClock();
 /* FORMAT DATE → "14 juni" */
 function formatDate(dateStr) {
   if (!dateStr) return "";
-
-  var parts = dateStr.split("-");
+  const parts = dateStr.split("-");
   if (parts.length !== 3) return dateStr;
 
-  var months = {
-    "01": "januari",
-    "02": "februari",
-    "03": "mars",
-    "04": "april",
-    "05": "maj",
-    "06": "juni",
-    "07": "juli",
-    "08": "augusti",
-    "09": "september",
-    "10": "oktober",
-    "11": "november",
-    "12": "december"
+  const months = {
+    "01": "januari", "02": "februari", "03": "mars", "04": "april",
+    "05": "maj", "06": "juni", "07": "juli", "08": "augusti",
+    "09": "september", "10": "oktober", "11": "november", "12": "december"
   };
 
   return parseInt(parts[2], 10) + " " + months[parts[1]];
@@ -325,20 +320,16 @@ function formatDate(dateStr) {
 /* LIVE STATUS */
 function getStatus(dateStr, timeStr) {
   if (!dateStr || !timeStr) return "";
+  const now = new Date();
+  const start = new Date(dateStr + "T" + timeStr);
+  const diffMinutes = (start - now) / 60000;
+  const diffSinceStart = (now - start) / 60000;
 
-  var now = new Date();
-  var start = new Date(dateStr + "T" + timeStr);
-
-  var diffMinutes = (start - now) / 60000;
-  var diffSinceStart = (now - start) / 60000;
-
-  if (diffMinutes > 0 && diffMinutes <= 60) {
+  if (diffMinutes > 0 && diffMinutes <= 60)
     return "<span class='status-tag status-soon'>SNART</span>";
-  }
 
-  if (diffSinceStart >= 0 && diffSinceStart <= 120) {
-    return "<span class='status-tag status-live'>PAGAR</span>";
-  }
+  if (diffSinceStart >= 0 && diffSinceStart <= 120)
+    return "<span class='status-tag status-live'>PÅGÅR</span>";
 
   return "";
 }
@@ -346,10 +337,9 @@ function getStatus(dateStr, timeStr) {
 /* CYLOQ LOGO ONLY */
 function hallWithLogo(arena) {
   if (!arena) return "";
-  var lower = arena.toLowerCase();
-
+  const lower = arena.toLowerCase();
   if (lower.indexOf("cyloq") === 0) {
-    var suffix = arena.replace(/cyloq\s*/i, "");
+    const suffix = arena.replace(/cyloq\s*/i, "");
     return "<span class='hall-logo hall-cyloq'></span>" + suffix.trim();
   }
   return arena;
@@ -358,7 +348,6 @@ function hallWithLogo(arena) {
 /* LOAD MATCHES */
 async function loadMatches() {
   const url = "https://raw.githubusercontent.com/SollentunaHC/SollentunaHC/main/Spelschema_2627.csv";
-
   const resp = await fetch(url + "?nocache=" + Date.now(), { cache: "no-store" });
   const text = await resp.text();
 
@@ -378,7 +367,6 @@ async function loadMatches() {
 
   for (let i = 1; i < lines.length; i++) {
     const cols = lines[i].split(";");
-
     const home = (cols[idx.Hemma] || "")
       .toLowerCase()
       .replace(/\u00A0/g, " ")
@@ -402,11 +390,11 @@ async function loadMatches() {
     });
   }
 
-  // --- TODAY ---
   const now = new Date();
   const todayMonth = now.getMonth() + 1;
   const todayDay = now.getDate();
 
+  /* TODAY MATCHES */
   const todayMatches = matches.filter(m => {
     const p = m.date.split("-");
     return parseInt(p[1], 10) === todayMonth && parseInt(p[2], 10) === todayDay;
@@ -427,19 +415,15 @@ async function loadMatches() {
       "</tr>";
     });
   }
-
   document.getElementById("todayMatchBody").innerHTML = todayHTML;
 
-  // --- UPCOMING ---
+  /* UPCOMING MATCHES */
   const upcomingGrouped = {};
-
   matches.forEach(m => {
     const p = m.date.split("-");
     const mMonth = parseInt(p[1], 10);
     const mDay = parseInt(p[2], 10);
-
     if (mMonth === todayMonth && mDay === todayDay) return;
-
     if (mMonth > todayMonth || (mMonth === todayMonth && mDay > todayDay)) {
       const key = mMonth + "-" + mDay;
       if (!upcomingGrouped[key]) upcomingGrouped[key] = [];
@@ -449,7 +433,6 @@ async function loadMatches() {
 
   const upcomingKeys = Object.keys(upcomingGrouped).slice(0, 5);
   let upcomingHTML = "";
-
   if (upcomingKeys.length === 0) {
     upcomingHTML = "<tr><td colspan='6'>Inga kommande hemmamatcher.</td></tr>";
   } else {
@@ -468,67 +451,32 @@ async function loadMatches() {
   }
 
   document.getElementById("upcomingBody").innerHTML = upcomingHTML;
-
-  if (upcomingKeys.length > 10) {
+  if (upcomingKeys.length > 10)
     document.getElementById("upcomingBody").classList.add("scrolling");
-  }
 
   document.getElementById("updatedInfo").textContent =
     "Senast uppdaterad: " + new Date().toLocaleString("sv-SE");
 }
-  
-/* TODAY TABLE */
-var todayHTML = "";
-document.getElementById("todayMatchBody").innerHTML = todayHTML;
-
-/* UPCOMING TABLE */
-var upcomingHTML = "";
-if (upcoming.length === 0) {
-  upcomingHTML = "<tr><td colspan='6'>Inga kommande hemmamatcher.</td></tr>";
-} else {
-  upcoming.forEach(m => {
-    upcomingHTML += "<tr>" +
-      "<td>" + formatDate(m.date) + "</td>" +
-      "<td>" + m.time + " " + getStatus(m.date, m.time) + "</td>" +
-      "<td>" + m.series + "</td>" +
-      "<td>" + m.home + "</td>" +
-      "<td>" + m.away + "</td>" +
-      "<td>" + hallWithLogo(m.arena) + "</td>" +
-    "</tr>";
-  });
-}
-
-document.getElementById("upcomingBody").innerHTML = upcomingHTML;
-
-if (upcoming.length > 10) {
-  document.getElementById("upcomingBody").classList.add("scrolling");
-}
-
-document.getElementById("updatedInfo").textContent =
-  "Senast uppdaterad: " + new Date().toLocaleString("sv-SE");
-
-loadMatches();
-
 
 /* SPONSORS */
 async function loadSponsors() {
-  var apiUrl = "https://api.github.com/repos/SollentunaHC/matchskarm/contents/sponsors";
+  const apiUrl = "https://api.github.com/repos/SollentunaHC/matchskarm/contents/sponsors";
+  const resp = await fetch(apiUrl);
+  const files = await resp.json();
+  const track = document.getElementById("sponsorTrack");
 
-  var resp = await fetch(apiUrl);
-  var files = await resp.json();
-
-  var track = document.getElementById("sponsorTrack");
-
-  var images = files.filter(f => f.name.match(/\.(png|jpg|jpeg|svg|webp)$/i));
-  var loopImages = images.concat(images);
+  const images = files.filter(f => f.name.match(/\.(png|jpg|jpeg|svg|webp)$/i));
+  const loopImages = images.concat(images);
 
   loopImages.forEach(img => {
-    var el = document.createElement("img");
+    const el = document.createElement("img");
     el.src = img.download_url;
     track.appendChild(el);
   });
 }
 
+/* INIT */
+loadMatches();
 loadSponsors();
 </script>
 
