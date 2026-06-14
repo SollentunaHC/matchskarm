@@ -2,36 +2,45 @@
 <html lang="sv">
 <head>
     <meta charset="UTF-8">
-    <title>Sollentuna Hockey – Matchskärm</title>
+    <title>Sollentuna Hockey – Arena Style 10.9</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <style>
         :root {
             --shc-blue: #001633;
+            --shc-blue-dark: #000d20;
             --shc-red: #c8102e;
             --shc-white: #ffffff;
             --shc-grey: #cccccc;
         }
 
-        body {
+        * {
+            box-sizing: border-box;
             margin: 0;
+            padding: 0;
+        }
+
+        body {
             font-family: Arial, Helvetica, sans-serif;
             background: radial-gradient(circle at top, #002b5c 0%, #000814 55%, #000000 100%);
             color: var(--shc-white);
+            height: 100vh;
             overflow: hidden;
         }
 
         .page {
-            padding: 20px 30px;
-            height: 100vh;
             display: flex;
             flex-direction: column;
+            height: 100vh;
+            padding: 20px 30px;
+            position: relative;
         }
 
         .header {
             display: flex;
             justify-content: space-between;
             align-items: baseline;
+            margin-bottom: 10px;
         }
 
         .title {
@@ -46,18 +55,20 @@
         }
 
         .sections {
-            margin-top: 15px;
             display: grid;
             grid-template-rows: 1fr 1fr;
-            gap: 20px;
+            gap: 18px;
             flex: 1;
+            margin-top: 10px;
         }
 
         .section {
             background: rgba(0, 0, 0, 0.55);
-            border: 2px solid var(--shc-red);
             border-radius: 10px;
+            border: 2px solid var(--shc-red);
+            box-shadow: 0 0 25px rgba(0, 0, 0, 0.7);
             overflow: hidden;
+            position: relative;
         }
 
         .section-header {
@@ -69,7 +80,7 @@
         }
 
         .table-wrapper {
-            padding: 10px 14px;
+            padding: 8px 14px 10px 14px;
             height: calc(100% - 40px);
         }
 
@@ -79,49 +90,68 @@
             font-size: 18px;
         }
 
-        th {
-            color: var(--shc-grey);
-            font-size: 16px;
-            font-weight: 700;
-            padding-bottom: 4px;
+        thead {
+            border-bottom: 2px solid rgba(255, 255, 255, 0.25);
         }
 
-        td {
+        th, td {
             padding: 4px 6px;
+            text-align: left;
+            white-space: nowrap;
+        }
+
+        th {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--shc-grey);
         }
 
         tbody tr:nth-child(even) {
             background: rgba(255, 255, 255, 0.03);
         }
 
-        .today-row {
+        tbody tr.today-row {
             background: rgba(200, 16, 46, 0.25);
+        }
+
+        .col-datum { width: 11%; }
+        .col-tid   { width: 8%;  }
+        .col-serie { width: 30%; }
+        .col-hemma { width: 23%; }
+        .col-borta { width: 23%; }
+        .col-arena { width: 15%; }
+
+        .watermark {
+            position: absolute;
+            right: 2%;
+            bottom: -10%;
+            width: 40%;
+            opacity: 0.06;
+            filter: drop-shadow(0 0 12px rgba(0, 0, 0, 0.9));
+            pointer-events: none;
         }
     </style>
 </head>
-
 <body>
 <div class="page">
-
     <div class="header">
         <div class="title">SOLLENTUNA HOCKEY</div>
         <div class="clock" id="clock">--:--:--</div>
     </div>
 
     <div class="sections">
-
         <div class="section">
             <div class="section-header">DAGENS MATCHER</div>
             <div class="table-wrapper">
                 <table>
                     <thead>
                     <tr>
-                        <th>DATUM</th>
-                        <th>TID</th>
-                        <th>SERIE</th>
-                        <th>HEMMALAG</th>
-                        <th>BORTALAG</th>
-                        <th>ARENA</th>
+                        <th class="col-datum">DATUM</th>
+                        <th class="col-tid">TID</th>
+                        <th class="col-serie">SERIE</th>
+                        <th class="col-hemma">HEMMALAG</th>
+                        <th class="col-borta">BORTALAG</th>
+                        <th class="col-arena">HALL</th>
                     </tr>
                     </thead>
                     <tbody id="today-body">
@@ -137,12 +167,12 @@
                 <table>
                     <thead>
                     <tr>
-                        <th>DATUM</th>
-                        <th>TID</th>
-                        <th>SERIE</th>
-                        <th>HEMMALAG</th>
-                        <th>BORTALAG</th>
-                        <th>ARENA</th>
+                        <th class="col-datum">DATUM</th>
+                        <th class="col-tid">TID</th>
+                        <th class="col-serie">SERIE</th>
+                        <th class="col-hemma">HEMMALAG</th>
+                        <th class="col-borta">BORTALAG</th>
+                        <th class="col-arena">HALL</th>
                     </tr>
                     </thead>
                     <tbody id="upcoming-body">
@@ -151,24 +181,29 @@
                 </table>
             </div>
         </div>
-
     </div>
 
+    <!-- Lägg in draken här om du vill, annars ta bort raden -->
+    <!-- <img class="watermark" src="dragon.png" alt="SHC-draken"> -->
 </div>
 
 <script>
+    // Arena Style 10.9
     const DATA_URL = "DIN_WORKER_URL_HÄR";
 
     function updateClock() {
         const now = new Date();
-        document.getElementById("clock").textContent =
-            now.toLocaleTimeString("sv-SE", { hour12: false });
+        const hh = String(now.getHours()).padStart(2, "0");
+        const mm = String(now.getMinutes()).padStart(2, "0");
+        const ss = String(now.getSeconds()).padStart(2, "0");
+        document.getElementById("clock").textContent = `${hh}:${mm}:${ss}`;
     }
 
     function parseCSV(text) {
         const lines = text.trim().split(/\r?\n/);
-        const header = lines[0].split(";");
+        if (lines.length < 2) return [];
 
+        const header = lines[0].split(";");
         const idx = {
             Datum: header.indexOf("Datum"),
             Tid: header.indexOf("Tid"),
@@ -179,22 +214,22 @@
         };
 
         const matches = [];
-
         for (let i = 1; i < lines.length; i++) {
             const cols = lines[i].split(";");
-
             const hemma = cols[idx.Hemma] || "";
             const borta = cols[idx.Borta] || "";
 
-            if (!hemma.includes("Sollentuna") && !borta.includes("Sollentuna")) continue;
+            // Endast Sollentuna som hemmalag i 10.9
+            if (!hemma.includes("Sollentuna")) continue;
 
-            const cleanSerie = (cols[idx.Serie] || "")
-                .replace(/
+            const rawSerie = cols[idx.Serie] || "";
+            const cleanSerie = rawSerie
+                .replace(/\s*
 
-\[[0-9]+\]
+\[\d+\]
 
-/g, "")
-                .replace(/\(\d+\)/g, "")
+\s*/g, "")   // tar bort [97032]
+                .replace(/\s*\(\d+\)\s*/g, "")   // tar bort (12345)
                 .trim();
 
             matches.push({
@@ -206,7 +241,6 @@
                 arena: cols[idx.Arena] || ""
             });
         }
-
         return matches;
     }
 
@@ -215,45 +249,47 @@
         return dateStr === today;
     }
 
-    function render(matches) {
+    function renderMatches(matches) {
         const todayBody = document.getElementById("today-body");
         const upcomingBody = document.getElementById("upcoming-body");
-
         todayBody.innerHTML = "";
         upcomingBody.innerHTML = "";
 
-        const today = matches.filter(m => isToday(m.datum));
-        const upcoming = matches.filter(m => !isToday(m.datum));
+        const todayMatches = matches.filter(m => isToday(m.datum));
+        const upcomingMatches = matches.filter(m => !isToday(m.datum));
 
-        if (today.length === 0) {
+        if (todayMatches.length === 0) {
             todayBody.innerHTML = `<tr><td colspan="6">Inga matcher idag.</td></tr>`;
         } else {
-            today.forEach(m => {
-                todayBody.innerHTML += `
-                    <tr class="today-row">
-                        <td>${m.datum}</td>
-                        <td>${m.tid}</td>
-                        <td>${m.serie}</td>
-                        <td>${m.hemma}</td>
-                        <td>${m.borta}</td>
-                        <td>${m.arena}</td>
-                    </tr>`;
+            todayMatches.forEach(m => {
+                const tr = document.createElement("tr");
+                tr.classList.add("today-row");
+                tr.innerHTML = `
+                    <td>${m.datum}</td>
+                    <td>${m.tid}</td>
+                    <td>${m.serie}</td>
+                    <td>${m.hemma}</td>
+                    <td>${m.borta}</td>
+                    <td>${m.arena}</td>
+                `;
+                todayBody.appendChild(tr);
             });
         }
 
-        if (upcoming.length === 0) {
+        if (upcomingMatches.length === 0) {
             upcomingBody.innerHTML = `<tr><td colspan="6">Inga kommande matcher.</td></tr>`;
         } else {
-            upcoming.forEach(m => {
-                upcomingBody.innerHTML += `
-                    <tr>
-                        <td>${m.datum}</td>
-                        <td>${m.tid}</td>
-                        <td>${m.serie}</td>
-                        <td>${m.hemma}</td>
-                        <td>${m.borta}</td>
-                        <td>${m.arena}</td>
-                    </tr>`;
+            upcomingMatches.forEach(m => {
+                const tr = document.createElement("tr");
+                tr.innerHTML = `
+                    <td>${m.datum}</td>
+                    <td>${m.tid}</td>
+                    <td>${m.serie}</td>
+                    <td>${m.hemma}</td>
+                    <td>${m.borta}</td>
+                    <td>${m.arena}</td>
+                `;
+                upcomingBody.appendChild(tr);
             });
         }
     }
@@ -262,18 +298,18 @@
         try {
             const res = await fetch(DATA_URL, { cache: "no-store" });
             const text = await res.text();
-            render(parseCSV(text));
-        } catch (err) {
-            console.error("Fel vid hämtning:", err);
+            const matches = parseCSV(text);
+            renderMatches(matches);
+        } catch (e) {
+            console.error("Kunde inte ladda matcher:", e);
         }
     }
 
     document.addEventListener("DOMContentLoaded", () => {
         updateClock();
         setInterval(updateClock, 1000);
-        loadMatches();   // Endast en gång – ingen 15s refresh
+        loadMatches(); // ingen 15s setInterval – skärmen laddar om sidan själv
     });
 </script>
-
 </body>
 </html>
