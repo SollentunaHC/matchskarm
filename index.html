@@ -395,7 +395,7 @@ async function loadMatches() {
   date: cols[idx.Speldatum],
 });
 
-return parseInt(p[1], 10) === todayMonth && parseInt(p[2], 10) === todayDay;
+return parseInt(parts[1], 10) === todayMonth && parseInt(parts[2], 10) === todayDay;
 
   });
 
