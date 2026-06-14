@@ -202,11 +202,7 @@
             if (!hemma.includes("Sollentuna") && !borta.includes("Sollentuna")) continue;
 
             const cleanSerie = (cols[idx.Serie] || "")
-                .replace(/\s*
-
-\[\d+\]
-
-\s*/g, "")
+                .replace(/\s*\[\d+\]\s*/g, "")
                 .replace(/\s*\(\d+\)\s*/g, "")
                 .trim();
 
