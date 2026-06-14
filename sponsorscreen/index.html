@@ -33,6 +33,7 @@
       gap: 32px;
       padding: 32px 48px;
       box-sizing: border-box;
+      transition: opacity 0.6s ease;
     }
 
     .card {
@@ -42,7 +43,6 @@
       align-items: center;
       justify-content: center;
       padding: 20px;
-      transition: opacity 0.6s ease;
     }
 
     .card img {
@@ -63,9 +63,17 @@
     const SLOTS = 6;
     const INTERVAL = 15000;
 
-    async function loadSponsors() {
-      const response = await fetch("sponsors.json");
-      return await response.json();
+    const API_URL = "https://api.github.com/repos/<USER>/<REPO>/contents/sponsorscreen/logos?ref=<BRANCH>";
+
+    async function loadLogos() {
+      const response = await fetch(API_URL);
+      const files = await response.json();
+
+      // Filtrera bort allt som inte är bildfiler
+      return files
+        .filter(f => f.type === "file")
+        .filter(f => /\.(png|jpg|jpeg|svg|webp)$/i.test(f.name))
+        .map(f => f.download_url);
     }
 
     function shuffle(arr) {
@@ -75,19 +83,19 @@
         .map(o => o.x);
     }
 
-    function render(logos) {
+    function render(urls) {
       grid.style.opacity = 0;
 
       setTimeout(() => {
         grid.innerHTML = "";
-        const selected = shuffle(logos).slice(0, SLOTS);
+        const selected = shuffle(urls).slice(0, SLOTS);
 
-        selected.forEach(file => {
+        selected.forEach(url => {
           const card = document.createElement("div");
           card.className = "card";
 
           const img = document.createElement("img");
-          img.src = "logos/" + file;
+          img.src = url;
 
           card.appendChild(img);
           grid.appendChild(card);
@@ -98,7 +106,7 @@
     }
 
     async function start() {
-      const logos = await loadSponsors();
+      const logos = await loadLogos();
       render(logos);
       setInterval(() => render(logos), INTERVAL);
     }
@@ -108,4 +116,3 @@
 
 </body>
 </html>
-
