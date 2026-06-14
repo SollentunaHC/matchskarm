@@ -24,8 +24,11 @@
       font-weight: 600;
       letter-spacing: 0.05em;
       text-transform: uppercase;
+      text-align: center;
+      padding: 10px;
     }
 
+    /* Default: stående skärm (portrait) */
     .grid {
       flex: 1 1 auto;
       display: grid;
@@ -36,6 +39,19 @@
       box-sizing: border-box;
       opacity: 1;
       transition: opacity 0.6s ease;
+    }
+
+    /* Liggande skärm (landscape) */
+    @media (orientation: landscape) {
+      .grid {
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: repeat(2, 1fr);
+        gap: 24px;
+        padding: 24px 32px;
+      }
+      .header {
+        font-size: 2.6rem;
+      }
     }
 
     .card {
@@ -61,11 +77,11 @@
 
   <script>
     const grid = document.getElementById("grid");
-    const SLOTS = 6;
     const INTERVAL = 15000;
 
-    // 🔗 Rätt API‑URL för din struktur
-    const API_URL = "https://api.github.com/repos/sollentunahc/matchskarm/contents/sponsorscreen/logos";
+    // Automatisk hämtning av loggor från rätt repo/mapp
+    const API_URL =
+      "https://api.github.com/repos/sollentunahc/matchskarm/contents/sponsorscreen/logos";
 
     async function loadLogos() {
       try {
@@ -94,7 +110,14 @@
       grid.style.opacity = 0;
       setTimeout(() => {
         grid.innerHTML = "";
-        const selected = shuffle(urls).slice(0, SLOTS);
+
+        // Antal rutor = antal grid-celler
+        const cellCount = getComputedStyle(grid)
+          .gridTemplateColumns.split(" ").length *
+          getComputedStyle(grid).gridTemplateRows.split(" ").length;
+
+        const selected = shuffle(urls).slice(0, cellCount);
+
         selected.forEach(url => {
           const card = document.createElement("div");
           card.className = "card";
@@ -103,6 +126,7 @@
           card.appendChild(img);
           grid.appendChild(card);
         });
+
         grid.style.opacity = 1;
       }, 600);
     }
