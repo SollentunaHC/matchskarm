@@ -6,8 +6,8 @@
   <style>
     body {
       margin: 0;
-      background: #0f1218;
-      color: #fff;
+      background: #f5f5f5; /* Ljus bakgrund */
+      color: #222;
       font-family: Arial, sans-serif;
       height: 100vh;
       display: flex;
@@ -28,7 +28,7 @@
       padding: 10px;
     }
 
-    /* Default: stående skärm (portrait) */
+    /* Default: stående skärm */
     .grid {
       flex: 1 1 auto;
       display: grid;
@@ -41,7 +41,7 @@
       transition: opacity 0.6s ease;
     }
 
-    /* Liggande skärm (landscape) */
+    /* Liggande skärm */
     @media (orientation: landscape) {
       .grid {
         grid-template-columns: repeat(3, 1fr);
@@ -55,12 +55,13 @@
     }
 
     .card {
-      background: #1a1f2b;
+      background: #ffffff; /* Vit ruta för loggor */
       border-radius: 20px;
       display: flex;
       align-items: center;
       justify-content: center;
       padding: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08); /* Lätt skugga */
     }
 
     .card img {
@@ -79,7 +80,6 @@
     const grid = document.getElementById("grid");
     const INTERVAL = 15000;
 
-    // Automatisk hämtning av loggor från rätt repo/mapp
     const API_URL =
       "https://api.github.com/repos/sollentunahc/matchskarm/contents/sponsorscreen/logos";
 
@@ -108,13 +108,13 @@
 
     function render(urls) {
       grid.style.opacity = 0;
+
       setTimeout(() => {
         grid.innerHTML = "";
 
-        // Antal rutor = antal grid-celler
-        const cellCount = getComputedStyle(grid)
-          .gridTemplateColumns.split(" ").length *
-          getComputedStyle(grid).gridTemplateRows.split(" ").length;
+        const cols = getComputedStyle(grid).gridTemplateColumns.split(" ").length;
+        const rows = getComputedStyle(grid).gridTemplateRows.split(" ").length;
+        const cellCount = cols * rows;
 
         const selected = shuffle(urls).slice(0, cellCount);
 
