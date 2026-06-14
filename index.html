@@ -8,7 +8,6 @@
     <style>
         :root {
             --shc-blue: #001633;
-            --shc-blue-dark: #000d20;
             --shc-red: #c8102e;
             --shc-white: #ffffff;
             --shc-grey: #cccccc;
@@ -59,7 +58,6 @@
             border: 2px solid var(--shc-red);
             border-radius: 10px;
             overflow: hidden;
-            position: relative;
         }
 
         .section-header {
@@ -98,15 +96,6 @@
 
         .today-row {
             background: rgba(200, 16, 46, 0.25);
-        }
-
-        .watermark {
-            position: absolute;
-            right: 2%;
-            bottom: -10%;
-            width: 40%;
-            opacity: 0.06;
-            pointer-events: none;
         }
     </style>
 </head>
@@ -165,12 +154,10 @@
 
     </div>
 
-    <img class="watermark" src="dragon.png" alt="SHC-draken">
-
 </div>
 
 <script>
-    const DATA_URL = "DIN_CLOUDFLARE_WORKER_URL_HÄR";
+    const DATA_URL = "DIN_WORKER_URL_HÄR";
 
     function updateClock() {
         const now = new Date();
@@ -202,8 +189,12 @@
             if (!hemma.includes("Sollentuna") && !borta.includes("Sollentuna")) continue;
 
             const cleanSerie = (cols[idx.Serie] || "")
-                .replace(/\s*\[\d+\]\s*/g, "")
-                .replace(/\s*\(\d+\)\s*/g, "")
+                .replace(/
+
+\[[0-9]+\]
+
+/g, "")
+                .replace(/\(\d+\)/g, "")
                 .trim();
 
             matches.push({
@@ -280,7 +271,7 @@
     document.addEventListener("DOMContentLoaded", () => {
         updateClock();
         setInterval(updateClock, 1000);
-        loadMatches();   // 🔥 Endast en gång – ingen 15s refresh
+        loadMatches();   // Endast en gång – ingen 15s refresh
     });
 </script>
 
