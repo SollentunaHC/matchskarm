@@ -470,47 +470,42 @@ document.getElementById("upcomingBody").innerHTML = upcomingHTML;
 if (upcomingKeys.length > 10) {
   document.getElementById("upcomingBody").classList.add("scrolling");
 }
-);
-  if (upcomingKeys.length > 10) {
-    document.getElementById("upcomingBody").classList.add("scrolling");
-  }
-
-  /* TODAY TABLE */
-  var todayHTML = "";
-@@ -475,58 +471,37 @@
-      "</tr>";
-    });
-  }
-  document.getElementById("todayMatchBody").innerHTML = todayHTML;
-
-  /* UPCOMING TABLE */
-  var upcomingHTML = "";
-  if (upcoming.length === 0) {
-    upcomingHTML = "<tr><td colspan='6'>Inga kommande hemmamatcher.</td></tr>";
-  } else {
-    upcoming.forEach(m => {
-      upcomingHTML += "<tr>" +
-        "<td>" + formatDate(m.date) + "</td>" +
-        "<td>" + m.time + " " + getStatus(m.date, m.time) + "</td>" +
-        "<td>" + m.series + "</td>" +
-        "<td>" + m.home + "</td>" +
-        "<td>" + m.away + "</td>" +
-        "<td>" + hallWithLogo(m.arena) + "</td>" +
-      "</tr>";
-    });
-  }
-  document.getElementById("upcomingBody").innerHTML = upcomingHTML;
-
-  if (upcoming.length > 10) {
-    document.getElementById("upcomingBody").classList.add("scrolling");
-  }
-  document.getElementById("todayMatchBody").innerHTML = todayHTML;
-
-  document.getElementById("updatedInfo").textContent =
-    "Senast uppdaterad: " + new Date().toLocaleString("sv-SE");
+ if (upcomingKeys.length > 10) {
+  document.getElementById("upcomingBody").classList.add("scrolling");
 }
 
+/* TODAY TABLE */
+var todayHTML = "";
+document.getElementById("todayMatchBody").innerHTML = todayHTML;
+
+/* UPCOMING TABLE */
+var upcomingHTML = "";
+if (upcoming.length === 0) {
+  upcomingHTML = "<tr><td colspan='6'>Inga kommande hemmamatcher.</td></tr>";
+} else {
+  upcoming.forEach(m => {
+    upcomingHTML += "<tr>" +
+      "<td>" + formatDate(m.date) + "</td>" +
+      "<td>" + m.time + " " + getStatus(m.date, m.time) + "</td>" +
+      "<td>" + m.series + "</td>" +
+      "<td>" + m.home + "</td>" +
+      "<td>" + m.away + "</td>" +
+      "<td>" + hallWithLogo(m.arena) + "</td>" +
+    "</tr>";
+  });
+}
+
+document.getElementById("upcomingBody").innerHTML = upcomingHTML;
+
+if (upcoming.length > 10) {
+  document.getElementById("upcomingBody").classList.add("scrolling");
+}
+
+document.getElementById("updatedInfo").textContent =
+  "Senast uppdaterad: " + new Date().toLocaleString("sv-SE");
+
 loadMatches();
+
 
 /* SPONSORS */
 async function loadSponsors() {
