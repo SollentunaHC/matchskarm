@@ -1,507 +1,292 @@
 <!DOCTYPE html>
 <html lang="sv">
 <head>
-<meta charset="UTF-8">
-<title>Sollentuna Hockey – Arena Style 10.9 SHC</title>
-<meta http-equiv="refresh" content="300">
+    <meta charset="UTF-8">
+    <title>Sollentuna Hockey – Matchskärm</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<style>
-:root {
-  --bg-main: #0b1a3a;
-  --bg-row-even: #1e2f5c;
-  --bg-row-odd: #14244a;
-  --bg-header: #c62828;
-  --text-main: #ffffff;
-  --yellow: #ffeb3b;
-}
+    <style>
+        :root {
+            --shc-blue: #001633;
+            --shc-blue-dark: #000d20;
+            --shc-red: #c8102e;
+            --shc-white: #ffffff;
+            --shc-grey: #cccccc;
+        }
 
-* { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: radial-gradient(circle at top, #002b5c 0%, #000814 55%, #000000 100%);
+            color: var(--shc-white);
+            overflow: hidden;
+        }
 
-body {
-  margin: 0;
-  font-family: "Segoe UI", sans-serif;
-  background: var(--bg-main);
-  color: var(--text-main);
-  overflow: hidden;
-  position: relative;
-}
+        .page {
+            padding: 20px 30px;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
 
-body::before {
-  content: "";
-  position: absolute;
-  top: 18%;
-  left: 50%;
-  width: 38vw;
-  height: 38vw;
-  max-width: 650px;
-  max-height: 650px;
-  background: url('https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/shc_draken.png') no-repeat center;
-  background-size: contain;
-  opacity: 0.06;
-  transform: translateX(-50%);
-  pointer-events: none;
-  z-index: 0;
-}
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+        }
 
-#clock {
-  position: fixed;
-  top: 1.2vh;
-  left: 1.5vw;
-  font-size: 2.2vw;
-  font-weight: 900;
-  color: var(--text-main);
-  z-index: 1000;
-  text-shadow: 0 0 8px rgba(0,0,0,0.7);
-}
+        .title {
+            font-size: 42px;
+            font-weight: 700;
+            letter-spacing: 3px;
+        }
 
-header {
-  text-align: center;
-  padding: 2.2vh 0 1.2vh;
-  font-size: 4.6vw;
-  font-weight: 900;
-  letter-spacing: 0.35vw;
-  color: var(--text-main);
-  z-index: 10;
-  position: relative;
-  text-shadow: 0 0 12px rgba(0,0,0,0.8);
-}
+        .clock {
+            font-size: 32px;
+            font-weight: 600;
+        }
 
-.content-area {
-  position: relative;
-  z-index: 10;
-  height: 78vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  gap: 2vh;
-}
+        .sections {
+            margin-top: 15px;
+            display: grid;
+            grid-template-rows: 1fr 1fr;
+            gap: 20px;
+            flex: 1;
+        }
 
-h2 {
-  text-align: center;
-  font-size: 2.6vw;
-  font-weight: 900;
-  margin: 0.5vh 0 0.3vh;
-  color: var(--text-main);
-  text-shadow: 0 0 8px rgba(0,0,0,0.7);
-}
+        .section {
+            background: rgba(0, 0, 0, 0.55);
+            border: 2px solid var(--shc-red);
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
 
-.table-wrapper {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-}
+        .section-header {
+            background: linear-gradient(90deg, var(--shc-red), #ff3b3b);
+            padding: 6px 14px;
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
 
-table.match-table {
-  width: 92%;
-  border-collapse: collapse;
-  background: rgba(0,0,0,0.15);
-  border-radius: 8px;
-  overflow: hidden;
-  table-layout: fixed;
-}
+        .table-wrapper {
+            padding: 10px 14px;
+            height: calc(100% - 40px);
+        }
 
-.match-table th, .match-table td {
-  padding: 1.1vh 0.8vw;
-  font-size: 1.5vw;
-  font-weight: 600;
-  white-space: nowrap;
-  text-align: center;
-  vertical-align: middle;
-}
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 18px;
+        }
 
-.match-table th {
-  background: var(--bg-header);
-  color: #fff;
-  font-weight: 900;
-  font-size: 1.8vw;
-}
+        th {
+            color: var(--shc-grey);
+            font-size: 16px;
+            font-weight: 700;
+            padding-bottom: 4px;
+        }
 
-.match-table tbody tr:nth-child(even) { background: var(--bg-row-even); }
-.match-table tbody tr:nth-child(odd)  { background: var(--bg-row-odd); }
+        td {
+            padding: 4px 6px;
+        }
 
-/* Column widths */
-.match-table th:nth-child(1), .match-table td:nth-child(1) { width: 12%; }
-.match-table th:nth-child(2), .match-table td:nth-child(2) { width: 10%; }
-.match-table th:nth-child(3), .match-table td:nth-child(3) { width: 26%; }
-.match-table th:nth-child(4), .match-table td:nth-child(4) { width: 20%; }
-.match-table th:nth-child(5), .match-table td:nth-child(5) { width: 20%; }
-.match-table th:nth-child(6), .match-table td:nth-child(6) { width: 12%; }
+        tbody tr:nth-child(even) {
+            background: rgba(255, 255, 255, 0.03);
+        }
 
-/* CYLOQ logo perfectly centered */
-.hall-logo {
-  display: inline-block;
-  width: 50px;
-  height: 50px;
-  background-size: contain;
-  background-repeat: no-repeat;
-  vertical-align: middle;
-  margin-right: 6px;
-  position: relative;
-  top: 16px; /* lowered for perfect centering */
-}
+        .today-row {
+            background: rgba(200, 16, 46, 0.25);
+        }
 
-@media (min-width: 2000px) {
-  .hall-logo {
-    width: 64px;
-    height: 64px;
-    top: 7px; /* perfect centering on 4K */
-  }
-}
-
-.hall-cyloq {
-  background-image: url('https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/sponsors/Cyloq.png');
-}
-
-/* Live status tags */
-.status-tag {
-  font-weight: 900;
-  padding: 2px 8px;
-  border-radius: 6px;
-  margin-left: 6px;
-  font-size: 1.2vw;
-}
-
-.status-soon {
-  background: #ffeb3b;
-  color: #000000;
-}
-
-.status-live {
-  background: #4caf50;
-  color: #ffffff;
-}
-
-/* Reduced row height ONLY for upcoming matches */
-#upcomingBody td {
-  padding-top: 0.15vh;
-  padding-bottom: 0.15vh;
-}
-
-/* Scrolling upcoming matches */
-#upcomingBody.scrolling {
-  display: block;
-  max-height: 30vh;
-  overflow: hidden;
-  animation: scrollUp 22s linear infinite;
-}
-
-@keyframes scrollUp {
-  0% { transform: translateY(0); }
-  100% { transform: translateY(-50%); }
-}
-
-/* Banner fixed at bottom */
-.ad-bar {
-  width: 100%;
-  height: 10vh;
-  overflow: hidden;
-  background: rgba(255, 255, 255, 0.35);
-  backdrop-filter: blur(6px);
-  border-top: 3px solid rgba(255,255,255,0.65);
-  display: flex;
-  align-items: center;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  z-index: 20;
-}
-
-.ad-track {
-  display: flex;
-  gap: 4vw;
-  white-space: nowrap;
-  animation: scrollAds 35s linear infinite;
-}
-
-.ad-track img {
-  height: 8vh;
-  object-fit: contain;
-  filter: drop-shadow(0 0 4px rgba(0,0,0,0.5));
-}
-
-@keyframes scrollAds {
-  0%   { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
-}
-
-footer {
-  text-align: right;
-  font-size: 1vw;
-  opacity: 0.7;
-  margin: 0.8vh 3vw 0;
-  z-index: 10;
-  position: relative;
-}
-</style>
+        .watermark {
+            position: absolute;
+            right: 2%;
+            bottom: -10%;
+            width: 40%;
+            opacity: 0.06;
+            pointer-events: none;
+        }
+    </style>
 </head>
 
 <body>
+<div class="page">
 
-<div id="clock"></div>
+    <div class="header">
+        <div class="title">SOLLENTUNA HOCKEY</div>
+        <div class="clock" id="clock">--:--:--</div>
+    </div>
 
-<header>SOLLENTUNA HOCKEY</header>
+    <div class="sections">
 
-<div class="content-area">
+        <div class="section">
+            <div class="section-header">DAGENS MATCHER</div>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>DATUM</th>
+                        <th>TID</th>
+                        <th>SERIE</th>
+                        <th>HEMMALAG</th>
+                        <th>BORTALAG</th>
+                        <th>ARENA</th>
+                    </tr>
+                    </thead>
+                    <tbody id="today-body">
+                    <tr><td colspan="6">Laddar matcher...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
-<h2>DAGENS MATCHER</h2>
-<div class="table-wrapper">
-<table class="match-table">
-<thead>
-<tr>
-<th>DATUM</th>
-<th>TID</th>
-<th>SERIE</th>
-<th>HEMMALAG</th>
-<th>BORTALAG</th>
-<th>HALL</th>
-</tr>
-</thead>
-<tbody id="todayMatchBody">
-<tr><td colspan="6">Laddar...</td></tr>
-</tbody>
-</table>
+        <div class="section">
+            <div class="section-header">KOMMANDE MATCHER</div>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>DATUM</th>
+                        <th>TID</th>
+                        <th>SERIE</th>
+                        <th>HEMMALAG</th>
+                        <th>BORTALAG</th>
+                        <th>ARENA</th>
+                    </tr>
+                    </thead>
+                    <tbody id="upcoming-body">
+                    <tr><td colspan="6">Laddar matcher...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <img class="watermark" src="dragon.png" alt="SHC-draken">
+
 </div>
 
-<h2>KOMMANDE MATCHER</h2>
-<div class="table-wrapper">
-<table class="match-table">
-<thead>
-<tr>
-<th>DATUM</th>
-<th>TID</th>
-<th>SERIE</th>
-<th>HEMMALAG</th>
-<th>BORTALAG</th>
-<th>HALL</th>
-</tr>
-</thead>
-<tbody id="upcomingBody">
-<tr><td colspan="6">Laddar...</td></tr>
-</tbody>
-</table>
-</div>
-
-</div>
-
-<footer id="updatedInfo"></footer>
-
-<div class="ad-bar">
-<div class="ad-track" id="sponsorTrack"></div>
-</div>
 <script>
-function updateClock() {
-  var now = new Date();
-  document.getElementById("clock").textContent =
-    now.toLocaleTimeString("sv-SE", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
-}
-setInterval(updateClock, 1000);
-updateClock();
+    const DATA_URL = "DIN_CLOUDFLARE_WORKER_URL_HÄR";
 
-/* FORMAT DATE → "14 juni" */
-function formatDate(dateStr) {
-  if (!dateStr) return "";
-
-  var parts = dateStr.split("-");
-  if (parts.length !== 3) return dateStr;
-
-  var months = {
-    "01": "januari",
-    "02": "februari",
-    "03": "mars",
-    "04": "april",
-    "05": "maj",
-    "06": "juni",
-    "07": "juli",
-    "08": "augusti",
-    "09": "september",
-    "10": "oktober",
-    "11": "november",
-    "12": "december"
-  };
-
-  return parseInt(parts[2], 10) + " " + months[parts[1]];
-}
-
-/* LIVE STATUS */
-function getStatus(dateStr, timeStr) {
-  if (!dateStr || !timeStr) return "";
-
-  var now = new Date();
-  var start = new Date(dateStr + "T" + timeStr);
-
-  var diffMinutes = (start - now) / 60000;
-  var diffSinceStart = (now - start) / 60000;
-
-  if (diffMinutes > 0 && diffMinutes <= 60) {
-    return "<span class='status-tag status-soon'>SNART</span>";
-  }
-
-  if (diffSinceStart >= 0 && diffSinceStart <= 120) {
-    return "<span class='status-tag status-live'>PAGAR</span>";
-  }
-
-  return "";
-}
-
-/* CYLOQ LOGO ONLY */
-function hallWithLogo(arena) {
-  if (!arena) return "";
-  var lower = arena.toLowerCase();
-
-  if (lower.indexOf("cyloq") === 0) {
-    var suffix = arena.replace(/cyloq\s*/i, "");
-    return "<span class='hall-logo hall-cyloq'></span>" + suffix.trim();
-  }
-  return arena;
-}
-
-/* LOAD MATCHES */
-async function loadMatches() {
-  var url = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/Spelschema_2627.csv";
-
-  var resp = await fetch(url + "?nocache=" + Date.now(), { cache: "no-store" });
-  var text = await resp.text();
-
-  var lines = text.split(/\r?\n/).filter(l => l.trim() !== "");
-  var headers = lines[0].split(";");
-
-  var idx = {
-    Speldatum: headers.indexOf("Speldatum"),
-    Tid: headers.indexOf("Tid"),
-    Hemma: headers.indexOf("Hemma"),
-    Borta: headers.indexOf("Borta"),
-    Arena: headers.indexOf("Arena"),
-    Serie: headers.indexOf("Serie")
-  };
-
-  var matches = [];
-
-  for (var i = 1; i < lines.length; i++) {
-    var cols = lines[i].split(";");
-
-    var home = (cols[idx.Hemma] || "").toLowerCase().replace(/\u00A0/g, " ").replace(/\s+/g, " ").trim();
-
-    if (
-      home.indexOf("sollentuna") === -1 &&
-      home.indexOf("sollentuna hc") === -1 &&
-      home.indexOf("sollentuna hockey") === -1 &&
-      home.indexOf("shc") === -1
-    ) continue;
-
-    var cleanSerie = (cols[idx.Serie] || "").replace(/\[[0-9]+\]/g, "").trim();
-
-    matches.push({
-      date: cols[idx.Speldatum],
-      time: cols[idx.Tid],
-      series: cleanSerie,
-      home: cols[idx.Hemma],
-      away: cols[idx.Borta],
-      arena: cols[idx.Arena]
-    });
-  }
-
-  matches.sort((a, b) => a.date === b.date ? a.time.localeCompare(b.time) : a.date.localeCompare(b.date));
-
-  /* TODAY MATCHES — IGNORE YEAR */
-  var now = new Date();
-  var todayMonth = now.getMonth() + 1;
-  var todayDay = now.getDate();
-
-  var todayMatch = matches.filter(m => {
-    var p = m.date.split("-");
-    return parseInt(p[1], 10) === todayMonth && parseInt(p[2], 10) === todayDay;
-  });
-
-  /* UPCOMING MATCHES — IGNORE YEAR + GROUP BY DATE */
-  var upcomingGrouped = {};
-
-  matches.forEach(function(m){
-    var p = m.date.split("-");
-    var mMonth = parseInt(p[1], 10);
-    var mDay = parseInt(p[2], 10);
-
-    if (mMonth === todayMonth && mDay === todayDay) return;
-
-    if (mMonth > todayMonth || (mMonth === todayMonth && mDay > todayDay)) {
-      var key = mMonth + "-" + mDay;
-      if (!upcomingGrouped[key]) upcomingGrouped[key] = [];
-      upcomingGrouped[key].push(m);
+    function updateClock() {
+        const now = new Date();
+        document.getElementById("clock").textContent =
+            now.toLocaleTimeString("sv-SE", { hour12: false });
     }
-  });
 
-  var upcomingKeys = Object.keys(upcomingGrouped).slice(0, 5);
-  var upcomingHTML = "";
+    function parseCSV(text) {
+        const lines = text.trim().split(/\r?\n/);
+        const header = lines[0].split(";");
 
-  if (upcomingKeys.length === 0) {
-    upcomingHTML = "<tr><td colspan='6'>Inga kommande hemmamatcher.</td></tr>";
-  } else {
-    upcomingKeys.forEach(function(key){
-      upcomingGrouped[key].forEach(function(m){
-        upcomingHTML += "<tr>" +
-          "<td>" + formatDate(m.date) + "</td>" +
-          "<td>" + m.time + " " + getStatus(m.date, m.time) + "</td>" +
-          "<td>" + m.series + "</td>" +
-          "<td>" + m.home + "</td>" +
-          "<td>" + m.away + "</td>" +
-          "<td>" + hallWithLogo(m.arena) + "</td>" +
-        "</tr>";
-      });
+        const idx = {
+            Datum: header.indexOf("Datum"),
+            Tid: header.indexOf("Tid"),
+            Serie: header.indexOf("Serie"),
+            Hemma: header.indexOf("Hemmalag"),
+            Borta: header.indexOf("Bortalag"),
+            Arena: header.indexOf("Arena")
+        };
+
+        const matches = [];
+
+        for (let i = 1; i < lines.length; i++) {
+            const cols = lines[i].split(";");
+
+            const hemma = cols[idx.Hemma] || "";
+            const borta = cols[idx.Borta] || "";
+
+            if (!hemma.includes("Sollentuna") && !borta.includes("Sollentuna")) continue;
+
+            const cleanSerie = (cols[idx.Serie] || "")
+                .replace(/\s*
+
+\[\d+\]
+
+\s*/g, "")
+                .replace(/\s*\(\d+\)\s*/g, "")
+                .trim();
+
+            matches.push({
+                datum: cols[idx.Datum],
+                tid: cols[idx.Tid],
+                serie: cleanSerie,
+                hemma,
+                borta,
+                arena: cols[idx.Arena] || ""
+            });
+        }
+
+        return matches;
+    }
+
+    function isToday(dateStr) {
+        const today = new Date().toISOString().slice(0, 10);
+        return dateStr === today;
+    }
+
+    function render(matches) {
+        const todayBody = document.getElementById("today-body");
+        const upcomingBody = document.getElementById("upcoming-body");
+
+        todayBody.innerHTML = "";
+        upcomingBody.innerHTML = "";
+
+        const today = matches.filter(m => isToday(m.datum));
+        const upcoming = matches.filter(m => !isToday(m.datum));
+
+        if (today.length === 0) {
+            todayBody.innerHTML = `<tr><td colspan="6">Inga matcher idag.</td></tr>`;
+        } else {
+            today.forEach(m => {
+                todayBody.innerHTML += `
+                    <tr class="today-row">
+                        <td>${m.datum}</td>
+                        <td>${m.tid}</td>
+                        <td>${m.serie}</td>
+                        <td>${m.hemma}</td>
+                        <td>${m.borta}</td>
+                        <td>${m.arena}</td>
+                    </tr>`;
+            });
+        }
+
+        if (upcoming.length === 0) {
+            upcomingBody.innerHTML = `<tr><td colspan="6">Inga kommande matcher.</td></tr>`;
+        } else {
+            upcoming.forEach(m => {
+                upcomingBody.innerHTML += `
+                    <tr>
+                        <td>${m.datum}</td>
+                        <td>${m.tid}</td>
+                        <td>${m.serie}</td>
+                        <td>${m.hemma}</td>
+                        <td>${m.borta}</td>
+                        <td>${m.arena}</td>
+                    </tr>`;
+            });
+        }
+    }
+
+    async function loadMatches() {
+        try {
+            const res = await fetch(DATA_URL, { cache: "no-store" });
+            const text = await res.text();
+            render(parseCSV(text));
+        } catch (err) {
+            console.error("Fel vid hämtning:", err);
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        updateClock();
+        setInterval(updateClock, 1000);
+        loadMatches();   // 🔥 Endast en gång – ingen 15s refresh
     });
-  }
-
-  document.getElementById("upcomingBody").innerHTML = upcomingHTML;
-
-  if (upcomingKeys.length > 10) {
-    document.getElementById("upcomingBody").classList.add("scrolling");
-  }
-
-  /* TODAY TABLE */
-  var todayHTML = "";
-  if (todayMatch.length === 0) {
-    todayHTML = "<tr><td colspan='6' style='color:#ffeb3b; font-weight:900;'>Ingen match idag.</td></tr>";
-  } else {
-    todayMatch.forEach(m => {
-      todayHTML += "<tr>" +
-        "<td>" + formatDate(m.date) + "</td>" +
-        "<td>" + m.time + " " + getStatus(m.date, m.time) + "</td>" +
-        "<td>" + m.series + "</td>" +
-        "<td>" + m.home + "</td>" +
-        "<td>" + m.away + "</td>" +
-        "<td>" + hallWithLogo(m.arena) + "</td>" +
-      "</tr>";
-    });
-  }
-
-  document.getElementById("todayMatchBody").innerHTML = todayHTML;
-
-  document.getElementById("updatedInfo").textContent =
-    "Senast uppdaterad: " + new Date().toLocaleString("sv-SE");
-}
-
-loadMatches();
-
-/* SPONSORS */
-async function loadSponsors() {
-  var apiUrl = "https://api.github.com/repos/SollentunaHC/matchskarm/contents/sponsors";
-
-  var resp = await fetch(apiUrl);
-  var files = await resp.json();
-
-  var track = document.getElementById("sponsorTrack");
-
-  var images = files.filter(f => f.name.match(/\.(png|jpg|jpeg|svg|webp)$/i));
-  var loopImages = images.concat(images);
-
-  loopImages.forEach(img => {
-    var el = document.createElement("img");
-    el.src = img.download_url;
-    track.appendChild(el);
-  });
-}
-
-loadSponsors();
 </script>
-
 
 </body>
 </html>
