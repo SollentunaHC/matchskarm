@@ -224,11 +224,7 @@
 
             const rawSerie = cols[idx.Serie] || "";
             const cleanSerie = rawSerie
-                .replace(/\s*
-
-\[\d+\]
-
-\s*/g, "")   // tar bort [97032]
+                .replace(/\s*\[\d+\]\s*/g, "")   // tar bort [97032]
                 .replace(/\s*\(\d+\)\s*/g, "")   // tar bort (12345)
                 .trim();
 
