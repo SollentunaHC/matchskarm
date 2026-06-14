@@ -357,7 +357,8 @@ function hallWithLogo(arena) {
 
 /* LOAD MATCHES */
 async function loadMatches() {
-  var url = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/Spelschema_2627.csv";
+  var url = "https://raw.githubusercontent.com/SollentunaHC/SollentunaHC/main/Spelschema_2627.csv";
+
 
   var resp = await fetch(url + "?nocache=" + Date.now(), { cache: "no-store" });
   var text = await resp.text();
