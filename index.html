@@ -400,11 +400,7 @@ function parseMatchesFromCSV(text) {
       home: cols[idx.Hemma],
       away: cols[idx.Borta],
       arena: cols[idx.Arena],
-      series: (cols[idx.Serie] || "").replace(/
-
-\[[0-9]+\]
-
-/g, "").trim()
+      series: (cols[idx.Serie] || "").replace(/\[[0-9]+\]/g, "").trim()
     });
   }
 
