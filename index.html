@@ -2,7 +2,7 @@
 <html lang="sv">
 <head>
   <meta charset="UTF-8">
-  <title>Sollentuna Hockey – Arena Style 12.1</title>
+  <title>Sollentuna Hockey – Arena Style 12.2</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
@@ -12,24 +12,29 @@
       background-color: #00163b;
       color: #ffffff;
     }
+
     h1 {
       text-align: center;
       margin-top: 2vh;
     }
+
     table {
       width: 96%;
       margin: 2vh auto;
       border-collapse: collapse;
       font-size: 2.2vh;
     }
+
     th, td {
       padding: 0.6vh 0.8vh;
       border-bottom: 1px solid #444;
     }
+
     th {
       background-color: #b00000;
       text-align: left;
     }
+
     #statusBar {
       position: fixed;
       bottom: 0;
@@ -40,17 +45,50 @@
       background: #000814;
       color: #cccccc;
     }
+
+    /* ---------------------------------------------------------
+       SPONSOR-SCROLL (horisontell)
+    --------------------------------------------------------- */
     #sponsorTrack {
       width: 100%;
       overflow: hidden;
       white-space: nowrap;
+      position: relative;
+      height: 70px;
       margin-top: 2vh;
       text-align: center;
     }
-    #sponsorTrack img {
+
+    #sponsorInner {
+      display: inline-block;
+      white-space: nowrap;
+      animation: sponsorScroll 25s linear infinite;
+    }
+
+    #sponsorInner img {
       height: 60px;
-      margin: 0 20px;
+      margin: 0 30px;
       vertical-align: middle;
+    }
+
+    @keyframes sponsorScroll {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* ---------------------------------------------------------
+       KOMMANDE MATCHER-SCROLL (vertikal)
+    --------------------------------------------------------- */
+    #upcomingBody.scrolling {
+      display: block;
+      max-height: 32vh;
+      overflow: hidden;
+      animation: scrollUp 18s linear infinite;
+    }
+
+    @keyframes scrollUp {
+      0%   { transform: translateY(0); }
+      100% { transform: translateY(-50%); }
     }
   </style>
 </head>
@@ -58,8 +96,12 @@
 
   <h1>SOLLENTUNA HOCKEY – MATCHSKÄRM</h1>
 
-  <div id="sponsorTrack">Laddar sponsorer…</div>
+  <!-- Sponsor-scroll -->
+  <div id="sponsorTrack">
+    <div id="sponsorInner">Laddar sponsorer…</div>
+  </div>
 
+  <!-- Matchtabell -->
   <table>
     <thead>
       <tr>
@@ -76,16 +118,16 @@
     </tbody>
   </table>
 
-  <div id="statusBar">Arena Style 12.1 – Startar…</div>
+  <div id="statusBar">Arena Style 12.2 – Startar…</div>
 
   <script>
     const CSV_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/Spelschema_2627.csv";
     const SPONSOR_PATH = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/sponsors/";
-    const ARENA_VERSION = "Arena Style 12.1";
+    const ARENA_VERSION = "Arena Style 12.2";
 
-    // ---------------------------------------------------------
-    // HÄMTA MATCHER (CSV)
-    // ---------------------------------------------------------
+    /* ---------------------------------------------------------
+       1. HÄMTA MATCHER (CSV var 5:e minut)
+    --------------------------------------------------------- */
     async function loadMatches() {
       const tbody = document.getElementById("matchesBody");
       const status = document.getElementById("statusBar");
@@ -150,11 +192,11 @@
       }
     }
 
-    // ---------------------------------------------------------
-    // HÄMTA SPONSORER (RAW-LÄNKAR)
-    // ---------------------------------------------------------
+    /* ---------------------------------------------------------
+       2. HÄMTA SPONSORER (RAW-länkar var 5:e minut)
+    --------------------------------------------------------- */
     async function loadSponsors() {
-      const track = document.getElementById("sponsorTrack");
+      const track = document.getElementById("sponsorInner");
       track.textContent = "Laddar sponsorer…";
 
       try {
@@ -167,15 +209,17 @@
         }
 
         const files = await resp.json();
-        let html = "";
+        let logos = [];
 
         for (const f of files) {
           if (f.name.endsWith(".png") || f.name.endsWith(".jpg")) {
-            html += `<img src="${SPONSOR_PATH}${f.name}?v=${Date.now()}">`;
+            logos.push(`<img src="${SPONSOR_PATH}${f.name}?v=${Date.now()}">`);
           }
         }
 
-        track.innerHTML = html;
+        // Dubblera listan för sömlös scroll
+        const doubled = logos.concat(logos).join("");
+        track.innerHTML = doubled;
 
       } catch (err) {
         console.error("Sponsor-fel:", err);
@@ -183,20 +227,20 @@
       }
     }
 
-    // ---------------------------------------------------------
-    // INITIERA ARENAN
-    // ---------------------------------------------------------
+    /* ---------------------------------------------------------
+       3. INITIERA ARENAN
+    --------------------------------------------------------- */
     function initArena() {
       document.getElementById("statusBar").textContent = ARENA_VERSION + " – Startar…";
 
-      // 🔹 Första laddningen direkt
+      // Första laddningen direkt
       loadMatches();
       loadSponsors();
 
-      // 🔹 Hämta CSV var 5:e minut
+      // CSV var 5:e minut
       setInterval(loadMatches, 300000);
 
-      // 🔹 Hämta sponsorer var 5:e minut
+      // Sponsorer var 5:e minut
       setInterval(loadSponsors, 300000);
     }
 
