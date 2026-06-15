@@ -160,9 +160,7 @@
         const matches = rows.map(r => r.split(";")).map(cols => ({
           date: cols[idx.Speldatum] || "",
           time: cols[idx.Tid] || "",
-          series: (cols[idx.Serie] || "").replace(/\[[^\]]+\]
-
-/g, "").trim(),
+          series: (cols[idx.Serie] || "").replace(/\[[^\]]+\]/g, "").trim(),
           home: cols[idx.Hemma] || "",
           away: cols[idx.Borta] || "",
           arena: cols[idx.Arena] || ""
