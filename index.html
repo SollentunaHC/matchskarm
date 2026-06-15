@@ -2,7 +2,7 @@
 <html lang="sv">
 <head>
 <meta charset="UTF-8">
-<title>Sollentuna Hockey – Arena Style 10.9 SHC</title>
+<title>Sollentuna Hockey – Arena Style 11.0</title>
 <meta http-equiv="refresh" content="300">
 
 <style>
@@ -119,7 +119,7 @@ table.match-table {
 .match-table tbody tr:nth-child(even) { background: var(--bg-row-even); }
 .match-table tbody tr:nth-child(odd)  { background: var(--bg-row-odd); }
 
-/* Column widths */
+/* Kolumnbredder */
 .match-table th:nth-child(1), .match-table td:nth-child(1) { width: 12%; }
 .match-table th:nth-child(2), .match-table td:nth-child(2) { width: 10%; }
 .match-table th:nth-child(3), .match-table td:nth-child(3) { width: 26%; }
@@ -127,7 +127,7 @@ table.match-table {
 .match-table th:nth-child(5), .match-table td:nth-child(5) { width: 20%; }
 .match-table th:nth-child(6), .match-table td:nth-child(6) { width: 12%; }
 
-/* CYLOQ logo perfectly centered */
+/* CYLOQ-logo */
 .hall-logo {
   display: inline-block;
   width: 50px;
@@ -137,14 +137,14 @@ table.match-table {
   vertical-align: middle;
   margin-right: 6px;
   position: relative;
-  top: 16px; /* lowered for perfect centering */
+  top: 16px;
 }
 
 @media (min-width: 2000px) {
   .hall-logo {
     width: 64px;
     height: 64px;
-    top: 7px; /* perfect centering on 4K */
+    top: 7px;
   }
 }
 
@@ -152,7 +152,7 @@ table.match-table {
   background-image: url('https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/sponsors/Cyloq.png');
 }
 
-/* Live status tags */
+/* Live-status */
 .status-tag {
   font-weight: 900;
   padding: 2px 8px;
@@ -171,19 +171,14 @@ table.match-table {
   color: #ffffff;
 }
 
-/* Reduced row height ONLY for upcoming matches */
-#upcomingBody td {
-  padding-top: 0.15vh;
-  padding-bottom: 0.15vh;
-}
-
-  /* Reduced row height ONLY for coming matches */
+/* Synkad radhöjd */
+#upcomingBody td,
 #todayMatchBody td {
   padding-top: 0.15vh;
   padding-bottom: 0.15vh;
 }
-  
-/* Scrolling upcoming matches */
+
+/* Scrollande kommande matcher */
 #upcomingBody.scrolling {
   display: block;
   max-height: 30vh;
@@ -196,7 +191,7 @@ table.match-table {
   100% { transform: translateY(-50%); }
 }
 
-/* Banner fixed at bottom */
+/* Sponsorbanderoll */
 .ad-bar {
   width: 100%;
   height: 10vh;
@@ -238,64 +233,81 @@ footer {
   z-index: 10;
   position: relative;
 }
+
+/* Versions-tag */
+#versionTag {
+  position: fixed;
+  bottom: 11vh;
+  left: 1vw;
+  font-size: 0.9vw;
+  opacity: 0.45;
+  z-index: 50;
+  pointer-events: none;
+}
 </style>
 </head>
 
 <body>
 
 <div id="clock"></div>
-
 <header>SOLLENTUNA HOCKEY</header>
 
 <div class="content-area">
 
-<h2>DAGENS MATCHER</h2>
-<div class="table-wrapper">
-<table class="match-table">
-<thead>
-<tr>
-<th>DATUM</th>
-<th>TID</th>
-<th>SERIE</th>
-<th>HEMMALAG</th>
-<th>BORTALAG</th>
-<th>HALL</th>
-</tr>
-</thead>
-<tbody id="todayMatchBody">
-<tr><td colspan="6">Laddar...</td></tr>
-</tbody>
-</table>
-</div>
+  <h2>DAGENS MATCHER</h2>
+  <div class="table-wrapper">
+    <table class="match-table">
+      <thead>
+        <tr>
+          <th>DATUM</th>
+          <th>TID</th>
+          <th>SERIE</th>
+          <th>HEMMALAG</th>
+          <th>BORTALAG</th>
+          <th>HALL</th>
+        </tr>
+      </thead>
+      <tbody id="todayMatchBody">
+        <tr><td colspan="6">Laddar...</td></tr>
+      </tbody>
+    </table>
+  </div>
 
-<h2>KOMMANDE MATCHER</h2>
-<div class="table-wrapper">
-<table class="match-table">
-<thead>
-<tr>
-<th>DATUM</th>
-<th>TID</th>
-<th>SERIE</th>
-<th>HEMMALAG</th>
-<th>BORTALAG</th>
-<th>HALL</th>
-</tr>
-</thead>
-<tbody id="upcomingBody">
-<tr><td colspan="6">Laddar...</td></tr>
-</tbody>
-</table>
-</div>
+  <h2>KOMMANDE MATCHER</h2>
+  <div class="table-wrapper">
+    <table class="match-table">
+      <thead>
+        <tr>
+          <th>DATUM</th>
+          <th>TID</th>
+          <th>SERIE</th>
+          <th>HEMMALAG</th>
+          <th>BORTALAG</th>
+          <th>HALL</th>
+        </tr>
+      </thead>
+      <tbody id="upcomingBody">
+        <tr><td colspan="6">Laddar...</td></tr>
+      </tbody>
+    </table>
+  </div>
 
 </div>
 
 <footer id="updatedInfo"></footer>
 
 <div class="ad-bar">
-<div class="ad-track" id="sponsorTrack"></div>
+  <div class="ad-track" id="sponsorTrack"></div>
 </div>
+
+<div id="versionTag"></div>
+
 <script>
-/* DIGITAL CLOCK */
+const ARENA_VERSION = "Arena Style 11.0";
+const CSV_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/Spelschema_2627.csv";
+const SPONSOR_API_URL = "https://api.github.com/repos/SollentunaHC/matchskarm/contents/sponsors";
+
+/* Klocka */
 function updateClock() {
   const now = new Date();
   document.getElementById("clock").textContent =
@@ -305,10 +317,8 @@ function updateClock() {
       second: "2-digit"
     });
 }
-setInterval(updateClock, 1000);
-updateClock();
 
-/* FORMAT DATE → "14 juni" */
+/* Datumformat "14 juni" */
 function formatDate(dateStr) {
   if (!dateStr) return "";
   const parts = dateStr.split("-");
@@ -323,7 +333,7 @@ function formatDate(dateStr) {
   return parseInt(parts[2], 10) + " " + months[parts[1]];
 }
 
-/* LIVE STATUS */
+/* Live-status */
 function getStatus(dateStr, timeStr) {
   if (!dateStr || !timeStr) return "";
   const now = new Date();
@@ -340,7 +350,7 @@ function getStatus(dateStr, timeStr) {
   return "";
 }
 
-/* CYLOQ LOGO ONLY */
+/* CYLOQ-logo */
 function hallWithLogo(arena) {
   if (!arena) return "";
   const lower = arena.toLowerCase();
@@ -351,15 +361,12 @@ function hallWithLogo(arena) {
   return arena;
 }
 
-/* LOAD MATCHES */
-async function loadMatches() {
-  const url = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/Spelschema_2627.csv";
-  const resp = await fetch(url + "?nocache=" + Date.now(), { cache: "no-store" });
-  const text = await resp.text();
-
+/* CSV → matcher */
+function parseMatchesFromCSV(text) {
   const lines = text.split(/\r?\n/).filter(l => l.trim() !== "");
-  const headers = lines[0].split(";");
+  if (lines.length < 2) return [];
 
+  const headers = lines[0].split(";");
   const idx = {
     Speldatum: headers.indexOf("Speldatum"),
     Tid: headers.indexOf("Tid"),
@@ -373,7 +380,8 @@ async function loadMatches() {
 
   for (let i = 1; i < lines.length; i++) {
     const cols = lines[i].split(";");
-    const home = (cols[idx.Hemma] || "")
+    const homeRaw = cols[idx.Hemma] || "";
+    const home = homeRaw
       .toLowerCase()
       .replace(/\u00A0/g, " ")
       .replace(/\s+/g, " ")
@@ -392,26 +400,59 @@ async function loadMatches() {
       home: cols[idx.Hemma],
       away: cols[idx.Borta],
       arena: cols[idx.Arena],
-      series: (cols[idx.Serie] || "").replace(/\[[0-9]+\]/g, "").trim()
+      series: (cols[idx.Serie] || "").replace(/
+
+\[[0-9]+\]
+
+/g, "").trim()
     });
   }
 
+  return matches;
+}
+
+/* Dela upp i dagens + kommande */
+function splitTodayAndUpcoming(matches) {
   const now = new Date();
   const todayMonth = now.getMonth() + 1;
   const todayDay = now.getDate();
 
-  /* TODAY MATCHES */
-  const todayMatches = matches.filter(m => {
+  const today = [];
+  const upcomingGrouped = {};
+
+  matches.forEach(m => {
+    if (!m.date) return;
     const p = m.date.split("-");
-    return parseInt(p[1], 10) === todayMonth && parseInt(p[2], 10) === todayDay;
+    if (p.length !== 3) return;
+
+    const mMonth = parseInt(p[1], 10);
+    const mDay = parseInt(p[2], 10);
+
+    if (mMonth === todayMonth && mDay === todayDay) {
+      today.push(m);
+      return;
+    }
+
+    if (mMonth > todayMonth || (mMonth === todayMonth && mDay > todayDay)) {
+      const key = mMonth + "-" + mDay;
+      if (!upcomingGrouped[key]) upcomingGrouped[key] = [];
+      upcomingGrouped[key].push(m);
+    }
   });
 
-  let todayHTML = "";
-  if (todayMatches.length === 0) {
-    todayHTML = "<tr><td colspan='6'>Inga matcher idag.</td></tr>";
+  return { today, upcomingGrouped };
+}
+
+/* Render: dagens matcher */
+function renderTodayMatches(todayMatches) {
+  const tbody = document.getElementById("todayMatchBody");
+  let html = "";
+
+  if (!todayMatches || todayMatches.length === 0) {
+    html = "<tr><td colspan='6'>Inga matcher idag.</td></tr>";
   } else {
     todayMatches.forEach(m => {
-      todayHTML += "<tr>" +
+      html += "<tr>" +
         "<td>" + formatDate(m.date) + "</td>" +
         "<td>" + m.time + " " + getStatus(m.date, m.time) + "</td>" +
         "<td>" + m.series + "</td>" +
@@ -421,30 +462,22 @@ async function loadMatches() {
       "</tr>";
     });
   }
-  document.getElementById("todayMatchBody").innerHTML = todayHTML;
 
-  /* UPCOMING MATCHES */
-  const upcomingGrouped = {};
-  matches.forEach(m => {
-    const p = m.date.split("-");
-    const mMonth = parseInt(p[1], 10);
-    const mDay = parseInt(p[2], 10);
-    if (mMonth === todayMonth && mDay === todayDay) return;
-    if (mMonth > todayMonth || (mMonth === todayMonth && mDay > todayDay)) {
-      const key = mMonth + "-" + mDay;
-      if (!upcomingGrouped[key]) upcomingGrouped[key] = [];
-      upcomingGrouped[key].push(m);
-    }
-  });
+  tbody.innerHTML = html;
+}
 
-  const upcomingKeys = Object.keys(upcomingGrouped).slice(0, 5);
-  let upcomingHTML = "";
-  if (upcomingKeys.length === 0) {
-    upcomingHTML = "<tr><td colspan='6'>Inga kommande hemmamatcher.</td></tr>";
+/* Render: kommande matcher */
+function renderUpcomingMatches(upcomingGrouped) {
+  const tbody = document.getElementById("upcomingBody");
+  const keys = Object.keys(upcomingGrouped).slice(0, 5);
+  let html = "";
+
+  if (keys.length === 0) {
+    html = "<tr><td colspan='6'>Inga kommande hemmamatcher.</td></tr>";
   } else {
-    upcomingKeys.forEach(key => {
+    keys.forEach(key => {
       upcomingGrouped[key].forEach(m => {
-        upcomingHTML += "<tr>" +
+        html += "<tr>" +
           "<td>" + formatDate(m.date) + "</td>" +
           "<td>" + m.time + " " + getStatus(m.date, m.time) + "</td>" +
           "<td>" + m.series + "</td>" +
@@ -456,34 +489,70 @@ async function loadMatches() {
     });
   }
 
-  document.getElementById("upcomingBody").innerHTML = upcomingHTML;
-  if (upcomingKeys.length > 10)
-    document.getElementById("upcomingBody").classList.add("scrolling");
-
-  document.getElementById("updatedInfo").textContent =
-    "Senast uppdaterad: " + new Date().toLocaleString("sv-SE");
+  tbody.innerHTML = html;
+  if (keys.length > 10) {
+    tbody.classList.add("scrolling");
+  } else {
+    tbody.classList.remove("scrolling");
+  }
 }
 
-/* SPONSORS */
+/* Ladda matcher */
+async function loadMatches() {
+  try {
+    const resp = await fetch(CSV_URL + "?nocache=" + Date.now(), { cache: "no-store" });
+    if (!resp.ok) throw new Error("Kunde inte ladda CSV (" + resp.status + ")");
+    const text = await resp.text();
+
+    const matches = parseMatchesFromCSV(text);
+    const { today, upcomingGrouped } = splitTodayAndUpcoming(matches);
+
+    renderTodayMatches(today);
+    renderUpcomingMatches(upcomingGrouped);
+
+    document.getElementById("updatedInfo").textContent =
+      ARENA_VERSION + " – Senast uppdaterad: " + new Date().toLocaleString("sv-SE");
+  } catch (err) {
+    console.error("Fel vid laddning av matcher:", err);
+    document.getElementById("todayMatchBody").innerHTML =
+      "<tr><td colspan='6'>Fel vid laddning av matcher.</td></tr>";
+    document.getElementById("upcomingBody").innerHTML =
+      "<tr><td colspan='6'>Fel vid laddning av matcher.</td></tr>";
+  }
+}
+
+/* Ladda sponsorer */
 async function loadSponsors() {
-  const apiUrl = "https://api.github.com/repos/SollentunaHC/matchskarm/contents/sponsors";
-  const resp = await fetch(apiUrl);
-  const files = await resp.json();
-  const track = document.getElementById("sponsorTrack");
+  try {
+    const resp = await fetch(SPONSOR_API_URL);
+    if (!resp.ok) throw new Error("Kunde inte ladda sponsorer (" + resp.status + ")");
+    const files = await resp.json();
+    const track = document.getElementById("sponsorTrack");
 
-  const images = files.filter(f => f.name.match(/\.(png|jpg|jpeg|svg|webp)$/i));
-  const loopImages = images.concat(images);
+    const images = files.filter(f => f.name.match(/\.(png|jpg|jpeg|svg|webp)$/i));
+    const loopImages = images.concat(images);
 
-  loopImages.forEach(img => {
-    const el = document.createElement("img");
-    el.src = img.download_url;
-    track.appendChild(el);
-  });
+    loopImages.forEach(img => {
+      const el = document.createElement("img");
+      el.src = img.download_url;
+      track.appendChild(el);
+    });
+  } catch (err) {
+    console.error("Fel vid laddning av sponsorer:", err);
+  }
 }
 
-/* INIT */
-loadMatches();
-loadSponsors();
+/* Init */
+function initArena() {
+  console.log("SOLLENTUNA HOCKEY – " + ARENA_VERSION);
+  document.getElementById("versionTag").textContent = ARENA_VERSION;
+  updateClock();
+  setInterval(updateClock, 1000);
+  loadMatches();
+  loadSponsors();
+}
+
+document.addEventListener("DOMContentLoaded", initArena);
 </script>
 </body>
 </html>
