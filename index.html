@@ -540,15 +540,25 @@ async function loadSponsors() {
 
 /* Init */
 function initArena() {
-  console.log("SOLLENTUNA HOCKEY – " + ARENA_VERSION);
-  document.getElementById("versionTag").textContent = ARENA_VERSION;
-  updateClock();
-  setInterval(updateClock, 1000);
-  loadMatches();
-  loadSponsors();
+    console.log("SOLLENTUNA HOCKEY - " + ARENA_VERSION);
+    document.getElementById("versionTag").textContent = ARENA_VERSION;
+
+    updateClock();
+    setInterval(updateClock, 1000);
+
+    // 🔹 Första laddningen direkt (viktigt eftersom sidan laddas om var 45 sek)
+    loadMatches();
+    loadSponsors();
+
+    // 🔹 Hämta matcher var 5:e minut (300000 ms)
+    setInterval(loadMatches, 300000);
+
+    // 🔹 Hämta sponsorer var 5:e minut (300000 ms)
+    setInterval(loadSponsors, 300000);
 }
 
 document.addEventListener("DOMContentLoaded", initArena);
+
 </script>
 </body>
 </html>
