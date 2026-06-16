@@ -3,15 +3,24 @@
 <head>
   <meta charset="UTF-8">
   <title>Sponsorer</title>
+
   <style>
-    body {
+    html, body {
+      height: 100%;
       margin: 0;
+      padding: 0;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
       background: #f5f5f5;
       color: #222;
       font-family: Arial, sans-serif;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
+
+      /* Gör plats för superlåst footer */
+      padding-bottom: 12%; /* 5% + 7% */
       overflow: hidden;
     }
 
@@ -35,6 +44,9 @@
       box-sizing: border-box;
       opacity: 1;
       transition: opacity 1s ease;
+
+      /* Viktigt för att footern inte ska tryckas upp */
+      min-height: 0;
     }
 
     /* SPONSOR CARDS */
@@ -75,23 +87,31 @@
       transform: scale(1.05);
     }
 
-    /* FOOTER TOP (väder + klocka) */
+    /* SUPERLÅST FOOTER */
+    .footer-top,
+    .footer-marquee {
+      position: fixed;
+      left: 0;
+      width: 100%;
+      background: #ffffff;
+      z-index: 1000;
+    }
+
     .footer-top {
-      flex: 0 0 5%;
+      bottom: 7%;
+      height: 5%;
       display: flex;
       align-items: center;
       justify-content: space-between;
       padding: 0 3vw;
-      background: #ffffff;
       border-top: 3px solid #0033A0;
       box-shadow: 0 -4px 12px rgba(0,0,0,0.05);
       font-weight: 600;
     }
 
-    /* RULLANDE TEXT – exakt 7 % */
     .footer-marquee {
-      flex: 0 0 7%;
-      background: #ffffff;
+      bottom: 0;
+      height: 7%;
       border-top: 2px solid #C8102E;
       overflow: hidden;
       white-space: nowrap;
@@ -112,47 +132,32 @@
       to { transform: translateX(-100%); }
     }
 
-    /* 📱 DYNAMISK LAYOUT – PORTRAIT */
+    /* PORTRAIT */
     @media (orientation: portrait) {
       .grid {
         grid-template-columns: repeat(2, 1fr);
         grid-template-rows: repeat(4, 1fr);
       }
 
-      .header {
-        font-size: 4vh;
-      }
-
-      .footer-top {
-        font-size: 2.5vh;
-      }
-
-      .marquee {
-        font-size: 2.5vh;
-      }
+      .header { font-size: 4vh; }
+      .footer-top { font-size: 2.5vh; }
+      .marquee { font-size: 2.5vh; }
     }
 
-    /* 🖥️ DYNAMISK LAYOUT – LANDSCAPE */
+    /* LANDSCAPE */
     @media (orientation: landscape) {
       .grid {
         grid-template-columns: repeat(4, 1fr);
         grid-template-rows: repeat(2, 1fr);
       }
 
-      .header {
-        font-size: 3vw;
-      }
-
-      .footer-top {
-        font-size: 2vw;
-      }
-
-      .marquee {
-        font-size: 2vw;
-      }
+      .header { font-size: 3vw; }
+      .footer-top { font-size: 2vw; }
+      .marquee { font-size: 2vw; }
     }
   </style>
 </head>
+
 <body>
 
   <div class="header">Tack till våra sponsorer</div>
@@ -166,166 +171,142 @@
 
   <div class="footer-marquee">
     <div class="marquee">
-      Välkommen till Sollentuna Hockey – Tack till alla våra fantastiska sponsorer som gör vår verksamhet möjlig!
+      Sollentuna Hockey – Tack till alla våra fantastiska sponsorer som gör vår verksamhet möjlig!
     </div>
   </div>
-<script>
-  /* ============================================================
-     SPONSORSCREEN — Version 1.1 (2026-06-16)
-     - Hämtar loggor var 5 min
-     - Renderar var 5 sek
-     - Förberedd för automatisk sidreload var 45 sek
-     ============================================================ */
 
-  const grid = document.getElementById("grid");
+  <script>
+    /* ============================================================
+       SPONSORSCREEN — Version 1.1 (2026-06-16)
+       ============================================================ */
 
-  const IMAGE_ROTATION_INTERVAL = 5000;      // 5 sek
-  const LOGO_REFRESH_INTERVAL   = 300000;    // 5 min
-  const API_URL =
-    "https://api.github.com/repos/sollentunahc/matchskarm/contents/sponsorscreen/logos";
+    const grid = document.getElementById("grid");
 
-  let cachedLogos = [];
-  let lastFetchTime = 0;
+    const IMAGE_ROTATION_INTERVAL = 5000;
+    const LOGO_REFRESH_INTERVAL = 300000;
 
-  /* ------------------------------------------------------------
-     HÄMTA LOGGOR (max var 5:e minut)
-     ------------------------------------------------------------ */
-  async function fetchLogosIfNeeded() {
-    const now = Date.now();
+    const API_URL =
+      "https://api.github.com/repos/sollentunahc/matchskarm/contents/sponsorscreen/logos";
 
-    // Om loggor är cache:ade och mindre än 5 min gamla → använd dem
-    if (cachedLogos.length > 0 && now - lastFetchTime < LOGO_REFRESH_INTERVAL) {
-      return cachedLogos;
+    let cachedLogos = [];
+    let lastFetchTime = 0;
+
+    async function fetchLogosIfNeeded() {
+      const now = Date.now();
+
+      if (cachedLogos.length > 0 && now - lastFetchTime < LOGO_REFRESH_INTERVAL) {
+        return cachedLogos;
+      }
+
+      try {
+        const response = await fetch(API_URL);
+        const files = await response.json();
+
+        cachedLogos = files
+          .filter(f => f.type === "file")
+          .filter(f => /\.(png|jpg|jpeg|svg|webp)$/i.test(f.name))
+          .map(f => f.download_url);
+
+        lastFetchTime = now;
+        return cachedLogos;
+
+      } catch (err) {
+        console.error("Kunde inte hämta loggor:", err);
+        return cachedLogos;
+      }
     }
 
-    try {
-      const response = await fetch(API_URL);
-      const files = await response.json();
-
-      cachedLogos = files
-        .filter(f => f.type === "file")
-        .filter(f => /\.(png|jpg|jpeg|svg|webp)$/i.test(f.name))
-        .map(f => f.download_url);
-
-      lastFetchTime = now;
-      return cachedLogos;
-
-    } catch (err) {
-      console.error("Kunde inte hämta loggor:", err);
-      return cachedLogos; // fallback
+    function shuffle(arr) {
+      return arr
+        .map(x => ({ x, r: Math.random() }))
+        .sort((a, b) => a.r - b.r)
+        .map(o => o.x);
     }
-  }
 
-  /* ------------------------------------------------------------
-     BLANDA
-     ------------------------------------------------------------ */
-  function shuffle(arr) {
-    return arr
-      .map(x => ({ x, r: Math.random() }))
-      .sort((a, b) => a.r - b.r)
-      .map(o => o.x);
-  }
+    function render(urls) {
+      grid.style.opacity = 0;
 
-  /* ------------------------------------------------------------
-     RENDERA LOGGOR
-     ------------------------------------------------------------ */
-  function render(urls) {
-    grid.style.opacity = 0;
+      setTimeout(() => {
+        grid.innerHTML = "";
 
-    setTimeout(() => {
-      grid.innerHTML = "";
+        const cols = getComputedStyle(grid).gridTemplateColumns.split(" ").length;
+        const rows = getComputedStyle(grid).gridTemplateRows.split(" ").length;
+        const cellCount = cols * rows;
 
-      const cols = getComputedStyle(grid).gridTemplateColumns.split(" ").length;
-      const rows = getComputedStyle(grid).gridTemplateRows.split(" ").length;
-      const cellCount = cols * rows;
+        const selected = shuffle(urls).slice(0, cellCount);
 
-      const selected = shuffle(urls).slice(0, cellCount);
+        selected.forEach(url => {
+          const card = document.createElement("div");
+          card.className = "card";
 
-      selected.forEach(url => {
-        const card = document.createElement("div");
-        card.className = "card";
+          const img = document.createElement("img");
+          img.src = url;
+          img.onload = () => img.classList.add("loaded");
 
-        const img = document.createElement("img");
-        img.src = url;
-        img.onload = () => img.classList.add("loaded");
+          card.appendChild(img);
+          grid.appendChild(card);
+        });
 
-        card.appendChild(img);
-        grid.appendChild(card);
-      });
+        grid.style.opacity = 1;
+      }, 800);
+    }
 
-      grid.style.opacity = 1;
-    }, 800);
-  }
-
-  /* ------------------------------------------------------------
-     STARTA SYSTEMET
-     ------------------------------------------------------------ */
-  async function start() {
-    const logos = await fetchLogosIfNeeded();
-    render(logos);
-
-    // Rotera bilder var 5:e sekund
-    setInterval(async () => {
+    async function start() {
       const logos = await fetchLogosIfNeeded();
       render(logos);
-    }, IMAGE_ROTATION_INTERVAL);
-  }
 
-  start();
-
-  /* ------------------------------------------------------------
-     KLOCKA
-     ------------------------------------------------------------ */
-  function updateClock() {
-    const now = new Date();
-    const time = now.toLocaleTimeString("sv-SE", { hour: "2-digit", minute: "2-digit" });
-    const date = now.toLocaleDateString("sv-SE", { weekday: "long", day: "numeric", month: "long" });
-    document.getElementById("clock").textContent = `${time} — ${date}`;
-  }
-  setInterval(updateClock, 1000);
-  updateClock();
-
-  /* ------------------------------------------------------------
-     VÄDER (Open-Meteo)
-     ------------------------------------------------------------ */
-  async function loadWeather() {
-    try {
-      const url = "https://api.open-meteo.com/v1/forecast?latitude=59.43&longitude=17.95&current_weather=true";
-      const res = await fetch(url);
-      const data = await res.json();
-
-      const temp = data.current_weather.temperature;
-      const code = data.current_weather.weathercode;
-
-      const icons = {
-        0: "☀️", 1: "🌤️", 2: "⛅", 3: "☁️",
-        45: "🌫️", 48: "🌫️",
-        51: "🌦️", 53: "🌦️", 55: "🌦️",
-        61: "🌧️", 63: "🌧️", 65: "🌧️",
-        71: "🌨️", 73: "🌨️", 75: "🌨️",
-        95: "⛈️", 96: "⛈️", 99: "⛈️"
-      };
-
-      const icon = icons[code] || "☁️";
-
-      document.getElementById("weather").textContent =
-        `${icon} Sollentuna: ${temp}°C`;
-
-    } catch {
-      document.getElementById("weather").textContent =
-        "☁️ Sollentuna: väderdata ej tillgänglig";
+      setInterval(async () => {
+        const logos = await fetchLogosIfNeeded();
+        render(logos);
+      }, IMAGE_ROTATION_INTERVAL);
     }
-  }
 
-  loadWeather();
-  setInterval(loadWeather, 600000);
+    start();
 
-  /* ------------------------------------------------------------
-     AUTOMATISK SIDRELOAD (45 sek)
-     ------------------------------------------------------------ */
-  // setTimeout(() => location.reload(), 45000);
-  
-</script>
+    function updateClock() {
+      const now = new Date();
+      const time = now.toLocaleTimeString("sv-SE", { hour: "2-digit", minute: "2-digit" });
+      const date = now.toLocaleDateString("sv-SE", { weekday: "long", day: "numeric", month: "long" });
+      document.getElementById("clock").textContent = `${time} — ${date}`;
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    async function loadWeather() {
+      try {
+        const url = "https://api.open-meteo.com/v1/forecast?latitude=59.43&longitude=17.95&current_weather=true";
+        const res = await fetch(url);
+        const data = await res.json();
+
+        const temp = data.current_weather.temperature;
+        const code = data.current_weather.weathercode;
+
+        const icons = {
+          0: "☀️", 1: "🌤️", 2: "⛅", 3: "☁️",
+          45: "🌫️", 48: "🌫️",
+          51: "🌦️", 53: "🌦️", 55: "🌦️",
+          61: "🌧️", 63: "🌧️", 65: "🌧️",
+          71: "🌨️", 73: "🌨️", 75: "🌨️",
+          95: "⛈️", 96: "⛈️", 99: "⛈️"
+        };
+
+        const icon = icons[code] || "☁️";
+
+        document.getElementById("weather").textContent =
+          `${icon} Sollentuna: ${temp}°C`;
+
+      } catch {
+        document.getElementById("weather").textContent =
+          "☁️ Sollentuna: väderdata ej tillgänglig";
+      }
+    }
+
+    loadWeather();
+    setInterval(loadWeather, 600000);
+
+    /* Automatisk reload om du vill aktivera det */
+    // setTimeout(() => location.reload(), 45000);
+  </script>
 
 </body>
 </html>
