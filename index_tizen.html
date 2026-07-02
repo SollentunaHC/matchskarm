@@ -554,44 +554,35 @@ function loadSponsors() {
   var track = document.getElementById("sponsorTrack");
   track.innerHTML = "";
 
-  try {
-    var xhr = new XMLHttpRequest();
-    xhr.open("GET", SPONSOR_API_URL, true);
-    xhr.onreadystatechange = function () {
-      if (xhr.readyState === 4) {
-        if (xhr.status >= 200 && xhr.status < 300) {
-          var files;
-          try {
-            files = JSON.parse(xhr.responseText);
-          } catch (e) {
-            return;
-          }
+  var sponsorImages = [
+    "sponsors/Aften bil.png",
+    "sponsors/CCM.png",
+    "sponsors/Cyloq.png",
+    "sponsors/Dammarsberg_2.png",
+    "sponsors/Edsviken.png",
+    "sponsors/ICA.png",
+    "sponsors/Interbus-logo_218.png",
+    "sponsors/MSB Center.png",
+    "sponsors/Maxi_Haggvik_RGB.png",
+    "sponsors/Märsta förenade.png",
+    "sponsors/Nonnos.png",
+    "sponsors/One_Sec.jpg",
+    "sponsors/SvCater.png",
+    "sponsors/Teamgear.png",
+    "sponsors/max.png",
+    "sponsors/trygga hiss.jpg",
+    "sponsors/villarelining.png"
+  ];
 
-          var images = [];
-          for (var i = 0; i < files.length; i++) {
-            var name = files[i].name || "";
-            var lower = name.toLowerCase();
-            if (lower.indexOf(".png") !== -1 || lower.indexOf(".jpg") !== -1 || lower.indexOf(".jpeg") !== -1) {
-              images.push(files[i].download_url);
-            }
-          }
+  // Dubbla listan för oändlig scroll
+  var loopImages = sponsorImages.concat(sponsorImages);
 
-          var loopImages = [];
-          for (var j = 0; j < images.length; j++) {
-            loopImages.push(images[j]);
-          }
-          for (var k = 0; k < images.length; k++) {
-            loopImages.push(images[k]);
-          }
-
-          for (var m = 0; m < loopImages.length; m++) {
-            var el = document.createElement("img");
-            el.src = loopImages[m];
-            track.appendChild(el);
-          }
-        }
-      }
-    };
+  for (var i = 0; i < loopImages.length; i++) {
+    var el = document.createElement("img");
+    el.src = loopImages[i];
+    track.appendChild(el);
+  }
+};
     xhr.send(null);
   } catch (e) {
     // tyst fel – banderollen blir tom om något går snett
