@@ -170,6 +170,13 @@ h2 {
   100% { transform: translateX(-50%); }
 }
 
+  /* Gul text för "Inga matcher idag" */
+.no-matches {
+  color: #ffeb3b !important;  /* skarp gul */
+  font-weight: 900;
+  text-shadow: 0 0 6px rgba(0,0,0,0.6); /* ger lite djup mot mörkblå bakgrund */
+}
+
 /* ====== FOOTER & VERSION ====== */
 footer {
   text-align: right;
@@ -400,7 +407,7 @@ function renderTodayMatches(todayMatches) {
   var html = "";
 
   if (!todayMatches || todayMatches.length === 0) {
-    html = "<tr><td colspan='6'>Inga matcher idag.</td></tr>";
+   html = "<tr><td colspan='6' class='no-matches'>Inga matcher idag</td></tr>";
   } else {
     for (var i = 0; i < todayMatches.length; i++) {
       var m = todayMatches[i];
