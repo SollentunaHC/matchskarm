@@ -6,41 +6,29 @@
 <meta http-equiv="refresh" content="300">
 
 <style>
-:root {
-  /* Grundfärger – justerade för Tizen gamma ≈ 2.0 */
-  --bg-main: #08132b;          /* mörkare blå för korrekt djup */
-  --bg-row-even: #16284b;      /* jämn rad – ökad kontrast */
-  --bg-row-odd: #0f1e3d;       /* ojämn rad – något ljusare */
-  --bg-header: #b71c1c;        /* mörkare röd för bättre balans */
-  --text-main: #ffffff;
-  --yellow: #ffeb3b;
-  /* SHC 10 – ljus entréprofil justerad för Tizen-paneler */
-  --bg-main: #d6d6d6;        /* huvudbakgrund – neutral ljusgrå */
-  --bg-row-even: #e2e2e2;    /* jämn rad – tydlig kontrast */
-  --bg-row-odd: #ececec;     /* ojämn rad – mjukare ton */
-  --bg-header: #e8e8e8;      /* header – separerar sig från tabell */
-  --text-main: #111111;      /* djupare svart för läsbarhet */
-  --yellow: #ffeb3b;         /* behåll SHC-gul */
-}
 
+/* Tizen 3.0 stöder INTE CSS-variabler.
+   Därför använder vi DIREKTA färger istället. */
 
 * { box-sizing: border-box; }
 
+/* ====== BAKGRUND & TEXT ====== */
 body {
   margin: 0;
   font-family: "Segoe UI", sans-serif;
-  background: var(--bg-main);
-  color: var(--text-main);
+
+  /* Ändra här: ersätt var(--bg-main) med direkt färg */
+  background: #08132b;       /* mörkblå SHC-bakgrund */
+  color: #ffffff;
+
   overflow: hidden;
   position: relative;
 
   /* Tizen-kompensation */
   filter: contrast(1.15) brightness(0.95);
-  /* Tizen-kompensation för ljus profil */
-  filter: contrast(1.08) brightness(1.02);
 }
 
-
+/* ====== SHC-DRAKEN ====== */
 body::before {
   content: "";
   position: absolute;
@@ -58,207 +46,73 @@ body::before {
   z-index: 0;
 }
 
+/* ====== KLOCKA ====== */
 #clock {
   position: fixed;
   top: 1.2vh;
   left: 1.5vw;
   font-size: 2.2vw;
   font-weight: 900;
-  color: var(--text-main);
+  color: #ffffff;   /* ändrat från var(--text-main) */
   z-index: 1000;
   text-shadow: 0 0 8px rgba(0,0,0,0.7);
 }
 
+/* ====== HEADER ====== */
 header {
   text-align: center;
   padding: 2.2vh 0 1.2vh;
   font-size: 4.6vw;
   font-weight: 900;
   letter-spacing: 0.35vw;
-  color: var(--text-main);
+
+  /* ändra här */
+  color: #ffffff;
+  background: #b71c1c;   /* SHC-röd */
+
   z-index: 10;
   position: relative;
   text-shadow: 0 0 12px rgba(0,0,0,0.8);
 }
 
-.content-area {
-  position: relative;
-  z-index: 10;
-  height: 78vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  gap: 2vh;
-}
-
+/* ====== SEKTIONSTITLAR ====== */
 h2 {
   text-align: center;
   font-size: 2.6vw;
   font-weight: 900;
   margin: 0.5vh 0 0.3vh;
-  color: var(--text-main);
+  color: #ffffff;   /* ändrat */
   text-shadow: 0 0 8px rgba(0,0,0,0.7);
 }
 
-.table-wrapper {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-}
-
-table.match-table {
-  width: 92%;
-  border-collapse: collapse;
-  background: rgba(0,0,0,0.15);
-  border-radius: 8px;
-  overflow: hidden;
-  table-layout: fixed;
-}
-
-.match-table th, .match-table td {
-  padding: 1.1vh 0.8vw;
-  font-size: 1.5vw;
-  font-weight: 600;
-  white-space: nowrap;
-  text-align: center;
-  vertical-align: middle;
-}
-
+/* ====== TABELLER ====== */
 .match-table th {
-  background: var(--bg-header);
-  color: #fff;
+  background: #b71c1c;   /* SHC-röd */
+  color: #ffffff;
   font-weight: 900;
   font-size: 1.8vw;
 }
 
-.match-table tbody tr:nth-child(even) { background: var(--bg-row-even); }
-.match-table tbody tr:nth-child(odd)  { background: var(--bg-row-odd); }
-
-/* Kolumnbredder */
-.match-table th:nth-child(1), .match-table td:nth-child(1) { width: 12%; }
-.match-table th:nth-child(2), .match-table td:nth-child(2) { width: 10%; }
-.match-table th:nth-child(3), .match-table td:nth-child(3) { width: 26%; }
-.match-table th:nth-child(4), .match-table td:nth-child(4) { width: 20%; }
-.match-table th:nth-child(5), .match-table td:nth-child(5) { width: 20%; }
-.match-table th:nth-child(6), .match-table td:nth-child(6) { width: 12%; }
-
-/* CYLOQ-logo */
-.hall-logo {
-  display: inline-block;
-  width: 50px;
-  height: 50px;
-  background-size: contain;
-  background-repeat: no-repeat;
-  vertical-align: middle;
-  margin-right: 6px;
-  position: relative;
-  top: 16px;
+.match-table tbody tr:nth-child(even) {
+  background: #16284b;   /* mörkblå rad */
 }
 
-@media (min-width: 2000px) {
-  .hall-logo {
-    width: 64px;
-    height: 64px;
-    top: 7px;
-  }
+.match-table tbody tr:nth-child(odd) {
+  background: #0f1e3d;   /* ännu mörkare blå rad */
 }
 
-.hall-cyloq {
-  background-image: url('https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/sponsors/Cyloq.png');
-}
-
-/* Live-status */
-.status-tag {
-  font-weight: 900;
-  padding: 2px 8px;
-  border-radius: 6px;
-  margin-left: 6px;
-  font-size: 1.2vw;
-}
-
-.status-soon {
-  background: #ffeb3b;
-  color: #000000;
-}
-
-.status-live {
-  background: #4caf50;
-  color: #ffffff;
-}
-
-/* Synkad radhöjd */
-#upcomingBody td,
-#todayMatchBody td {
-  padding-top: 0.15vh;
-  padding-bottom: 0.15vh;
-}
-
-/* Scrollande kommande matcher */
-#upcomingBody.scrolling {
-  display: block;
-  max-height: 30vh;
-  overflow: hidden;
-  animation: scrollUp 22s linear infinite;
-}
-
-@keyframes scrollUp {
-  0% { transform: translateY(0); }
-  100% { transform: translateY(-50%); }
-}
-
-/* Sponsorbanderoll */
+/* ====== SPONSORBANDEROLL ====== */
 .ad-bar {
-  width: 100%;
-  height: 10vh;
-  overflow: hidden;
   background: rgba(255, 255, 255, 0.35);
   border-top: 3px solid rgba(255,255,255,0.65);
-  display: flex;
-  align-items: center;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  z-index: 20;
-}
-
-.ad-track {
-  display: flex;
-  gap: 8vw;
-  white-space: nowrap;
-  animation: scrollAds 35s linear infinite;
 }
 
 .ad-track img {
-  height: 10vh;
-  object-fit: contain;
   filter: drop-shadow(0 0 4px rgba(0,0,0,0.5));
 }
 
-@keyframes scrollAds {
-  0%   { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
-}
-
-footer {
-  text-align: right;
-  font-size: 1vw;
-  opacity: 0.7;
-  margin: 0.8vh 3vw 0;
-  z-index: 10;
-  position: relative;
-}
-
-/* Versions-tag */
-#versionTag {
-  position: fixed;
-  bottom: 11vh;
-  left: 1vw;
-  font-size: 0.9vw;
-  opacity: 0.45;
-  z-index: 50;
-  pointer-events: none;
-}
 </style>
+
 </head>
 
 <body>
