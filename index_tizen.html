@@ -114,7 +114,7 @@ h2 {
   gap: 2vh;
 }
 
-/* ====== SPONSORBANDEROLL ====== */
+/* ====== SPONSORBANDEROLL – TIZEN-KOMPATIBEL ====== */
 .ad-bar {
   position: fixed;
   bottom: 0;
@@ -128,36 +128,41 @@ h2 {
   align-items: center;
   z-index: 20;
 }
-/* ====== RESPONSIVT AVSTÅND MELLAN SPONSORLOGGOR ====== */
 
-/* Standard – hallskärmar och stora displayer */
+/* Flex-container för rullning */
 .ad-track {
   display: flex;
-  gap: 16vw;
   white-space: nowrap;
   animation: scrollAds 35s linear infinite;
 }
 
-/* Mellanstora skärmar (t.ex. laptop) */
+/* Loggorna – avstånd via margin (Tizen saknar gap-stöd) */
+.ad-track img {
+  height: 10vh;
+  object-fit: contain;
+  filter: drop-shadow(0 0 4px rgba(0,0,0,0.5));
+  margin-right: 8vw;
+}
+
+/* Responsiv avståndsjustering */
 @media (max-width: 1800px) {
-  .ad-track {
-    gap: 12vw;
-  }
+  .ad-track img { margin-right: 6vw; }
 }
 
-/* Mindre skärmar (t.ex. PC eller surfplatta) */
 @media (max-width: 1200px) {
-  .ad-track {
-    gap: 12vw;
-  }
+  .ad-track img { margin-right: 4vw; }
 }
 
-/* Små skärmar (t.ex. mobil eller testfönster) */
 @media (max-width: 800px) {
-  .ad-track {
-    gap: 2vw;
-  }
+  .ad-track img { margin-right: 2vw; }
 }
+
+/* Rullningsanimation */
+@keyframes scrollAds {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
 
 .ad-track img {
   height: 10vh;
