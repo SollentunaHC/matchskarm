@@ -7,13 +7,22 @@
 
 <style>
 :root {
-  --bg-main: #0b1a3a;
-  --bg-row-even: #1e2f5c;
-  --bg-row-odd: #14244a;
-  --bg-header: #c62828;
+  /* Grundfärger – justerade för Tizen gamma ≈ 2.0 */
+  --bg-main: #08132b;          /* mörkare blå för korrekt djup */
+  --bg-row-even: #16284b;      /* jämn rad – ökad kontrast */
+  --bg-row-odd: #0f1e3d;       /* ojämn rad – något ljusare */
+  --bg-header: #b71c1c;        /* mörkare röd för bättre balans */
   --text-main: #ffffff;
   --yellow: #ffeb3b;
+  /* SHC 10 – ljus entréprofil justerad för Tizen-paneler */
+  --bg-main: #d6d6d6;        /* huvudbakgrund – neutral ljusgrå */
+  --bg-row-even: #e2e2e2;    /* jämn rad – tydlig kontrast */
+  --bg-row-odd: #ececec;     /* ojämn rad – mjukare ton */
+  --bg-header: #e8e8e8;      /* header – separerar sig från tabell */
+  --text-main: #111111;      /* djupare svart för läsbarhet */
+  --yellow: #ffeb3b;         /* behåll SHC-gul */
 }
+
 
 * { box-sizing: border-box; }
 
@@ -24,7 +33,13 @@ body {
   color: var(--text-main);
   overflow: hidden;
   position: relative;
+
+  /* Tizen-kompensation */
+  filter: contrast(1.15) brightness(0.95);
+  /* Tizen-kompensation för ljus profil */
+  filter: contrast(1.08) brightness(1.02);
 }
+
 
 body::before {
   content: "";
@@ -516,18 +531,22 @@ function loadMatches() {
     var xhr = new XMLHttpRequest();
     var url = CSV_URL + "?nocache=" + new Date().getTime();
     xhr.open("GET", url, true);
+
     xhr.onreadystatechange = function () {
       if (xhr.readyState === 4) {
         if (xhr.status >= 200 && xhr.status < 300) {
+
           var text = xhr.responseText;
           var matches = parseMatchesFromCSV(text);
           var split = splitTodayAndUpcoming(matches);
+
           renderTodayMatches(split.today);
           renderUpcomingMatches(split.upcomingGrouped);
 
           document.getElementById("updatedInfo").textContent =
             ARENA_VERSION + " – Senast uppdaterad: " +
             new Date().toLocaleString("sv-SE");
+
         } else {
           document.getElementById("todayMatchBody").innerHTML =
             "<tr><td colspan='6'>Fel vid laddning av matcher.</td></tr>";
@@ -536,7 +555,9 @@ function loadMatches() {
         }
       }
     };
+
     xhr.send(null);
+
   } catch (e) {
     document.getElementById("todayMatchBody").innerHTML =
       "<tr><td colspan='6'>Fel vid laddning av matcher.</td></tr>";
@@ -545,49 +566,12 @@ function loadMatches() {
   }
 }
 
+
 /* Ladda sponsorer – alla PNG/JPG i /sponsors via GitHub API (XMLHttpRequest) */
 function loadSponsors() {
   var track = document.getElementById("sponsorTrack");
   track.innerHTML = "";
 
-  try {
-    var xhr = new XMLHttpRequest();
-    xhr.open("GET", SPONSOR_API_URL, true);
-    xhr.onreadystatechange = function () {
-      if (xhr.readyState === 4) {
-        if (xhr.status >= 200 && xhr.status < 300) {
-          var files;
-          try {
-            files = JSON.parse(xhr.responseText);
-          } catch (e) {
-            return;
-          }
-
-          var images = [];
-          for (var i = 0; i < files.length; i++) {
-            var name = files[i].name || "";
-            var lower = name.toLowerCase();
-            if (lower.indexOf(".png") !== -1 || lower.indexOf(".jpg") !== -1 || lower.indexOf(".jpeg") !== -1) {
-              images.push(files[i].download_url);
-            }
-          }
-
-          var loopImages = [];
-          for (var j = 0; j < images.length; j++) {
-            loopImages.push(images[j]);
-          }
-          for (var k = 0; k < images.length; k++) {
-            loopImages.push(images[k]);
-          }
-
-          for (var m = 0; m < loopImages.length; m++) {
-            var el = document.createElement("img");
-            el.src = loopImages[m];
-            track.appendChild(el);
-          }
-        }
-      }
-    };
   var sponsorImages = [
     "sponsors/Aften bil.png",
     "sponsors/CCM.png",
@@ -616,12 +600,8 @@ function loadSponsors() {
     el.src = loopImages[i];
     track.appendChild(el);
   }
-};
-    xhr.send(null);
-  } catch (e) {
-    // tyst fel – banderollen blir tom om något går snett
-  }
 }
+;
 
 /* Init */
 function initArena() {
