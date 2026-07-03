@@ -1,1 +1,28 @@
-
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<title>SHC10 Färgprofiltest</title>
+<style>
+body {
+  margin: 0;
+  height: 100vh;
+  background: #0b1a3a; /* Sollentuna blå */
+  display: flex;
+  flex-direction: column;
+}
+.header {
+  height: 20%;
+  background: #c62828; /* Sollentuna röd */
+}
+.content {
+  flex: 1;
+  background: #14244a; /* SHC01 radfärg */
+}
+</style>
+</head>
+<body>
+  <div class="header"></div>
+  <div class="content"></div>
+</body>
+</html>
