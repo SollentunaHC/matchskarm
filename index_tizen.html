@@ -7,25 +7,17 @@
 
 <style>
 
-/* Tizen 3.0 stöder INTE CSS-variabler.
-   Därför använder vi DIREKTA färger istället. */
-
+/* ====== FÄRGER & GRUNDSTIL ====== */
 * { box-sizing: border-box; }
 
-/* ====== BAKGRUND & TEXT ====== */
 body {
   margin: 0;
   font-family: "Segoe UI", sans-serif;
-
-  /* Ändra här: ersätt var(--bg-main) med direkt färg */
   background: #08132b;       /* mörkblå SHC-bakgrund */
   color: #ffffff;
-
   overflow: hidden;
   position: relative;
-
-  /* Tizen-kompensation */
-  filter: contrast(1.15) brightness(0.95);
+  filter: contrast(1.15) brightness(0.95); /* Tizen-kompensation */
 }
 
 /* ====== SHC-DRAKEN ====== */
@@ -53,7 +45,7 @@ body::before {
   left: 1.5vw;
   font-size: 2.2vw;
   font-weight: 900;
-  color: #ffffff;   /* ändrat från var(--text-main) */
+  color: #ffffff;
   z-index: 1000;
   text-shadow: 0 0 8px rgba(0,0,0,0.7);
 }
@@ -65,14 +57,12 @@ header {
   font-size: 4.6vw;
   font-weight: 900;
   letter-spacing: 0.35vw;
-
-  /* ändra här */
   color: #ffffff;
   background: #b71c1c;   /* SHC-röd */
-
   z-index: 10;
   position: relative;
   text-shadow: 0 0 12px rgba(0,0,0,0.8);
+  margin-bottom: 1vh; /* extra luft */
 }
 
 /* ====== SEKTIONSTITLAR ====== */
@@ -81,49 +71,55 @@ h2 {
   font-size: 2.6vw;
   font-weight: 900;
   margin: 0.5vh 0 0.3vh;
-  color: #ffffff;   /* ändrat */
+  color: #ffffff;
   text-shadow: 0 0 8px rgba(0,0,0,0.7);
 }
 
 /* ====== TABELLER ====== */
+.match-table {
+  width: 92%;
+  border-collapse: collapse;
+  margin: 0 auto;
+  table-layout: fixed;
+}
+
+.match-table th, .match-table td {
+  padding: 1.1vh 0.8vw;
+  font-size: 1.5vw;
+  font-weight: 600;
+  white-space: nowrap;
+  text-align: center;
+  vertical-align: middle;
+}
+
 .match-table th {
-  background: #b71c1c;   /* SHC-röd */
+  background: #b71c1c;
   color: #ffffff;
   font-weight: 900;
   font-size: 1.8vw;
 }
 
-.match-table tbody tr:nth-child(even) {
-  background: #16284b;   /* mörkblå rad */
-}
+.match-table tbody tr:nth-child(even) { background: #16284b; }
+.match-table tbody tr:nth-child(odd)  { background: #0f1e3d; }
 
-.match-table tbody tr:nth-child(odd) {
-  background: #0f1e3d;   /* ännu mörkare blå rad */
-}
-/* ====== LAYOUTFIX FÖR TIZEN ======
-   Tizen 3.0 räknar vh annorlunda och trycker ihop layouten.
-   Detta block återställer rätt proportioner. */
-
+/* ====== LAYOUTFIX FÖR TIZEN ====== */
 .content-area {
   position: relative;
   z-index: 10;
-
-  /* Tabellområdet ska fylla hela skärmen minus sponsorbandet */
-  height: calc(100vh - 12vh);
-
+  height: calc(100vh - 12vh); /* lämnar plats för sponsorbandet */
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   gap: 2vh;
 }
 
-/* Sponsorbandet ska ligga fast längst ned */
+/* ====== SPONSORBANDEROLL ====== */
 .ad-bar {
   position: fixed;
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 12vh; /* ökad höjd för bättre balans */
+  height: 12vh;
   overflow: hidden;
   background: rgba(255, 255, 255, 0.35);
   border-top: 3px solid rgba(255,255,255,0.65);
@@ -132,27 +128,45 @@ h2 {
   z-index: 20;
 }
 
-/* Små marginaljusteringar för bättre luft */
-header {
-  margin-bottom: 1vh;
-}
-
-h2 {
-  margin-top: 0.5vh;
-}
-
-/* ====== SPONSORBANDEROLL ====== */
-.ad-bar {
-  background: rgba(255, 255, 255, 0.35);
-  border-top: 3px solid rgba(255,255,255,0.65);
+.ad-track {
+  display: flex;
+  gap: 8vw;
+  white-space: nowrap;
+  animation: scrollAds 35s linear infinite;
 }
 
 .ad-track img {
+  height: 10vh;
+  object-fit: contain;
   filter: drop-shadow(0 0 4px rgba(0,0,0,0.5));
 }
 
-</style>
+@keyframes scrollAds {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
 
+/* ====== FOOTER & VERSION ====== */
+footer {
+  text-align: right;
+  font-size: 1vw;
+  opacity: 0.7;
+  margin: 0.8vh 3vw 0;
+  z-index: 10;
+  position: relative;
+}
+
+#versionTag {
+  position: fixed;
+  bottom: 11vh;
+  left: 1vw;
+  font-size: 0.9vw;
+  opacity: 0.45;
+  z-index: 50;
+  pointer-events: none;
+}
+
+</style>
 </head>
 
 <body>
@@ -211,6 +225,7 @@ h2 {
 <div id="versionTag"></div>
 
 <script>
+
 var ARENA_VERSION = "Arena Style 11.0 Tizen";
 var CSV_URL = "Spelschema_2627.csv";
 var SPONSOR_API_URL = "sponsors/";
