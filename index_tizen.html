@@ -128,12 +128,35 @@ h2 {
   align-items: center;
   z-index: 20;
 }
+/* ====== RESPONSIVT AVSTÅND MELLAN SPONSORLOGGOR ====== */
 
+/* Standard – hallskärmar och stora displayer */
 .ad-track {
   display: flex;
-  gap: 10vw;
+  gap: 8vw;
   white-space: nowrap;
   animation: scrollAds 35s linear infinite;
+}
+
+/* Mellanstora skärmar (t.ex. laptop) */
+@media (max-width: 1800px) {
+  .ad-track {
+    gap: 6vw;
+  }
+}
+
+/* Mindre skärmar (t.ex. PC eller surfplatta) */
+@media (max-width: 1200px) {
+  .ad-track {
+    gap: 4vw;
+  }
+}
+
+/* Små skärmar (t.ex. mobil eller testfönster) */
+@media (max-width: 800px) {
+  .ad-track {
+    gap: 2vw;
+  }
 }
 
 .ad-track img {
