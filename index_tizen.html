@@ -516,18 +516,22 @@ function loadMatches() {
     var xhr = new XMLHttpRequest();
     var url = CSV_URL + "?nocache=" + new Date().getTime();
     xhr.open("GET", url, true);
+
     xhr.onreadystatechange = function () {
       if (xhr.readyState === 4) {
         if (xhr.status >= 200 && xhr.status < 300) {
+
           var text = xhr.responseText;
           var matches = parseMatchesFromCSV(text);
           var split = splitTodayAndUpcoming(matches);
+
           renderTodayMatches(split.today);
           renderUpcomingMatches(split.upcomingGrouped);
 
           document.getElementById("updatedInfo").textContent =
             ARENA_VERSION + " – Senast uppdaterad: " +
             new Date().toLocaleString("sv-SE");
+
         } else {
           document.getElementById("todayMatchBody").innerHTML =
             "<tr><td colspan='6'>Fel vid laddning av matcher.</td></tr>";
@@ -536,7 +540,9 @@ function loadMatches() {
         }
       }
     };
+
     xhr.send(null);
+
   } catch (e) {
     document.getElementById("todayMatchBody").innerHTML =
       "<tr><td colspan='6'>Fel vid laddning av matcher.</td></tr>";
@@ -544,6 +550,7 @@ function loadMatches() {
       "<tr><td colspan='6'>Fel vid laddning av matcher.</td></tr>";
   }
 }
+
 
 /* Ladda sponsorer – alla PNG/JPG i /sponsors via GitHub API (XMLHttpRequest) */
 function loadSponsors() {
