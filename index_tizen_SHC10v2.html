@@ -85,6 +85,48 @@ tr:nth-child(odd) { background: var(--bg-row-odd); }
   to { transform: translateX(-50%); }
 }
 </style>
+
+</head>
+<body>
+
+<h1>SOLLENTUNA HOCKEY</h1>
+<div class="version">Arena Style 11.1 – SHC10v2</div>
+<div id="clock"></div>
+
+<div class="section-title">DAGENS MATCHER</div>
+<table>
+  <thead>
+    <tr>
+      <th>Datum</th>
+      <th>Tid</th>
+      <th>Serie</th>
+      <th>Hemmalag</th>
+      <th>Bortalag</th>
+      <th>Arena</th>
+    </tr>
+  </thead>
+  <tbody id="todayMatchBody"></tbody>
+</table>
+
+<div class="section-title">KOMMANDE MATCHER</div>
+<table>
+  <thead>
+    <tr>
+      <th>Datum</th>
+      <th>Tid</th>
+      <th>Serie</th>
+      <th>Hemmalag</th>
+      <th>Bortalag</th>
+      <th>Arena</th>
+    </tr>
+  </thead>
+  <tbody id="upcomingBody"></tbody>
+</table>
+
+<div id="sponsorBar">
+  <div id="sponsorTrack"></div>
+</div>
+
 <script>
 // Klocka
 setInterval(() => {
@@ -143,6 +185,6 @@ async function loadSponsors() {
 }
 loadSponsors();
 </script>
+
 </body>
 </html>
-
