@@ -7,15 +7,16 @@
 
 <style>
 :root {
-  /* SHC 10 – ljus entréprofil justerad för Tizen-paneler */
-  --bg-main: #d6d6d6;        /* huvudbakgrund – neutral ljusgrå */
-  --bg-row-even: #e2e2e2;    /* jämn rad – tydlig kontrast */
-  --bg-row-odd: #ececec;     /* ojämn rad – mjukare ton */
-  --bg-header: #e8e8e8;      /* header – separerar sig från tabell */
-  --text-main: #111111;      /* djupare svart för läsbarhet */
-  --yellow: #ffeb3b;         /* behåll SHC-gul */
+  /* EXAKT SHC01-färgprofil */
+  --bg-main: #0b1a3a;
+  --bg-row-even: #1e2f5c;
+  --bg-row-odd: #14244a;
+  --bg-header: #c62828;
+  --text-main: #ffffff;
+  --yellow: #ffeb3b;
 }
 
+/* Viktigt: ska vara kvar */
 * { box-sizing: border-box; }
 
 body {
@@ -25,9 +26,6 @@ body {
   color: var(--text-main);
   overflow: hidden;
   position: relative;
-
-  /* Tizen-kompensation för ljus profil */
-  filter: contrast(1.08) brightness(1.02);
 }
 
 
