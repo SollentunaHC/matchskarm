@@ -6,26 +6,18 @@
 <title>Sollentuna Hockey – Matchskärm SHC10v2</title>
 
 <style>
-:root {
-  --bg-main: #0b1a3a;
-  --bg-row-even: #1e2f5c;
-  --bg-row-odd: #14244a;
-  --bg-header: #c62828;
-  --text-main: #ffffff;
-  --yellow: #ffeb3b;
-}
 * { box-sizing: border-box; }
 body {
   margin: 0;
   font-family: Segoe UI, sans-serif;
-  background: var(--bg-main);
-  color: var(--text-main);
+  background: #0b1a3a; /* mörkblå */
+  color: #ffffff;
   overflow: hidden;
 }
 h1 {
   margin: 0;
   padding: 10px;
-  background: var(--bg-header);
+  background: #c62828; /* röd */
   text-align: center;
   font-size: 48px;
 }
@@ -34,10 +26,10 @@ h1 {
   top: 10px;
   left: 20px;
   font-size: 20px;
-  color: var(--yellow);
+  color: #ffeb3b; /* gul */
 }
 .section-title {
-  background: var(--bg-header);
+  background: #c62828;
   padding: 8px;
   font-size: 32px;
   text-align: center;
@@ -49,14 +41,14 @@ table {
   font-size: 28px;
 }
 th {
-  background: var(--bg-header);
+  background: #c62828;
   padding: 10px;
 }
 td {
   padding: 10px;
 }
-tr:nth-child(even) { background: var(--bg-row-even); }
-tr:nth-child(odd) { background: var(--bg-row-odd); }
+tr:nth-child(even) { background: #1e2f5c; }
+tr:nth-child(odd) { background: #14244a; }
 #clock {
   position: absolute;
   top: 10px;
