@@ -1,1 +1,173 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="refresh" content="300">
+<title>Sollentuna Hockey – Matchskärm</title>
 
+<!-- Smart Signage Safe CSS (cache-buster) -->
+<script>
+document.write('<style>' +
+  ':root {' +
+    '--bg-main: #0b1a3a;' +
+    '--bg-row-even: #1e2f5c;' +
+    '--bg-row-odd: #14244a;' +
+    '--bg-header: #c62828;' +
+    '--text-main: #ffffff;' +
+    '--yellow: #ffeb3b;' +
+  '}' +
+  '* { box-sizing: border-box; }' +
+  'body { margin:0; font-family:Segoe UI, sans-serif; background:var(--bg-main); color:var(--text-main); overflow:hidden; }' +
+  'h1 { margin:0; padding:10px; background:var(--bg-header); text-align:center; font-size:48px; }' +
+  '.section-title { background:var(--bg-header); padding:8px; font-size:32px; text-align:center; margin-top:20px; }' +
+  'table { width:100%; border-collapse:collapse; font-size:28px; }' +
+  'th { background:var(--bg-header); padding:10px; }' +
+  'td { padding:10px; }' +
+  'tr:nth-child(even) { background:var(--bg-row-even); }' +
+  'tr:nth-child(odd) { background:var(--bg-row-odd); }' +
+  '#clock { position:absolute; top:10px; right:20px; font-size:32px; }' +
+  '#sponsorBar { position:absolute; bottom:0; width:100%; height:70px; overflow:hidden; background:#00000033; }' +
+  '#sponsorTrack { display:flex; animation:scroll 20s linear infinite; height:70px; }' +
+  '#sponsorTrack img { height:70px; margin-right:40px; }' +
+  '@keyframes scroll { from { transform:translateX(0); } to { transform:translateX(-50%); } }' +
+'</style>');
+</script>
+
+</head>
+<body>
+
+<h1>SOLLENTUNA HOCKEY</h1>
+<div id="clock"></div>
+
+<div class="section-title">DAGENS MATCHER</div>
+<table>
+  <thead>
+    <tr>
+      <th>Datum</th>
+      <th>Tid</th>
+      <th>Serie</th>
+      <th>Hemmalag</th>
+      <th>Bortalag</th>
+      <th>Arena</th>
+    </tr>
+  </thead>
+  <tbody id="todayMatchBody"></tbody>
+</table>
+
+<div class="section-title">KOMMANDE MATCHER</div>
+<table>
+  <thead>
+    <tr>
+      <th>Datum</th>
+      <th>Tid</th>
+      <th>Serie</th>
+      <th>Hemmalag</th>
+      <th>Bortalag</th>
+      <th>Arena</th>
+    </tr>
+  </thead>
+  <tbody id="upcomingBody"></tbody>
+</table>
+
+<div id="sponsorBar">
+  <div id="sponsorTrack"></div>
+</div>
+
+<script>
+// Klocka
+setInterval(() => {
+  const d = new Date();
+  document.getElementById("clock").textContent =
+    d.toLocaleTimeString("sv-SE", { hour12:false });
+}, 1000);
+
+// Ladda matcher
+async function loadMatches() {
+  const url = "https://raw.githubusercontent.com/SollentunaHC/SollentunaHC/main/Spelschema_2627.csv";
+  const res = await fetch(url);
+  const text = await res.text();
+  const rows = text.split("\n").map(r => r.split(";"));
+
+  const idx = {
+    Speldatum: 0,
+    Tid: 1,
+    Serie: 2,
+    Hemma: 3,
+    Borta: 4,
+    Arena: 5
+  };
+
+  const today = new Date().toISOString().slice(0,10);
+  const todayMatches = [];
+  const upcoming = [];
+
+  for (const cols of rows) {
+    if (cols.length < 6) continue;
+
+    const date = cols[idx.Speldatum];
+    const time = cols[idx.Tid];
+    const serie = cols[idx.Serie];
+    const hemma = cols[idx.Hemma];
+    const borta = cols[idx.Borta];
+    const arena = cols[idx.Arena];
+
+    if (!date || !time) continue;
+
+    if (date === today) {
+      todayMatches.push({date,time,serie,hemma,borta,arena});
+    } else {
+      upcoming.push({date,time,serie,hemma,borta,arena});
+    }
+  }
+
+  const tBody = document.getElementById("todayMatchBody");
+  const uBody = document.getElementById("upcomingBody");
+
+  tBody.innerHTML = todayMatches.map(m =>
+    `<tr>
+      <td>${m.date}</td>
+      <td>${m.time}</td>
+      <td>${m.serie}</td>
+      <td>${m.hemma}</td>
+      <td>${m.borta}</td>
+      <td>${m.arena}</td>
+    </tr>`
+  ).join("");
+
+  uBody.innerHTML = upcoming.map(m =>
+    `<tr>
+      <td>${m.date}</td>
+      <td>${m.time}</td>
+      <td>${m.serie}</td>
+      <td>${m.hemma}</td>
+      <td>${m.borta}</td>
+      <td>${m.arena}</td>
+    </tr>`
+  ).join("");
+}
+
+loadMatches();
+
+// Sponsorer
+async function loadSponsors() {
+  const repo = "https://api.github.com/repos/SollentunaHC/SollentunaHC/contents/sponsors";
+  const res = await fetch(repo);
+  const files = await res.json();
+
+  const track = document.getElementById("sponsorTrack");
+  track.innerHTML = "";
+
+  for (const f of files) {
+    if (f.name.endsWith(".png") || f.name.endsWith(".jpg")) {
+      const img = document.createElement("img");
+      img.src = f.download_url;
+      track.appendChild(img);
+    }
+  }
+}
+
+loadSponsors();
+</script>
+
+</body>
+</html>
