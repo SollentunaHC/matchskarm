@@ -7,13 +7,15 @@
 
 <style>
 :root {
-  --bg-main: #0b1a3a;
-  --bg-row-even: #1e2f5c;
-  --bg-row-odd: #14244a;
-  --bg-header: #c62828;
+  /* Grundfärger – justerade för Tizen gamma ≈ 2.0 */
+  --bg-main: #08132b;          /* mörkare blå för korrekt djup */
+  --bg-row-even: #16284b;      /* jämn rad – ökad kontrast */
+  --bg-row-odd: #0f1e3d;       /* ojämn rad – något ljusare */
+  --bg-header: #b71c1c;        /* mörkare röd för bättre balans */
   --text-main: #ffffff;
   --yellow: #ffeb3b;
 }
+
 
 * { box-sizing: border-box; }
 
@@ -24,6 +26,9 @@ body {
   color: var(--text-main);
   overflow: hidden;
   position: relative;
+
+  /* Tizen-kompensation */
+  filter: contrast(1.15) brightness(0.95);
 }
 
 body::before {
@@ -302,7 +307,7 @@ footer {
 <div id="versionTag"></div>
 
 <script>
-var ARENA_VERSION = "Arena Style 11.0 Tizen by Olsson";
+var ARENA_VERSION = "Arena Style 11.0 Tizen";
 var CSV_URL = "Spelschema_2627.csv";
 var SPONSOR_API_URL = "sponsors/";
 
