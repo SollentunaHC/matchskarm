@@ -303,7 +303,7 @@ function getStatus(dateStr, timeStr) {
   if (diffMinutes > 0 && diffMinutes <= 60)
     return "<span class='status-tag status-soon'>SNART</span>";
 
-  if (diffSinceStart >= 0 && diffSinceStart <= 120)
+  if (diffSinceStart >= 0 && diffSinceStart <= 60)
     return "<span class='status-tag status-live'>PÅGÅR</span>";
 
   return "";
