@@ -376,31 +376,39 @@ function parseMatchesFromCSV(text) {
     Serie: headers.indexOf("Serie")
   };
 
-   const matches = [];
+  const matches = [];
 
-  for (let i = 1; i < lines.length; i++) {
-    const cols = lines[i].split(";");
-    const homeRaw = cols[idx.Hemma] || "";
-    const home = homeRaw
-      .toLowerCase()
-      .replace(/\u00A0/g, " ")
-      .replace(/\s+/g, " ")
-      .trim();
+for (let i = 1; i < lines.length; i++) {
+  const cols = lines[i].split(";");
+  const homeRaw = cols[idx.Hemma] || "";
+  const arenaRaw = cols[idx.Arena] || "";
 
-    if (
-      home.indexOf("sollentuna") === -1 &&
-      home.indexOf("sollentuna hc") === -1 &&
-      home.indexOf("sollentuna hockey") === -1 &&
-      home.indexOf("shc") === -1
-    ) continue;
+  const home = homeRaw
+    .toLowerCase()
+    .replace(/\u00A0/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
 
-    matches.push({
-      date: cols[idx.Speldatum],
-      time: cols[idx.Tid],
-      home: cols[idx.Hemma],
-      away: cols[idx.Borta],
-      arena: cols[idx.Arena],
-      series: (cols[idx.Serie] || "").replace(/\[[0-9]+\]/g, "").trim()
+  const arena = arenaRaw.toLowerCase().trim();
+
+  // FILTRERING: Ta med matchen om hemmalaget är Sollentuna ELLER arenan börjar med "cyloq"
+  const isSollentuna =
+    home.includes("sollentuna") ||
+    home.includes("sollentuna hc") ||
+    home.includes("sollentuna hockey") ||
+    home.includes("shc");
+
+  const isCyloqArena = arena.startsWith("cyloq");
+
+  if (!isSollentuna && !isCyloqArena) continue;
+
+  matches.push({
+    date: cols[idx.Speldatum],
+    time: cols[idx.Tid],
+    home: cols[idx.Hemma],
+    away: cols[idx.Borta],
+    arena: cols[idx.Arena,
+    series: (cols[idx.Serie] || "").replace(/\[[0-9]+\]/g, "").trim()
     });
   }
 
