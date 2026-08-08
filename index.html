@@ -378,28 +378,23 @@ function parseMatchesFromCSV(text) {
 
   const matches = [];
 
-  for (let i = 1; i < lines.length; i++) {
-    const cols = lines[i].split(";");
-    const homeRaw = cols[idx.Hemma] || "";
-    const home = homeRaw
-      .toLowerCase()
-      .replace(/\u00A0/g, " ")
-      .replace(/\s+/g, " ")
-      .trim();
+for (let i = 1; i < lines.length; i++) {
+  const cols = lines[i].split(";");
 
-    if (
-      home.indexOf("sollentuna") === -1 &&
-      home.indexOf("sollentuna hc") === -1 &&
-      home.indexOf("sollentuna hockey") === -1 &&
-      home.indexOf("shc") === -1
-    ) continue;
+  const arenaRaw = cols[idx.Arena] || "";
+  const arena = arenaRaw
+    .toLowerCase()
+    .trim();
 
-    matches.push({
-      date: cols[idx.Speldatum],
-      time: cols[idx.Tid],
-      home: cols[idx.Hemma],
-      away: cols[idx.Borta],
-      arena: cols[idx.Arena],
+  // Ta bara med matcher där arenan börjar på "cyloq"
+  if (!arena.startsWith("cyloq")) continue;
+
+  matches.push({
+    date: cols[idx.Speldatum],
+    time: cols[idx.Tid],
+    home: cols[idx.Hemma],
+    away: cols[idx.Borta],
+    arena: cols[idx.Arena],
     series: (cols[idx.Serie] || "").replace(/\[[0-9]+\]/g, "").trim()
     });
   }
