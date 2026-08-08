@@ -386,13 +386,18 @@ function parseMatchesFromCSV(text) {
       .replace(/\u00A0/g, " ")
       .replace(/\s+/g, " ")
       .trim();
+const arena = arenaRaw.toLowerCase().trim();
 
-    if (
-      home.indexOf("sollentuna") === -1 &&
-      home.indexOf("sollentuna hc") === -1 &&
-      home.indexOf("sollentuna hockey") === -1 &&
-      home.indexOf("shc") === -1
-    ) continue;
+  // FILTRERING: Ta med matchen om hemmalaget är Sollentuna ELLER arenan börjar med "cyloq"
+  const isSollentuna =
+    home.includes("sollentuna") ||
+    home.includes("sollentuna hc") ||
+    home.includes("sollentuna hockey") ||
+    home.includes("shc");
+
+  const isCyloqArena = arena.startsWith("cyloq");
+
+  if (!isSollentuna && !isCyloqArena) continue;;
 
     matches.push({
       date: cols[idx.Speldatum],
