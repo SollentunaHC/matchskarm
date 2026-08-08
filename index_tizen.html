@@ -266,6 +266,17 @@ var ARENA_VERSION = "Arena Style 11.0 Tizen";
 var CSV_URL = "Spelschema_2627.csv";
 var SPONSOR_API_URL = "sponsors/";
 
+/* CYLOQ-logo */
+function hallWithLogo(arena) {
+  if (!arena) return "";
+  var lower = arena.toLowerCase();
+  if (lower.indexOf("cyloq") === 0) {
+    var suffix = arena.replace(/cyloq\s*/i, "");
+    return "<span class='hall-logo hall-cyloq'></span>" + suffix.trim();
+  }
+  return arena;
+}  
+  
 /* Klocka */
 function updateClock() {
   var now = new Date();
@@ -307,17 +318,6 @@ function getStatus(dateStr, timeStr) {
     return "<span class='status-tag status-live'>PÅGÅR</span>";
 
   return "";
-}
-
-/* CYLOQ-logo */
-function hallWithLogo(arena) {
-  if (!arena) return "";
-  var lower = arena.toLowerCase();
-  if (lower.indexOf("cyloq") === 0) {
-    var suffix = arena.replace(/cyloq\s*/i, "");
-    return "<span class='hall-logo hall-cyloq'></span>" + suffix.trim();
-  }
-  return arena;
 }
 
 /* CSV → matcher */
