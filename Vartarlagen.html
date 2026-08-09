@@ -391,6 +391,14 @@ function parseMatchesFromCSV(text) {
 
     if (!isSollentuna) continue;
 
+    // Färgmarkering
+    let highlight = "";
+    if (home.includes("sollentuna")) {
+      highlight = "yellow";   // Hemmamatch → kraftig gul
+    } else if (away.includes("sollentuna")) {
+      highlight = "orange";   // Bortamatch → kraftig orange
+    }
+
     matches.push({
       date: cols[idx.Speldatum],
       time: cols[idx.Tid],
