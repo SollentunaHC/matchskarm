@@ -391,12 +391,12 @@ function parseMatchesFromCSV(text) {
 
     if (!isSollentuna) continue;
 
-    // Färgmarkering
-    let highlight = "";
+    // Färg för namnet
+    let color = "";
     if (home.includes("sollentuna")) {
-      highlight = "yellow";   // Hemmamatch → kraftig gul
-    } else if (away.includes("sollentuna")) {
-      highlight = "orange";   // Bortamatch → kraftig orange
+      color = "yellow";   // Hemma → gul
+    } else {
+      color = "orange";   // Borta → orange
     }
 
     matches.push({
