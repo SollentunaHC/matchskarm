@@ -12,7 +12,10 @@
   --bg-row-odd: #14244a;
   --bg-header: #c62828;
   --text-main: #ffffff;
-  --yellow: #ffeb3b;
+
+  /* ⭐ NYA KRAFTIGA FÄRGER */
+  --neon-yellow: #ffff33;
+  --neon-orange: #ff8c00;
 }
 
 * { box-sizing: border-box; }
@@ -171,13 +174,6 @@ table.match-table {
   color: #ffffff;
 }
 
-/* Synkad radhöjd */
-#upcomingBody td,
-#todayMatchBody td {
-  padding-top: 0.15vh;
-  padding-bottom: 0.15vh;
-}
-
 /* Scrollande kommande matcher */
 #upcomingBody.scrolling {
   display: block;
@@ -234,7 +230,6 @@ footer {
   position: relative;
 }
 
-/* Versions-tag */
 #versionTag {
   position: fixed;
   bottom: 11vh;
@@ -384,20 +379,11 @@ function parseMatchesFromCSV(text) {
     const home = (cols[idx.Hemma] || "").toLowerCase();
     const away = (cols[idx.Borta] || "").toLowerCase();
 
-    // Ta med alla matcher där Sollentuna är hemma eller borta
     const isSollentuna =
       home.includes("sollentuna") ||
       away.includes("sollentuna");
 
     if (!isSollentuna) continue;
-
-    // Färg för namnet
-    let color = "";
-    if (home.includes("sollentuna")) {
-      color = "yellow";   // Hemma → gul
-    } else {
-      color = "orange";   // Borta → orange
-    }
 
     matches.push({
       date: cols[idx.Speldatum],
@@ -405,7 +391,11 @@ function parseMatchesFromCSV(text) {
       home: cols[idx.Hemma],
       away: cols[idx.Borta],
       arena: cols[idx.Arena],
-    series: (cols[idx.Serie] || "").replace(/\[[0-9]+\]/g, "").trim()
+      series: (cols[idx.Serie] || "").replace(/
+
+\[[0-9]+\]
+
+/g, "").trim()
     });
   }
 
@@ -457,8 +447,17 @@ function renderTodayMatches(todayMatches) {
         "<td>" + formatDate(m.date) + "</td>" +
         "<td>" + m.time + " " + getStatus(m.date, m.time) + "</td>" +
         "<td>" + m.series + "</td>" +
-        "<td>" + m.home + "</td>" +
-        "<td>" + m.away + "</td>" +
+
+        /* ⭐ Neonfärg hemmalag */
+        "<td style='" + (m.home.toLowerCase().includes("sollentuna") ? "color: var(--neon-yellow); font-weight: 900;" : "") + "'>" 
+          + m.home + 
+        "</td>" +
+
+        /* ⭐ Neonfärg bortalag */
+        "<td style='" + (m.away.toLowerCase().includes("sollentuna") ? "color: var(--neon-orange); font-weight: 900;" : "") + "'>" 
+          + m.away + 
+        "</td>" +
+
         "<td>" + hallWithLogo(m.arena) + "</td>" +
       "</tr>";
     });
@@ -482,8 +481,17 @@ function renderUpcomingMatches(upcomingGrouped) {
           "<td>" + formatDate(m.date) + "</td>" +
           "<td>" + m.time + " " + getStatus(m.date, m.time) + "</td>" +
           "<td>" + m.series + "</td>" +
-          "<td>" + m.home + "</td>" +
-          "<td>" + m.away + "</td>" +
+
+          /* ⭐ Neonfärg hemmalag */
+          "<td style='" + (m.home.toLowerCase().includes("sollentuna") ? "color: var(--neon-yellow); font-weight: 900;" : "") + "'>" 
+            + m.home + 
+          "</td>" +
+
+          /* ⭐ Neonfärg bortalag */
+          "<td style='" + (m.away.toLowerCase().includes("sollentuna") ? "color: var(--neon-orange); font-weight: 900;" : "") + "'>" 
+            + m.away + 
+          "</td>" +
+
           "<td>" + hallWithLogo(m.arena) + "</td>" +
         "</tr>";
       });
@@ -491,6 +499,7 @@ function renderUpcomingMatches(upcomingGrouped) {
   }
 
   tbody.innerHTML = html;
+
   if (keys.length > 10) {
     tbody.classList.add("scrolling");
   } else {
@@ -498,7 +507,7 @@ function renderUpcomingMatches(upcomingGrouped) {
   }
 }
 
-/* Ladda matcher */
+  /* Ladda matcher */
 async function loadMatches() {
   try {
     const resp = await fetch(CSV_URL + "?nocache=" + Date.now(), { cache: "no-store" });
