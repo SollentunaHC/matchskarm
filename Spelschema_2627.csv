@@ -1,12 +1,11 @@
 Speldatum;Tid;Veckodag;Matchnr;Omgång;Hemma;Borta;Arena;Serie;Resultat;Publik;Information
-2026-01-01;19:00;Onsdag;99099037;35;Väsby IK HK;Sollentuna HC;Vilundaparkens Ishall A;Preseason Games Herr [99099];;;
-2026-08-26;19:40;Onsdag;97099070;35;Hanvikens SK;Sollentuna HC;Tyresö Ishall;Preseason Games U20 H [97099];;;
-2026-08-26;19:00;Onsdag;15869034;34;Sollentuna HC;Brinkens IF;CYLOQ Arena;U16P Preaseason games [15869];;;
 2026-08-29;17:30;Lördag;97099004;35;Huddinge IK;Sollentuna HC;Björkängshallen;Preseason Games U20 H [97099];;;
+2026-08-29;15:30;Lördag;15909059;59;Sollentuna HC;IFK Täby HC;CYLOQ Arena;U15P Preaseason [15909];;;
 2026-08-30;15:30;Söndag;5095002;2;Valbo HC;Sollentuna HC;NickBack Arena;Preseason U18 Gästrikland [5095];;;
 2026-08-30;14:00;Söndag;16813005;5;Södertälje SK;Sollentuna HC;Scaniarinken;Preseason U15 Södermanland [16813];;;
 2026-08-30;14:00;Söndag;16813007;7;Södertälje SK;Sollentuna HC;Scaniarinken;Preseason U15 Södermanland [16813];;;
 2026-09-02;19:00;Onsdag;99099204;36;Wings HC Arlanda;Sollentuna HC;CYLOQ Arena;Preseason Games Herr [99099];;;
+2026-09-04;17:00;Fredag;15869041;41;Sollentuna HC;Vallentuna Hockey;CYLOQ Arena;U16P Preaseason games [15869];;;
 2026-09-05;12:00;Lördag;97032002;1;Djurgårdens IF;Sollentuna HC;Hovet, Johanneshov;U20 H - Nationell Norra [97032];;;
 2026-09-07;19:40;Måndag;97032007;2;Huddinge IK;Sollentuna HC;Björkängshallen;U20 H - Nationell Norra [97032];;;
 2026-09-09;19:00;Onsdag;99099025;37;Sollentuna HC;Väsby IK HK;CYLOQ Arena;Preseason Games Herr [99099];;;
@@ -38,9 +37,9 @@ Speldatum;Tid;Veckodag;Matchnr;Omgång;Hemma;Borta;Arena;Serie;Resultat;Publik;I
 2026-10-11;16:40;Söndag;95752024;5;Viggbyholms IK;Sollentuna HC;Hägernäs Ishall;U18H Allettan Östra [95752];;;
 2026-10-11;12:00;Söndag;97032095;16;Luleå HF;Sollentuna HC;Coop Norrbotten Arena ;U20 H - Nationell Norra [97032];;;
 2026-10-15;19:10;Torsdag;95752027;6;Sollentuna HC;Nyköpings SK;CYLOQ Arena;U18H Allettan Östra [95752];;;
-2026-10-17;17:15;Lördag;97032101;17;Sollentuna HC;Timrå IK;CYLOQ Arena;U20 H - Nationell Norra [97032];;;
+2026-10-17;17:15;Lördag;95752034;7;Sollentuna HC;Lidingö Vikings HC;CYLOQ Arena;U18H Allettan Östra [95752];;;
 2026-10-18;12:10;Söndag;97032108;18;Sollentuna HC;Brynäs IF;CYLOQ Arena;U20 H - Nationell Norra [97032];;;
-2026-10-19;19:10;Måndag;95752034;7;Sollentuna HC;Lidingö Vikings HC;CYLOQ Arena;U18H Allettan Östra [95752];;;
+2026-10-19;19:00;Måndag;97032101;17;Sollentuna HC;Timrå IK;CYLOQ Arena;U20 H - Nationell Norra [97032];;;
 2026-10-21;19:00;Onsdag;90255303;31;Sollentuna HC;Väsby IK HK;CYLOQ Arena;Hockeyettan Norra [90255];;;
 2026-10-22;19:30;Torsdag;95752040;8;Eskilstuna Linden Hockey;Sollentuna HC;Smehallen;U18H Allettan Östra [95752];;;
 2026-10-24;14:00;Lördag;97032113;19;Leksands IF;Sollentuna HC;Tegera Arena;U20 H - Nationell Norra [97032];;;
