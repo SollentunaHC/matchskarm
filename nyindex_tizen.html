@@ -2,7 +2,7 @@
 <html lang="sv">
 <head>
 <meta charset="UTF-8">
-<title>Sollentuna Hockey – Tizen version 16.3</title>
+<title>Sollentuna Hockey – Tizen version 16.4</title>
 
 <style>
 
@@ -332,8 +332,13 @@ body::before {
   font-size: 0.72vw; font-weight: 900; letter-spacing: 0.12em;
 }
 .sponsor-window { min-width: 0; flex: 1; overflow: hidden; }
-.ad-track { animation-duration: 6.7s; align-items: center; }
-.ad-track img { height: 7.8vh; max-width: 12vw; margin-right: 5vw; filter: none; }
+.ad-track { animation-duration: 10.7s; align-items: center; }
+/* Fast sponsorplats gör att äldre Tizen kan räkna hela rullsträckan korrekt. */
+.sponsor-item {
+  width: 17vw; height: 11vh; flex: 0 0 17vw;
+  display: flex; align-items: center; justify-content: center;
+}
+.sponsor-item img { height: 7.8vh; max-width: 12vw; margin: 0; filter: none; }
 #versionTag {
   left: auto; right: 0.8vw; bottom: 11.5vh;
   color: #b9c7df; font-size: 0.72vw; font-weight: 700;
@@ -404,7 +409,7 @@ footer { display: none; }
 
 <script>
 
-var ARENA_VERSION = "VERSION 16.3 TIZEN";
+var ARENA_VERSION = "VERSION 16.4 TIZEN";
 var CSV_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/Spelschema_2627.csv";
 var SPONSOR_LIST_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/sponsors/list.txt";
 var SPONSOR_BASE_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/sponsors/";
@@ -753,11 +758,17 @@ function loadSponsors() {
 
     track.innerHTML = "";
     var loopImages = sponsorImages.concat(sponsorImages);
+    /* Två identiska listor à 17vw per sponsor ger exakt sömlös -50 %-rullning. */
+    track.style.width = (loopImages.length * 17) + "vw";
+    track.style.animationDuration = Math.max(6.7, sponsorImages.length * 0.67) + "s";
     for (var j = 0; j < loopImages.length; j++) {
+      var item = document.createElement("span");
+      item.className = "sponsor-item";
       var el = document.createElement("img");
       el.src = SPONSOR_BASE_URL + encodeURIComponent(loopImages[j]);
       el.alt = loopImages[j].replace(/\.[^.]+$/, "");
-      track.appendChild(el);
+      item.appendChild(el);
+      track.appendChild(item);
     }
   };
   xhr.send(null);
