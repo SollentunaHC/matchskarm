@@ -9,7 +9,7 @@ CCM.png
 Dammarsberg_2.png
 Edsviken.png
 ICA.png
-MSB.png
+MSB center.png
 Nonnos.png
 Teamgear.png
 max.png
