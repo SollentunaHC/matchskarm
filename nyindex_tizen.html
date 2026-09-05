@@ -2,7 +2,7 @@
 <html lang="sv">
 <head>
 <meta charset="UTF-8">
-<title>Sollentuna Hockey – Arena Style 15.5 Tizen Legacy</title>
+<title>Sollentuna Hockey – Arena Style 15.6 Tizen Legacy Safe Start</title>
 <meta http-equiv="refresh" content="300">
 
 <style>
@@ -400,7 +400,7 @@ footer { display: none; }
 
 <script>
 
-var ARENA_VERSION = "Arena Style 15.5 Tizen Legacy";
+var ARENA_VERSION = "Arena Style 15.6 Tizen Legacy Safe Start";
 var CSV_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/Spelschema_2627.csv";
 var SPONSOR_LIST_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/sponsors/list.txt";
 var SPONSOR_BASE_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/sponsors/";
@@ -419,18 +419,19 @@ function hallWithLogo(arena) {
 }  
   
 /* Klocka */
+function pad2(value) {
+  return value < 10 ? "0" + value : String(value);
+}
+
 function updateClock() {
   var now = new Date();
+  var weekdays = ["Söndag", "Måndag", "Tisdag", "Onsdag", "Torsdag", "Fredag", "Lördag"];
+  var months = ["januari", "februari", "mars", "april", "maj", "juni",
+    "juli", "augusti", "september", "oktober", "november", "december"];
   document.getElementById("clock").textContent =
-    now.toLocaleTimeString("sv-SE", {
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit"
-    });
-  document.getElementById("todayDate").textContent =
-    now.toLocaleDateString("sv-SE", {
-      weekday: "long", day: "numeric", month: "long", year: "numeric"
-    });
+    pad2(now.getHours()) + ":" + pad2(now.getMinutes()) + ":" + pad2(now.getSeconds());
+  document.getElementById("todayDate").textContent = weekdays[now.getDay()] + " " +
+    now.getDate() + " " + months[now.getMonth()] + " " + now.getFullYear();
 }
 
 /* Kort datumformat, exempelvis "14 jun". */
@@ -530,12 +531,15 @@ function loadLiveResult(match) {
   var xhr = new XMLHttpRequest();
   xhr.open("GET", query, true);
   xhr.onreadystatechange = function () {
-    if (xhr.readyState !== 4 || xhr.status < 200 || xhr.status >= 300) return;
+    if (xhr.readyState !== 4) return;
+    /* Äldre Tizen kan rapportera status 0 trots att HTTPS-svaret kom fram. */
+    if (!((xhr.status >= 200 && xhr.status < 300) ||
+          (xhr.status === 0 && xhr.responseText))) return;
     try {
       var result = JSON.parse(xhr.responseText);
       updateLiveResult(match.matchNumber, result);
     } catch (e) {
-      console.log("Kunde inte tolka resultat för " + match.matchNumber);
+      /* Behåll tidigare resultat om svaret inte kan tolkas. */
     }
   };
   xhr.send(null);
@@ -650,7 +654,8 @@ function loadMatches() {
 
     xhr.onreadystatechange = function () {
       if (xhr.readyState === 4) {
-        if (xhr.status >= 200 && xhr.status < 300) {
+        if ((xhr.status >= 200 && xhr.status < 300) ||
+            (xhr.status === 0 && xhr.responseText)) {
 
           var text = xhr.responseText;
           var matches = parseMatchesFromCSV(text);
@@ -659,10 +664,9 @@ function loadMatches() {
           renderTodayMatches(split.today);
           renderUpcomingMatches(split.upcoming);
 
+          var updated = new Date();
           document.getElementById("updatedInfo").textContent =
-            "Uppdaterad " + new Date().toLocaleTimeString("sv-SE", {
-              hour: "2-digit", minute: "2-digit"
-            });
+            "Uppdaterad " + pad2(updated.getHours()) + ":" + pad2(updated.getMinutes());
 
         } else {
           document.getElementById("todayMatchBody").innerHTML =
@@ -694,7 +698,9 @@ function loadSponsors() {
   var xhr = new XMLHttpRequest();
   xhr.open("GET", SPONSOR_LIST_URL + "?nocache=" + new Date().getTime(), true);
   xhr.onreadystatechange = function () {
-    if (xhr.readyState !== 4 || xhr.status < 200 || xhr.status >= 300) return;
+    if (xhr.readyState !== 4) return;
+    if (!((xhr.status >= 200 && xhr.status < 300) ||
+          (xhr.status === 0 && xhr.responseText))) return;
 
     var lines = xhr.responseText.replace(/^\uFEFF/, "").split(/\r?\n/);
     var sponsorImages = [];
@@ -718,7 +724,6 @@ function loadSponsors() {
 
 /* Init */
 function initArena() {
-  console.log("SOLLENTUNA HOCKEY - " + ARENA_VERSION);
   document.getElementById("versionTag").textContent = ARENA_VERSION;
 
   updateClock();
@@ -732,7 +737,8 @@ function initArena() {
   setInterval(function () { loadAllLiveResults(activeTodayMatches); }, 30000);
 }
 
-document.addEventListener("DOMContentLoaded", initArena);
+/* Scriptet ligger sist i body, därför kan uppstarten göras direkt. */
+initArena();
 </script>
 </body>
 </html>
