@@ -2,7 +2,7 @@
 <html lang="sv">
 <head>
 <meta charset="UTF-8">
-<title>Sollentuna Hockey – Arena Style 15.6 Tizen Legacy Safe Start</title>
+<title>Sollentuna Hockey – Arena Style 15.7 Tizen Live No Cache</title>
 <meta http-equiv="refresh" content="300">
 
 <style>
@@ -125,6 +125,7 @@ h2 {
 .score-cell { text-align: center; }
 .score { display: inline-block; min-width: 4em; padding: 0.18em 0.5em; border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; background: rgba(0,0,0,0.3); font-size: 1.15em; font-weight: 950; }
 .live-score { color: #071d10; background: #46d17d; border-color: #46d17d; }
+.score-error { min-width: 0; color: #ffd447; font-size: 0.55em; letter-spacing: 0; }
 .score-detail { display: block; margin-top: 0.25em; color: #46d17d; font-size: 0.58em; font-weight: 900; }
 
 .match-table tbody tr:nth-child(even) { background: #16284b; }
@@ -400,7 +401,7 @@ footer { display: none; }
 
 <script>
 
-var ARENA_VERSION = "Arena Style 15.6 Tizen Legacy Safe Start";
+var ARENA_VERSION = "Arena Style 15.7 Tizen Live No Cache";
 var CSV_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/Spelschema_2627.csv";
 var SPONSOR_LIST_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/sponsors/list.txt";
 var SPONSOR_BASE_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/sponsors/";
@@ -527,22 +528,45 @@ function loadLiveResult(match) {
   var query = LIVE_RESULT_PROXY + encodeURIComponent(match.matchNumber) +
     "&date=" + encodeURIComponent(match.date || "") +
     "&home=" + encodeURIComponent(match.home || "") +
-    "&away=" + encodeURIComponent(match.away || "");
+    "&away=" + encodeURIComponent(match.away || "") +
+    "&nocache=" + new Date().getTime();
   var xhr = new XMLHttpRequest();
   xhr.open("GET", query, true);
+  xhr.timeout = 15000;
   xhr.onreadystatechange = function () {
     if (xhr.readyState !== 4) return;
     /* Äldre Tizen kan rapportera status 0 trots att HTTPS-svaret kom fram. */
     if (!((xhr.status >= 200 && xhr.status < 300) ||
-          (xhr.status === 0 && xhr.responseText))) return;
+          (xhr.status === 0 && xhr.responseText))) {
+      showLiveError(match.matchNumber, "HTTP " + xhr.status);
+      return;
+    }
     try {
       var result = JSON.parse(xhr.responseText);
-      updateLiveResult(match.matchNumber, result);
+      if (result && result.error) {
+        showLiveError(match.matchNumber, "WORKER-FEL");
+      } else {
+        updateLiveResult(match.matchNumber, result);
+      }
     } catch (e) {
-      /* Behåll tidigare resultat om svaret inte kan tolkas. */
+      showLiveError(match.matchNumber, "OGILTIGT SVAR");
     }
   };
+  xhr.onerror = function () {
+    showLiveError(match.matchNumber, "INGEN KONTAKT");
+  };
+  xhr.ontimeout = function () {
+    showLiveError(match.matchNumber, "TIMEOUT");
+  };
   xhr.send(null);
+}
+
+/* Visar varför resultat saknas i stället för ett anonymt streck. */
+function showLiveError(matchNumber, message) {
+  var scoreCell = document.getElementById("score-" + matchNumber);
+  if (scoreCell && scoreCell.getAttribute("data-has-result") !== "yes") {
+    scoreCell.innerHTML = "<span class='score score-error'>" + message + "</span>";
+  }
 }
 
 /* Visar resultat och tar bort LIVE-symbolen så snart status är SLUT. */
@@ -550,6 +574,7 @@ function updateLiveResult(matchNumber, result) {
   var scoreCell = document.getElementById("score-" + matchNumber);
   if (!scoreCell || typeof result.homeScore !== "number" || typeof result.awayScore !== "number") return;
   var status = String(result.status || "RESULTAT").toUpperCase();
+  scoreCell.setAttribute("data-has-result", "yes");
   var isLive = status === "LIVE";
   var statusCell = document.getElementById("status-" + matchNumber);
   if (statusCell) {
