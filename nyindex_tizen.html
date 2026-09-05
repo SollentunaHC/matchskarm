@@ -2,7 +2,7 @@
 <html lang="sv">
 <head>
 <meta charset="UTF-8">
-<title>Sollentuna Hockey – Tizen version 15.8</title>
+<title>Sollentuna Hockey – Tizen version 16.0</title>
 <meta http-equiv="refresh" content="300">
 
 <style>
@@ -405,11 +405,18 @@ footer { display: none; }
 
 <script>
 
-var ARENA_VERSION = "VERSION 15.8 TIZEN";
+var ARENA_VERSION = "VERSION 16.0 TIZEN";
 var CSV_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/Spelschema_2627.csv";
 var SPONSOR_LIST_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/sponsors/list.txt";
 var SPONSOR_BASE_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/sponsors/";
 var LIVE_RESULT_PROXY = "https://sollentuna-hockey-live.gunnar-127.workers.dev/live?match=";
+/*
+  Vissa träningsmatcher saknas i Swehockeys GamesByDate. Då kopplas CSV-filens
+  Matchnr till det interna ID:t från länken Game/LineUps eller Game/Events.
+*/
+var SWEHOCKEY_ID_MAP = {
+  "95097052": "1121968"
+};
 var activeTodayMatches = [];
 
 /* CYLOQ-logo */
@@ -460,13 +467,8 @@ function getStatus(dateStr, timeStr) {
   var now = new Date();
   var start = new Date(dateStr + "T" + timeStr);
   var diffMinutes = (start - now) / 60000;
-  var diffSinceStart = (now - start) / 60000;
-
   if (diffMinutes > 0 && diffMinutes <= 60)
     return "<span class='status-tag status-soon'>SNART</span>";
-
-  if (diffSinceStart >= 0 && diffSinceStart <= 150)
-    return "<span class='status-tag status-live'>LIVE</span>";
 
   return "";
 }
@@ -529,11 +531,19 @@ function teamCell(team) {
 /* Hämtar resultat från Cloudflare Workern med Tizen-kompatibel XMLHttpRequest. */
 function loadLiveResult(match) {
   if (!match || !match.matchNumber) return;
-  var query = LIVE_RESULT_PROXY + encodeURIComponent(match.matchNumber) +
-    "&date=" + encodeURIComponent(match.date || "") +
-    "&home=" + encodeURIComponent(match.home || "") +
-    "&away=" + encodeURIComponent(match.away || "") +
-    "&nocache=" + new Date().getTime();
+  var directId = SWEHOCKEY_ID_MAP[match.matchNumber];
+  var query;
+  if (directId) {
+    /* Med ett känt internt ID ska Workern inte försöka slå upp GamesByDate. */
+    query = LIVE_RESULT_PROXY + encodeURIComponent(directId) +
+      "&nocache=" + new Date().getTime();
+  } else {
+    query = LIVE_RESULT_PROXY + encodeURIComponent(match.matchNumber) +
+      "&date=" + encodeURIComponent(match.date || "") +
+      "&home=" + encodeURIComponent(match.home || "") +
+      "&away=" + encodeURIComponent(match.away || "") +
+      "&nocache=" + new Date().getTime();
+  }
   var xhr = new XMLHttpRequest();
   xhr.open("GET", query, true);
   xhr.timeout = 15000;
@@ -569,7 +579,10 @@ function loadLiveResult(match) {
 function showLiveError(matchNumber, message) {
   var scoreCell = document.getElementById("score-" + matchNumber);
   if (scoreCell && scoreCell.getAttribute("data-has-result") !== "yes") {
-    scoreCell.innerHTML = "<span class='score score-error'>" + message + "</span>";
+    /* Tekniska fel ska inte visas för publiken. Ett streck betyder inget rapporterat resultat. */
+    scoreCell.innerHTML = "<span class='score'>–</span>";
+    var statusCell = document.getElementById("status-" + matchNumber);
+    if (statusCell) statusCell.innerHTML = "";
   }
 }
 
