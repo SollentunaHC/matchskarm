@@ -2,7 +2,7 @@
 <html lang="sv">
 <head>
 <meta charset="UTF-8">
-<title>Sollentuna Hockey – Arena Style 15.1 Tizen</title>
+<title>Sollentuna Hockey – Arena Style 15.3 Tizen Legacy</title>
 <meta http-equiv="refresh" content="300">
 
 <style>
@@ -138,7 +138,6 @@ h2 {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  gap: 2vh;
 }
 
 /* ====== SPONSORBANDEROLL – TIZEN-KOMPATIBEL ====== */
@@ -245,20 +244,114 @@ footer {
 .hall-cyloq {
   background-image: url('sponsors/Cyloq.png'); /* lokal bild */
 }  
+
+/* ==================================================================
+   ARENA PUBLIK 15.1 – VISUELLT LAGER FÖR TIZEN
+   Reglerna ligger sist och ersätter den äldre Style 11-layouten ovan.
+   ================================================================== */
+html, body { width: 100%; height: 100%; margin: 0; }
+body {
+  overflow: hidden;
+  filter: none;
+  color: #fff;
+  font-family: "Segoe UI", Arial, sans-serif;
+  background: radial-gradient(circle at 50% 5%, #263f70 0%, #0a1c3f 35%, #06132d 100%);
+}
+body::before {
+  position: fixed; top: 13vh; left: 50%; width: 46vw; height: 46vw;
+  max-width: 760px; max-height: 760px; opacity: 0.05; z-index: 0;
+}
+.screen {
+  position: relative; z-index: 2; height: 89vh;
+  padding: 1.8vh 2.5vw 1.2vh;
+}
+.topbar {
+  height: 10vh; display: flex; align-items: center;
+  border-bottom: 1px solid rgba(255,255,255,0.12); margin-bottom: 1.4vh;
+  padding: 0; font-size: initial; letter-spacing: normal;
+  background: transparent; text-shadow: none;
+}
+.date-time { width: 25%; line-height: 1.05; }
+#clock {
+  position: static; font-size: 2.7vw; font-weight: 900;
+  text-shadow: none; color: #fff;
+}
+#todayDate { margin-top: 0.5vh; color: #b9c7df; font-size: 1.15vw; text-transform: capitalize; }
+.brand { width: 50%; text-align: center; }
+.brand-kicker { color: #b9c7df; font-weight: 700; font-size: 0.86vw; letter-spacing: 0.35em; }
+.brand-title { margin-top: 0.2vh; font-size: 3.5vw; font-weight: 900; letter-spacing: 0.075em; line-height: 1; }
+.brand-line { width: 58%; height: 4px; margin: 1vh auto 0; background: linear-gradient(90deg, transparent, #d2242b, transparent); }
+.update { width: 25%; text-align: right; color: #b9c7df; font-size: 0.9vw; line-height: 1.5; }
+.update strong { color: #fff; }
+.matches { height: 76vh; display: flex; flex-direction: column; }
+.section {
+  border: 1px solid rgba(255,255,255,0.12); border-radius: 14px;
+  background: rgba(10,28,63,0.88); overflow: hidden;
+}
+.today-section { flex: 0 0 auto; margin-bottom: 1.5vh; }
+.upcoming-section { flex: 1 1 auto; }
+.section-heading {
+  height: 5.1vh; min-height: 38px; padding: 0 1.4vw;
+  display: flex; align-items: center; justify-content: space-between;
+  background: linear-gradient(90deg, #a8171e, #d2242b 48%, #a8171e);
+}
+.section-heading h2 {
+  margin: 0; padding: 0; font-size: 1.75vw; text-align: left;
+  letter-spacing: 0.075em; text-shadow: none;
+}
+.section-heading span { font-size: 1vw; font-weight: 900; letter-spacing: 0.1em; }
+.table-wrapper { width: 100%; }
+.match-table { width: 100%; margin: 0; table-layout: fixed; border-collapse: collapse; }
+.match-table th {
+  height: 4.2vh; padding: 0.55vh 1vw; color: #d5def0;
+  background: rgba(16,41,88,0.72); border-bottom: 2px solid rgba(255,255,255,0.16);
+  font-size: 0.96vw; font-weight: 900; letter-spacing: 0.1em; text-align: left;
+}
+.match-table td {
+  height: 6.1vh; padding: 0.8vh 1vw; color: #fff;
+  border-bottom: 1px solid rgba(255,255,255,0.12);
+  font-size: 1.28vw; font-weight: 700; text-align: left;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.match-table th:first-child, .match-table th:nth-child(2),
+.match-table td:first-child, .match-table td:nth-child(2), .score-cell { text-align: center; }
+.match-table tbody tr:nth-child(odd) { background: rgba(8,27,62,0.86); }
+.match-table tbody tr:nth-child(even) { background: rgba(43,64,105,0.72); }
+.today-table td { height: 7.4vh; font-size: 1.55vw; font-weight: 800; }
+.col-date { width: 8%; } .col-time { width: 10%; } .col-series { width: 18%; }
+.col-team { width: 20%; } .col-score { width: 10%; } .col-arena { width: 14%; }
+.hall-logo { width: 3.2vw; height: 2.4vw; max-height: 46px; top: 0; vertical-align: middle; }
+.ad-bar {
+  position: fixed; left: 0; right: 0; bottom: 0; width: 100%; height: 11vh;
+  background: rgba(255,255,255,0.96); border-top: 4px solid #d2242b;
+  display: flex; align-items: center; overflow: hidden; z-index: 20;
+}
+.sponsor-label {
+  height: 100%; padding: 0 1.4vw; display: flex; align-items: center;
+  flex: 0 0 auto; color: #0a1c3f; background: #e7ecf4;
+  font-size: 0.72vw; font-weight: 900; letter-spacing: 0.12em;
+}
+.sponsor-window { min-width: 0; flex: 1; overflow: hidden; }
+.ad-track { animation-duration: 21s; align-items: center; }
+.ad-track img { height: 7.8vh; max-width: 12vw; margin-right: 5vw; filter: none; }
+#versionTag { left: auto; right: 0.6vw; bottom: 11.4vh; font-size: 9px; opacity: 0.3; }
+footer { display: none; }
   
 </style>
 </head>
 
 <body>
+<div class="screen">
+  <header class="topbar">
+    <div class="date-time"><div id="clock">--:--:--</div><div id="todayDate"></div></div>
+    <div class="brand"><div class="brand-kicker">SEDAN 1976</div><div class="brand-title">SOLLENTUNA HOCKEY</div><div class="brand-line"></div></div>
+    <div class="update"><strong>Automatisk matchinformation</strong><br><span id="updatedInfo">Hämtar spelschema…</span></div>
+  </header>
 
-<div id="clock"></div>
-<header>SOLLENTUNA HOCKEY</header>
-
-<div class="content-area">
-
-  <h2>DAGENS MATCHER</h2>
-  <div class="table-wrapper">
-    <table class="match-table today-table">
+  <main class="matches">
+  <section class="section today-section">
+    <div class="section-heading"><h2>DAGENS MATCHER</h2><span>SOLLENTUNA HC</span></div>
+    <div class="table-wrapper"><table class="match-table today-table">
       <thead>
         <tr>
           <th class="col-date">DATUM</th>
@@ -273,12 +366,12 @@ footer {
       <tbody id="todayMatchBody">
         <tr><td colspan="7">Laddar...</td></tr>
       </tbody>
-    </table>
-  </div>
+    </table></div>
+  </section>
 
-  <h2>KOMMANDE MATCHER</h2>
-  <div class="table-wrapper">
-    <table class="match-table">
+  <section class="section upcoming-section">
+    <div class="section-heading"><h2>KOMMANDE MATCHER</h2><span>NÄSTA 6 MATCHER</span></div>
+    <div class="table-wrapper"><table class="match-table">
       <thead>
         <tr>
           <th class="col-date">DATUM</th>
@@ -293,23 +386,22 @@ footer {
       <tbody id="upcomingBody">
         <tr><td colspan="7">Laddar...</td></tr>
       </tbody>
-    </table>
-  </div>
-
+    </table></div>
+  </section>
+  </main>
 </div>
 
-<footer id="updatedInfo"></footer>
-
 <div class="ad-bar">
-  <div class="ad-track" id="sponsorTrack"></div>
+  <div class="sponsor-label">VÅRA PARTNERS</div>
+  <div class="sponsor-window"><div class="ad-track" id="sponsorTrack"></div></div>
 </div>
 
 <div id="versionTag"></div>
 
 <script>
 
-var ARENA_VERSION = "Arena Style 15.1 Tizen";
-var CSV_URL = "Spelschema_2627.csv";
+var ARENA_VERSION = "Arena Style 15.3 Tizen Legacy";
+var CSV_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/Spelschema_2627.csv";
 var LIVE_RESULT_PROXY = "https://sollentuna-hockey-live.gunnar-127.workers.dev/live?match=";
 var activeTodayMatches = [];
 
@@ -332,6 +424,10 @@ function updateClock() {
       hour: "2-digit",
       minute: "2-digit",
       second: "2-digit"
+    });
+  document.getElementById("todayDate").textContent =
+    now.toLocaleDateString("sv-SE", {
+      weekday: "long", day: "numeric", month: "long", year: "numeric"
     });
 }
 
@@ -394,18 +490,19 @@ function parseMatchesFromCSV(text) {
 for (var j = 1; j < filteredLines.length; j++) {
   var cols = filteredLines[j].split(";");
 
-  var arenaRaw = cols[idx.Arena] || "";
-  var arena = arenaRaw.toLowerCase().trim();
+  var homeRaw = cols[idx.Hemma] || "";
+  var awayRaw = cols[idx.Borta] || "";
 
-  // Ta bara med matcher där arenan börjar på "cyloq"
-  if (!arena.startsWith("cyloq")) continue;
+  /* Samma urval som originalet: alla matcher där Sollentuna deltar. */
+  if (homeRaw.toLowerCase().indexOf("sollentuna") < 0 &&
+      awayRaw.toLowerCase().indexOf("sollentuna") < 0) continue;
 
   matches.push({
     matchNumber: idx.Matchnr >= 0 ? (cols[idx.Matchnr] || "").replace(/\D/g, "") : "",
     date: cols[idx.Speldatum],
     time: cols[idx.Tid],
-    home: cols[idx.Hemma],
-    away: cols[idx.Borta],
+    home: homeRaw,
+    away: awayRaw,
     arena: cols[idx.Arena],
       series: (cols[idx.Serie] || "").replace(/\[[0-9]+\]/g, "").trim()
     });
@@ -561,8 +658,9 @@ function loadMatches() {
           renderUpcomingMatches(split.upcoming);
 
           document.getElementById("updatedInfo").textContent =
-            ARENA_VERSION + " – Senast uppdaterad: " +
-            new Date().toLocaleString("sv-SE");
+            "Uppdaterad " + new Date().toLocaleTimeString("sv-SE", {
+              hour: "2-digit", minute: "2-digit"
+            });
 
         } else {
           document.getElementById("todayMatchBody").innerHTML =
