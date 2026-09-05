@@ -132,27 +132,36 @@
       box-shadow: 0 4px 15px rgba(0,0,0,.18);
     }
 
-    .section-heading h2 { margin: 0; font-size: clamp(19px, 1.58vw, 32px); letter-spacing: .08em; }
-    .section-heading span { font-size: clamp(11px, .9vw, 18px); font-weight: 800; opacity: .84; letter-spacing: .12em; }
+    .section-heading h2 { margin: 0; font-size: clamp(23px, 1.75vw, 36px); letter-spacing: .075em; }
+    .section-heading span { font-size: clamp(13px, 1vw, 20px); font-weight: 900; opacity: .9; letter-spacing: .1em; }
 
     /* Fasta kolumnbredder gör att tabellerna ligger stabilt på en 16:9-skärm. */
     table { width: 100%; border-collapse: collapse; table-layout: fixed; }
-    th { height: 3.7vh; padding: .45vh .75vw; color: var(--muted); border-bottom: 1px solid var(--line); font-size: clamp(11px, .86vw, 18px); letter-spacing: .12em; text-align: left; }
-    td { height: 4.5vh; padding: .65vh .75vw; border-bottom: 1px solid rgba(255,255,255,.075); font-size: clamp(13px, 1.12vw, 23px); font-weight: 650; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    th { height: 4.2vh; padding: .55vh 1vw; color: #d5def0; border-bottom: 2px solid rgba(255,255,255,.16); font-size: clamp(13px, .96vw, 20px); font-weight: 900; letter-spacing: .1em; text-align: left; }
+    td { height: 6.1vh; padding: .8vh 1vw; border-bottom: 1px solid rgba(255,255,255,.12); font-size: clamp(17px, 1.28vw, 27px); font-weight: 750; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    th + th, td + td { border-left: 1px solid rgba(255,255,255,.055); }
     tr:last-child td { border-bottom: 0; }
-    tbody tr:nth-child(even) { background: rgba(255,255,255,.025); }
+    tbody tr:nth-child(even) { background: rgba(255,255,255,.055); }
     tbody tr { transition: background .2s ease; }
 
-    .col-date { width: 12%; }
-    .col-time { width: 12%; }
-    .col-series { width: 20%; }
-    .col-team { width: 18%; }
-    .col-score { width: 11%; }
-    .col-arena { width: 11%; }
+    /* Dagens tabell: summan är 100 %, vilket hindrar att hallen kapas. */
+    .today-section .col-date { width: 8%; }
+    .today-section .col-time { width: 10%; }
+    .today-section .col-series { width: 18%; }
+    .today-section .col-team { width: 20%; }
+    .today-section .col-score { width: 10%; }
+    .today-section .col-arena { width: 14%; }
+
+    /* Kommande tabell saknar resultatkolumn och får därför egna bredder. */
+    .upcoming-section .col-date { width: 9%; }
+    .upcoming-section .col-time { width: 10%; }
+    .upcoming-section .col-series { width: 21%; }
+    .upcoming-section .col-team { width: 22%; }
+    .upcoming-section .col-arena { width: 16%; }
     .center { text-align: center; }
 
-    .today-section td { height: 5.6vh; font-size: clamp(16px, 1.3vw, 27px); }
-    .today-section tbody tr { background: linear-gradient(90deg, rgba(210,36,43,.12), transparent 38%); }
+    .today-section td { height: 7.4vh; font-size: clamp(21px, 1.55vw, 32px); font-weight: 800; }
+    .today-section tbody tr { background: linear-gradient(90deg, rgba(210,36,43,.16), rgba(255,255,255,.025) 48%, transparent); }
 
     /* Alla lagnamn som innehåller "Sollentuna" markeras i neongult. */
     .shc-team {
@@ -232,12 +241,7 @@
       .topbar { grid-template-columns: 24% 52% 24%; }
       .section-heading { padding-inline: 1.3vw; }
       th, td { padding-left: .9vw; padding-right: .9vw; }
-      .col-date { width: 11%; }
-      .col-time { width: 11%; }
-      .col-series { width: 19%; }
-      .col-team { width: 19%; }
-      .col-score { width: 10%; }
-      .col-arena { width: 11%; }
+      /* Kolumnbredderna ovan gäller även på extra breda skärmar. */
     }
 
     @media (max-aspect-ratio: 4/3) {
@@ -326,7 +330,7 @@
       Här anges adresserna till spelschema, sponsorlista och Cloudflare.
       ================================================================
     */
-    const ARENA_VERSION = "Arena Style 14.0 – Kommenterad kod";
+    const ARENA_VERSION = "Arena Style 15.0 – Publikskärm";
     const CSV_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/Spelschema_2627.csv";
     const SPONSOR_LIST_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/sponsors/list.txt";
     const SPONSOR_BASE_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/sponsors/";
@@ -463,9 +467,10 @@
     }
 
     function matchRow(match, isToday = false) {
+      const statusId = match.matchNumber ? `status-${htmlEscape(match.matchNumber)}` : "";
       return `<tr>
         <td class="center">${htmlEscape(formatDate(match.date))}</td>
-        <td class="center">${htmlEscape(match.time)} ${getStatus(match.date, match.time)}</td>
+        <td class="center">${htmlEscape(match.time)} <span id="${statusId}">${getStatus(match.date, match.time)}</span></td>
         <td title="${htmlEscape(match.series)}">${htmlEscape(match.series)}</td>
         ${teamCell(match.home)}
         ${teamCell(match.away)}
@@ -567,6 +572,14 @@
         return;
       }
       const live = String(result.status).toUpperCase() === "LIVE";
+      const finished = String(result.status).toUpperCase() === "SLUT";
+      const timeStatus = document.getElementById(`status-${matchNumber}`);
+      if (timeStatus) {
+        /* När Swehockey säger SLUT tas den tidsbaserade LIVE-symbolen bort. */
+        timeStatus.innerHTML = finished
+          ? ""
+          : (live ? '<span class="status status-live">LIVE</span>' : "");
+      }
       const detail = [result.status, result.period ? `PERIOD ${result.period}` : "", result.gameTime]
         .filter(Boolean).join(" • ");
       cell.innerHTML = `<span class="score ${live ? "live-score" : ""}">${result.homeScore}–${result.awayScore}</span>${detail ? `<span class="live-detail">${htmlEscape(detail)}</span>` : ""}`;
