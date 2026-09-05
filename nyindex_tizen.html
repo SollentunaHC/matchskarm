@@ -2,7 +2,7 @@
 <html lang="sv">
 <head>
 <meta charset="UTF-8">
-<title>Sollentuna Hockey – Arena Style 15.3 Tizen Legacy</title>
+<title>Sollentuna Hockey – Arena Style 15.5 Tizen Legacy</title>
 <meta http-equiv="refresh" content="300">
 
 <style>
@@ -116,7 +116,7 @@ h2 {
 .today-table td { font-size: 1.6vw; font-weight: 800; padding-top: 1.5vh; padding-bottom: 1.5vh; }
 
 /* Sollentuna markeras tydligt på samma sätt som i Arena Style 15.1. */
-.shc-team { color: #ffff33; font-weight: 950; text-shadow: 0 0 7px rgba(255,255,51,0.35); }
+.shc-team { color: #ffff33 !important; font-weight: 900; text-shadow: 0 0 9px rgba(255,255,51,0.48); }
 .shc-team::before { content: ""; display: inline-block; width: 5px; height: 1.15em; margin-right: 0.45em; vertical-align: -0.15em; border-radius: 4px; background: #d2242b; }
 
 .status-tag { display: inline-block; margin-left: 0.45em; padding: 0.2em 0.55em; border-radius: 999px; font-size: 0.65em; font-weight: 950; }
@@ -320,7 +320,7 @@ body::before {
 .today-table td { height: 7.4vh; font-size: 1.55vw; font-weight: 800; }
 .col-date { width: 8%; } .col-time { width: 10%; } .col-series { width: 18%; }
 .col-team { width: 20%; } .col-score { width: 10%; } .col-arena { width: 14%; }
-.hall-logo { width: 3.2vw; height: 2.4vw; max-height: 46px; top: 0; vertical-align: middle; }
+.hall-logo { width: 3.9vw; height: 2.9vw; max-width: 76px; max-height: 56px; top: 0; vertical-align: middle; }
 .ad-bar {
   position: fixed; left: 0; right: 0; bottom: 0; width: 100%; height: 11vh;
   background: rgba(255,255,255,0.96); border-top: 4px solid #d2242b;
@@ -332,7 +332,7 @@ body::before {
   font-size: 0.72vw; font-weight: 900; letter-spacing: 0.12em;
 }
 .sponsor-window { min-width: 0; flex: 1; overflow: hidden; }
-.ad-track { animation-duration: 21s; align-items: center; }
+.ad-track { animation-duration: 15s; align-items: center; }
 .ad-track img { height: 7.8vh; max-width: 12vw; margin-right: 5vw; filter: none; }
 #versionTag { left: auto; right: 0.6vw; bottom: 11.4vh; font-size: 9px; opacity: 0.3; }
 footer { display: none; }
@@ -400,8 +400,10 @@ footer { display: none; }
 
 <script>
 
-var ARENA_VERSION = "Arena Style 15.3 Tizen Legacy";
+var ARENA_VERSION = "Arena Style 15.5 Tizen Legacy";
 var CSV_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/Spelschema_2627.csv";
+var SPONSOR_LIST_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/sponsors/list.txt";
+var SPONSOR_BASE_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/sponsors/";
 var LIVE_RESULT_PROXY = "https://sollentuna-hockey-live.gunnar-127.workers.dev/live?match=";
 var activeTodayMatches = [];
 
@@ -431,16 +433,16 @@ function updateClock() {
     });
 }
 
-/* Datumformat "14 juni" */
+/* Kort datumformat, exempelvis "14 jun". */
 function formatDate(dateStr) {
   if (!dateStr) return "";
   var parts = dateStr.split("-");
   if (parts.length !== 3) return dateStr;
 
   var months = {
-    "01": "januari", "02": "februari", "03": "mars", "04": "april",
-    "05": "maj", "06": "juni", "07": "juli", "08": "augusti",
-    "09": "september", "10": "oktober", "11": "november", "12": "december"
+    "01": "jan", "02": "feb", "03": "mar", "04": "apr",
+    "05": "maj", "06": "jun", "07": "jul", "08": "aug",
+    "09": "sep", "10": "okt", "11": "nov", "12": "dec"
   };
 
   return parseInt(parts[2], 10) + " " + months[parts[1]];
@@ -682,41 +684,37 @@ function loadMatches() {
 }
 
 
-/* Ladda sponsorer – alla PNG/JPG i /sponsors via GitHub API (XMLHttpRequest) */
+/*
+  Laddar filnamnen från sponsors/list.txt med XMLHttpRequest.
+  Detta använder inte GitHubs katalog-API och påverkas därför inte av dess
+  låga gräns för anonyma API-anrop. Mappen heter exakt "sponsors".
+*/
 function loadSponsors() {
   var track = document.getElementById("sponsorTrack");
-  track.innerHTML = "";
+  var xhr = new XMLHttpRequest();
+  xhr.open("GET", SPONSOR_LIST_URL + "?nocache=" + new Date().getTime(), true);
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState !== 4 || xhr.status < 200 || xhr.status >= 300) return;
 
-  var sponsorImages = [
-    "sponsors/Aften bil.png",
-    "sponsors/CCM.png",
-    "sponsors/Cyloq.png",
-    "sponsors/Dammarsberg_2.png",
-    "sponsors/Edsviken.png",
-    "sponsors/ICA.png",
-    "sponsors/Interbus-logo_218.png",
-    "sponsors/MSB Center.png",
-    "sponsors/Maxi_Haggvik_RGB.png",
-    "sponsors/Märsta förenade.png",
-    "sponsors/Nonnos.png",
-    "sponsors/One_Sec.jpg",
-    "sponsors/SvCater.png",
-    "sponsors/Teamgear.png",
-    "sponsors/max.png",
-    "sponsors/trygga hiss.jpg",
-    "sponsors/villarelining.png"
-  ];
+    var lines = xhr.responseText.replace(/^\uFEFF/, "").split(/\r?\n/);
+    var sponsorImages = [];
+    for (var i = 0; i < lines.length; i++) {
+      var fileName = lines[i].replace(/^\s+|\s+$/g, "");
+      if (/\.(png|jpg|jpeg|svg|webp)$/i.test(fileName)) sponsorImages.push(fileName);
+    }
+    if (sponsorImages.length === 0) return;
 
-  // Dubbla listan för oändlig scroll
-  var loopImages = sponsorImages.concat(sponsorImages);
-
-  for (var i = 0; i < loopImages.length; i++) {
-    var el = document.createElement("img");
-    el.src = loopImages[i];
-    track.appendChild(el);
-  }
+    track.innerHTML = "";
+    var loopImages = sponsorImages.concat(sponsorImages);
+    for (var j = 0; j < loopImages.length; j++) {
+      var el = document.createElement("img");
+      el.src = SPONSOR_BASE_URL + encodeURIComponent(loopImages[j]);
+      el.alt = loopImages[j].replace(/\.[^.]+$/, "");
+      track.appendChild(el);
+    }
+  };
+  xhr.send(null);
 }
-;
 
 /* Init */
 function initArena() {
