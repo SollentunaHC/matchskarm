@@ -2,7 +2,7 @@
 <html lang="sv">
 <head>
 <meta charset="UTF-8">
-<title>Sollentuna Hockey – Tizen version 16.0</title>
+<title>Sollentuna Hockey – Tizen version 16.1</title>
 <meta http-equiv="refresh" content="300">
 
 <style>
@@ -117,7 +117,7 @@ h2 {
 
 /* Sollentuna markeras tydligt på samma sätt som i Arena Style 15.1. */
 .shc-team { color: #ffff33 !important; font-weight: 900; text-shadow: 0 0 9px rgba(255,255,51,0.48); }
-.shc-team::before { content: ""; display: inline-block; width: 5px; height: 1.15em; margin-right: 0.45em; vertical-align: -0.15em; border-radius: 4px; background: #d2242b; }
+.shc-team::before { display: none; }
 
 .status-tag { display: inline-block; margin-left: 0.45em; padding: 0.2em 0.55em; border-radius: 999px; font-size: 0.65em; font-weight: 950; }
 .status-soon { color: #241b00; background: #ffd447; }
@@ -350,7 +350,7 @@ footer { display: none; }
   <header class="topbar">
     <div class="date-time"><div id="clock">--:--:--</div><div id="todayDate"></div></div>
     <div class="brand"><div class="brand-kicker">SEDAN 1976</div><div class="brand-title">SOLLENTUNA HOCKEY</div><div class="brand-line"></div></div>
-    <div class="update"><strong>Automatisk matchinformation</strong><br><span id="updatedInfo">Hämtar spelschema…</span></div>
+    <div class="update"><span id="updatedInfo">Hämtar spelschema…</span></div>
   </header>
 
   <main class="matches">
@@ -405,7 +405,7 @@ footer { display: none; }
 
 <script>
 
-var ARENA_VERSION = "VERSION 16.0 TIZEN";
+var ARENA_VERSION = "VERSION 16.1 TIZEN";
 var CSV_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/Spelschema_2627.csv";
 var SPONSOR_LIST_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/sponsors/list.txt";
 var SPONSOR_BASE_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/sponsors/";
