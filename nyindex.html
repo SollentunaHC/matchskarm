@@ -474,9 +474,14 @@
       };
     }
 
-    async function fetchLiveResult(matchNumber) {
-      const id = encodeURIComponent(matchNumber);
-      const urls = [`${LIVE_RESULT_PROXY}${id}`];
+    async function fetchLiveResult(match) {
+      const query = new URLSearchParams({
+        match: match.matchNumber,
+        date: match.date,
+        home: match.home,
+        away: match.away
+      });
+      const urls = [`${LIVE_RESULT_PROXY}${encodeURIComponent(match.matchNumber)}&${query.toString().replace(/^match=[^&]*&?/, "")}`];
 
       let lastError = null;
       for (const url of urls) {
@@ -527,7 +532,7 @@
     async function loadLiveResults(todayMatches) {
       await Promise.all(todayMatches.filter(match => match.matchNumber).map(async match => {
         try {
-          updateScoreCell(match.matchNumber, await fetchLiveResult(match.matchNumber));
+          updateScoreCell(match.matchNumber, await fetchLiveResult(match));
         } catch (error) {
           console.warn(`Live-resultat saknas för match ${match.matchNumber}:`, error);
           updateScoreCell(match.matchNumber, null);
