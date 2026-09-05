@@ -144,20 +144,14 @@
     tbody tr:nth-child(even) { background: rgba(255,255,255,.055); }
     tbody tr { transition: background .2s ease; }
 
-    /* Dagens tabell: summan är 100 %, vilket hindrar att hallen kapas. */
-    .today-section .col-date { width: 8%; }
-    .today-section .col-time { width: 10%; }
-    .today-section .col-series { width: 18%; }
-    .today-section .col-team { width: 20%; }
-    .today-section .col-score { width: 10%; }
-    .today-section .col-arena { width: 14%; }
-
-    /* Kommande tabell saknar resultatkolumn och får därför egna bredder. */
-    .upcoming-section .col-date { width: 9%; }
-    .upcoming-section .col-time { width: 10%; }
-    .upcoming-section .col-series { width: 21%; }
-    .upcoming-section .col-team { width: 22%; }
-    .upcoming-section .col-arena { width: 16%; }
+    /* Identiska bredder ger samma lodräta kolumnlinjer i båda tabellerna. */
+    .col-date { width: 8%; }
+    .col-time { width: 10%; }
+    .col-series { width: 18%; }
+    .col-team { width: 20%; }
+    .col-score { width: 10%; }
+    .col-arena { width: 14%; }
+    .score-spacer { color: transparent; }
     .center { text-align: center; }
 
     .today-section td { height: 7.4vh; font-size: clamp(21px, 1.55vw, 32px); font-weight: 800; }
@@ -230,7 +224,7 @@
     }
     .sponsor-label { align-self: stretch; flex: 0 0 auto; display: flex; align-items: center; padding: 0 1.4vw; color: var(--navy-900); background: #e7ecf4; font-size: clamp(10px, .72vw, 15px); font-weight: 900; letter-spacing: .12em; }
     .sponsor-window { min-width: 0; flex: 1; overflow: hidden; }
-    .sponsor-track { width: max-content; display: flex; align-items: center; gap: 5vw; padding-left: 5vw; animation: sponsorScroll var(--scroll-duration, 42s) linear infinite; }
+    .sponsor-track { width: max-content; display: flex; align-items: center; gap: 5vw; padding-left: 5vw; animation: sponsorScroll var(--scroll-duration, 24s) linear infinite; }
     .sponsor-track img { width: auto; height: 7.8vh; max-width: 12vw; object-fit: contain; }
     @keyframes sponsorScroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
@@ -306,9 +300,9 @@
         <table aria-label="Kommande matcher">
           <thead><tr>
             <th class="col-date center">DATUM</th><th class="col-time center">TID</th><th class="col-series">SERIE</th>
-            <th class="col-team">HEMMALAG</th><th class="col-team">BORTALAG</th><th class="col-arena">HALL</th>
+            <th class="col-team">HEMMALAG</th><th class="col-team">BORTALAG</th><th class="col-score" aria-hidden="true"></th><th class="col-arena">HALL</th>
           </tr></thead>
-          <tbody id="upcomingBody"><tr><td class="empty" colspan="6">Laddar matcher…</td></tr></tbody>
+          <tbody id="upcomingBody"><tr><td class="empty" colspan="7">Laddar matcher…</td></tr></tbody>
         </table>
       </section>
     </main>
@@ -330,7 +324,7 @@
       Här anges adresserna till spelschema, sponsorlista och Cloudflare.
       ================================================================
     */
-    const ARENA_VERSION = "Arena Style 15.0 – Publikskärm";
+    const ARENA_VERSION = "Arena Style 15.1 – Linjerade kolumner";
     const CSV_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/Spelschema_2627.csv";
     const SPONSOR_LIST_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/sponsors/list.txt";
     const SPONSOR_BASE_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/sponsors/";
@@ -474,7 +468,7 @@
         <td title="${htmlEscape(match.series)}">${htmlEscape(match.series)}</td>
         ${teamCell(match.home)}
         ${teamCell(match.away)}
-        ${isToday ? resultCell(match, true) : ""}
+        ${isToday ? resultCell(match, true) : '<td class="score-cell score-spacer" aria-hidden="true"></td>'}
         <td>${hallWithLogo(match.arena)}</td>
       </tr>`;
     }
@@ -483,7 +477,7 @@
     function renderMatches(targetId, matches, emptyMessage, isToday = false) {
       document.getElementById(targetId).innerHTML = matches.length
         ? matches.map(match => matchRow(match, isToday)).join("")
-        : `<tr><td class="empty" colspan="${isToday ? 7 : 6}">${htmlEscape(emptyMessage)}</td></tr>`;
+        : `<tr><td class="empty" colspan="7">${htmlEscape(emptyMessage)}</td></tr>`;
     }
 
     /* Reservtolkning om en proxy någon gång skulle skicka HTML i stället för JSON. */
@@ -639,7 +633,8 @@
           element.loading = "eager";
           track.appendChild(element);
         });
-        track.style.setProperty("--scroll-duration", `${Math.max(34, images.length * 4.8)}s`);
+        /* Lägre tid betyder snabbare rullning. */
+        track.style.setProperty("--scroll-duration", `${Math.max(20, images.length * 3)}s`);
       } catch (error) {
         console.error(error);
       }
