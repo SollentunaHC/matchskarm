@@ -3,9 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Sollentuna Hockey – Arenaskärm Live 13.0</title>
+  <title>Sollentuna Hockey – Arenaskärm kommenterad 14</title>
 
   <style>
+    /*
+      FÄRGER OCH GEMENSAMMA INSTÄLLNINGAR
+      Ändra färgerna här om klubbens grafiska profil ska justeras.
+      Variablerna används sedan i hela stilmallen.
+    */
     :root {
       --navy-950: #06132d;
       --navy-900: #0a1c3f;
@@ -32,6 +37,7 @@
       margin: 0;
     }
 
+    /* Hela skärmens bakgrund och standardtypsnitt. */
     body {
       overflow: hidden;
       color: var(--white);
@@ -51,6 +57,7 @@
         repeating-linear-gradient(0deg, transparent 0 42px, rgba(255,255,255,.018) 43px 44px);
     }
 
+    /* Diskret drake som vattenstämpel bakom matchtabellerna. */
     body::after {
       content: "";
       position: fixed;
@@ -75,6 +82,7 @@
       gap: 1.4vh;
     }
 
+    /* Övre raden: klocka till vänster, klubbnamn i mitten, status till höger. */
     .topbar {
       min-height: 9.5vh;
       display: grid;
@@ -96,6 +104,7 @@
     .update { justify-self: end; text-align: right; color: var(--muted); font-size: clamp(11px, .9vw, 18px); line-height: 1.5; }
     .update strong { color: var(--white); }
 
+    /* Matchytan består av dagens matcher överst och kommande matcher underst. */
     main {
       min-height: 0;
       display: grid;
@@ -126,6 +135,7 @@
     .section-heading h2 { margin: 0; font-size: clamp(19px, 1.58vw, 32px); letter-spacing: .08em; }
     .section-heading span { font-size: clamp(11px, .9vw, 18px); font-weight: 800; opacity: .84; letter-spacing: .12em; }
 
+    /* Fasta kolumnbredder gör att tabellerna ligger stabilt på en 16:9-skärm. */
     table { width: 100%; border-collapse: collapse; table-layout: fixed; }
     th { height: 3.7vh; padding: .45vh .75vw; color: var(--muted); border-bottom: 1px solid var(--line); font-size: clamp(11px, .86vw, 18px); letter-spacing: .12em; text-align: left; }
     td { height: 4.5vh; padding: .65vh .75vw; border-bottom: 1px solid rgba(255,255,255,.075); font-size: clamp(13px, 1.12vw, 23px); font-weight: 650; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -144,6 +154,7 @@
     .today-section td { height: 5.6vh; font-size: clamp(16px, 1.3vw, 27px); }
     .today-section tbody tr { background: linear-gradient(90deg, rgba(210,36,43,.12), transparent 38%); }
 
+    /* Alla lagnamn som innehåller "Sollentuna" markeras i neongult. */
     .shc-team {
       color: var(--neon-yellow);
       font-weight: 950;
@@ -151,6 +162,7 @@
     }
     .shc-team::before { content: ""; display: inline-block; width: 5px; height: 1.15em; margin-right: .5em; vertical-align: -.16em; border-radius: 4px; background: var(--red); }
 
+    /* Små statusmärken för SNART och LIVE. */
     .status {
       display: inline-flex;
       align-items: center;
@@ -167,6 +179,7 @@
     .status-live { color: #052513; background: var(--live); }
     .status-live::before { content: ""; width: .55em; height: .55em; border-radius: 50%; background: #087532; animation: pulse 1.2s ease-in-out infinite; }
 
+    /* Resultatrutan används endast i tabellen Dagens matcher. */
     .score-cell { text-align: center; overflow: visible; }
     .score {
       display: inline-flex;
@@ -191,6 +204,7 @@
     .hall-logo { width: clamp(34px, 2.4vw, 52px); height: clamp(24px, 2.1vw, 46px); flex: 0 0 auto; background: url("https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/sponsors/Cyloq.png") center/contain no-repeat; }
     .empty { height: 7vh !important; color: var(--muted); text-align: center; font-style: italic; }
 
+    /* Sponsorbandet ligger alltid fast längst ned och påverkar inte matchytan. */
     .sponsor-bar {
       position: fixed;
       z-index: 5;
@@ -213,6 +227,7 @@
 
     #versionTag { position: fixed; z-index: 6; right: .6vw; bottom: 11.4vh; color: rgba(255,255,255,.28); font-size: 9px; }
 
+    /* Extra optimering för breda liggande skärmar, exempelvis 1920 x 1080. */
     @media (orientation: landscape) and (min-aspect-ratio: 16/10) {
       .topbar { grid-template-columns: 24% 52% 24%; }
       .section-heading { padding-inline: 1.3vw; }
@@ -234,6 +249,7 @@
       .col-team { width: 21%; }
     }
 
+    /* Respekterar datorns inställning för minskade animationer. */
     @media (prefers-reduced-motion: reduce) {
       .sponsor-track, .status-live::before { animation: none; }
     }
@@ -241,6 +257,7 @@
 </head>
 
 <body>
+  <!-- HUVUDYTA: allt utom sponsorbandet -->
   <div class="screen">
     <header class="topbar">
       <div class="date-time">
@@ -261,6 +278,7 @@
     </header>
 
     <main>
+      <!-- Resultatkolumnen finns bara i Dagens matcher. -->
       <section class="section today-section">
         <div class="section-heading">
           <h2>DAGENS MATCHER</h2>
@@ -275,6 +293,7 @@
         </table>
       </section>
 
+      <!-- Kommande matcher visar spelschema men aldrig resultat. -->
       <section class="section upcoming-section">
         <div class="section-heading">
           <h2>KOMMANDE MATCHER</h2>
@@ -291,6 +310,7 @@
     </main>
   </div>
 
+  <!-- SPONSORBAND: bilderna läses från sponsors/list.txt på GitHub. -->
   <aside class="sponsor-bar" aria-label="Sponsorer">
     <div class="sponsor-label">VÅRA PARTNERS</div>
     <div class="sponsor-window"><div class="sponsor-track" id="sponsorTrack"></div></div>
@@ -300,24 +320,28 @@
   <script>
     "use strict";
 
-    const ARENA_VERSION = "Arena Style 13.3 – Större text";
+    /*
+      ================================================================
+      GRUNDINSTÄLLNINGAR
+      Här anges adresserna till spelschema, sponsorlista och Cloudflare.
+      ================================================================
+    */
+    const ARENA_VERSION = "Arena Style 14.0 – Kommenterad kod";
     const CSV_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/Spelschema_2627.csv";
     const SPONSOR_LIST_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/sponsors/list.txt";
     const SPONSOR_BASE_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/sponsors/";
-    const MAX_UPCOMING = 6;
+    const MAX_UPCOMING = 6; // Antal framtida matcher som visas.
     let activeTodayMatches = [];
 
-    /*
-      Om Swehockey blockerar direktanrop från webbläsaren anges adressen till
-      en egen proxy här, exempelvis: "https://din-proxy.se/live?match=".
-      Lämna tomt för att först försöka läsa Swehockey direkt.
-    */
+    /* Cloudflare Workern hämtar Swehockey server-side och löser CORS-problemet. */
     const LIVE_RESULT_PROXY = "https://sollentuna-hockey-live.gunnar-127.workers.dev/live?match=";
 
+    /* Skyddar tabellen om ett lag- eller hallnamn innehåller HTML-tecken. */
     const htmlEscape = value => String(value ?? "").replace(/[&<>'"]/g, char => ({
       "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;"
     })[char]);
 
+    /* Uppdaterar klocka och svenskt datum en gång per sekund. */
     function updateClock() {
       const now = new Date();
       document.getElementById("clock").textContent = now.toLocaleTimeString("sv-SE", {
@@ -328,6 +352,7 @@
       });
     }
 
+    /* Gör om CSV-formatet ÅÅÅÅ-MM-DD och TT:MM till ett JavaScript-datum. */
     function parseLocalDate(dateStr, timeStr = "00:00") {
       const dateParts = String(dateStr || "").match(/^(\d{4})-(\d{2})-(\d{2})$/);
       const timeParts = String(timeStr || "").match(/^(\d{1,2}):(\d{2})/);
@@ -346,6 +371,7 @@
       return date.toLocaleDateString("sv-SE", { day: "numeric", month: "short" }).replace(".", "");
     }
 
+    /* Visar SNART sista timmen före start och LIVE i upp till 150 minuter. */
     function getStatus(dateStr, timeStr) {
       const start = parseLocalDate(dateStr, timeStr);
       if (!start) return "";
@@ -355,6 +381,7 @@
       return "";
     }
 
+    /* Ersätter ordet CYLOQ med sponsorloggan när hallen börjar med CYLOQ. */
     function hallWithLogo(arena) {
       const safeArena = htmlEscape(arena);
       if (!arena || !/^cyloq\b/i.test(arena.trim())) return safeArena;
@@ -362,6 +389,7 @@
       return `<span class="hall"><span class="hall-logo" aria-label="CYLOQ"></span><span>${suffix}</span></span>`;
     }
 
+    /* Läser en semikolonseparerad CSV-rad och hanterar citerade fält. */
     function parseCSVLine(line, delimiter = ";") {
       const values = [];
       let value = "";
@@ -377,6 +405,10 @@
       return values;
     }
 
+    /*
+      Läser spelschemat, hittar rätt kolumner och behåller bara matcher där
+      hemma- eller bortalaget innehåller ordet Sollentuna.
+    */
     function parseMatchesFromCSV(text) {
       const lines = text.replace(/^\uFEFF/, "").split(/\r?\n/).filter(line => line.trim());
       if (lines.length < 2) return [];
@@ -404,6 +436,7 @@
         .sort((a, b) => parseLocalDate(a.date, a.time) - parseLocalDate(b.date, b.time));
     }
 
+    /* Delar listan i dagens matcher och de närmast kommande matcherna. */
     function splitMatches(matches) {
       const today = dayStart();
       const tomorrow = new Date(today);
@@ -417,11 +450,13 @@
       };
     }
 
+    /* Lägger på neongul SHC-formatering när laget är Sollentuna. */
     function teamCell(team) {
       const className = /sollentuna/i.test(team) ? "shc-team" : "";
       return `<td class="${className}">${htmlEscape(team)}</td>`;
     }
 
+    /* Skapar en tom resultatruta som fylls efter anropet till Workern. */
     function resultCell(match, isToday) {
       if (!isToday || !match.matchNumber) return '<td class="score-cell"><span class="score">–</span></td>';
       return `<td class="score-cell" id="score-${htmlEscape(match.matchNumber)}"><span class="score score-loading">HÄMTAR…</span></td>`;
@@ -439,12 +474,14 @@
       </tr>`;
     }
 
+    /* Skriver färdiga matchrader till rätt tabell i HTML-dokumentet. */
     function renderMatches(targetId, matches, emptyMessage, isToday = false) {
       document.getElementById(targetId).innerHTML = matches.length
         ? matches.map(match => matchRow(match, isToday)).join("")
         : `<tr><td class="empty" colspan="${isToday ? 7 : 6}">${htmlEscape(emptyMessage)}</td></tr>`;
     }
 
+    /* Reservtolkning om en proxy någon gång skulle skicka HTML i stället för JSON. */
     function parseLiveResult(html) {
       const documentCopy = new DOMParser().parseFromString(html, "text/html");
       const text = (documentCopy.body?.innerText || "").replace(/\s+/g, " ").trim();
@@ -474,6 +511,11 @@
       };
     }
 
+    /*
+      Skickar CSV-matchnummer, datum och lag till Workern. CSV-numret är inte
+      samma som Swehockeys interna ID, därför använder Workern datum och lag
+      för att automatiskt hitta rätt /Game/Events/ID.
+    */
     async function fetchLiveResult(match) {
       const query = new URLSearchParams({
         match: match.matchNumber,
@@ -516,6 +558,7 @@
       throw lastError || new Error("Resultatet kunde inte hämtas.");
     }
 
+    /* Visar poäng, status, period och matchtid i dagens resultatruta. */
     function updateScoreCell(matchNumber, result) {
       const cell = document.getElementById(`score-${matchNumber}`);
       if (!cell) return;
@@ -529,6 +572,7 @@
       cell.innerHTML = `<span class="score ${live ? "live-score" : ""}">${result.homeScore}–${result.awayScore}</span>${detail ? `<span class="live-detail">${htmlEscape(detail)}</span>` : ""}`;
     }
 
+    /* Hämtar alla dagens resultat parallellt för snabbare laddning. */
     async function loadLiveResults(todayMatches) {
       await Promise.all(todayMatches.filter(match => match.matchNumber).map(async match => {
         try {
@@ -540,6 +584,7 @@
       }));
     }
 
+    /* Hämtar och ritar om hela spelschemat. Körs igen var femte minut. */
     async function loadMatches() {
       try {
         const response = await fetch(`${CSV_URL}?v=${Date.now()}`, { cache: "no-store" });
@@ -559,6 +604,11 @@
       }
     }
 
+    /*
+      Hämtar sponsors/list.txt i stället för GitHubs katalog-API. Det undviker
+      API-gränsen som tidigare gjorde att sponsorloggorna kunde försvinna.
+      Varje filnamn i list.txt måste motsvara en bild i mappen sponsors.
+    */
     async function loadSponsors() {
       try {
         const response = await fetch(`${SPONSOR_LIST_URL}?v=${Date.now()}`, { cache: "no-store" });
@@ -582,15 +632,16 @@
       }
     }
 
+    /* Startar sidan och schemalägger alla automatiska uppdateringar. */
     function initArena() {
       document.getElementById("versionTag").textContent = ARENA_VERSION;
       updateClock();
       loadMatches();
       loadSponsors();
-      setInterval(updateClock, 1000);
-      setInterval(() => loadLiveResults(activeTodayMatches), 30000);
-      setInterval(loadMatches, 300000);
-      setInterval(loadSponsors, 1800000);
+      setInterval(updateClock, 1000);                              // Varje sekund
+      setInterval(() => loadLiveResults(activeTodayMatches), 30000); // Var 30:e sekund
+      setInterval(loadMatches, 300000);                            // Var 5:e minut
+      setInterval(loadSponsors, 1800000);                          // Var 30:e minut
     }
 
     document.addEventListener("DOMContentLoaded", initArena);
