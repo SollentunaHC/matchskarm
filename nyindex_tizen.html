@@ -2,7 +2,7 @@
 <html lang="sv">
 <head>
 <meta charset="UTF-8">
-<title>Sollentuna Hockey – Tizen version 16.5</title>
+<title>Sollentuna Hockey – Tizen version 16.6</title>
 
 <style>
 
@@ -332,8 +332,8 @@ body::before {
   font-size: 0.72vw; font-weight: 900; letter-spacing: 0.12em;
 }
 .sponsor-window { min-width: 0; flex: 1; overflow: hidden; }
-.ad-track { animation-duration: 30s; align-items: center; }
-/* Fast sponsorplats gör att äldre Tizen kan räkna hela rullsträckan korrekt. */
+.ad-track { animation-duration: 20s; align-items: center; }
+/* Bredden på varje sponsorplats sätts dynamiskt i JavaScript. */
 .sponsor-item {
   width: 17vw; height: 11vh; flex: 0 0 17vw;
   display: flex; align-items: center; justify-content: center;
@@ -409,7 +409,7 @@ footer { display: none; }
 
 <script>
 
-var ARENA_VERSION = "VERSION 16.5 TIZEN";
+var ARENA_VERSION = "VERSION 16.6 TIZEN";
 var CSV_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/Spelschema_2627.csv";
 var SPONSOR_LIST_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/sponsors/list.txt";
 var SPONSOR_BASE_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/sponsors/";
@@ -758,13 +758,23 @@ function loadSponsors() {
 
     track.innerHTML = "";
     var loopImages = sponsorImages.concat(sponsorImages);
-    /* Två identiska listor à 17vw per sponsor ger exakt sömlös -50 %-rullning. */
-    track.style.width = (loopImages.length * 17) + "vw";
-    /* Cirka 1,9 sekunder per sponsor ger ett lugnt och läsbart flöde. */
-    track.style.animationDuration = Math.max(20, sponsorImages.length * 1.9) + "s";
+
+    /*
+      Anpassa sponsorplatsernas bredd efter antalet loggor.
+      Få loggor får större luft mellan sig, medan många loggor placeras tätare.
+      Begränsningen 4–7 synliga platser ger ett balanserat mellanrum på 16:9-skärmar.
+    */
+    var visibleSlots = Math.max(4, Math.min(7, sponsorImages.length));
+    var sponsorSlotWidth = 100 / visibleSlots;
+
+    /* Två identiska listor och exakt spårbredd ger en sömlös slinga. */
+    track.style.width = (loopImages.length * sponsorSlotWidth) + "vw";
+    track.style.animationDuration = "20s";
     for (var j = 0; j < loopImages.length; j++) {
       var item = document.createElement("span");
       item.className = "sponsor-item";
+      item.style.width = sponsorSlotWidth + "vw";
+      item.style.flexBasis = sponsorSlotWidth + "vw";
       var el = document.createElement("img");
       el.src = SPONSOR_BASE_URL + encodeURIComponent(loopImages[j]);
       el.alt = loopImages[j].replace(/\.[^.]+$/, "");
