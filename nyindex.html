@@ -300,9 +300,10 @@
   <script>
     "use strict";
 
-    const ARENA_VERSION = "Arena Style 13.1 – Live-resultat";
+    const ARENA_VERSION = "Arena Style 13.2 – Cloudflare Live";
     const CSV_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/Spelschema_2627.csv";
-    const SPONSOR_API_URL = "https://api.github.com/repos/SollentunaHC/matchskarm/contents/sponsors";
+    const SPONSOR_LIST_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/sponsors/list.txt";
+    const SPONSOR_BASE_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/sponsors/";
     const MAX_UPCOMING = 6;
     let activeTodayMatches = [];
 
@@ -311,7 +312,7 @@
       en egen proxy här, exempelvis: "https://din-proxy.se/live?match=".
       Lämna tomt för att först försöka läsa Swehockey direkt.
     */
-    const LIVE_RESULT_PROXY = "";
+    const LIVE_RESULT_PROXY = "https://sollentuna-hockey-live.gunnar-127.workers.dev/live?match=";
 
     const htmlEscape = value => String(value ?? "").replace(/[&<>'"]/g, char => ({
       "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;"
@@ -475,13 +476,7 @@
 
     async function fetchLiveResult(matchNumber) {
       const id = encodeURIComponent(matchNumber);
-      const swehockeyUrl = `https://stats.swehockey.se/Game/Events/${id}?v=${Date.now()}`;
-      const urls = LIVE_RESULT_PROXY
-        ? [`${LIVE_RESULT_PROXY}${id}`]
-        : [
-            swehockeyUrl,
-            `https://api.allorigins.win/raw?url=${encodeURIComponent(swehockeyUrl)}`
-          ];
+      const urls = [`${LIVE_RESULT_PROXY}${id}`];
 
       let lastError = null;
       for (const url of urls) {
@@ -561,18 +556,18 @@
 
     async function loadSponsors() {
       try {
-        const response = await fetch(SPONSOR_API_URL, { cache: "no-store" });
+        const response = await fetch(`${SPONSOR_LIST_URL}?v=${Date.now()}`, { cache: "no-store" });
         if (!response.ok) throw new Error(`Kunde inte ladda sponsorer (${response.status}).`);
-        const files = await response.json();
-        const images = files.filter(file => /\.(png|jpe?g|svg|webp)$/i.test(file.name));
+        const images = (await response.text()).replace(/^\uFEFF/, "").split(/\r?\n/)
+          .map(name => name.trim()).filter(name => /\.(png|jpe?g|svg|webp)$/i.test(name));
         const track = document.getElementById("sponsorTrack");
         track.replaceChildren();
         if (!images.length) return;
 
         [...images, ...images].forEach(image => {
           const element = document.createElement("img");
-          element.src = image.download_url;
-          element.alt = image.name.replace(/\.[^.]+$/, "");
+          element.src = SPONSOR_BASE_URL + image.split("/").map(encodeURIComponent).join("/");
+          element.alt = image.replace(/\.[^.]+$/, "");
           element.loading = "eager";
           track.appendChild(element);
         });
