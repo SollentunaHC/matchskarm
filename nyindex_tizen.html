@@ -2,7 +2,7 @@
 <html lang="sv">
 <head>
 <meta charset="UTF-8">
-<title>Sollentuna Hockey – Tizen version 16.6</title>
+<title>Sollentuna Hockey – Tizen version 16.7</title>
 
 <style>
 
@@ -122,10 +122,14 @@ h2 {
 .status-soon { color: #241b00; background: #ffd447; }
 .status-live { color: #052513; background: #46d17d; }
 .score-cell { text-align: center; }
+.score-block { display: inline-block; width: 8.3vw; max-width: 100%; text-align: center; vertical-align: middle; }
+.score-block .score { display: block; width: 100%; box-sizing: border-box; }
 .score { display: inline-block; min-width: 4em; padding: 0.18em 0.5em; border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; background: rgba(0,0,0,0.3); font-size: 1.15em; font-weight: 950; }
 .live-score { color: #071d10; background: #46d17d; border-color: #46d17d; }
 .score-error { min-width: 0; color: #ffd447; font-size: 0.55em; letter-spacing: 0; }
-.score-detail { display: block; margin-top: 0.25em; color: #46d17d; font-size: 0.58em; font-weight: 900; }
+.score-detail { display: block; margin-top: 0.25em; color: #46d17d; font-size: 0.58em; font-weight: 900; white-space: nowrap; overflow: hidden; }
+.score-detail-result { text-align: center; }
+.score-detail-live { text-align: left; }
 
 .match-table tbody tr:nth-child(even) { background: #16284b; }
 .match-table tbody tr:nth-child(odd)  { background: #0f1e3d; }
@@ -409,7 +413,7 @@ footer { display: none; }
 
 <script>
 
-var ARENA_VERSION = "VERSION 16.6 TIZEN";
+var ARENA_VERSION = "VERSION 16.7 TIZEN";
 var CSV_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/Spelschema_2627.csv";
 var SPONSOR_LIST_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/sponsors/list.txt";
 var SPONSOR_BASE_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/sponsors/";
@@ -604,9 +608,11 @@ function updateLiveResult(matchNumber, result) {
   var detail = status;
   if (isLive && result.period) detail += " • PERIOD " + result.period;
   if (isLive && result.gameTime) detail += " • " + result.gameTime;
-  scoreCell.innerHTML = "<span class='score" + (isLive ? " live-score" : "") + "'>" +
+  scoreCell.innerHTML = "<span class='score-block'>" +
+    "<span class='score" + (isLive ? " live-score" : "") + "'>" +
     result.homeScore + "–" + result.awayScore + "</span>" +
-    "<span class='score-detail'>" + detail + "</span>";
+    "<span class='score-detail " + (isLive ? "score-detail-live" : "score-detail-result") + "'>" +
+    detail + "</span></span>";
 }
 
 function loadAllLiveResults(matches) {
