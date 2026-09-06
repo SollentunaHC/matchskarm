@@ -2,7 +2,7 @@
 <html lang="sv">
 <head>
 <meta charset="UTF-8">
-<title>Sollentuna Hockey – Tizen version 16.7</title>
+<title>Sollentuna Hockey – Tizen version 16.8</title>
 
 <style>
 
@@ -121,6 +121,8 @@ h2 {
 .status-tag { display: inline-block; margin-left: 0.45em; padding: 0.2em 0.55em; border-radius: 999px; font-size: 0.65em; font-weight: 950; }
 .status-soon { color: #241b00; background: #ffd447; }
 .status-live { color: #052513; background: #46d17d; }
+.time-status { display: block; margin-top: 0.25em; min-height: 0.9em; text-align: center; overflow: visible; }
+.time-status .status-tag { margin-left: 0; }
 .score-cell { text-align: center; }
 .score-block { display: inline-block; width: 8.3vw; max-width: 100%; text-align: center; vertical-align: middle; }
 .score-block .score { display: block; width: 100%; box-sizing: border-box; }
@@ -413,7 +415,7 @@ footer { display: none; }
 
 <script>
 
-var ARENA_VERSION = "VERSION 16.7 TIZEN";
+var ARENA_VERSION = "VERSION 16.8 TIZEN";
 var CSV_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/Spelschema_2627.csv";
 var SPONSOR_LIST_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/sponsors/list.txt";
 var SPONSOR_BASE_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/sponsors/";
@@ -657,7 +659,7 @@ function renderTodayMatches(todayMatches) {
       var m = todayMatches[i];
       html += "<tr>" +
         "<td>" + formatDate(m.date) + "</td>" +
-        "<td>" + m.time + " <span id='status-" + m.matchNumber + "'>" + getStatus(m.date, m.time) + "</span></td>" +
+        "<td>" + m.time + "<span class='time-status' id='status-" + m.matchNumber + "'>" + getStatus(m.date, m.time) + "</span></td>" +
         "<td>" + m.series + "</td>" +
         teamCell(m.home) +
         teamCell(m.away) +
@@ -684,7 +686,7 @@ function renderUpcomingMatches(upcomingMatches) {
         var m = upcomingMatches[i];
         html += "<tr>" +
           "<td>" + formatDate(m.date) + "</td>" +
-          "<td>" + m.time + " " + getStatus(m.date, m.time) + "</td>" +
+          "<td>" + m.time + "<span class='time-status'>" + getStatus(m.date, m.time) + "</span></td>" +
           "<td>" + m.series + "</td>" +
           teamCell(m.home) +
           teamCell(m.away) +
