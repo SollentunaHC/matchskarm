@@ -308,6 +308,17 @@ body::before {
   letter-spacing: 0.075em; text-shadow: none;
 }
 .section-heading span { font-size: 1vw; font-weight: 900; letter-spacing: 0.1em; }
+.verification-summary { display: flex; align-items: center; }
+.verification-box + .verification-box { margin-left: 0.55vw; }
+.verification-box {
+  width: 2.15vw; min-width: 30px; height: 3.15vh; min-height: 25px;
+  box-sizing: border-box; display: flex; align-items: center; justify-content: center;
+  padding: 0; border: 2px solid rgba(255,255,255,0.7); border-radius: 5px;
+  background: rgba(5,18,43,0.55); color: #ffffff;
+}
+.verification-box .verification-mark { font-size: 1.25vw; font-weight: 950; line-height: 1; }
+.verification-box.verification-ok { color: #46d17d; border-color: #46d17d; }
+.verification-box.verification-error { color: #ff4d57; border-color: #ff4d57; }
 .table-wrapper { width: 100%; }
 .match-table { width: 100%; margin: 0; table-layout: fixed; border-collapse: collapse; }
 .match-table th {
@@ -387,7 +398,13 @@ footer { display: none; }
   </section>
 
   <section class="section upcoming-section">
-    <div class="section-heading"><h2>KOMMANDE MATCHER</h2><span>NÄSTA 6 MATCHER</span></div>
+    <div class="section-heading">
+      <h2>KOMMANDE MATCHER</h2>
+      <div class="verification-summary" aria-label="Kontroll av kommande matcher">
+        <div class="verification-box" id="tomorrowCheck" aria-label="Kontroll i morgon"><span class="verification-mark">–</span></div>
+        <div class="verification-box" id="dayAfterCheck" aria-label="Kontroll i övermorgon"><span class="verification-mark">–</span></div>
+      </div>
+    </div>
     <div class="table-wrapper"><table class="match-table">
       <thead>
         <tr>
@@ -417,7 +434,7 @@ footer { display: none; }
 
 <script>
 
-var ARENA_VERSION = "VERSION 16.9 TIZEN";
+var ARENA_VERSION = "VERSION 17.1 TIZEN";
 var CSV_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/Spelschema_2627.csv";
 var SPONSOR_LIST_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/sponsors/list.txt";
 var SPONSOR_BASE_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/sponsors/";
@@ -432,6 +449,8 @@ var SWEHOCKEY_ID_MAP = {
 };
 var activeTodayMatches = [];
 var lastDailyCheckKey = "";
+var futureCheckGroups = { tomorrow: [], dayAfter: [] };
+var lastFutureCheckKey = "";
 
 /* CYLOQ-logo */
 function hallWithLogo(arena) {
@@ -637,6 +656,121 @@ function refreshCheckIndicators() {
   }
 }
 
+/* Skapa ett lokalt datum i samma YYYY-MM-DD-format som CSV-filen. */
+function dateKeyWithOffset(dayOffset) {
+  var date = new Date();
+  date.setDate(date.getDate() + dayOffset);
+  return date.getFullYear() + "-" + pad2(date.getMonth() + 1) + "-" + pad2(date.getDate());
+}
+
+/* Färga sammanfattningsrutan: vitt = ej kontrollerad/inga matcher. */
+function setFutureCheckVisual(elementId, state) {
+  var box = document.getElementById(elementId);
+  if (!box) return;
+  box.className = "verification-box";
+  if (state === "ok") box.className += " verification-ok";
+  if (state === "error") box.className += " verification-error";
+}
+
+/* Kontrollera en framtida match och lämna svaret till gruppkontrollen. */
+function requestFutureMatchCheck(match, callback) {
+  var query = MATCH_CHECK_URL +
+    "?date=" + encodeURIComponent(match.date || "") +
+    "&time=" + encodeURIComponent(match.time || "") +
+    "&home=" + encodeURIComponent(match.home || "") +
+    "&away=" + encodeURIComponent(match.away || "") +
+    "&nocache=" + new Date().getTime();
+  var xhr = new XMLHttpRequest();
+  var finished = false;
+
+  function finish(ok) {
+    if (finished) return;
+    finished = true;
+    callback(ok === true);
+  }
+
+  xhr.open("GET", query, true);
+  xhr.timeout = 20000;
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState !== 4) return;
+    if (!((xhr.status >= 200 && xhr.status < 300) ||
+          (xhr.status === 0 && xhr.responseText))) {
+      finish(false);
+      return;
+    }
+    try {
+      var result = JSON.parse(xhr.responseText);
+      finish(result && result.ok === true);
+    } catch (e) {
+      finish(false);
+    }
+  };
+  xhr.onerror = function () { finish(false); };
+  xhr.ontimeout = function () { finish(false); };
+  xhr.send(null);
+}
+
+/* Grönt endast om alla matcher för dagen är verifierade och korrekta. */
+function checkFutureGroup(matches, elementId) {
+  if (!matches || matches.length === 0) {
+    setFutureCheckVisual(elementId, "neutral");
+    return;
+  }
+
+  setFutureCheckVisual(elementId, "neutral");
+  var remaining = matches.length;
+  var hasError = false;
+  for (var i = 0; i < matches.length; i++) {
+    requestFutureMatchCheck(matches[i], function (ok) {
+      if (!ok) hasError = true;
+      remaining--;
+      if (remaining === 0) {
+        setFutureCheckVisual(elementId, hasError ? "error" : "ok");
+      }
+    });
+  }
+}
+
+/* Samla alla matcher i morgon och i övermorgon, inte bara de som ryms i tabellen. */
+function prepareFutureCheckGroups(matches) {
+  var tomorrowKey = dateKeyWithOffset(1);
+  var dayAfterKey = dateKeyWithOffset(2);
+  futureCheckGroups = { tomorrow: [], dayAfter: [] };
+
+  for (var i = 0; i < matches.length; i++) {
+    if (matches[i].date === tomorrowKey) futureCheckGroups.tomorrow.push(matches[i]);
+    if (matches[i].date === dayAfterKey) futureCheckGroups.dayAfter.push(matches[i]);
+  }
+
+  maybeRunFutureChecks();
+}
+
+/* Kör morgonens två sammanfattningskontroller efter kl. 06.00. */
+function maybeRunFutureChecks() {
+  var now = new Date();
+  if (now.getHours() < 6) {
+    setFutureCheckVisual("tomorrowCheck", "neutral");
+    setFutureCheckVisual("dayAfterCheck", "neutral");
+    return;
+  }
+
+  var keyParts = [dateKeyWithOffset(0)];
+  var groups = [futureCheckGroups.tomorrow, futureCheckGroups.dayAfter];
+  for (var g = 0; g < groups.length; g++) {
+    for (var i = 0; i < groups[g].length; i++) {
+      var m = groups[g][i];
+      keyParts.push(m.date + "|" + m.time + "|" + m.home + "|" + m.away + "|" + m.matchNumber);
+    }
+    keyParts.push("/");
+  }
+
+  var checkKey = keyParts.join(":");
+  if (lastFutureCheckKey === checkKey) return;
+  lastFutureCheckKey = checkKey;
+  checkFutureGroup(futureCheckGroups.tomorrow, "tomorrowCheck");
+  checkFutureGroup(futureCheckGroups.dayAfter, "dayAfterCheck");
+}
+
 /* Hämtar resultat från Cloudflare Workern med Tizen-kompatibel XMLHttpRequest. */
 function loadLiveResult(match) {
   if (!match || !match.matchNumber) return;
@@ -815,6 +949,7 @@ function loadMatches() {
           var matches = parseMatchesFromCSV(text);
           var split = splitTodayAndUpcoming(matches);
 
+          prepareFutureCheckGroups(matches);
           renderTodayMatches(split.today);
           renderUpcomingMatches(split.upcoming);
 
@@ -909,6 +1044,7 @@ function initArena() {
   setInterval(function () { loadAllLiveResults(activeTodayMatches); }, 30000);
   /* Kör morgonkontrollen efter kl. 06 och byt automatiskt till vitt vid T-15. */
   setInterval(maybeRunDailyChecks, 60000);
+  setInterval(maybeRunFutureChecks, 60000);
   setInterval(refreshCheckIndicators, 30000);
 }
 
