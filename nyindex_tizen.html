@@ -289,7 +289,11 @@ body::before {
 .brand-kicker { color: #b9c7df; font-weight: 700; font-size: 0.86vw; letter-spacing: 0.35em; }
 .brand-title { margin-top: 0.2vh; font-size: 3.5vw; font-weight: 900; letter-spacing: 0.075em; line-height: 1; }
 .brand-line { width: 58%; height: 4px; margin: 1vh auto 0; background: linear-gradient(90deg, transparent, #d2242b, transparent); }
-.update { width: 25%; text-align: right; color: #b9c7df; font-size: 0.9vw; line-height: 1.5; }
+.update {
+  width: 25%; align-self: flex-start; padding-top: 0.45vh;
+  text-align: right; color: #b9c7df; font-size: 0.9vw; line-height: 1.25;
+}
+.update #updatedInfo { display: block; }
 .update strong { color: #fff; }
 .matches { height: 76vh; display: flex; flex-direction: column; }
 .section {
@@ -308,15 +312,15 @@ body::before {
   letter-spacing: 0.075em; text-shadow: none;
 }
 .section-heading span { font-size: 1vw; font-weight: 900; letter-spacing: 0.1em; }
-.verification-summary { display: flex; align-items: center; }
-.verification-box + .verification-box { margin-left: 0.55vw; }
+.verification-summary { display: flex; align-items: center; justify-content: flex-end; margin-top: 0.55vh; }
+.verification-box + .verification-box { margin-left: 0.4vw; }
 .verification-box {
-  width: 2.15vw; min-width: 30px; height: 3.15vh; min-height: 25px;
+  width: 1.7vw; min-width: 24px; height: 2.45vh; min-height: 19px;
   box-sizing: border-box; display: flex; align-items: center; justify-content: center;
-  padding: 0; border: 2px solid rgba(255,255,255,0.7); border-radius: 5px;
+  padding: 0; border: 1px solid rgba(255,255,255,0.7); border-radius: 4px;
   background: rgba(5,18,43,0.55); color: #ffffff;
 }
-.verification-box .verification-mark { font-size: 1.25vw; font-weight: 950; line-height: 1; }
+.verification-box .verification-mark { font-size: 0.95vw; font-weight: 950; line-height: 1; }
 .verification-box.verification-ok { color: #46d17d; border-color: #46d17d; }
 .verification-box.verification-error { color: #ff4d57; border-color: #ff4d57; }
 .table-wrapper { width: 100%; }
@@ -373,7 +377,13 @@ footer { display: none; }
   <header class="topbar">
     <div class="date-time"><div id="clock">--:--:--</div><div id="todayDate"></div></div>
     <div class="brand"><div class="brand-kicker">SEDAN 1976</div><div class="brand-title">SOLLENTUNA HOCKEY</div><div class="brand-line"></div></div>
-    <div class="update"><span id="updatedInfo">Hämtar spelschema…</span></div>
+    <div class="update">
+      <span id="updatedInfo">Hämtar spelschema…</span>
+      <div class="verification-summary" aria-label="Kontroll av kommande matcher">
+        <div class="verification-box" id="tomorrowCheck" aria-label="Kontroll i morgon"><span class="verification-mark">–</span></div>
+        <div class="verification-box" id="dayAfterCheck" aria-label="Kontroll i övermorgon"><span class="verification-mark">–</span></div>
+      </div>
+    </div>
   </header>
 
   <main class="matches">
@@ -398,13 +408,7 @@ footer { display: none; }
   </section>
 
   <section class="section upcoming-section">
-    <div class="section-heading">
-      <h2>KOMMANDE MATCHER</h2>
-      <div class="verification-summary" aria-label="Kontroll av kommande matcher">
-        <div class="verification-box" id="tomorrowCheck" aria-label="Kontroll i morgon"><span class="verification-mark">–</span></div>
-        <div class="verification-box" id="dayAfterCheck" aria-label="Kontroll i övermorgon"><span class="verification-mark">–</span></div>
-      </div>
-    </div>
+    <div class="section-heading"><h2>KOMMANDE MATCHER</h2></div>
     <div class="table-wrapper"><table class="match-table">
       <thead>
         <tr>
@@ -434,7 +438,7 @@ footer { display: none; }
 
 <script>
 
-var ARENA_VERSION = "VERSION 17.1 TIZEN";
+var ARENA_VERSION = "VERSION 17.2 TIZEN";
 var CSV_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/Spelschema_2627.csv";
 var SPONSOR_LIST_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/sponsors/list.txt";
 var SPONSOR_BASE_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/sponsors/";
