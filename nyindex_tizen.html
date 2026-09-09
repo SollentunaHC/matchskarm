@@ -2,7 +2,7 @@
 <html lang="sv">
 <head>
 <meta charset="UTF-8">
-<title>Sollentuna Hockey – Tizen version 17.4</title>
+<title>Sollentuna Hockey – Tizen version 17.5</title>
 
 <style>
 
@@ -383,6 +383,7 @@ footer { display: none; }
         <div class="verification-box" id="tomorrowCheck" aria-label="Kontroll i morgon"><span class="verification-mark">–</span></div>
         <div class="verification-box" id="dayAfterCheck" aria-label="Kontroll i övermorgon"><span class="verification-mark">–</span></div>
         <div class="verification-box" id="thirdDayCheck" aria-label="Kontroll om tre dagar"><span class="verification-mark">–</span></div>
+        <div class="verification-box" id="fourthDayCheck" aria-label="Kontroll om fyra dagar"><span class="verification-mark">–</span></div>
       </div>
     </div>
   </header>
@@ -439,7 +440,7 @@ footer { display: none; }
 
 <script>
 
-var ARENA_VERSION = "VERSION 17.4 TIZEN";
+var ARENA_VERSION = "VERSION 17.5 TIZEN";
 var CSV_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/Spelschema_2627.csv";
 var SPONSOR_LIST_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/sponsors/list.txt";
 var SPONSOR_BASE_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/sponsors/";
@@ -454,7 +455,7 @@ var SWEHOCKEY_ID_MAP = {
 };
 var activeTodayMatches = [];
 var lastDailyCheckKey = "";
-var futureCheckGroups = { tomorrow: [], dayAfter: [], thirdDay: [] };
+var futureCheckGroups = { tomorrow: [], dayAfter: [], thirdDay: [], fourthDay: [] };
 var lastFutureCheckKey = "";
 
 /* CYLOQ-logo */
@@ -675,6 +676,12 @@ function setFutureCheckVisual(elementId, state) {
   box.className = "verification-box";
   if (state === "ok") box.className += " verification-ok";
   if (state === "error") box.className += " verification-error";
+  var mark = box.getElementsByClassName("verification-mark")[0];
+  if (mark) {
+    if (state === "ok") mark.innerHTML = "&#10003;";
+    else if (state === "error") mark.innerHTML = "&#10005;";
+    else mark.innerHTML = "&ndash;";
+  }
 }
 
 /* Kontrollera en framtida match och lämna svaret till gruppkontrollen. */
@@ -736,34 +743,37 @@ function checkFutureGroup(matches, elementId) {
   }
 }
 
-/* Samla alla matcher de tre kommande dagarna, inte bara de som ryms i tabellen. */
+/* Samla alla matcher de fyra kommande dagarna, inte bara de som ryms i tabellen. */
 function prepareFutureCheckGroups(matches) {
   var tomorrowKey = dateKeyWithOffset(1);
   var dayAfterKey = dateKeyWithOffset(2);
   var thirdDayKey = dateKeyWithOffset(3);
-  futureCheckGroups = { tomorrow: [], dayAfter: [], thirdDay: [] };
+  var fourthDayKey = dateKeyWithOffset(4);
+  futureCheckGroups = { tomorrow: [], dayAfter: [], thirdDay: [], fourthDay: [] };
 
   for (var i = 0; i < matches.length; i++) {
     if (matches[i].date === tomorrowKey) futureCheckGroups.tomorrow.push(matches[i]);
     if (matches[i].date === dayAfterKey) futureCheckGroups.dayAfter.push(matches[i]);
     if (matches[i].date === thirdDayKey) futureCheckGroups.thirdDay.push(matches[i]);
+    if (matches[i].date === fourthDayKey) futureCheckGroups.fourthDay.push(matches[i]);
   }
 
   maybeRunFutureChecks();
 }
 
-/* Kör morgonens tre sammanfattningskontroller efter kl. 06.00. */
+/* Kör morgonens fyra sammanfattningskontroller efter kl. 06.00. */
 function maybeRunFutureChecks() {
   var now = new Date();
   if (now.getHours() < 6) {
     setFutureCheckVisual("tomorrowCheck", "neutral");
     setFutureCheckVisual("dayAfterCheck", "neutral");
     setFutureCheckVisual("thirdDayCheck", "neutral");
+    setFutureCheckVisual("fourthDayCheck", "neutral");
     return;
   }
 
   var keyParts = [dateKeyWithOffset(0)];
-  var groups = [futureCheckGroups.tomorrow, futureCheckGroups.dayAfter, futureCheckGroups.thirdDay];
+  var groups = [futureCheckGroups.tomorrow, futureCheckGroups.dayAfter, futureCheckGroups.thirdDay, futureCheckGroups.fourthDay];
   for (var g = 0; g < groups.length; g++) {
     for (var i = 0; i < groups[g].length; i++) {
       var m = groups[g][i];
@@ -778,6 +788,7 @@ function maybeRunFutureChecks() {
   checkFutureGroup(futureCheckGroups.tomorrow, "tomorrowCheck");
   checkFutureGroup(futureCheckGroups.dayAfter, "dayAfterCheck");
   checkFutureGroup(futureCheckGroups.thirdDay, "thirdDayCheck");
+  checkFutureGroup(futureCheckGroups.fourthDay, "fourthDayCheck");
 }
 
 /* Hämtar resultat från Cloudflare Workern med Tizen-kompatibel XMLHttpRequest. */
