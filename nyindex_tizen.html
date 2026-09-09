@@ -2,7 +2,7 @@
 <html lang="sv">
 <head>
 <meta charset="UTF-8">
-<title>Sollentuna Hockey – Tizen version 16.8</title>
+<title>Sollentuna Hockey – Tizen version 16.9</title>
 
 <style>
 
@@ -127,6 +127,8 @@ h2 {
 .score-block { display: inline-block; width: 8.3vw; max-width: 100%; text-align: center; vertical-align: middle; }
 .score-block .score { display: block; width: 100%; box-sizing: border-box; }
 .score { display: inline-block; min-width: 4em; padding: 0.18em 0.5em; border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; background: rgba(0,0,0,0.3); font-size: 1.15em; font-weight: 950; }
+.score-check-ok { color: #46d17d; border-color: #46d17d; }
+.score-check-error { color: #ff4d57; border-color: #ff4d57; }
 .live-score { color: #071d10; background: #46d17d; border-color: #46d17d; }
 .score-error { min-width: 0; color: #ffd447; font-size: 0.55em; letter-spacing: 0; }
 .score-detail { display: block; margin-top: 0.25em; color: #46d17d; font-size: 0.58em; font-weight: 900; white-space: nowrap; overflow: hidden; }
@@ -415,11 +417,12 @@ footer { display: none; }
 
 <script>
 
-var ARENA_VERSION = "VERSION 16.8 TIZEN";
+var ARENA_VERSION = "VERSION 16.9 TIZEN";
 var CSV_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/Spelschema_2627.csv";
 var SPONSOR_LIST_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/sponsors/list.txt";
 var SPONSOR_BASE_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/sponsors/";
 var LIVE_RESULT_PROXY = "https://sollentuna-hockey-live.gunnar-127.workers.dev/live?match=";
+var MATCH_CHECK_URL = "https://sollentuna-hockey-live.gunnar-127.workers.dev/check";
 /*
   Vissa träningsmatcher saknas i Swehockeys GamesByDate. Då kopplas CSV-filens
   Matchnr till det interna ID:t från länken Game/LineUps eller Game/Events.
@@ -428,6 +431,7 @@ var SWEHOCKEY_ID_MAP = {
   "95097052": "1121968"
 };
 var activeTodayMatches = [];
+var lastDailyCheckKey = "";
 
 /* CYLOQ-logo */
 function hallWithLogo(arena) {
@@ -538,6 +542,101 @@ function teamCell(team) {
   return "<td class='" + className + "'>" + value + "</td>";
 }
 
+/* Hitta dagens match via CSV-matchnumret. */
+function findActiveMatch(matchNumber) {
+  for (var i = 0; i < activeTodayMatches.length; i++) {
+    if (activeTodayMatches[i].matchNumber === matchNumber) return activeTodayMatches[i];
+  }
+  return null;
+}
+
+/* Antal minuter kvar till matchstart enligt skärmens lokala klocka. */
+function minutesUntilMatch(match) {
+  if (!match || !match.date || !match.time) return 0;
+  return (new Date(match.date + "T" + match.time) - new Date()) / 60000;
+}
+
+/*
+  Visa morgonkontrollens färg fram till 15 minuter före matchstart.
+  Grönt streck = kontrollerad och OK. Rött streck = något behöver kontrolleras.
+  Därefter blir strecket vitt och den vanliga livehämtningen tar över.
+*/
+function renderPendingIndicator(matchNumber) {
+  var scoreCell = document.getElementById("score-" + matchNumber);
+  if (!scoreCell || scoreCell.getAttribute("data-has-result") === "yes") return;
+
+  var match = findActiveMatch(matchNumber);
+  var state = scoreCell.getAttribute("data-check-state") || "";
+  var className = "";
+  if (match && minutesUntilMatch(match) > 15) {
+    if (state === "ok") className = " score-check-ok";
+    if (state === "error") className = " score-check-error";
+  }
+  scoreCell.innerHTML = "<span class='score" + className + "'>–</span>";
+}
+
+function setMatchCheckState(matchNumber, state) {
+  var scoreCell = document.getElementById("score-" + matchNumber);
+  if (!scoreCell || scoreCell.getAttribute("data-has-result") === "yes") return;
+  scoreCell.setAttribute("data-check-state", state);
+  renderPendingIndicator(matchNumber);
+}
+
+/* Kontrollera en match mot Cloudflare Workern. */
+function loadMatchCheck(match) {
+  var query = MATCH_CHECK_URL +
+    "?date=" + encodeURIComponent(match.date || "") +
+    "&time=" + encodeURIComponent(match.time || "") +
+    "&home=" + encodeURIComponent(match.home || "") +
+    "&away=" + encodeURIComponent(match.away || "") +
+    "&nocache=" + new Date().getTime();
+  var xhr = new XMLHttpRequest();
+  xhr.open("GET", query, true);
+  xhr.timeout = 20000;
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState !== 4) return;
+    if (!((xhr.status >= 200 && xhr.status < 300) ||
+          (xhr.status === 0 && xhr.responseText))) {
+      setMatchCheckState(match.matchNumber, "error");
+      return;
+    }
+    try {
+      var result = JSON.parse(xhr.responseText);
+      setMatchCheckState(match.matchNumber, result && result.ok === true ? "ok" : "error");
+    } catch (e) {
+      setMatchCheckState(match.matchNumber, "error");
+    }
+  };
+  xhr.onerror = function () { setMatchCheckState(match.matchNumber, "error"); };
+  xhr.ontimeout = function () { setMatchCheckState(match.matchNumber, "error"); };
+  xhr.send(null);
+}
+
+/* Kör en gång efter kl. 06.00, och igen endast om dagens matchlista ändras. */
+function maybeRunDailyChecks() {
+  var now = new Date();
+  if (now.getHours() < 6 || activeTodayMatches.length === 0) return;
+
+  var dateKey = now.getFullYear() + "-" + pad2(now.getMonth() + 1) + "-" + pad2(now.getDate());
+  var matchNumbers = [];
+  for (var i = 0; i < activeTodayMatches.length; i++) {
+    matchNumbers.push(activeTodayMatches[i].matchNumber);
+  }
+  var checkKey = dateKey + ":" + matchNumbers.join(",");
+  if (lastDailyCheckKey === checkKey) return;
+  lastDailyCheckKey = checkKey;
+
+  for (var j = 0; j < activeTodayMatches.length; j++) {
+    loadMatchCheck(activeTodayMatches[j]);
+  }
+}
+
+function refreshCheckIndicators() {
+  for (var i = 0; i < activeTodayMatches.length; i++) {
+    renderPendingIndicator(activeTodayMatches[i].matchNumber);
+  }
+}
+
 /* Hämtar resultat från Cloudflare Workern med Tizen-kompatibel XMLHttpRequest. */
 function loadLiveResult(match) {
   if (!match || !match.matchNumber) return;
@@ -589,8 +688,8 @@ function loadLiveResult(match) {
 function showLiveError(matchNumber, message) {
   var scoreCell = document.getElementById("score-" + matchNumber);
   if (scoreCell && scoreCell.getAttribute("data-has-result") !== "yes") {
-    /* Tekniska fel ska inte visas för publiken. Ett streck betyder inget rapporterat resultat. */
-    scoreCell.innerHTML = "<span class='score'>–</span>";
+    /* Behåll morgonkontrollens färg fram till 15 minuter före matchstart. */
+    renderPendingIndicator(matchNumber);
     var statusCell = document.getElementById("status-" + matchNumber);
     if (statusCell) statusCell.innerHTML = "";
   }
@@ -672,6 +771,7 @@ function renderTodayMatches(todayMatches) {
   tbody.innerHTML = html;
   activeTodayMatches = todayMatches || [];
   loadAllLiveResults(activeTodayMatches);
+  maybeRunDailyChecks();
 }
 
 /* Render: kommande matcher */
@@ -807,6 +907,9 @@ function initArena() {
   /* Sponsorlistan läses om var 30:e minut utan att hela sidan startas om. */
   setInterval(loadSponsors, 1800000);
   setInterval(function () { loadAllLiveResults(activeTodayMatches); }, 30000);
+  /* Kör morgonkontrollen efter kl. 06 och byt automatiskt till vitt vid T-15. */
+  setInterval(maybeRunDailyChecks, 60000);
+  setInterval(refreshCheckIndicators, 30000);
 }
 
 /* Scriptet ligger sist i body, därför kan uppstarten göras direkt. */
