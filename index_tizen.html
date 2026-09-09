@@ -2,8 +2,7 @@
 <html lang="sv">
 <head>
 <meta charset="UTF-8">
-<title>Sollentuna Hockey – Arena Style 11.0 Tizen</title>
-<meta http-equiv="refresh" content="300">
+<title>Sollentuna Hockey – Tizen version 16.9</title>
 
 <style>
 
@@ -78,16 +77,16 @@ h2 {
 
 /* ====== TABELLER ====== */
 .match-table {
-  width: 92%;
+  width: 96%;
   border-collapse: collapse;
   margin: 0 auto;
   table-layout: fixed;
 }
 
 .match-table th, .match-table td {
-  padding: 1.1vh 0.8vw;
-  font-size: 1.5vw;
-  font-weight: 600;
+  padding: 1.15vh 0.8vw;
+  font-size: 1.35vw;
+  font-weight: 750;
   white-space: nowrap;
   text-align: center;
   vertical-align: middle;
@@ -97,8 +96,44 @@ h2 {
   background: #b71c1c;
   color: #ffffff;
   font-weight: 900;
-  font-size: 1.8vw;
+  font-size: 1.15vw;
+  letter-spacing: 0.08em;
 }
+
+/* Samma kolumnbredder i båda tabellerna. Resultatplatsen är tom i kommande. */
+.col-date  { width: 8%; }
+.col-time  { width: 10%; }
+.col-series { width: 18%; }
+.col-team  { width: 20%; }
+.col-score { width: 10%; }
+.col-arena { width: 14%; }
+.match-table th + th, .match-table td + td { border-left: 1px solid rgba(255,255,255,0.08); }
+.match-table td { border-bottom: 1px solid rgba(255,255,255,0.10); }
+.score-spacer { color: transparent; }
+
+/* Dagens match görs extra stor för publik som ser skärmen på långt avstånd. */
+.today-table td { font-size: 1.6vw; font-weight: 800; padding-top: 1.5vh; padding-bottom: 1.5vh; }
+
+/* Sollentuna markeras tydligt på samma sätt som i Arena Style 15.1. */
+.shc-team { color: #ffff33 !important; font-weight: 900; text-shadow: 0 0 9px rgba(255,255,51,0.48); }
+.shc-team::before { display: none; }
+
+.status-tag { display: inline-block; margin-left: 0.45em; padding: 0.2em 0.55em; border-radius: 999px; font-size: 0.65em; font-weight: 950; }
+.status-soon { color: #241b00; background: #ffd447; }
+.status-live { color: #052513; background: #46d17d; }
+.time-status { display: block; margin-top: 0.25em; min-height: 0.9em; text-align: center; overflow: visible; }
+.time-status .status-tag { margin-left: 0; }
+.score-cell { text-align: center; }
+.score-block { display: inline-block; width: 8.3vw; max-width: 100%; text-align: center; vertical-align: middle; }
+.score-block .score { display: block; width: 100%; box-sizing: border-box; }
+.score { display: inline-block; min-width: 4em; padding: 0.18em 0.5em; border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; background: rgba(0,0,0,0.3); font-size: 1.15em; font-weight: 950; }
+.score-check-ok { color: #46d17d; border-color: #46d17d; }
+.score-check-error { color: #ff4d57; border-color: #ff4d57; }
+.live-score { color: #071d10; background: #46d17d; border-color: #46d17d; }
+.score-error { min-width: 0; color: #ffd447; font-size: 0.55em; letter-spacing: 0; }
+.score-detail { display: block; margin-top: 0.25em; color: #46d17d; font-size: 0.58em; font-weight: 900; white-space: nowrap; overflow: hidden; }
+.score-detail-result { text-align: center; }
+.score-detail-live { text-align: left; }
 
 .match-table tbody tr:nth-child(even) { background: #16284b; }
 .match-table tbody tr:nth-child(odd)  { background: #0f1e3d; }
@@ -111,7 +146,6 @@ h2 {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  gap: 2vh;
 }
 
 /* ====== SPONSORBANDEROLL – TIZEN-KOMPATIBEL ====== */
@@ -133,7 +167,7 @@ h2 {
 .ad-track {
   display: flex;
   white-space: nowrap;
-  animation: scrollAds 35s linear infinite;
+  animation: scrollAds 21s linear infinite;
 }
 
 /* Loggorna – avstånd via margin (Tizen saknar gap-stöd) */
@@ -218,70 +252,186 @@ footer {
 .hall-cyloq {
   background-image: url('sponsors/Cyloq.png'); /* lokal bild */
 }  
+
+/* ==================================================================
+   ARENA PUBLIK 15.1 – VISUELLT LAGER FÖR TIZEN
+   Reglerna ligger sist och ersätter den äldre Style 11-layouten ovan.
+   ================================================================== */
+html, body { width: 100%; height: 100%; margin: 0; }
+body {
+  overflow: hidden;
+  filter: none;
+  color: #fff;
+  font-family: "Segoe UI", Arial, sans-serif;
+  background: radial-gradient(circle at 50% 5%, #263f70 0%, #0a1c3f 35%, #06132d 100%);
+}
+body::before {
+  position: fixed; top: 13vh; left: 50%; width: 46vw; height: 46vw;
+  max-width: 760px; max-height: 760px; opacity: 0.05; z-index: 0;
+}
+.screen {
+  position: relative; z-index: 2; height: 89vh;
+  padding: 1.8vh 2.5vw 1.2vh;
+}
+.topbar {
+  height: 10vh; display: flex; align-items: center;
+  border-bottom: 1px solid rgba(255,255,255,0.12); margin-bottom: 1.4vh;
+  padding: 0; font-size: initial; letter-spacing: normal;
+  background: transparent; text-shadow: none;
+}
+.date-time { width: 25%; line-height: 1.05; }
+#clock {
+  position: static; font-size: 2.7vw; font-weight: 900;
+  text-shadow: none; color: #fff;
+}
+#todayDate { margin-top: 0.5vh; color: #b9c7df; font-size: 1.15vw; text-transform: capitalize; }
+.brand { width: 50%; text-align: center; }
+.brand-kicker { color: #b9c7df; font-weight: 700; font-size: 0.86vw; letter-spacing: 0.35em; }
+.brand-title { margin-top: 0.2vh; font-size: 3.5vw; font-weight: 900; letter-spacing: 0.075em; line-height: 1; }
+.brand-line { width: 58%; height: 4px; margin: 1vh auto 0; background: linear-gradient(90deg, transparent, #d2242b, transparent); }
+.update { width: 25%; text-align: right; color: #b9c7df; font-size: 0.9vw; line-height: 1.5; }
+.update strong { color: #fff; }
+.matches { height: 76vh; display: flex; flex-direction: column; }
+.section {
+  border: 1px solid rgba(255,255,255,0.12); border-radius: 14px;
+  background: rgba(10,28,63,0.88); overflow: hidden;
+}
+.today-section { flex: 0 0 auto; margin-bottom: 1.5vh; }
+.upcoming-section { flex: 1 1 auto; }
+.section-heading {
+  height: 5.1vh; min-height: 38px; padding: 0 1.4vw;
+  display: flex; align-items: center; justify-content: space-between;
+  background: linear-gradient(90deg, #a8171e, #d2242b 48%, #a8171e);
+}
+.section-heading h2 {
+  margin: 0; padding: 0; font-size: 1.75vw; text-align: left;
+  letter-spacing: 0.075em; text-shadow: none;
+}
+.section-heading span { font-size: 1vw; font-weight: 900; letter-spacing: 0.1em; }
+.table-wrapper { width: 100%; }
+.match-table { width: 100%; margin: 0; table-layout: fixed; border-collapse: collapse; }
+.match-table th {
+  height: 4.2vh; padding: 0.55vh 1vw; color: #d5def0;
+  background: rgba(16,41,88,0.72); border-bottom: 2px solid rgba(255,255,255,0.16);
+  font-size: 0.96vw; font-weight: 900; letter-spacing: 0.1em; text-align: left;
+}
+.match-table td {
+  height: 6.1vh; padding: 0.8vh 1vw; color: #fff;
+  border-bottom: 1px solid rgba(255,255,255,0.12);
+  font-size: 1.28vw; font-weight: 700; text-align: left;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.match-table th:first-child, .match-table th:nth-child(2),
+.match-table td:first-child, .match-table td:nth-child(2), .score-cell { text-align: center; }
+.match-table tbody tr:nth-child(odd) { background: rgba(8,27,62,0.86); }
+.match-table tbody tr:nth-child(even) { background: rgba(43,64,105,0.72); }
+.today-table td { height: 7.4vh; font-size: 1.55vw; font-weight: 800; }
+.col-date { width: 8%; } .col-time { width: 10%; } .col-series { width: 18%; }
+.col-team { width: 20%; } .col-score { width: 10%; } .col-arena { width: 14%; }
+.hall-logo { width: 3.9vw; height: 2.9vw; max-width: 76px; max-height: 56px; top: 0; vertical-align: middle; }
+.ad-bar {
+  position: fixed; left: 0; right: 0; bottom: 0; width: 100%; height: 11vh;
+  background: rgba(255,255,255,0.96); border-top: 4px solid #d2242b;
+  display: flex; align-items: center; overflow: hidden; z-index: 20;
+}
+.sponsor-label {
+  height: 100%; padding: 0 1.4vw; display: flex; align-items: center;
+  flex: 0 0 auto; color: #0a1c3f; background: #e7ecf4;
+  font-size: 0.72vw; font-weight: 900; letter-spacing: 0.12em;
+}
+.sponsor-window { min-width: 0; flex: 1; overflow: hidden; }
+.ad-track { animation-duration: 20s; align-items: center; }
+/* Bredden på varje sponsorplats sätts dynamiskt i JavaScript. */
+.sponsor-item {
+  width: 17vw; height: 11vh; flex: 0 0 17vw;
+  display: flex; align-items: center; justify-content: center;
+}
+.sponsor-item img { height: 7.8vh; max-width: 12vw; margin: 0; filter: none; }
+#versionTag {
+  left: auto; right: 0.8vw; bottom: 11.5vh;
+  color: #b9c7df; font-size: 0.72vw; font-weight: 700;
+  opacity: 0.72; letter-spacing: 0.05em;
+}
+footer { display: none; }
   
 </style>
 </head>
 
 <body>
+<div class="screen">
+  <header class="topbar">
+    <div class="date-time"><div id="clock">--:--:--</div><div id="todayDate"></div></div>
+    <div class="brand"><div class="brand-kicker">SEDAN 1976</div><div class="brand-title">SOLLENTUNA HOCKEY</div><div class="brand-line"></div></div>
+    <div class="update"><span id="updatedInfo">Hämtar spelschema…</span></div>
+  </header>
 
-<div id="clock"></div>
-<header>SOLLENTUNA HOCKEY</header>
-
-<div class="content-area">
-
-  <h2>DAGENS MATCHER</h2>
-  <div class="table-wrapper">
-    <table class="match-table">
+  <main class="matches">
+  <section class="section today-section">
+    <div class="section-heading"><h2>DAGENS MATCHER</h2><span>SOLLENTUNA HC</span></div>
+    <div class="table-wrapper"><table class="match-table today-table">
       <thead>
         <tr>
-          <th>DATUM</th>
-          <th>TID</th>
-          <th>SERIE</th>
-          <th>HEMMALAG</th>
-          <th>BORTALAG</th>
-          <th>HALL</th>
+          <th class="col-date">DATUM</th>
+          <th class="col-time">TID</th>
+          <th class="col-series">SERIE</th>
+          <th class="col-team">HEMMALAG</th>
+          <th class="col-team">BORTALAG</th>
+          <th class="col-score">RESULTAT</th>
+          <th class="col-arena">HALL</th>
         </tr>
       </thead>
       <tbody id="todayMatchBody">
-        <tr><td colspan="6">Laddar...</td></tr>
+        <tr><td colspan="7">Laddar...</td></tr>
       </tbody>
-    </table>
-  </div>
+    </table></div>
+  </section>
 
-  <h2>KOMMANDE MATCHER</h2>
-  <div class="table-wrapper">
-    <table class="match-table">
+  <section class="section upcoming-section">
+    <div class="section-heading"><h2>KOMMANDE MATCHER</h2><span>NÄSTA 6 MATCHER</span></div>
+    <div class="table-wrapper"><table class="match-table">
       <thead>
         <tr>
-          <th>DATUM</th>
-          <th>TID</th>
-          <th>SERIE</th>
-          <th>HEMMALAG</th>
-          <th>BORTALAG</th>
-          <th>HALL</th>
+          <th class="col-date">DATUM</th>
+          <th class="col-time">TID</th>
+          <th class="col-series">SERIE</th>
+          <th class="col-team">HEMMALAG</th>
+          <th class="col-team">BORTALAG</th>
+          <th class="col-score" aria-hidden="true"></th>
+          <th class="col-arena">HALL</th>
         </tr>
       </thead>
       <tbody id="upcomingBody">
-        <tr><td colspan="6">Laddar...</td></tr>
+        <tr><td colspan="7">Laddar...</td></tr>
       </tbody>
-    </table>
-  </div>
-
+    </table></div>
+  </section>
+  </main>
 </div>
 
-<footer id="updatedInfo"></footer>
-
 <div class="ad-bar">
-  <div class="ad-track" id="sponsorTrack"></div>
+  <div class="sponsor-label">VÅRA PARTNERS</div>
+  <div class="sponsor-window"><div class="ad-track" id="sponsorTrack"></div></div>
 </div>
 
 <div id="versionTag"></div>
 
 <script>
 
-var ARENA_VERSION = "Arena Style 11.0 Tizen";
-var CSV_URL = "Spelschema_2627.csv";
-var SPONSOR_API_URL = "sponsors/";
+var ARENA_VERSION = "VERSION 16.9 TIZEN";
+var CSV_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/Spelschema_2627.csv";
+var SPONSOR_LIST_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/sponsors/list.txt";
+var SPONSOR_BASE_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/sponsors/";
+var LIVE_RESULT_PROXY = "https://sollentuna-hockey-live.gunnar-127.workers.dev/live?match=";
+var MATCH_CHECK_URL = "https://sollentuna-hockey-live.gunnar-127.workers.dev/check";
+/*
+  Vissa träningsmatcher saknas i Swehockeys GamesByDate. Då kopplas CSV-filens
+  Matchnr till det interna ID:t från länken Game/LineUps eller Game/Events.
+*/
+var SWEHOCKEY_ID_MAP = {
+  "95097052": "1121968"
+};
+var activeTodayMatches = [];
+var lastDailyCheckKey = "";
 
 /* CYLOQ-logo */
 function hallWithLogo(arena) {
@@ -295,26 +445,31 @@ function hallWithLogo(arena) {
 }  
   
 /* Klocka */
-function updateClock() {
-  var now = new Date();
-  document.getElementById("clock").textContent =
-    now.toLocaleTimeString("sv-SE", {
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit"
-    });
+function pad2(value) {
+  return value < 10 ? "0" + value : String(value);
 }
 
-/* Datumformat "14 juni" */
+function updateClock() {
+  var now = new Date();
+  var weekdays = ["Söndag", "Måndag", "Tisdag", "Onsdag", "Torsdag", "Fredag", "Lördag"];
+  var months = ["januari", "februari", "mars", "april", "maj", "juni",
+    "juli", "augusti", "september", "oktober", "november", "december"];
+  document.getElementById("clock").textContent =
+    pad2(now.getHours()) + ":" + pad2(now.getMinutes()) + ":" + pad2(now.getSeconds());
+  document.getElementById("todayDate").textContent = weekdays[now.getDay()] + " " +
+    now.getDate() + " " + months[now.getMonth()] + " " + now.getFullYear();
+}
+
+/* Kort datumformat, exempelvis "14 jun". */
 function formatDate(dateStr) {
   if (!dateStr) return "";
   var parts = dateStr.split("-");
   if (parts.length !== 3) return dateStr;
 
   var months = {
-    "01": "januari", "02": "februari", "03": "mars", "04": "april",
-    "05": "maj", "06": "juni", "07": "juli", "08": "augusti",
-    "09": "september", "10": "oktober", "11": "november", "12": "december"
+    "01": "jan", "02": "feb", "03": "mar", "04": "apr",
+    "05": "maj", "06": "jun", "07": "jul", "08": "aug",
+    "09": "sep", "10": "okt", "11": "nov", "12": "dec"
   };
 
   return parseInt(parts[2], 10) + " " + months[parts[1]];
@@ -326,13 +481,8 @@ function getStatus(dateStr, timeStr) {
   var now = new Date();
   var start = new Date(dateStr + "T" + timeStr);
   var diffMinutes = (start - now) / 60000;
-  var diffSinceStart = (now - start) / 60000;
-
   if (diffMinutes > 0 && diffMinutes <= 60)
     return "<span class='status-tag status-soon'>SNART</span>";
-
-  if (diffSinceStart >= 0 && diffSinceStart <= 60)
-    return "<span class='status-tag status-live'>PÅGÅR</span>";
 
   return "";
 }
@@ -355,7 +505,8 @@ function parseMatchesFromCSV(text) {
     Hemma: headers.indexOf("Hemma"),
     Borta: headers.indexOf("Borta"),
     Arena: headers.indexOf("Arena"),
-    Serie: headers.indexOf("Serie")
+    Serie: headers.indexOf("Serie"),
+    Matchnr: headers.indexOf("Matchnr")
   };
 
  var matches = [];
@@ -363,17 +514,19 @@ function parseMatchesFromCSV(text) {
 for (var j = 1; j < filteredLines.length; j++) {
   var cols = filteredLines[j].split(";");
 
-  var arenaRaw = cols[idx.Arena] || "";
-  var arena = arenaRaw.toLowerCase().trim();
+  var homeRaw = cols[idx.Hemma] || "";
+  var awayRaw = cols[idx.Borta] || "";
 
-  // Ta bara med matcher där arenan börjar på "cyloq"
-  if (!arena.startsWith("cyloq")) continue;
+  /* Samma urval som originalet: alla matcher där Sollentuna deltar. */
+  if (homeRaw.toLowerCase().indexOf("sollentuna") < 0 &&
+      awayRaw.toLowerCase().indexOf("sollentuna") < 0) continue;
 
   matches.push({
+    matchNumber: idx.Matchnr >= 0 ? (cols[idx.Matchnr] || "").replace(/\D/g, "") : "",
     date: cols[idx.Speldatum],
     time: cols[idx.Tid],
-    home: cols[idx.Hemma],
-    away: cols[idx.Borta],
+    home: homeRaw,
+    away: awayRaw,
     arena: cols[idx.Arena],
       series: (cols[idx.Serie] || "").replace(/\[[0-9]+\]/g, "").trim()
     });
@@ -382,37 +535,215 @@ for (var j = 1; j < filteredLines.length; j++) {
   return matches;
 }
 
+/* Markerar Sollentuna i neongult. */
+function teamCell(team) {
+  var value = team || "";
+  var className = value.toLowerCase().indexOf("sollentuna") >= 0 ? "shc-team" : "";
+  return "<td class='" + className + "'>" + value + "</td>";
+}
+
+/* Hitta dagens match via CSV-matchnumret. */
+function findActiveMatch(matchNumber) {
+  for (var i = 0; i < activeTodayMatches.length; i++) {
+    if (activeTodayMatches[i].matchNumber === matchNumber) return activeTodayMatches[i];
+  }
+  return null;
+}
+
+/* Antal minuter kvar till matchstart enligt skärmens lokala klocka. */
+function minutesUntilMatch(match) {
+  if (!match || !match.date || !match.time) return 0;
+  return (new Date(match.date + "T" + match.time) - new Date()) / 60000;
+}
+
+/*
+  Visa morgonkontrollens färg fram till 15 minuter före matchstart.
+  Grönt streck = kontrollerad och OK. Rött streck = något behöver kontrolleras.
+  Därefter blir strecket vitt och den vanliga livehämtningen tar över.
+*/
+function renderPendingIndicator(matchNumber) {
+  var scoreCell = document.getElementById("score-" + matchNumber);
+  if (!scoreCell || scoreCell.getAttribute("data-has-result") === "yes") return;
+
+  var match = findActiveMatch(matchNumber);
+  var state = scoreCell.getAttribute("data-check-state") || "";
+  var className = "";
+  if (match && minutesUntilMatch(match) > 15) {
+    if (state === "ok") className = " score-check-ok";
+    if (state === "error") className = " score-check-error";
+  }
+  scoreCell.innerHTML = "<span class='score" + className + "'>–</span>";
+}
+
+function setMatchCheckState(matchNumber, state) {
+  var scoreCell = document.getElementById("score-" + matchNumber);
+  if (!scoreCell || scoreCell.getAttribute("data-has-result") === "yes") return;
+  scoreCell.setAttribute("data-check-state", state);
+  renderPendingIndicator(matchNumber);
+}
+
+/* Kontrollera en match mot Cloudflare Workern. */
+function loadMatchCheck(match) {
+  var query = MATCH_CHECK_URL +
+    "?date=" + encodeURIComponent(match.date || "") +
+    "&time=" + encodeURIComponent(match.time || "") +
+    "&home=" + encodeURIComponent(match.home || "") +
+    "&away=" + encodeURIComponent(match.away || "") +
+    "&nocache=" + new Date().getTime();
+  var xhr = new XMLHttpRequest();
+  xhr.open("GET", query, true);
+  xhr.timeout = 20000;
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState !== 4) return;
+    if (!((xhr.status >= 200 && xhr.status < 300) ||
+          (xhr.status === 0 && xhr.responseText))) {
+      setMatchCheckState(match.matchNumber, "error");
+      return;
+    }
+    try {
+      var result = JSON.parse(xhr.responseText);
+      setMatchCheckState(match.matchNumber, result && result.ok === true ? "ok" : "error");
+    } catch (e) {
+      setMatchCheckState(match.matchNumber, "error");
+    }
+  };
+  xhr.onerror = function () { setMatchCheckState(match.matchNumber, "error"); };
+  xhr.ontimeout = function () { setMatchCheckState(match.matchNumber, "error"); };
+  xhr.send(null);
+}
+
+/* Kör en gång efter kl. 06.00, och igen endast om dagens matchlista ändras. */
+function maybeRunDailyChecks() {
+  var now = new Date();
+  if (now.getHours() < 6 || activeTodayMatches.length === 0) return;
+
+  var dateKey = now.getFullYear() + "-" + pad2(now.getMonth() + 1) + "-" + pad2(now.getDate());
+  var matchNumbers = [];
+  for (var i = 0; i < activeTodayMatches.length; i++) {
+    matchNumbers.push(activeTodayMatches[i].matchNumber);
+  }
+  var checkKey = dateKey + ":" + matchNumbers.join(",");
+  if (lastDailyCheckKey === checkKey) return;
+  lastDailyCheckKey = checkKey;
+
+  for (var j = 0; j < activeTodayMatches.length; j++) {
+    loadMatchCheck(activeTodayMatches[j]);
+  }
+}
+
+function refreshCheckIndicators() {
+  for (var i = 0; i < activeTodayMatches.length; i++) {
+    renderPendingIndicator(activeTodayMatches[i].matchNumber);
+  }
+}
+
+/* Hämtar resultat från Cloudflare Workern med Tizen-kompatibel XMLHttpRequest. */
+function loadLiveResult(match) {
+  if (!match || !match.matchNumber) return;
+  var directId = SWEHOCKEY_ID_MAP[match.matchNumber];
+  var query;
+  if (directId) {
+    /* Med ett känt internt ID ska Workern inte försöka slå upp GamesByDate. */
+    query = LIVE_RESULT_PROXY + encodeURIComponent(directId) +
+      "&nocache=" + new Date().getTime();
+  } else {
+    query = LIVE_RESULT_PROXY + encodeURIComponent(match.matchNumber) +
+      "&date=" + encodeURIComponent(match.date || "") +
+      "&home=" + encodeURIComponent(match.home || "") +
+      "&away=" + encodeURIComponent(match.away || "") +
+      "&nocache=" + new Date().getTime();
+  }
+  var xhr = new XMLHttpRequest();
+  xhr.open("GET", query, true);
+  xhr.timeout = 15000;
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState !== 4) return;
+    /* Äldre Tizen kan rapportera status 0 trots att HTTPS-svaret kom fram. */
+    if (!((xhr.status >= 200 && xhr.status < 300) ||
+          (xhr.status === 0 && xhr.responseText))) {
+      showLiveError(match.matchNumber, "HTTP " + xhr.status);
+      return;
+    }
+    try {
+      var result = JSON.parse(xhr.responseText);
+      if (result && result.error) {
+        showLiveError(match.matchNumber, "WORKER-FEL");
+      } else {
+        updateLiveResult(match.matchNumber, result);
+      }
+    } catch (e) {
+      showLiveError(match.matchNumber, "OGILTIGT SVAR");
+    }
+  };
+  xhr.onerror = function () {
+    showLiveError(match.matchNumber, "INGEN KONTAKT");
+  };
+  xhr.ontimeout = function () {
+    showLiveError(match.matchNumber, "TIMEOUT");
+  };
+  xhr.send(null);
+}
+
+/* Visar varför resultat saknas i stället för ett anonymt streck. */
+function showLiveError(matchNumber, message) {
+  var scoreCell = document.getElementById("score-" + matchNumber);
+  if (scoreCell && scoreCell.getAttribute("data-has-result") !== "yes") {
+    /* Behåll morgonkontrollens färg fram till 15 minuter före matchstart. */
+    renderPendingIndicator(matchNumber);
+    var statusCell = document.getElementById("status-" + matchNumber);
+    if (statusCell) statusCell.innerHTML = "";
+  }
+}
+
+/* Visar resultat och tar bort LIVE-symbolen så snart status är SLUT. */
+function updateLiveResult(matchNumber, result) {
+  var scoreCell = document.getElementById("score-" + matchNumber);
+  if (!scoreCell || typeof result.homeScore !== "number" || typeof result.awayScore !== "number") return;
+  var status = String(result.status || "RESULTAT").toUpperCase();
+  scoreCell.setAttribute("data-has-result", "yes");
+  var isLive = status === "LIVE";
+  var statusCell = document.getElementById("status-" + matchNumber);
+  if (statusCell) {
+    statusCell.innerHTML = isLive ? "<span class='status-tag status-live'>LIVE</span>" : "";
+  }
+  var detail = status;
+  if (isLive && result.period) detail += " • PERIOD " + result.period;
+  if (isLive && result.gameTime) detail += " • " + result.gameTime;
+  scoreCell.innerHTML = "<span class='score-block'>" +
+    "<span class='score" + (isLive ? " live-score" : "") + "'>" +
+    result.homeScore + "–" + result.awayScore + "</span>" +
+    "<span class='score-detail " + (isLive ? "score-detail-live" : "score-detail-result") + "'>" +
+    detail + "</span></span>";
+}
+
+function loadAllLiveResults(matches) {
+  for (var i = 0; i < matches.length; i++) loadLiveResult(matches[i]);
+}
+
 /* Dela upp i dagens + kommande */
 function splitTodayAndUpcoming(matches) {
   var now = new Date();
-  var todayMonth = now.getMonth() + 1;
-  var todayDay = now.getDate();
+  var todayKey = now.getFullYear() + "-" +
+    ("0" + (now.getMonth() + 1)).slice(-2) + "-" +
+    ("0" + now.getDate()).slice(-2);
 
   var today = [];
-  var upcomingGrouped = {};
+  var upcoming = [];
 
   for (var i = 0; i < matches.length; i++) {
     var m = matches[i];
     if (!m.date) continue;
-    var p = m.date.split("-");
-    if (p.length !== 3) continue;
-
-    var mMonth = parseInt(p[1], 10);
-    var mDay = parseInt(p[2], 10);
-
-    if (mMonth === todayMonth && mDay === todayDay) {
+    if (m.date === todayKey) {
       today.push(m);
       continue;
     }
-
-    if (mMonth > todayMonth || (mMonth === todayMonth && mDay > todayDay)) {
-      var key = mMonth + "-" + mDay;
-      if (!upcomingGrouped[key]) upcomingGrouped[key] = [];
-      upcomingGrouped[key].push(m);
-    }
+    if (m.date > todayKey) upcoming.push(m);
   }
 
-  return { today: today, upcomingGrouped: upcomingGrouped };
+  upcoming.sort(function (a, b) {
+    return (a.date + " " + a.time).localeCompare(b.date + " " + b.time);
+  });
+  return { today: today, upcoming: upcoming.slice(0, 6) };
 }
 
 /* Render: dagens matcher */
@@ -421,62 +752,51 @@ function renderTodayMatches(todayMatches) {
   var html = "";
 
   if (!todayMatches || todayMatches.length === 0) {
-   html = "<tr><td colspan='6' class='no-matches'>Inga matcher idag</td></tr>";
+   html = "<tr><td colspan='7' class='no-matches'>Inga matcher idag</td></tr>";
   } else {
     for (var i = 0; i < todayMatches.length; i++) {
       var m = todayMatches[i];
       html += "<tr>" +
         "<td>" + formatDate(m.date) + "</td>" +
-        "<td>" + m.time + " " + getStatus(m.date, m.time) + "</td>" +
+        "<td>" + m.time + "<span class='time-status' id='status-" + m.matchNumber + "'>" + getStatus(m.date, m.time) + "</span></td>" +
         "<td>" + m.series + "</td>" +
-        "<td>" + m.home + "</td>" +
-        "<td>" + m.away + "</td>" +
+        teamCell(m.home) +
+        teamCell(m.away) +
+        "<td class='score-cell' id='score-" + m.matchNumber + "'><span class='score'>–</span></td>" +
         "<td>" + hallWithLogo(m.arena) + "</td>" +
       "</tr>";
     }
   }
 
   tbody.innerHTML = html;
+  activeTodayMatches = todayMatches || [];
+  loadAllLiveResults(activeTodayMatches);
+  maybeRunDailyChecks();
 }
 
 /* Render: kommande matcher */
-function renderUpcomingMatches(upcomingGrouped) {
+function renderUpcomingMatches(upcomingMatches) {
   var tbody = document.getElementById("upcomingBody");
-  var keys = [];
-  for (var k in upcomingGrouped) {
-    if (upcomingGrouped.hasOwnProperty(k)) {
-      keys.push(k);
-    }
-  }
-  keys = keys.slice(0, 5);
   var html = "";
 
-  if (keys.length === 0) {
-    html = "<tr><td colspan='6'>Inga kommande hemmamatcher.</td></tr>";
+  if (!upcomingMatches || upcomingMatches.length === 0) {
+    html = "<tr><td colspan='7'>Inga kommande hemmamatcher.</td></tr>";
   } else {
-    for (var i = 0; i < keys.length; i++) {
-      var key = keys[i];
-      var group = upcomingGrouped[key];
-      for (var j = 0; j < group.length; j++) {
-        var m = group[j];
+    for (var i = 0; i < upcomingMatches.length; i++) {
+        var m = upcomingMatches[i];
         html += "<tr>" +
           "<td>" + formatDate(m.date) + "</td>" +
-          "<td>" + m.time + " " + getStatus(m.date, m.time) + "</td>" +
+          "<td>" + m.time + "<span class='time-status'>" + getStatus(m.date, m.time) + "</span></td>" +
           "<td>" + m.series + "</td>" +
-          "<td>" + m.home + "</td>" +
-          "<td>" + m.away + "</td>" +
+          teamCell(m.home) +
+          teamCell(m.away) +
+          "<td class='score-spacer' aria-hidden='true'></td>" +
           "<td>" + hallWithLogo(m.arena) + "</td>" +
         "</tr>";
-      }
     }
   }
 
   tbody.innerHTML = html;
-  if (keys.length > 10) {
-    tbody.className = "scrolling";
-  } else {
-    tbody.className = "";
-  }
 }
 
 /* Ladda matcher – Tizen-kompatibel (XMLHttpRequest) */
@@ -488,24 +808,25 @@ function loadMatches() {
 
     xhr.onreadystatechange = function () {
       if (xhr.readyState === 4) {
-        if (xhr.status >= 200 && xhr.status < 300) {
+        if ((xhr.status >= 200 && xhr.status < 300) ||
+            (xhr.status === 0 && xhr.responseText)) {
 
           var text = xhr.responseText;
           var matches = parseMatchesFromCSV(text);
           var split = splitTodayAndUpcoming(matches);
 
           renderTodayMatches(split.today);
-          renderUpcomingMatches(split.upcomingGrouped);
+          renderUpcomingMatches(split.upcoming);
 
+          var updated = new Date();
           document.getElementById("updatedInfo").textContent =
-            ARENA_VERSION + " – Senast uppdaterad: " +
-            new Date().toLocaleString("sv-SE");
+            "Uppdaterad " + pad2(updated.getHours()) + ":" + pad2(updated.getMinutes());
 
         } else {
           document.getElementById("todayMatchBody").innerHTML =
-            "<tr><td colspan='6'>Fel vid laddning av matcher.</td></tr>";
+            "<tr><td colspan='7'>Fel vid laddning av matcher.</td></tr>";
           document.getElementById("upcomingBody").innerHTML =
-            "<tr><td colspan='6'>Fel vid laddning av matcher.</td></tr>";
+            "<tr><td colspan='7'>Fel vid laddning av matcher.</td></tr>";
         }
       }
     };
@@ -514,52 +835,66 @@ function loadMatches() {
 
   } catch (e) {
     document.getElementById("todayMatchBody").innerHTML =
-      "<tr><td colspan='6'>Fel vid laddning av matcher.</td></tr>";
+      "<tr><td colspan='7'>Fel vid laddning av matcher.</td></tr>";
     document.getElementById("upcomingBody").innerHTML =
-      "<tr><td colspan='6'>Fel vid laddning av matcher.</td></tr>";
+      "<tr><td colspan='7'>Fel vid laddning av matcher.</td></tr>";
   }
 }
 
 
-/* Ladda sponsorer – alla PNG/JPG i /sponsors via GitHub API (XMLHttpRequest) */
+/*
+  Laddar filnamnen från sponsors/list.txt med XMLHttpRequest.
+  Detta använder inte GitHubs katalog-API och påverkas därför inte av dess
+  låga gräns för anonyma API-anrop. Mappen heter exakt "sponsors".
+*/
 function loadSponsors() {
   var track = document.getElementById("sponsorTrack");
-  track.innerHTML = "";
+  var xhr = new XMLHttpRequest();
+  xhr.open("GET", SPONSOR_LIST_URL + "?nocache=" + new Date().getTime(), true);
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState !== 4) return;
+    if (!((xhr.status >= 200 && xhr.status < 300) ||
+          (xhr.status === 0 && xhr.responseText))) return;
 
-  var sponsorImages = [
-    "sponsors/Aften bil.png",
-    "sponsors/CCM.png",
-    "sponsors/Cyloq.png",
-    "sponsors/Dammarsberg_2.png",
-    "sponsors/Edsviken.png",
-    "sponsors/ICA.png",
-    "sponsors/Interbus-logo_218.png",
-    "sponsors/MSB Center.png",
-    "sponsors/Maxi_Haggvik_RGB.png",
-    "sponsors/Märsta förenade.png",
-    "sponsors/Nonnos.png",
-    "sponsors/One_Sec.jpg",
-    "sponsors/SvCater.png",
-    "sponsors/Teamgear.png",
-    "sponsors/max.png",
-    "sponsors/trygga hiss.jpg",
-    "sponsors/villarelining.png"
-  ];
+    var lines = xhr.responseText.replace(/^\uFEFF/, "").split(/\r?\n/);
+    var sponsorImages = [];
+    for (var i = 0; i < lines.length; i++) {
+      var fileName = lines[i].replace(/^\s+|\s+$/g, "");
+      if (/\.(png|jpg|jpeg|svg|webp)$/i.test(fileName)) sponsorImages.push(fileName);
+    }
+    if (sponsorImages.length === 0) return;
 
-  // Dubbla listan för oändlig scroll
-  var loopImages = sponsorImages.concat(sponsorImages);
+    track.innerHTML = "";
+    var loopImages = sponsorImages.concat(sponsorImages);
 
-  for (var i = 0; i < loopImages.length; i++) {
-    var el = document.createElement("img");
-    el.src = loopImages[i];
-    track.appendChild(el);
-  }
+    /*
+      Anpassa sponsorplatsernas bredd efter antalet loggor.
+      Få loggor får större luft mellan sig, medan många loggor placeras tätare.
+      Begränsningen 4–7 synliga platser ger ett balanserat mellanrum på 16:9-skärmar.
+    */
+    var visibleSlots = Math.max(4, Math.min(7, sponsorImages.length));
+    var sponsorSlotWidth = 100 / visibleSlots;
+
+    /* Två identiska listor och exakt spårbredd ger en sömlös slinga. */
+    track.style.width = (loopImages.length * sponsorSlotWidth) + "vw";
+    track.style.animationDuration = "20s";
+    for (var j = 0; j < loopImages.length; j++) {
+      var item = document.createElement("span");
+      item.className = "sponsor-item";
+      item.style.width = sponsorSlotWidth + "vw";
+      item.style.flexBasis = sponsorSlotWidth + "vw";
+      var el = document.createElement("img");
+      el.src = SPONSOR_BASE_URL + encodeURIComponent(loopImages[j]);
+      el.alt = loopImages[j].replace(/\.[^.]+$/, "");
+      item.appendChild(el);
+      track.appendChild(item);
+    }
+  };
+  xhr.send(null);
 }
-;
 
 /* Init */
 function initArena() {
-  console.log("SOLLENTUNA HOCKEY - " + ARENA_VERSION);
   document.getElementById("versionTag").textContent = ARENA_VERSION;
 
   updateClock();
@@ -569,10 +904,16 @@ function initArena() {
   loadSponsors();
 
   setInterval(loadMatches, 300000);
-  setInterval(loadSponsors, 300000);
+  /* Sponsorlistan läses om var 30:e minut utan att hela sidan startas om. */
+  setInterval(loadSponsors, 1800000);
+  setInterval(function () { loadAllLiveResults(activeTodayMatches); }, 30000);
+  /* Kör morgonkontrollen efter kl. 06 och byt automatiskt till vitt vid T-15. */
+  setInterval(maybeRunDailyChecks, 60000);
+  setInterval(refreshCheckIndicators, 30000);
 }
 
-document.addEventListener("DOMContentLoaded", initArena);
+/* Scriptet ligger sist i body, därför kan uppstarten göras direkt. */
+initArena();
 </script>
 </body>
 </html>
