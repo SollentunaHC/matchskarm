@@ -2,7 +2,7 @@
 <html lang="sv">
 <head>
 <meta charset="UTF-8">
-<title>Sollentuna Hockey – Tizen version 16.9</title>
+<title>Sollentuna Hockey – Tizen version 17.4</title>
 
 <style>
 
@@ -382,6 +382,7 @@ footer { display: none; }
       <div class="verification-summary" aria-label="Kontroll av kommande matcher">
         <div class="verification-box" id="tomorrowCheck" aria-label="Kontroll i morgon"><span class="verification-mark">–</span></div>
         <div class="verification-box" id="dayAfterCheck" aria-label="Kontroll i övermorgon"><span class="verification-mark">–</span></div>
+        <div class="verification-box" id="thirdDayCheck" aria-label="Kontroll om tre dagar"><span class="verification-mark">–</span></div>
       </div>
     </div>
   </header>
@@ -438,7 +439,7 @@ footer { display: none; }
 
 <script>
 
-var ARENA_VERSION = "VERSION 17.2 TIZEN";
+var ARENA_VERSION = "VERSION 17.4 TIZEN";
 var CSV_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/Spelschema_2627.csv";
 var SPONSOR_LIST_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/sponsors/list.txt";
 var SPONSOR_BASE_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/sponsors/";
@@ -453,7 +454,7 @@ var SWEHOCKEY_ID_MAP = {
 };
 var activeTodayMatches = [];
 var lastDailyCheckKey = "";
-var futureCheckGroups = { tomorrow: [], dayAfter: [] };
+var futureCheckGroups = { tomorrow: [], dayAfter: [], thirdDay: [] };
 var lastFutureCheckKey = "";
 
 /* CYLOQ-logo */
@@ -735,31 +736,34 @@ function checkFutureGroup(matches, elementId) {
   }
 }
 
-/* Samla alla matcher i morgon och i övermorgon, inte bara de som ryms i tabellen. */
+/* Samla alla matcher de tre kommande dagarna, inte bara de som ryms i tabellen. */
 function prepareFutureCheckGroups(matches) {
   var tomorrowKey = dateKeyWithOffset(1);
   var dayAfterKey = dateKeyWithOffset(2);
-  futureCheckGroups = { tomorrow: [], dayAfter: [] };
+  var thirdDayKey = dateKeyWithOffset(3);
+  futureCheckGroups = { tomorrow: [], dayAfter: [], thirdDay: [] };
 
   for (var i = 0; i < matches.length; i++) {
     if (matches[i].date === tomorrowKey) futureCheckGroups.tomorrow.push(matches[i]);
     if (matches[i].date === dayAfterKey) futureCheckGroups.dayAfter.push(matches[i]);
+    if (matches[i].date === thirdDayKey) futureCheckGroups.thirdDay.push(matches[i]);
   }
 
   maybeRunFutureChecks();
 }
 
-/* Kör morgonens två sammanfattningskontroller efter kl. 06.00. */
+/* Kör morgonens tre sammanfattningskontroller efter kl. 06.00. */
 function maybeRunFutureChecks() {
   var now = new Date();
   if (now.getHours() < 6) {
     setFutureCheckVisual("tomorrowCheck", "neutral");
     setFutureCheckVisual("dayAfterCheck", "neutral");
+    setFutureCheckVisual("thirdDayCheck", "neutral");
     return;
   }
 
   var keyParts = [dateKeyWithOffset(0)];
-  var groups = [futureCheckGroups.tomorrow, futureCheckGroups.dayAfter];
+  var groups = [futureCheckGroups.tomorrow, futureCheckGroups.dayAfter, futureCheckGroups.thirdDay];
   for (var g = 0; g < groups.length; g++) {
     for (var i = 0; i < groups[g].length; i++) {
       var m = groups[g][i];
@@ -773,6 +777,7 @@ function maybeRunFutureChecks() {
   lastFutureCheckKey = checkKey;
   checkFutureGroup(futureCheckGroups.tomorrow, "tomorrowCheck");
   checkFutureGroup(futureCheckGroups.dayAfter, "dayAfterCheck");
+  checkFutureGroup(futureCheckGroups.thirdDay, "thirdDayCheck");
 }
 
 /* Hämtar resultat från Cloudflare Workern med Tizen-kompatibel XMLHttpRequest. */
