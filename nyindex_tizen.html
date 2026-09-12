@@ -2,7 +2,7 @@
 <html lang="sv">
 <head>
 <meta charset="UTF-8">
-<title>Sollentuna Hockey – Tizen version 17.5</title>
+<title>Sollentuna Hockey – Tizen version 17.6</title>
 
 <style>
 
@@ -440,7 +440,7 @@ footer { display: none; }
 
 <script>
 
-var ARENA_VERSION = "VERSION 17.5 TIZEN";
+var ARENA_VERSION = "VERSION 17.6 TIZEN";
 var CSV_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/Spelschema_2627.csv";
 var SPONSOR_LIST_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/sponsors/list.txt";
 var SPONSOR_BASE_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/sponsors/";
@@ -514,29 +514,46 @@ function getStatus(dateStr, timeStr) {
 
 /* CSV → matcher */
 function parseMatchesFromCSV(text) {
-  var lines = text.split(/\r?\n/);
+  var lines = text.replace(/^\uFEFF/, "").split(/\r?\n/);
   var filteredLines = [];
   for (var i = 0; i < lines.length; i++) {
     if (lines[i].trim() !== "") {
       filteredLines.push(lines[i]);
     }
   }
-  if (filteredLines.length < 2) return [];
+  if (filteredLines.length === 0) return [];
 
-  var headers = filteredLines[0].split(";");
-  var idx = {
-    Speldatum: headers.indexOf("Speldatum"),
-    Tid: headers.indexOf("Tid"),
-    Hemma: headers.indexOf("Hemma"),
-    Borta: headers.indexOf("Borta"),
-    Arena: headers.indexOf("Arena"),
-    Serie: headers.indexOf("Serie"),
-    Matchnr: headers.indexOf("Matchnr")
-  };
+  var firstCols = filteredLines[0].split(";");
+  var hasHeader = !/^\d{4}-\d{2}-\d{2}$/.test((firstCols[0] || "").trim());
+  var idx;
+  var firstMatchRow;
+
+  if (hasHeader) {
+    /* Äldre CSV-format med rubrikrad. Trimma för att tåla extra mellanslag. */
+    var headers = [];
+    for (var h = 0; h < firstCols.length; h++) headers.push(firstCols[h].trim());
+    idx = {
+      Speldatum: headers.indexOf("Speldatum"),
+      Tid: headers.indexOf("Tid"),
+      Hemma: headers.indexOf("Hemma"),
+      Borta: headers.indexOf("Borta"),
+      Arena: headers.indexOf("Arena"),
+      Serie: headers.indexOf("Serie"),
+      Matchnr: headers.indexOf("Matchnr")
+    };
+    firstMatchRow = 1;
+  } else {
+    /*
+      Nytt rubriklöst format från GitHub:
+      datum;tid;veckodag;matchnr;omgång;hemma;borta;arena;serie
+    */
+    idx = { Speldatum: 0, Tid: 1, Matchnr: 3, Hemma: 5, Borta: 6, Arena: 7, Serie: 8 };
+    firstMatchRow = 0;
+  }
 
  var matches = [];
 
-for (var j = 1; j < filteredLines.length; j++) {
+for (var j = firstMatchRow; j < filteredLines.length; j++) {
   var cols = filteredLines[j].split(";");
 
   var homeRaw = cols[idx.Hemma] || "";
@@ -934,7 +951,7 @@ function renderUpcomingMatches(upcomingMatches) {
   var html = "";
 
   if (!upcomingMatches || upcomingMatches.length === 0) {
-    html = "<tr><td colspan='7'>Inga kommande hemmamatcher.</td></tr>";
+    html = "<tr><td colspan='7'>Inga kommande matcher.</td></tr>";
   } else {
     for (var i = 0; i < upcomingMatches.length; i++) {
         var m = upcomingMatches[i];
