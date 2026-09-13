@@ -2,7 +2,7 @@
 <html lang="sv">
 <head>
 <meta charset="UTF-8">
-<title>Sollentuna Hockey – Tizen version 17.8</title>
+<title>Sollentuna Hockey – Tizen version 17.9</title>
 
 <style>
 
@@ -123,6 +123,7 @@ h2 {
 .status-live { color: #052513; background: #46d17d; }
 .time-status { display: block; margin-top: 0.25em; min-height: 0.9em; text-align: center; overflow: visible; }
 .time-status .status-tag { margin-left: 0; }
+.time-period { display: block; margin-top: 0.15em; font-size: 0.58em; font-weight: 900; color: #66d487; white-space: nowrap; }
 .score-cell { text-align: center; }
 .score-block { display: inline-block; width: 8.3vw; max-width: 100%; text-align: center; vertical-align: middle; }
 .score-block .score { display: block; width: 100%; box-sizing: border-box; }
@@ -440,7 +441,7 @@ footer { display: none; }
 
 <script>
 
-var ARENA_VERSION = "VERSION 17.8 TIZEN";
+var ARENA_VERSION = "VERSION 17.9 TIZEN";
 var CSV_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/Spelschema_2627.csv";
 var SPONSOR_LIST_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/sponsors/list.txt";
 var SPONSOR_BASE_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/sponsors/";
@@ -914,10 +915,11 @@ function updateLiveResult(matchNumber, result) {
   var isLive = status === "LIVE";
   var statusCell = document.getElementById("status-" + matchNumber);
   if (statusCell) {
-    statusCell.innerHTML = isLive ? "<span class='status-tag status-live'>LIVE</span>" : "";
+    // Perioden visas under starttiden, inte i resultatkolumnen.
+    statusCell.innerHTML = isLive ? "<span class='status-tag status-live'>LIVE</span>" +
+      (result.period ? "<span class='time-period'>PERIOD " + result.period + "</span>" : "") : "";
   }
   var detail = status;
-  if (isLive && result.period) detail += " • PERIOD " + result.period;
   var shownTime = typeof result.displayGameTime === "string" ? result.displayGameTime : result.gameTime;
   if (isLive && shownTime) detail += " • " + shownTime;
   scoreCell.innerHTML = "<span class='score-block'>" +
