@@ -2,7 +2,7 @@
 <html lang="sv">
 <head>
 <meta charset="UTF-8">
-<title>Sollentuna Hockey – Tizen version 17.6</title>
+<title>Sollentuna Hockey – Tizen version 17.7</title>
 
 <style>
 
@@ -440,7 +440,7 @@ footer { display: none; }
 
 <script>
 
-var ARENA_VERSION = "VERSION 17.6 TIZEN";
+var ARENA_VERSION = "VERSION 17.7 TIZEN";
 var CSV_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/Spelschema_2627.csv";
 var SPONSOR_LIST_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/sponsors/list.txt";
 var SPONSOR_BASE_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/sponsors/";
@@ -910,6 +910,18 @@ function splitTodayAndUpcoming(matches) {
     }
     if (m.date > todayKey) upcoming.push(m);
   }
+
+  // Visa dagens matcher i starttidsordning även om CSV-raderna ligger blandade.
+  // Numerisk jämförelse fungerar även för tider som 9:30 respektive 09:30.
+  function startMinutes(match) {
+    var parts = String(match.time || "").split(":");
+    var hours = parseInt(parts[0], 10);
+    var minutes = parseInt(parts[1], 10);
+    return isNaN(hours) || isNaN(minutes) ? 1440 : hours * 60 + minutes;
+  }
+  today.sort(function (a, b) {
+    return startMinutes(a) - startMinutes(b);
+  });
 
   upcoming.sort(function (a, b) {
     return (a.date + " " + a.time).localeCompare(b.date + " " + b.time);
