@@ -2,7 +2,7 @@
 <html lang="sv">
 <head>
 <meta charset="UTF-8">
-<title>Sollentuna Hockey – Tizen version 17.7</title>
+<title>Sollentuna Hockey – Tizen version 17.8</title>
 
 <style>
 
@@ -440,7 +440,7 @@ footer { display: none; }
 
 <script>
 
-var ARENA_VERSION = "VERSION 17.7 TIZEN";
+var ARENA_VERSION = "VERSION 17.8 TIZEN";
 var CSV_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/Spelschema_2627.csv";
 var SPONSOR_LIST_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/sponsors/list.txt";
 var SPONSOR_BASE_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/sponsors/";
@@ -454,6 +454,21 @@ var SWEHOCKEY_ID_MAP = {
   "95097052": "1121968"
 };
 var activeTodayMatches = [];
+var latestLiveResults = {};
+var liveRequestNumbers = {};
+// Behåll senaste svar även vid omladdning; ny matchidentitet får en egen nyckel.
+try { latestLiveResults = JSON.parse(sessionStorage.getItem("shc-live-v178") || "{}"); } catch (e) {}
+function liveMatchKey(match) {
+  return [match.date, match.time, match.matchNumber, match.home, match.away].join("|");
+}
+function resultProgress(result) {
+  if (String(result.status).toUpperCase() === "SLUT") return 10000000;
+  var p = Number(result.period);
+  if (p && result.periodEnded) return p * 100000 + 9999;
+  var time = String(result.gameTime || "").match(/^(\d{1,2}):(\d{2})$/);
+  if (!p || !time || result.periodCertain === false || Number(time[2]) > 59) return null;
+  return p * 100000 + Number(time[1]) * 60 + Number(time[2]);
+}
 var lastDailyCheckKey = "";
 var futureCheckGroups = { tomorrow: [], dayAfter: [], thirdDay: [], fourthDay: [] };
 var lastFutureCheckKey = "";
@@ -811,6 +826,9 @@ function maybeRunFutureChecks() {
 /* Hämtar resultat från Cloudflare Workern med Tizen-kompatibel XMLHttpRequest. */
 function loadLiveResult(match) {
   if (!match || !match.matchNumber) return;
+  var key = liveMatchKey(match);
+  var requestNumber = (liveRequestNumbers[key] || 0) + 1;
+  liveRequestNumbers[key] = requestNumber;
   var directId = SWEHOCKEY_ID_MAP[match.matchNumber];
   var query;
   if (directId) {
@@ -829,6 +847,8 @@ function loadLiveResult(match) {
   xhr.timeout = 15000;
   xhr.onreadystatechange = function () {
     if (xhr.readyState !== 4) return;
+    // Ett tidigare anrop får inte skriva över svaret från ett senare anrop.
+    if (liveRequestNumbers[key] !== requestNumber) return;
     /* Äldre Tizen kan rapportera status 0 trots att HTTPS-svaret kom fram. */
     if (!((xhr.status >= 200 && xhr.status < 300) ||
           (xhr.status === 0 && xhr.responseText))) {
@@ -870,6 +890,25 @@ function showLiveError(matchNumber, message) {
 function updateLiveResult(matchNumber, result) {
   var scoreCell = document.getElementById("score-" + matchNumber);
   if (!scoreCell || typeof result.homeScore !== "number" || typeof result.awayScore !== "number") return;
+  var match = findActiveMatch(matchNumber);
+  if (!match) return;
+  var key = liveMatchKey(match);
+  var previous = latestLiveResults[key];
+  if (previous && previous !== result) {
+    if (String(previous.gameId) !== String(result.gameId)) return;
+    var oldProgress = resultProgress(previous);
+    var newProgress = resultProgress(result);
+    if (oldProgress !== null && newProgress !== null && newProgress < oldProgress) return;
+    var changed = previous.homeScore !== result.homeScore || previous.awayScore !== result.awayScore;
+    // Vid källbyte utan tydligt senare matchtid: behåll bekräftat resultat.
+    // Samma källa eller en senare matchtid kan fortfarande korrigera mål nedåt.
+    if (changed && previous.source !== result.source &&
+        (newProgress === null || (oldProgress !== null && newProgress <= oldProgress))) return;
+    if (oldProgress !== null && newProgress === null && changed) return;
+    if (previous.status === "SLUT" && result.status !== "SLUT") return;
+  }
+  latestLiveResults[key] = result;
+  try { sessionStorage.setItem("shc-live-v178", JSON.stringify(latestLiveResults)); } catch (e) {}
   var status = String(result.status || "RESULTAT").toUpperCase();
   scoreCell.setAttribute("data-has-result", "yes");
   var isLive = status === "LIVE";
@@ -879,7 +918,8 @@ function updateLiveResult(matchNumber, result) {
   }
   var detail = status;
   if (isLive && result.period) detail += " • PERIOD " + result.period;
-  if (isLive && result.gameTime) detail += " • " + result.gameTime;
+  var shownTime = typeof result.displayGameTime === "string" ? result.displayGameTime : result.gameTime;
+  if (isLive && shownTime) detail += " • " + shownTime;
   scoreCell.innerHTML = "<span class='score-block'>" +
     "<span class='score" + (isLive ? " live-score" : "") + "'>" +
     result.homeScore + "–" + result.awayScore + "</span>" +
@@ -953,6 +993,11 @@ function renderTodayMatches(todayMatches) {
 
   tbody.innerHTML = html;
   activeTodayMatches = todayMatches || [];
+  // Återställ resultatet innan nya nätverksanrop så SNART/resultat inte blinkar.
+  for (var j = 0; j < activeTodayMatches.length; j++) {
+    var saved = latestLiveResults[liveMatchKey(activeTodayMatches[j])];
+    if (saved) updateLiveResult(activeTodayMatches[j].matchNumber, saved);
+  }
   loadAllLiveResults(activeTodayMatches);
   maybeRunDailyChecks();
 }
