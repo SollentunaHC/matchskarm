@@ -2,7 +2,7 @@
 <html lang="sv">
 <head>
 <meta charset="UTF-8">
-<title>Sollentuna Hockey – Tizen version 17.9</title>
+<title>Sollentuna Hockey – Tizen version 18.0</title>
 
 <style>
 
@@ -441,7 +441,7 @@ footer { display: none; }
 
 <script>
 
-var ARENA_VERSION = "VERSION 17.9 TIZEN";
+var ARENA_VERSION = "VERSION 18.0 TIZEN";
 var CSV_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/Spelschema_2627.csv";
 var SPONSOR_LIST_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/sponsors/list.txt";
 var SPONSOR_BASE_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/sponsors/";
@@ -586,7 +586,12 @@ for (var j = firstMatchRow; j < filteredLines.length; j++) {
     home: homeRaw,
     away: awayRaw,
     arena: cols[idx.Arena],
-      series: (cols[idx.Serie] || "").replace(/\[[0-9]+\]/g, "").trim()
+      /* Kortare serienamn för publikskärmen: dölj distriktsändelserna. */
+      series: (cols[idx.Serie] || "")
+        .replace(/\[[0-9]+\]/g, "")
+        .replace(/\s*,\s*Stockholms Ishockeyförbund\s*/gi, "")
+        .replace(/\s*,\s*Region Öst\s*/gi, "")
+        .trim()
     });
   }
 
