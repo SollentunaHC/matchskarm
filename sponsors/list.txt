@@ -7,6 +7,7 @@ SvCater.png
 villarelining.png
 CCM.png
 Dammarsberg_2.png
+Cyloq_2.png
 Edsviken.png
 ICA.png
 MSB Center.png
