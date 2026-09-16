@@ -2,7 +2,7 @@
 <html lang="sv">
 <head>
 <meta charset="UTF-8">
-<title>Sollentuna Hockey – Tizen version 18.0</title>
+<title>Sollentuna Hockey – Tizen version 18.1</title>
 
 <style>
 
@@ -441,7 +441,7 @@ footer { display: none; }
 
 <script>
 
-var ARENA_VERSION = "VERSION 18.0 TIZEN";
+var ARENA_VERSION = "VERSION 18.1 TIZEN";
 var CSV_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/Spelschema_2627.csv";
 var SPONSOR_LIST_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/sponsors/list.txt";
 var SPONSOR_BASE_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/sponsors/";
@@ -652,6 +652,7 @@ function loadMatchCheck(match) {
     "&time=" + encodeURIComponent(match.time || "") +
     "&home=" + encodeURIComponent(match.home || "") +
     "&away=" + encodeURIComponent(match.away || "") +
+    "&series=" + encodeURIComponent(match.series || "") +
     "&nocache=" + new Date().getTime();
   var xhr = new XMLHttpRequest();
   xhr.open("GET", query, true);
@@ -729,6 +730,7 @@ function requestFutureMatchCheck(match, callback) {
     "&time=" + encodeURIComponent(match.time || "") +
     "&home=" + encodeURIComponent(match.home || "") +
     "&away=" + encodeURIComponent(match.away || "") +
+    "&series=" + encodeURIComponent(match.series || "") +
     "&nocache=" + new Date().getTime();
   var xhr = new XMLHttpRequest();
   var finished = false;
@@ -840,12 +842,14 @@ function loadLiveResult(match) {
   if (directId) {
     /* Med ett känt internt ID ska Workern inte försöka slå upp GamesByDate. */
     query = LIVE_RESULT_PROXY + encodeURIComponent(directId) +
+      "&series=" + encodeURIComponent(match.series || "") +
       "&nocache=" + new Date().getTime();
   } else {
     query = LIVE_RESULT_PROXY + encodeURIComponent(match.matchNumber) +
       "&date=" + encodeURIComponent(match.date || "") +
       "&home=" + encodeURIComponent(match.home || "") +
       "&away=" + encodeURIComponent(match.away || "") +
+      "&series=" + encodeURIComponent(match.series || "") +
       "&nocache=" + new Date().getTime();
   }
   var xhr = new XMLHttpRequest();
