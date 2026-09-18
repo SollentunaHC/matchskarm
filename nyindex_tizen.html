@@ -2,7 +2,7 @@
 <html lang="sv">
 <head>
 <meta charset="UTF-8">
-<title>Sollentuna Hockey – Tizen version 18.2</title>
+<title>Sollentuna Hockey – Tizen version 18.3</title>
 
 <style>
 
@@ -138,8 +138,8 @@ h2 {
 
 /*
   MÅLANIMATION
-  När Workern rapporterar att något av lagen har gjort mål blinkar LIVE-skylten
-  och endast den målsiffra som har ökat. JavaScript tar bort effekten efter
+  När Workern rapporterar att något av lagen har gjort mål blinkar den gröna
+  resultatrutan och endast den målsiffra som har ökat. JavaScript tar bort effekten efter
   cirka 15 sekunder. En vanlig uppdatering med oförändrat resultat blinkar inte.
 */
 @-webkit-keyframes liveGoalFlash {
@@ -474,7 +474,7 @@ footer { display: none; }
 
 <script>
 
-var ARENA_VERSION = "VERSION 18.2 TIZEN";
+var ARENA_VERSION = "VERSION 18.3 TIZEN";
 var CSV_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/Spelschema_2627.csv";
 var SPONSOR_LIST_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/sponsors/list.txt";
 var SPONSOR_BASE_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/sponsors/";
@@ -992,15 +992,15 @@ function updateLiveResult(matchNumber, result) {
   var statusCell = document.getElementById("status-" + matchNumber);
   if (statusCell) {
     // Perioden visas under starttiden, inte i resultatkolumnen.
-    statusCell.innerHTML = isLive ? "<span id='live-tag-" + matchNumber + "' class='status-tag status-live" +
-      (goalFlashActive ? " goal-flash-live" : "") + "'>LIVE</span>" +
+    statusCell.innerHTML = isLive ? "<span class='status-tag status-live'>LIVE</span>" +
       (result.period ? "<span class='time-period'>PERIOD " + result.period + "</span>" : "") : "";
   }
   var detail = status;
   var shownTime = typeof result.displayGameTime === "string" ? result.displayGameTime : result.gameTime;
   if (isLive && shownTime) detail += " • " + shownTime;
   scoreCell.innerHTML = "<span class='score-block'>" +
-    "<span class='score" + (isLive ? " live-score" : "") + "'>" +
+    "<span id='score-box-" + matchNumber + "' class='score" + (isLive ? " live-score" : "") +
+    (goalFlashActive ? " goal-flash-live" : "") + "'>" +
     "<span id='home-score-" + matchNumber + "' class='" + (homeGoal && isLive ? "goal-flash-number" : "") + "'>" + result.homeScore + "</span>" +
     "–" +
     "<span id='away-score-" + matchNumber + "' class='" + (awayGoal && isLive ? "goal-flash-number" : "") + "'>" + result.awayScore + "</span></span>" +
@@ -1014,10 +1014,10 @@ function updateLiveResult(matchNumber, result) {
   if (newGoal) {
     setTimeout(function () {
       if (goalFlashTokens[key] !== flashToken) return;
-      var liveTag = document.getElementById("live-tag-" + matchNumber);
+      var scoreBox = document.getElementById("score-box-" + matchNumber);
       var homeNumber = document.getElementById("home-score-" + matchNumber);
       var awayNumber = document.getElementById("away-score-" + matchNumber);
-      if (liveTag) liveTag.className = "status-tag status-live";
+      if (scoreBox) scoreBox.className = "score live-score";
       if (homeNumber) homeNumber.className = "";
       if (awayNumber) awayNumber.className = "";
     }, 15000);
