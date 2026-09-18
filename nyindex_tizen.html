@@ -2,7 +2,7 @@
 <html lang="sv">
 <head>
 <meta charset="UTF-8">
-<title>Sollentuna Hockey – Tizen version 18.3</title>
+<title>Sollentuna Hockey – Tizen version 18.4</title>
 
 <style>
 
@@ -474,7 +474,7 @@ footer { display: none; }
 
 <script>
 
-var ARENA_VERSION = "VERSION 18.3 TIZEN";
+var ARENA_VERSION = "VERSION 18.4 TIZEN";
 var CSV_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/Spelschema_2627.csv";
 var SPONSOR_LIST_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/sponsors/list.txt";
 var SPONSOR_BASE_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/sponsors/";
@@ -927,7 +927,9 @@ function showLiveError(matchNumber, message) {
     /* Behåll morgonkontrollens färg fram till 15 minuter före matchstart. */
     renderPendingIndicator(matchNumber);
     var statusCell = document.getElementById("status-" + matchNumber);
-    if (statusCell) statusCell.innerHTML = "";
+    var match = findActiveMatch(matchNumber);
+    /* Ett fel i resultathämtningen får inte ta bort SNART-markeringen. */
+    if (statusCell && match) statusCell.innerHTML = getStatus(match.date, match.time);
   }
 }
 
@@ -991,9 +993,18 @@ function updateLiveResult(matchNumber, result) {
   }
   var statusCell = document.getElementById("status-" + matchNumber);
   if (statusCell) {
-    // Perioden visas under starttiden, inte i resultatkolumnen.
-    statusCell.innerHTML = isLive ? "<span class='status-tag status-live'>LIVE</span>" +
-      (result.period ? "<span class='time-period'>PERIOD " + result.period + "</span>" : "") : "";
+    /*
+      Perioden visas under starttiden, inte i resultatkolumnen.
+      Före matchstart ska SNART ligga kvar även när Workern har svarat.
+    */
+    if (isLive) {
+      statusCell.innerHTML = "<span class='status-tag status-live'>LIVE</span>" +
+        (result.period ? "<span class='time-period'>PERIOD " + result.period + "</span>" : "");
+    } else if (status === "SLUT") {
+      statusCell.innerHTML = "";
+    } else {
+      statusCell.innerHTML = getStatus(match.date, match.time);
+    }
   }
   var detail = status;
   var shownTime = typeof result.displayGameTime === "string" ? result.displayGameTime : result.gameTime;
