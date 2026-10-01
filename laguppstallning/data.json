@@ -1,0 +1,399 @@
+{
+  "team": "Sollentuna HC",
+  "competition": "Hockeyettan Norra",
+  "season": "2026–2027",
+  "scheduleUrl": "https://stats.swehockey.se/ScheduleAndResults/Schedule/21043",
+  "csvUrl": "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/Spelschema_2627.csv",
+  "configurationSource": "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/nyindex_tizen.html",
+  "workerUrl": "https://sollentuna-hockey-live.gunnar-127.workers.dev/live?match=",
+  "scheduleCheckedAt": "2026-10-01T21:41:21.724005+02:00",
+  "games": [
+    {
+      "date": "2026-10-03",
+      "time": "16:00",
+      "home": "Sollentuna HC",
+      "away": "Bodens HF",
+      "venue": "CYLOQ Arena",
+      "matchNumber": "90255135",
+      "competition": "Hockeyettan Norra",
+      "gameId": null,
+      "lineup": null,
+      "checkedAt": "2026-10-01T21:41:21.724005+02:00",
+      "status": "unpublished"
+    },
+    {
+      "date": "2026-10-04",
+      "time": "14:00",
+      "home": "Sollentuna HC",
+      "away": "Asplöven Haparanda Hockey Förening",
+      "venue": "CYLOQ Arena",
+      "matchNumber": "90255146",
+      "competition": "Hockeyettan Norra",
+      "gameId": null,
+      "lineup": null,
+      "checkedAt": "2026-10-01T21:41:21.724005+02:00",
+      "status": "unpublished"
+    },
+    {
+      "date": "2026-10-11",
+      "time": "16:00",
+      "home": "Sollentuna HC",
+      "away": "Hudiksvalls HC",
+      "venue": "CYLOQ Arena",
+      "matchNumber": "90255259",
+      "competition": "Hockeyettan Norra",
+      "gameId": null,
+      "lineup": null,
+      "checkedAt": null,
+      "status": "unpublished"
+    },
+    {
+      "date": "2026-10-21",
+      "time": "19:00",
+      "home": "Sollentuna HC",
+      "away": "Väsby IK HK",
+      "venue": "CYLOQ Arena",
+      "matchNumber": "90255303",
+      "competition": "Hockeyettan Norra",
+      "gameId": null,
+      "lineup": null,
+      "checkedAt": null,
+      "status": "unpublished"
+    },
+    {
+      "date": "2026-10-25",
+      "time": "15:30",
+      "home": "Sollentuna HC",
+      "away": "Borlänge HF",
+      "venue": "CYLOQ Arena",
+      "matchNumber": "90255086",
+      "competition": "Hockeyettan Norra",
+      "gameId": null,
+      "lineup": null,
+      "checkedAt": null,
+      "status": "unpublished"
+    },
+    {
+      "date": "2026-11-14",
+      "time": "16:00",
+      "home": "Sollentuna HC",
+      "away": "Piteå HC",
+      "venue": "CYLOQ Arena",
+      "matchNumber": "90255349",
+      "competition": "Hockeyettan Norra",
+      "gameId": null,
+      "lineup": null,
+      "checkedAt": null,
+      "status": "unpublished"
+    },
+    {
+      "date": "2026-11-15",
+      "time": "14:00",
+      "home": "Sollentuna HC",
+      "away": "Örnsköldsvik HF",
+      "venue": "CYLOQ Arena",
+      "matchNumber": "90255360",
+      "competition": "Hockeyettan Norra",
+      "gameId": null,
+      "lineup": null,
+      "checkedAt": null,
+      "status": "unpublished"
+    },
+    {
+      "date": "2026-11-22",
+      "time": "17:00",
+      "home": "Sollentuna HC",
+      "away": "Wings HC Arlanda",
+      "venue": "CYLOQ Arena",
+      "matchNumber": "90255313",
+      "competition": "Hockeyettan Norra",
+      "gameId": null,
+      "lineup": null,
+      "checkedAt": null,
+      "status": "unpublished"
+    },
+    {
+      "date": "2026-11-27",
+      "time": "19:00",
+      "home": "Sollentuna HC",
+      "away": "Järfälla HC",
+      "venue": "CYLOQ Arena",
+      "matchNumber": "90255057",
+      "competition": "Hockeyettan Norra",
+      "gameId": null,
+      "lineup": null,
+      "checkedAt": null,
+      "status": "unpublished"
+    },
+    {
+      "date": "2026-12-18",
+      "time": "19:00",
+      "home": "Sollentuna HC",
+      "away": "Enköpings SK HK",
+      "venue": "CYLOQ Arena",
+      "matchNumber": "90255228",
+      "competition": "Hockeyettan Norra",
+      "gameId": null,
+      "lineup": null,
+      "checkedAt": null,
+      "status": "unpublished"
+    },
+    {
+      "date": "2026-12-28",
+      "time": "19:00",
+      "home": "Sollentuna HC",
+      "away": "Vallentuna Hockey",
+      "venue": "CYLOQ Arena",
+      "matchNumber": "90255006",
+      "competition": "Hockeyettan Norra",
+      "gameId": null,
+      "lineup": null,
+      "checkedAt": null,
+      "status": "unpublished"
+    },
+    {
+      "date": "2027-01-06",
+      "time": "16:00",
+      "home": "Sollentuna HC",
+      "away": "IF Sundsvall Hockey",
+      "venue": "CYLOQ Arena",
+      "matchNumber": "90255079",
+      "competition": "Hockeyettan Norra",
+      "gameId": null,
+      "lineup": null,
+      "checkedAt": null,
+      "status": "unpublished"
+    },
+    {
+      "date": "2027-01-17",
+      "time": "16:00",
+      "home": "Sollentuna HC",
+      "away": "Surahammars IF",
+      "venue": "CYLOQ Arena",
+      "matchNumber": "90255207",
+      "competition": "Hockeyettan Norra",
+      "gameId": null,
+      "lineup": null,
+      "checkedAt": null,
+      "status": "unpublished"
+    },
+    {
+      "date": "2027-01-27",
+      "time": "19:00",
+      "home": "Sollentuna HC",
+      "away": "Lindlövens IF",
+      "venue": "CYLOQ Arena",
+      "matchNumber": "90255236",
+      "competition": "Hockeyettan Norra",
+      "gameId": null,
+      "lineup": null,
+      "checkedAt": null,
+      "status": "unpublished"
+    },
+    {
+      "date": "2027-02-06",
+      "time": "16:00",
+      "home": "Sollentuna HC",
+      "away": "Kiruna IF",
+      "venue": "CYLOQ Arena",
+      "matchNumber": "90255091",
+      "competition": "Hockeyettan Norra",
+      "gameId": null,
+      "lineup": null,
+      "checkedAt": null,
+      "status": "unpublished"
+    },
+    {
+      "date": "2027-02-07",
+      "time": "14:00",
+      "home": "Sollentuna HC",
+      "away": "Kalix HC",
+      "venue": "CYLOQ Arena",
+      "matchNumber": "90255101",
+      "competition": "Hockeyettan Norra",
+      "gameId": null,
+      "lineup": null,
+      "checkedAt": null,
+      "status": "unpublished"
+    },
+    {
+      "date": "2027-02-24",
+      "time": "19:00",
+      "home": "Sollentuna HC",
+      "away": "Norrtälje IK",
+      "venue": "CYLOQ Arena",
+      "matchNumber": "90255175",
+      "competition": "Hockeyettan Norra",
+      "gameId": null,
+      "lineup": null,
+      "checkedAt": null,
+      "status": "unpublished"
+    },
+    {
+      "date": "2027-02-28",
+      "time": "14:00",
+      "home": "Sollentuna HC",
+      "away": "Strömsbro IF",
+      "venue": "CYLOQ Arena",
+      "matchNumber": "90255186",
+      "competition": "Hockeyettan Norra",
+      "gameId": null,
+      "lineup": null,
+      "checkedAt": null,
+      "status": "unpublished"
+    }
+  ],
+  "demo": {
+    "date": "2026-09-25",
+    "time": "19:00",
+    "home": "Strömsbro IF",
+    "away": "Sollentuna HC",
+    "venue": "Testebo Arena",
+    "matchNumber": "90255365",
+    "competition": "Hockeyettan Norra",
+    "gameId": "1113118",
+    "lineup": {
+      "lines": {
+        "1": {
+          "forwards": [
+            {
+              "number": "20",
+              "lastName": "Paulsson",
+              "firstName": "Lukas"
+            },
+            {
+              "number": "45",
+              "lastName": "Ekström",
+              "firstName": "Andreas"
+            },
+            {
+              "number": "27",
+              "lastName": "Molin",
+              "firstName": "Linus"
+            }
+          ],
+          "defenders": [
+            {
+              "number": "76",
+              "lastName": "Wedemo",
+              "firstName": "Marwin"
+            },
+            {
+              "number": "7",
+              "lastName": "Strömberg",
+              "firstName": "Karl"
+            }
+          ]
+        },
+        "2": {
+          "forwards": [
+            {
+              "number": "43",
+              "lastName": "Marinkovic",
+              "firstName": "Keanu"
+            },
+            {
+              "number": "62",
+              "lastName": "Ringström",
+              "firstName": "Pelle"
+            },
+            {
+              "number": "40",
+              "lastName": "Logren",
+              "firstName": "Victor"
+            }
+          ],
+          "defenders": [
+            {
+              "number": "39",
+              "lastName": "Persson",
+              "firstName": "Gusten"
+            },
+            {
+              "number": "44",
+              "lastName": "Ek",
+              "firstName": "Elias"
+            }
+          ]
+        },
+        "3": {
+          "forwards": [
+            {
+              "number": "26",
+              "lastName": "Wiberg",
+              "firstName": "Erik"
+            },
+            {
+              "number": "18",
+              "lastName": "Blom",
+              "firstName": "Axel"
+            },
+            {
+              "number": "23",
+              "lastName": "Ahlzén",
+              "firstName": "Jonathan"
+            }
+          ],
+          "defenders": [
+            {
+              "number": "36",
+              "lastName": "Magnusson",
+              "firstName": "Oliver"
+            },
+            {
+              "number": "37",
+              "lastName": "Möllerstedt",
+              "firstName": "Filip"
+            }
+          ]
+        },
+        "4": {
+          "forwards": [
+            {
+              "number": "97",
+              "lastName": "Landis",
+              "firstName": "Tim"
+            },
+            {
+              "number": "19",
+              "lastName": "Crozzoli",
+              "firstName": "Isac"
+            },
+            {
+              "number": "11",
+              "lastName": "Sunebäck",
+              "firstName": "Elias"
+            }
+          ],
+          "defenders": [
+            {
+              "number": "28",
+              "lastName": "Ersmark",
+              "firstName": "Hannes"
+            }
+          ]
+        }
+      },
+      "goalies": [
+        {
+          "number": "60",
+          "lastName": "Rajalin-Scharp",
+          "firstName": "Alec"
+        },
+        {
+          "number": "31",
+          "lastName": "Grönhagen",
+          "firstName": "Isac"
+        }
+      ],
+      "coaches": {
+        "head": "Kjell G Lindqvist",
+        "assistant": "Andreas Paulsson"
+      },
+      "source": "https://stats.swehockey.se/Game/LineUps/1113118"
+    },
+    "status": "published",
+    "checkedAt": "2026-10-01T21:41:21.724005+02:00"
+  },
+  "errors": []
+}

@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sollentuna HC · A-lagets laguppställning</title>
+<style>
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;font-family:Arial,Helvetica,sans-serif;background:#041326;color:#fff}body{display:flex;flex-direction:column}button,select{font:inherit}button,select{color:#fff;background:#183651;border:1px solid #486780;border-radius:5px;padding:8px 12px}button{cursor:pointer}button:focus-visible,select:focus-visible{outline:3px solid #fff;outline-offset:2px}.toolbar{display:flex;align-items:center;gap:10px;padding:10px 18px;background:#071d39;font-size:14px;flex-wrap:wrap;flex-shrink:0}.toolbar label{display:flex;align-items:center;gap:10px}.toolbar select{max-width:420px}.toolbar .note{color:#c5d9ed;margin-left:auto;font-size:12px}.viewport{flex:1;min-height:0;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}.frame{position:relative;flex:none}.screen{width:1920px;height:1080px;transform-origin:top left;position:absolute;left:0;top:0;display:grid;grid-template-rows:145px 1fr 170px 35px;gap:18px;padding:38px 42px;background:radial-gradient(ellipse at top right,#174064,#071d39 72%);border-top:8px solid #e52a40}.header{display:flex;align-items:center;justify-content:space-between;gap:30px}.kicker{color:#adc8e2;font-size:22px;letter-spacing:5px;font-weight:700}.header h1{font-size:58px;font-weight:900;letter-spacing:-1px;line-height:1;margin:12px 0 9px}.club{font-size:30px;letter-spacing:4px;font-weight:700}.match{text-align:right;max-width:880px}.match-name{font-size:34px;font-weight:700;line-height:1.25}.match-meta{color:#c7dbed;font-size:26px;margin-top:12px}.match-tag{font-size:20px;color:#f3c8ce;margin-top:10px}.lines{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:22px;min-height:0}.line{background:linear-gradient(180deg,#163856,#0c2746);border-top:5px solid #e52a40;padding:20px 12px}.line h2{font-size:25px;letter-spacing:4px;margin:0 0 20px;text-align:center;color:#fff}.forwards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.defenders{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;border-top:1px solid #44627c;margin-top:24px;padding-top:20px}.player{text-align:center;min-width:0}.portrait{display:block;width:100%;height:128px;object-fit:contain;object-position:center bottom}.player-number{font-size:43px;line-height:1.1;font-weight:900;margin-top:7px}.player-first{font-size:23px;margin-top:6px;line-height:1.15}.player-last{font-size:25px;font-weight:700;line-height:1.15;margin-top:3px;overflow-wrap:anywhere}.bottom{display:grid;grid-template-columns:1.05fr 1fr;gap:22px;min-height:0}.goalies{background:#dd263e;padding:20px 24px}.goalies h2{font-size:22px;letter-spacing:3px;margin:0 0 15px}.goalie-list{display:grid;grid-template-columns:1fr 1fr;gap:20px}.goalie{display:flex;align-items:center;gap:13px}.goalie .portrait{width:78px;height:72px;flex:none}.goalie .player-number{font-size:34px;margin:0}.goalie .player-first{font-size:22px;margin:3px 0}.goalie .player-last{font-size:25px;margin:0}.coaches{display:grid;grid-template-columns:1fr 1fr;gap:24px;background:#f0f5fb;padding:26px;color:#071d39;align-items:center}.coach-role{font-size:22px;color:#244568;margin-bottom:12px}.coach-name{font-size:34px;font-weight:800;line-height:1.2;color:#071d39}footer{display:flex;align-items:center;justify-content:space-between;gap:20px;border-top:1px solid #365370;padding-top:8px;font-size:20px;color:#c2d5e5}footer a{color:#c2d5e5;text-decoration:none}.update{font-size:18px}.empty{grid-column:1/-1;display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;background:#102c4a;padding:35px}.empty img{height:180px;width:240px;object-fit:contain}.empty h2{font-size:44px;margin:20px 0 15px}.empty p{font-size:29px;line-height:1.45;max-width:1000px;margin:0;color:#d6e4f0}.empty small{font-size:23px;margin-top:20px;color:#aecbe5}.status{position:fixed;bottom:12px;left:50%;transform:translateX(-50%);font-size:14px;padding:9px 16px;background:#8d1e2e;color:#fff;z-index:10;max-width:90%;text-align:center;display:none}.status.show{display:block}.kiosk .toolbar{display:none}.offline-badge{color:#ffce88}
+</style>
+</head>
+<body>
+<nav class="toolbar" aria-label="Välj match">
+<label>Match <select id="match-select"><option>Hämtar matcher…</option></select></label>
+<button id="auto" type="button">Nästa hemmamatch</button>
+<button id="demo" type="button">Test · 25 september</button>
+<button id="fullscreen" type="button">Helskärm</button>
+<span class="note">A-laget · Hockeyettan Norra</span>
+</nav>
+<main class="viewport" aria-label="Laguppställning på liggande skärm">
+<div class="frame"><div class="screen">
+<header class="header"><div><div class="kicker">HOCKEYETTAN NORRA · A-LAGET</div><h1>LAGUPPSTÄLLNING</h1><div class="club">SOLLENTUNA HC</div></div><div class="match"><div class="match-name" id="match-name">Sollentuna HC</div><div class="match-meta" id="match-meta">Hämtar matchinformation…</div><div class="match-tag" id="match-tag"></div></div></header>
+<div class="lines" id="lines"></div>
+<div class="bottom"><section class="goalies"><h2>MÅLVAKTER</h2><div class="goalie-list" id="goalies"></div></section><section class="coaches" id="coaches"></section></div>
+<footer><span>GLÄDJE · AMBITION · KUNSKAP</span><span class="update" id="updated"></span><a id="source" target="_blank" rel="noopener">Swehockey · Line Up</a></footer>
+</div></div>
+</main>
+<div class="status" id="status" role="status" aria-live="polite"></div>
+<script>
+(function(){
+'use strict';
+var params=new URLSearchParams(location.search);
+var raw='https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/';
+var local=location.hostname==='localhost'||location.hostname==='127.0.0.1';
+var base=local?'./':raw;
+var dataUrl=base+'laguppstallning/data.json';
+var dragon=new URL('drake.png',location.href).href;
+var data=null, photos={}, selected=params.get('date')||'auto', demo=params.get('demo')==='1', busy=false;
+if(params.get('kiosk')==='1')document.body.classList.add('kiosk');
+function byId(id){return document.getElementById(id)}
+function el(tag,cls,value){var node=document.createElement(tag);if(cls)node.className=cls;if(value!==undefined)node.textContent=value;return node}
+function today(){return new Intl.DateTimeFormat('sv-SE',{timeZone:'Europe/Stockholm',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date())}
+function size(){var box=document.querySelector('.viewport');var scale=Math.min(box.clientWidth/1920,box.clientHeight/1080);document.querySelector('.frame').style.width=1920*scale+'px';document.querySelector('.frame').style.height=1080*scale+'px';document.querySelector('.screen').style.transform='scale('+scale+')'}
+window.addEventListener('resize',size);document.addEventListener('fullscreenchange',size);size();
+function photo(player){var image=el('img','portrait');image.alt='';var path=photos[player.number]||'laguppstallning/spelarfoton/'+player.number+'.jpg';image.src=new URL(path,location.href).href;image.onerror=function(){image.onerror=null;image.src=dragon};return image}
+function playerCard(player,goalie){var card=el('div',goalie?'goalie':'player');card.appendChild(photo(player));var info=goalie?el('div'):card;info.appendChild(el('div','player-number',player.number));info.appendChild(el('div','player-first',player.firstName));info.appendChild(el('div','player-last',player.lastName));if(goalie)card.appendChild(info);return card}
+function clear(id){var node=byId(id);while(node.firstChild)node.removeChild(node.firstChild);return node}
+function message(text){byId('status').textContent=text;byId('status').classList.toggle('show',Boolean(text))}
+function choose(){if(!data)return null;if(demo)return data.demo;if(selected!=='auto')return data.games.find(function(g){return g.date===selected})||null;return data.games.find(function(g){return g.date>=today()})||null}
+function dateLabel(game){return new Intl.DateTimeFormat('sv-SE',{timeZone:'Europe/Stockholm',day:'numeric',month:'long',year:'numeric'}).format(new Date(game.date+'T12:00:00+01:00'))+' · kl. '+game.time+' · '+game.venue}
+function empty(title,detail){var node=el('section','empty');var image=el('img');image.src=dragon;image.alt='';node.appendChild(image);node.appendChild(el('h2',null,title));node.appendChild(el('p',null,detail));clear('lines').appendChild(node);clear('goalies').appendChild(el('div',null,'—'));var coaches=clear('coaches');coaches.appendChild(el('div','coach-name','Tränare publiceras med laguppställningen'))}
+function render(){
+var game=choose();
+if(!game){byId('match-name').textContent='Sollentuna HC';byId('match-meta').textContent='Hockeyettan Norra · A-laget';byId('match-tag').textContent='';empty('Ingen hemmamatch att visa',selected==='auto'?'Alla hemmamatcher i det aktuella spelschemat är passerade.':'Ingen hemmamatch finns för valt datum.');return}
+byId('match-name').textContent=game.home+' – '+game.away;byId('match-meta').textContent=dateLabel(game);byId('match-tag').textContent=demo?'TESTVISNING · Sollentunas lag den 25 september':game.date===today()?'DAGENS HEMMAMATCH':game.date>today()?'KOMMANDE HEMMAMATCH':'TIDIGARE HEMMAMATCH';
+byId('source').href=game.lineup?game.lineup.source:data.scheduleUrl;
+byId('source').textContent=game.lineup?'Swehockey · Line Up':'Swehockey · Spelschema';
+if(!game.lineup){empty(game.status==='error'?'Laguppställningen kunde inte hämtas':game.status==='unresolved'?'Väntar på matchens laguppställning':'Laguppställningen är inte publicerad ännu',game.status==='error'?'Sidan försöker igen automatiskt.':game.status==='unresolved'?'Matchen finns i spelschemat men går ännu inte att hitta hos Swehockey. Kontrollerar igen automatiskt.':'Här visas Sollentunas spelare, femmor och tränare när laguppställningen publiceras på Swehockey.')}else{
+var lines=clear('lines');for(var i=1;i<=4;i++){var line=game.lineup.lines[String(i)]||{forwards:[],defenders:[]};var section=el('section','line');section.appendChild(el('h2',null,'FEMMA '+i));var forwards=el('div','forwards');line.forwards.forEach(function(p){forwards.appendChild(playerCard(p,false))});var defenders=el('div','defenders');line.defenders.forEach(function(p){defenders.appendChild(playerCard(p,false))});section.appendChild(forwards);section.appendChild(defenders);lines.appendChild(section)}
+var goalies=clear('goalies');game.lineup.goalies.forEach(function(p){goalies.appendChild(playerCard(p,true))});var coaches=clear('coaches');[['Huvudtränare','head'],['Assisterande tränare','assistant']].forEach(function(pair){var group=el('div');group.appendChild(el('div','coach-role',pair[0]));group.appendChild(el('div','coach-name',game.lineup.coaches[pair[1]]||'Ej angiven'));coaches.appendChild(group)});
+}
+var check=game.checkedAt||data.scheduleCheckedAt;
+byId('updated').textContent=(game.lineup?'Lag kontrollerat ':'Spelschema kontrollerat ')+new Intl.DateTimeFormat('sv-SE',{timeZone:'Europe/Stockholm',day:'numeric',month:'numeric',hour:'2-digit',minute:'2-digit'}).format(new Date(check));
+var age=Date.now()-new Date(data.scheduleCheckedAt).getTime();
+if(game.status==='stale')message('Hämtningen misslyckades. Visar senast hämtad laguppställning för denna match.');
+else if(game.date===today()&&age>60*60*1000)message('Uppgifterna har inte uppdaterats på över en timme. Kontrollerar igen automatiskt.');
+else message('');
+byId('match-select').value=demo?'demo':game.date;
+size();
+}
+function updateOptions(){var select=clear('match-select');data.games.forEach(function(g){var option=el('option',null,g.date+' · '+g.away);option.value=g.date;select.appendChild(option)});var option=el('option',null,'Test · Strömsbro – Sollentuna · 25 september');option.value='demo';select.appendChild(option)}
+async function load(){if(busy)return;busy=true;try{var response=await fetch(dataUrl+'?v='+Date.now(),{cache:'no-store'});if(!response.ok)throw new Error('HTTP '+response.status);var fresh=await response.json();if(!Array.isArray(fresh.games)||!fresh.scheduleCheckedAt)throw new Error('Ogiltiga matchuppgifter');data=fresh;updateOptions();render()}catch(error){message(data?'Ingen anslutning till matchuppgifterna. Visar senast hämtade uppgifter.':'Matchuppgifterna kunde inte hämtas. Försöker igen automatiskt.');if(!data)empty('Väntar på matchuppgifter','Kontrollera internetanslutningen. Sidan försöker igen automatiskt.')}finally{busy=false}}
+function updateAddress(){var url=new URL(location.href);url.searchParams.delete('demo');url.searchParams.delete('date');if(demo)url.searchParams.set('demo','1');else if(selected!=='auto')url.searchParams.set('date',selected);history.replaceState(null,'',url)}
+byId('match-select').addEventListener('change',function(){demo=this.value==='demo';selected=demo?'auto':this.value;updateAddress();render()});
+byId('auto').addEventListener('click',function(){demo=false;selected='auto';updateAddress();render()});
+byId('demo').addEventListener('click',function(){demo=true;selected='auto';updateAddress();render()});
+byId('fullscreen').addEventListener('click',function(){if(!document.fullscreenElement&&document.documentElement.requestFullscreen)document.documentElement.requestFullscreen();else if(document.exitFullscreen)document.exitFullscreen()});
+fetch(base+'laguppstallning/spelarfoton.json',{cache:'no-store'}).then(function(r){return r.ok?r.json():{}}).then(function(map){photos=map;if(data)render()}).catch(function(){});
+load();setInterval(load,120000);
+})();
+</script>
+</body>
+</html>
