@@ -1,0 +1,4 @@
+Alla 14 HTML-sidor innehåller G. Olsson 2026 längst ned till höger.
+Ersätt motsvarande HTML-filer i GitHub-repot matchskarm.
+Bevara katalogen sponsorscreen för dess index.html.
+Paketet innehåller bara HTML och ändrar inga datafiler eller skript.
