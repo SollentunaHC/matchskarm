@@ -7,6 +7,7 @@ on:
       - 'nyindex_tizen.html'
       - 'scripts/update-lineup.py'
       - 'scripts/update-player-info.py'
+      - 'laguppstallning/spelarprofiler.json'
       - '.github/workflows/laguppstallning.yml'
   schedule:
     - cron: '*/15 * * * *'
@@ -25,10 +26,8 @@ jobs:
           python-version: '3.12'
       - name: Hämta Swehockey
         run: python scripts/update-lineup.py ${{ github.event_name != 'schedule' && '--force' || '' }}
-      - name: Hämta Eliteprospects
+      - name: Uppdatera spelarstatistik från Swehockey
         continue-on-error: true
-        env:
-          EP_API_KEY: ${{ secrets.EP_API_KEY }}
         run: python scripts/update-player-info.py
       - name: Spara uppdatering
         run: |
@@ -39,4 +38,3 @@ jobs:
             git commit -m "Uppdatera A-lagets laguppställning från Swehockey"
             git push
           fi
-
