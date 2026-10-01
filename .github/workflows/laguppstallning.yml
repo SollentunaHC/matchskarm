@@ -7,10 +7,12 @@ on:
       - 'nyindex_tizen.html'
       - 'scripts/update-lineup.py'
       - 'scripts/update-player-info.py'
+      - 'scripts/match_times.py'
       - 'laguppstallning/spelarprofiler.json'
       - '.github/workflows/laguppstallning.yml'
   schedule:
-    - cron: '*/15 * * * *'
+    - cron: '*/5 * * * *'
+    - cron: '1-56/5 * * * *'
 permissions:
   contents: write
 concurrency:
@@ -28,7 +30,7 @@ jobs:
         run: python scripts/update-lineup.py ${{ github.event_name != 'schedule' && '--force' || '' }}
       - name: Uppdatera spelarstatistik från Swehockey
         continue-on-error: true
-        run: python scripts/update-player-info.py
+        run: python scripts/update-player-info.py ${{ github.event_name != 'schedule' && '--force' || '' }}
       - name: Spara uppdatering
         run: |
           if ! git diff --quiet -- laguppstallning/data.json laguppstallning/spelarinfo.json; then
