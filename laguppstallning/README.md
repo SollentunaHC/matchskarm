@@ -17,11 +17,19 @@ GitHub Actions-flödet **Uppdatera A-lagets laguppställning** läser först ins
 
 Ur CSV-filen väljs `Serie` som innehåller Hockeyettan och `Hemma` som är exakt Sollentuna HC. Datum, tid, motståndare och arena kommer från CSV-filen. Därmed blandas inte U20, damlaget eller ungdomsmatcher in. Serienamnet rensas på samma sätt som i Tizen-sidan innan det skickas till workern.
 
-Framtida matcher kontrolleras med samma `/check?date=…&time=…&home=…&away=…&series=…` som i originalskärmen. `/check` lämnar inte ett game-ID, så en framtida match utan känt ID väntar till matchdagen. Från matchdagen hämtas match-ID med samma `/live?match=…&date=…&home=…&away=…&series=…` som funktionen `loadLiveResult` i nyindex_tizen.html. Ett känt ID i `SWEHOCKEY_ID_MAP` används direkt på samma sätt som där. Workerns svar kontrolleras mot matchdatum, hemma- och bortalag innan `/Game/LineUps/{gameId}` läses. Enbart Sollentunas tabell används. En extra CSV-kolumn `GameID` kan också användas. Matchnr och GameID är olika identifierare.
+Match-ID hämtas med samma `/live?match=…&date=…&home=…&away=…&series=…` som i nyindex_tizen.html när en laguppställningskontroll är aktuell. Kända ID i `SWEHOCKEY_ID_MAP` används direkt. Workerns svar kontrolleras mot datum och lag innan `/Game/LineUps/{gameId}` hämtas. Enbart Sollentunas tabell används. Matchnr och GameID är olika identifierare. Ingen ny worker behövs.
 
-Ingen ny worker eller ändring av den befintliga workern behövs. Workern används för att identifiera matchen; GitHub-flödet hämtar därefter Line Up från Swehockey, så webbläsaren inte behöver göra ett direkt anrop som kan blockeras av CORS. Matcher långt fram i tiden väntar tills de närmar sig; match-ID kontrolleras inom samma fyradagarsfönster som den befintliga skärmen. Om workern ännu inte hittar en framtida match visas en väntetext, utan en påhittad uppställning.
+### Kontroller inför match
 
-Flödet kontrollerar ungefär var 15:e minut på hemmamatchdagar och en gång per dag övriga dagar. Det körs också när Spelschema_2627.csv eller nyindex_tizen.html uppdateras på GitHub. GitHub kan fördröja schemalagda körningar. Webbsidan kontrollerar den genererade datafilen varannan minut. Detta är en laguppställningssida, inte en tjänst för liveresultat. Uppgifter som ännu inte publicerats visas som väntande. Hämtfel och gamla uppgifter markeras.
+Alla tider beräknas i **Europe/Stockholm**, inklusive sommar- och vintertid, från datum och matchtid i Spelschema_2627.csv.
+
+- **Laguppställning för hemmamatcher:** första kontroll 59 minuter före matchstart och en ny kontroll 29 minuter före matchstart. Ingen automatisk Line Up-hämtning görs tidigare. Efter nedsläpp görs inga fler automatiska kontroller av laguppställningen.
+- **Spelarpresentation på A-lagets matchdagar (hemma och borta):** kl. 06.00, kl. 12.00 och 90 minuter före matchstart. Sparade profiler kombineras med aktuell Swehockey-statistik.
+- Spelschemat kontrolleras en gång per dag och när CSV eller konfiguration ändras.
+
+GitHub startar tidkontrollen var femte minut och dessutom en minut efter varje femminutersgräns. Detta passar måltiderna för matcher med start på hel eller halv timme. Skripten hämtar endast vid en aktuell kontroll; de hämtar inte spelarinformation varje gång flödet vaknar. Genomförda kontroller sparas i datafilerna och upprepas inte. Om matchtiden ändras får matchen nya kontrolltider. Om en körning försenas används den senaste passerade kontrolltiden i stället för att köra gamla kontroller i följd.
+
+**GitHub Actions garanterar inte exakt startminut.** Köer och belastning kan fördröja körningen. Vid en försenad körning görs kontrollen efter måltiden. Vid hämtfel behålls tidigare uppgifter och nästa ordinarie kontroll försöker igen. Webbsidan läser genererade data varannan minut, vilket kan lägga till upp till två minuter innan en ändring visas. Manuell **Run workflow** uppdaterar spelarstatistiken direkt; dagens laguppställning hämtas först efter dess första kontrolltid. Testläget kan hämtas manuellt.
 
 Data hämtas från råfilen på GitHub så automatiska datakommittar inte behöver starta om GitHub Pages. Den ursprungliga publiceringen av HTML-sidan måste däremot ingå i en normal Pages-publicering. Om repot har annan Pages-domän, använd den befintliga domänen med `/laguppstallning.html`.
 
@@ -42,14 +50,14 @@ För andra filnamn eller PNG-foton, redigera `laguppstallning/spelarfoton.json`:
 
 ## Spelarinformation från Eliteprospects
 
-Klicka på en spelare för en större 16:9-presentation. Knappen **Spelarpresentation** växlar från laguppställningen till en spelare i taget, med byte var tolfte sekund. Pilarna går till föregående/nästa spelare.
+Klicka på en spelare för en större 16:9-presentation. Knappen **Spelarpresentation** växlar från laguppställningen till en spelare i taget, med byte var fjärde sekund. Pilarna går till föregående/nästa spelare.
 
 - Automatisk presentation för arenaskärmen: `laguppstallning.html?info=1&kiosk=1`
 - Test med laget den 25 september: `laguppstallning.html?demo=1&info=1&kiosk=1`
 
 Lösningen kräver ingen API-nyckel. Födelseår från Date of Birth, moderförening från Youth Team och föreningar med spelade matcher 2025–2026 är kontrollerade mot Eliteprospects och sparade i `laguppstallning/spelarprofiler.json`. Paketet innehåller 24 sådana profiler. Juniorlag och eventuella andra föreningar som spelaren faktiskt spelade i förra säsongen visas också. Profilfält uppdateras manuellt vid behov; de hämtas inte automatiskt från Eliteprospects.
 
-Årets GP, G, A och TP hämtas automatiskt från Swehockeys **Players by team** för Sollentuna HC i Hockeyettan Norra 2026–2027. Slutspel, andra lag och juniorserier blandas inte in. Hämtningen körs i det befintliga Actions-flödet ungefär var 15:e minut, även på bortamatchdagar. Swehockeys publicering kan dröja. Källorna och datum visas separat för profil och statistik.
+Årets GP, G, A och TP hämtas automatiskt från Swehockeys **Players by team** för Sollentuna HC i Hockeyettan Norra 2026–2027. Slutspel, andra lag och juniorserier blandas inte in. Hämtningen körs kl. 06.00, kl. 12.00 och 90 minuter före match på A-lagets matchdagar, även på bortamatchdagar. Swehockeys publicering kan dröja. Källhänvisningar sparas i datafilerna men visas inte på arenaskärmen.
 
 För målvakter används GPI (matcher där målvakten spelat) som GP. Swehockeys GP i spelartabellen räknar annars matcher i uppställningen. Mål, assist och poäng läses från spelartabellen även för målvakter; GAA och räddningsprocent används aldrig som mål eller assist.
 

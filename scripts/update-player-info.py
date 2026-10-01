@@ -3,12 +3,14 @@
 import argparse
 from datetime import datetime, timezone
 import hashlib
+import importlib.util
 import html
 import json
 from pathlib import Path
 import re
 import unicodedata
 from urllib.request import Request, urlopen
+from match_times import due_checkpoint, ZONE
 
 ROOT = Path(__file__).resolve().parents[1]
 OUTPUT = ROOT / 'laguppstallning/spelarinfo.json'
@@ -144,11 +146,21 @@ def update(force=False):
         raise ValueError('Profile season does not match the configured season')
     digest = hashlib.sha256(profiles_raw).hexdigest()
     old = json.loads(OUTPUT.read_text()) if OUTPUT.exists() else {'players': []}
-    # Refresh on every Actions invocation (about 15 minutes), independent of EP access.
-    # Normal successful runs require only two public page downloads.
+    spec = importlib.util.spec_from_file_location('lineup_schedule', ROOT / 'scripts/update-lineup.py')
+    schedule_module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(schedule_module)
+    games = schedule_module.parse_csv((ROOT / 'Spelschema_2627.csv').read_text(encoding='utf-8-sig'))
+    completed = dict(old.get('playerChecks', {}))
+    local_now = now.astimezone(ZONE)
+    slots = [slot for game in games if (slot := due_checkpoint(game, 'players', local_now, completed))]
+    if not force and not slots:
+        print('No player presentation checkpoint due.')
+        return
+    for slot in slots:
+        completed[slot['key']] = dict(slot, result='attempted')
     stamp = now.isoformat()
     payload = dict(old, team=TEAM, season=SEASON, previousSeason=PREVIOUS, attemptedAt=stamp,
-                   mode='saved_profiles_swehockey', source=STATS_URL)
+                   mode='saved_profiles_swehockey', source=STATS_URL, playerChecks=completed)
     try:
         profiles = {}
         for profile in profile_data['players']:
@@ -179,6 +191,8 @@ def update(force=False):
             else:
                 player['profileSourceLabel'] = 'Eliteprospects'
             players.append(player)
+        for slot in slots:
+            completed[slot['key']]['result'] = 'updated'
         payload.update(players=players, status='ready', updatedAt=stamp, message=None,
                        profileDigest=digest, profileCount=len(profiles), statisticsCount=len(stats))
         write(payload)

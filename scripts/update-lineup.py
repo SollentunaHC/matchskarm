@@ -12,6 +12,7 @@ import time
 from urllib.request import Request, urlopen
 from urllib.parse import urlencode, urlsplit, urlunsplit, parse_qsl
 from zoneinfo import ZoneInfo
+from match_times import due_checkpoint
 
 ROOT = Path(__file__).resolve().parents[1]
 OUTPUT = ROOT / 'laguppstallning/data.json'
@@ -173,10 +174,9 @@ def parse_lineup(markup):
 def build(force=False):
     now = datetime.now(ZoneInfo('Europe/Stockholm'))
     old = json.loads(OUTPUT.read_text()) if OUTPUT.exists() else {'games': []}
-    # On non-match days, check once daily. On home match days, every scheduled run.
-    home_today = any(g.get('date') == now.date().isoformat() for g in old.get('games', []))
-    if not force and not home_today and old.get('scheduleCheckedAt', '').startswith(now.date().isoformat()):
-        print('No home match today; daily schedule already checked.')
+    pending = any(due_checkpoint(g, 'lineup', now, g.get('lineupChecks', {})) for g in old.get('games', []))
+    if not force and not pending and old.get('scheduleCheckedAt', '').startswith(now.date().isoformat()):
+        print('No lineup checkpoint due; daily schedule already checked.')
         return
     config = screen_config(download(SCREEN_URL))
     csv_games = parse_csv(download(config['csv']))
@@ -190,16 +190,19 @@ def build(force=False):
     errors = []
     for game in home_games:
         previous = cache.get(game['matchNumber'], {})
-        if any(game[key] != previous.get(key) for key in ['date', 'home', 'away']):
+        if any(game[key] != previous.get(key) for key in ['date', 'time', 'home', 'away']):
             previous = {}
         # Retain a previously discovered ID for this exact match identity.
         game['gameId'] = game['gameId'] or previous.get('gameId')
         game['lineup'] = previous.get('lineup')
         game['checkedAt'] = previous.get('checkedAt')
         game['status'] = 'published' if game['lineup'] else 'unpublished'
-        near = (now.date() - timedelta(days=1)).isoformat() <= game['date'] <= (now.date() + timedelta(days=4)).isoformat()
-        past_without_roster = game['date'] < now.date().isoformat() and not game['lineup']
-        if near or past_without_roster:
+        game['lineupChecks'] = dict(previous.get('lineupChecks', {}))
+        slot = due_checkpoint(game, 'lineup', now, game['lineupChecks'])
+        historical_manual = force and game['date'] < now.date().isoformat()
+        if slot or historical_manual:
+            if slot:
+                game['lineupChecks'][slot['key']] = dict(slot, result='attempted')
             try:
                 if game['date'] > now.date().isoformat() and not (game['gameId'] or config['knownIds'].get(game['matchNumber'])):
                     check_future_game(game, config)
@@ -212,6 +215,8 @@ def build(force=False):
                     roster['source'] += game['gameId']
                     game['lineup'] = roster
                     game['status'] = 'published'
+                    if slot:
+                        game['lineupChecks'][slot['key']]['result'] = 'published'
                 else:
                     # Do not advertise a cached roster as newly confirmed.
                     game['status'] = 'stale' if game['lineup'] else 'unpublished'

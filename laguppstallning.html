@@ -83,7 +83,6 @@ var check=game.checkedAt||data.scheduleCheckedAt;
 byId('updated').textContent=(game.lineup?'Lag kontrollerat ':'Spelschema kontrollerat ')+new Intl.DateTimeFormat('sv-SE',{timeZone:'Europe/Stockholm',day:'numeric',month:'numeric',hour:'2-digit',minute:'2-digit'}).format(new Date(check));
 var age=Date.now()-new Date(data.scheduleCheckedAt).getTime();
 if(game.status==='stale')message('Hämtningen misslyckades. Visar senast hämtad laguppställning för denna match.');
-else if(game.date===today()&&age>60*60*1000)message('Uppgifterna har inte uppdaterats på över en timme. Kontrollerar igen automatiskt.');
 else message('');
 byId('match-select').value=demo?'demo':game.date;
 size();
