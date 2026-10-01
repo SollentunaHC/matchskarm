@@ -47,18 +47,21 @@ Klicka på en spelare för en större 16:9-presentation. Knappen **Spelarpresent
 - Automatisk presentation för arenaskärmen: `laguppstallning.html?info=1&kiosk=1`
 - Test med laget den 25 september: `laguppstallning.html?demo=1&info=1&kiosk=1`
 
-Fälten är namn, födelseår från Date of Birth, moderförening från Youth Team, samtliga föreningar med spelade matcher 2025–2026 samt GP, G, A och TP för Sollentuna HC i Hockeyettan 2026–2027 (grundserie). API-fältet `regularStats.PTS` motsvarar webbplatsens TP. Slutspel, andra lag och juniorserier blandas inte in i årets statistik. Spelaridentiteten matchas via namn och en stabil Eliteprospects-identitet; tröjnummer ensamt används inte för att gissa identitet.
+Lösningen kräver ingen API-nyckel. Födelseår från Date of Birth, moderförening från Youth Team och föreningar med spelade matcher 2025–2026 är kontrollerade mot Eliteprospects och sparade i `laguppstallning/spelarprofiler.json`. Paketet innehåller 24 sådana profiler. Juniorlag och eventuella andra föreningar som spelaren faktiskt spelade i förra säsongen visas också. Profilfält uppdateras manuellt vid behov; de hämtas inte automatiskt från Eliteprospects.
 
-**Automatiken behöver en Eliteprospects API-nyckel.** Den vanliga webbsidan blockerar automatisk hämtning. Paketet har ett verifierat exempel för Lukas Paulsson; resterande profilfält är tomma tills API-anslutningen är klar. Saknade uppgifter visas som ”—”, medan riktiga nollor visas som 0. GP 2 i exemplet kommer från lagets statistiksida, som var mer aktuell än spelarprofilens GP 1.
+Årets GP, G, A och TP hämtas automatiskt från Swehockeys **Players by team** för Sollentuna HC i Hockeyettan Norra 2026–2027. Slutspel, andra lag och juniorserier blandas inte in. Hämtningen körs i det befintliga Actions-flödet ungefär var 15:e minut, även på bortamatchdagar. Swehockeys publicering kan dröja. Källorna och datum visas separat för profil och statistik.
 
-1. Skaffa API-åtkomst via https://developer.eliteprospects.com/. För föregående förening behöver nyckeln även åtkomst till säsongen 2025–2026.
-2. I GitHub-repot: **Settings → Secrets and variables → Actions → New repository secret**.
-3. Namn: `EP_API_KEY`. Värde: din API-nyckel. Lägg aldrig nyckeln i HTML, JSON eller ett vanligt repo-dokument.
-4. Kör **Actions → Uppdatera A-lagets laguppställning → Run workflow** igen.
+För målvakter används GPI (matcher där målvakten spelat) som GP. Swehockeys GP i spelartabellen räknar annars matcher i uppställningen. Mål, assist och poäng läses från spelartabellen även för målvakter; GAA och räddningsprocent används aldrig som mål eller assist.
 
-Profiluppgifterna uppdateras högst en gång per dag. Föregående säsongs föreningar cachas i 30 dagar. Hämtningen begränsas till högst ungefär 10 API-anrop/minut. Om historisk API-åtkomst saknas uppdateras årets uppgifter ändå och föregående förening förblir okänd. API-anslutningen är förberedd enligt dokumentationen, men kan inte kontrolleras mot autentiserade svar förrän nyckeln är tillagd.
+Spelare matchas på fullständigt namn, aldrig enbart tröjnummer. En spelare i Swehockeys roster som saknar sparad EP-profil får födelseår och moderförening från Swehockey och okänd tidigare förening. Saknade uppgifter visas som ”—”, riktiga nollor som 0. Saknas en statistikrad gissas inte noll matcher.
 
-Skript: `scripts/update-player-info.py`. Data: `laguppstallning/spelarinfo.json`.
+### Uppdatera profiler
+
+Redigera `laguppstallning/spelarprofiler.json` på GitHub. Varje spelare har `name`, `dateOfBirth`, `birthYear`, `youthTeam`, `previousTeams` (lista med föreningsnamn), `source` (EP-profillänk) och `profileCheckedAt` (kontrolldatum). Spara så körs flödet automatiskt. Bevara hela namnet som det står i laguppställningen; kontrollera identiteten innan en ny profil läggs till.
+
+Skript: `scripts/update-player-info.py`. Den genererade visningsfilen är `laguppstallning/spelarinfo.json`; redigera profilen i `spelarprofiler.json` eftersom genererad data skrivs över. Inget GitHub-secret behövs. Det gamla `EP_API_KEY` används inte längre.
+
+Vid byte av säsong måste säsongsnummer och Swehockey-seriens ID i spelarhämtningen uppdateras tillsammans med profilernas `season` och `previousSeason`.
 
 ## Felsökning
 

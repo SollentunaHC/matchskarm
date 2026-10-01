@@ -3,26 +3,672 @@
   "teamId": 494,
   "season": "2026-2027",
   "previousSeason": "2025-2026",
-  "status": "needs_api_key",
-  "message": "Automatisk uppdatering väntar på EP_API_KEY. Ett verifierat exempel visas tills anslutningen är klar.",
-  "updatedAt": "2026-10-01T19:53:40+00:00",
-  "source": "https://www.eliteprospects.com/team/494/sollentuna-hc?tab=stats",
+  "status": "ready",
+  "message": null,
+  "updatedAt": "2026-10-01T20:27:07.901898+00:00",
+  "source": "https://stats.swehockey.se/Teams/Info/PlayersByTeam/21043",
   "players": [
+    {
+      "id": 581524,
+      "name": "Alec Rajalin-Scharp",
+      "dateOfBirth": "2003-07-01",
+      "birthYear": 2003,
+      "youthTeam": "AIK",
+      "previousSeason": "2025-2026",
+      "previousTeams": [
+        "Sollentuna HC"
+      ],
+      "source": "https://www.eliteprospects.com/player/581524/alec-rajalin-scharp",
+      "profileCheckedAt": "2026-10-01T20:24:07.560Z",
+      "nameKey": "alec rajalinscharp",
+      "number": "60",
+      "position": "GK",
+      "stats": {
+        "GP": 1,
+        "G": 0,
+        "A": 0,
+        "TP": 0
+      },
+      "statsSource": "https://stats.swehockey.se/Teams/Info/PlayersByTeam/21043",
+      "statsUpdatedAt": "2026-10-01T20:27:07.901898+00:00",
+      "updatedAt": "2026-10-01T20:27:07.901898+00:00",
+      "profileSourceLabel": "Eliteprospects"
+    },
+    {
+      "id": 283059,
+      "name": "Andreas Ekström",
+      "dateOfBirth": "1999-04-24",
+      "birthYear": 1999,
+      "youthTeam": "Sollentuna HC",
+      "previousSeason": "2025-2026",
+      "previousTeams": [
+        "Sollentuna HC",
+        "Villarelining Wolfpack"
+      ],
+      "source": "https://www.eliteprospects.com/player/283059/andreas-ekstrom",
+      "profileCheckedAt": "2026-10-01T20:24:07.559Z",
+      "nameKey": "andreas ekstrom",
+      "number": "45",
+      "position": "RD",
+      "stats": {
+        "GP": 2,
+        "G": 0,
+        "A": 0,
+        "TP": 0
+      },
+      "statsSource": "https://stats.swehockey.se/Teams/Info/PlayersByTeam/21043",
+      "statsUpdatedAt": "2026-10-01T20:27:07.901898+00:00",
+      "updatedAt": "2026-10-01T20:27:07.901898+00:00",
+      "profileSourceLabel": "Eliteprospects"
+    },
+    {
+      "id": 560996,
+      "name": "Axel Blom",
+      "dateOfBirth": "2003-05-31",
+      "birthYear": 2003,
+      "youthTeam": "Linköpings HC",
+      "previousSeason": "2025-2026",
+      "previousTeams": [
+        "Järfälla HC"
+      ],
+      "source": "https://www.eliteprospects.com/player/560996/axel-blom",
+      "profileCheckedAt": "2026-10-01T20:24:07.551Z",
+      "nameKey": "axel blom",
+      "number": "18",
+      "position": "RW",
+      "stats": {
+        "GP": 2,
+        "G": 1,
+        "A": 0,
+        "TP": 1
+      },
+      "statsSource": "https://stats.swehockey.se/Teams/Info/PlayersByTeam/21043",
+      "statsUpdatedAt": "2026-10-01T20:27:07.901898+00:00",
+      "updatedAt": "2026-10-01T20:27:07.901898+00:00",
+      "profileSourceLabel": "Eliteprospects"
+    },
+    {
+      "id": 705850,
+      "name": "Elias Ek",
+      "dateOfBirth": "2004-08-01",
+      "birthYear": 2004,
+      "youthTeam": "Norrtälje IK",
+      "previousSeason": "2025-2026",
+      "previousTeams": [
+        "Sollentuna HC"
+      ],
+      "source": "https://www.eliteprospects.com/player/705850/elias-ek",
+      "profileCheckedAt": "2026-10-01T20:24:07.551Z",
+      "nameKey": "elias ek",
+      "number": "44",
+      "position": "LD",
+      "stats": {
+        "GP": 2,
+        "G": 0,
+        "A": 1,
+        "TP": 1
+      },
+      "statsSource": "https://stats.swehockey.se/Teams/Info/PlayersByTeam/21043",
+      "statsUpdatedAt": "2026-10-01T20:27:07.901898+00:00",
+      "updatedAt": "2026-10-01T20:27:07.901898+00:00",
+      "profileSourceLabel": "Eliteprospects"
+    },
+    {
+      "id": 859965,
+      "name": "Elias Sunebäck",
+      "dateOfBirth": "2006-10-29",
+      "birthYear": 2006,
+      "youthTeam": "AIK",
+      "previousSeason": "2025-2026",
+      "previousTeams": [
+        "Sollentuna HC U20",
+        "Sollentuna HC"
+      ],
+      "source": "https://www.eliteprospects.com/player/859965/elias-suneback",
+      "profileCheckedAt": "2026-10-01T20:24:07.553Z",
+      "nameKey": "elias suneback",
+      "number": "11",
+      "position": "LW",
+      "stats": {
+        "GP": 1,
+        "G": 0,
+        "A": 0,
+        "TP": 0
+      },
+      "statsSource": "https://stats.swehockey.se/Teams/Info/PlayersByTeam/21043",
+      "statsUpdatedAt": "2026-10-01T20:27:07.901898+00:00",
+      "updatedAt": "2026-10-01T20:27:07.901898+00:00",
+      "profileSourceLabel": "Eliteprospects"
+    },
+    {
+      "id": 857791,
+      "name": "Erik Wiberg",
+      "dateOfBirth": "2006-02-17",
+      "birthYear": 2006,
+      "youthTeam": "Spånga IS",
+      "previousSeason": "2025-2026",
+      "previousTeams": [
+        "Sollentuna HC U20",
+        "Sollentuna HC"
+      ],
+      "source": "https://www.eliteprospects.com/player/857791/erik-wiberg",
+      "profileCheckedAt": "2026-10-01T20:24:07.555Z",
+      "nameKey": "erik wiberg",
+      "number": "26",
+      "position": "LW",
+      "stats": {
+        "GP": 2,
+        "G": 0,
+        "A": 0,
+        "TP": 0
+      },
+      "statsSource": "https://stats.swehockey.se/Teams/Info/PlayersByTeam/21043",
+      "statsUpdatedAt": "2026-10-01T20:27:07.901898+00:00",
+      "updatedAt": "2026-10-01T20:27:07.901898+00:00",
+      "profileSourceLabel": "Eliteprospects"
+    },
+    {
+      "id": 323304,
+      "name": "Filip Bergsdorf",
+      "dateOfBirth": "1999-08-29",
+      "birthYear": 1999,
+      "youthTeam": "Hörnefors IF",
+      "previousSeason": "2025-2026",
+      "previousTeams": [
+        "HC Landsberg",
+        "Nocco"
+      ],
+      "source": "https://www.eliteprospects.com/player/323304/filip-bergsdorf",
+      "profileCheckedAt": "2026-10-01T20:24:07.561Z",
+      "nameKey": "filip bergsdorf",
+      "number": "25",
+      "position": "CE",
+      "stats": {
+        "GP": null,
+        "G": null,
+        "A": null,
+        "TP": null
+      },
+      "statsSource": "https://stats.swehockey.se/Teams/Info/PlayersByTeam/21043",
+      "statsUpdatedAt": "2026-10-01T20:27:07.901898+00:00",
+      "updatedAt": "2026-10-01T20:27:07.901898+00:00",
+      "profileSourceLabel": "Eliteprospects"
+    },
+    {
+      "id": 227491,
+      "name": "Filip Möllerstedt",
+      "dateOfBirth": "1998-09-17",
+      "birthYear": 1998,
+      "youthTeam": "Spånga IS",
+      "previousSeason": "2025-2026",
+      "previousTeams": [
+        "Sollentuna HC"
+      ],
+      "source": "https://www.eliteprospects.com/player/227491/filip-mollerstedt",
+      "profileCheckedAt": "2026-10-01T20:24:07.557Z",
+      "nameKey": "filip mollerstedt",
+      "number": "37",
+      "position": "LD",
+      "stats": {
+        "GP": 2,
+        "G": 0,
+        "A": 0,
+        "TP": 0
+      },
+      "statsSource": "https://stats.swehockey.se/Teams/Info/PlayersByTeam/21043",
+      "statsUpdatedAt": "2026-10-01T20:27:07.901898+00:00",
+      "updatedAt": "2026-10-01T20:27:07.901898+00:00",
+      "profileSourceLabel": "Eliteprospects"
+    },
+    {
+      "id": 485786,
+      "name": "Gusten Persson",
+      "dateOfBirth": "2003-01-23",
+      "birthYear": 2003,
+      "youthTeam": "Söderhamns IK",
+      "previousSeason": "2025-2026",
+      "previousTeams": [
+        "Söderhamn/Ljusne HC"
+      ],
+      "source": "https://www.eliteprospects.com/player/485786/gusten-persson",
+      "profileCheckedAt": "2026-10-01T20:24:07.549Z",
+      "nameKey": "gusten persson",
+      "number": "39",
+      "position": "LD",
+      "stats": {
+        "GP": 2,
+        "G": 1,
+        "A": 0,
+        "TP": 1
+      },
+      "statsSource": "https://stats.swehockey.se/Teams/Info/PlayersByTeam/21043",
+      "statsUpdatedAt": "2026-10-01T20:27:07.901898+00:00",
+      "updatedAt": "2026-10-01T20:27:07.901898+00:00",
+      "profileSourceLabel": "Eliteprospects"
+    },
+    {
+      "id": 730113,
+      "name": "Hannes Ersmark",
+      "dateOfBirth": "2005-01-22",
+      "birthYear": 2005,
+      "youthTeam": "Sollentuna HC",
+      "previousSeason": "2025-2026",
+      "previousTeams": [
+        "Sollentuna HC U20",
+        "Sollentuna HC"
+      ],
+      "source": "https://www.eliteprospects.com/player/730113/hannes-ersmark",
+      "profileCheckedAt": "2026-10-01T20:24:07.555Z",
+      "nameKey": "hannes ersmark",
+      "number": "28",
+      "position": "LD",
+      "stats": {
+        "GP": 2,
+        "G": 0,
+        "A": 0,
+        "TP": 0
+      },
+      "statsSource": "https://stats.swehockey.se/Teams/Info/PlayersByTeam/21043",
+      "statsUpdatedAt": "2026-10-01T20:27:07.901898+00:00",
+      "updatedAt": "2026-10-01T20:27:07.901898+00:00",
+      "profileSourceLabel": "Eliteprospects"
+    },
+    {
+      "id": 859597,
+      "name": "Hugo Wiberg",
+      "dateOfBirth": "2006-02-17",
+      "birthYear": 2006,
+      "youthTeam": "Spånga IS",
+      "previousSeason": "2025-2026",
+      "previousTeams": [
+        "Sollentuna HC U20",
+        "Sollentuna HC"
+      ],
+      "source": "https://www.eliteprospects.com/player/859597/hugo-wiberg",
+      "profileCheckedAt": "2026-10-01T20:24:07.553Z",
+      "nameKey": "hugo wiberg",
+      "number": "5",
+      "position": "LD",
+      "stats": {
+        "GP": 1,
+        "G": 0,
+        "A": 0,
+        "TP": 0
+      },
+      "statsSource": "https://stats.swehockey.se/Teams/Info/PlayersByTeam/21043",
+      "statsUpdatedAt": "2026-10-01T20:27:07.901898+00:00",
+      "updatedAt": "2026-10-01T20:27:07.901898+00:00",
+      "profileSourceLabel": "Eliteprospects"
+    },
+    {
+      "id": 862717,
+      "name": "Isac Crozzoli",
+      "dateOfBirth": "2006-12-20",
+      "birthYear": 2006,
+      "youthTeam": "Vallentuna BK",
+      "previousSeason": "2025-2026",
+      "previousTeams": [
+        "Sollentuna HC U20",
+        "Sollentuna HC"
+      ],
+      "source": "https://www.eliteprospects.com/player/862717/isac-crozzoli",
+      "profileCheckedAt": "2026-10-01T20:24:07.556Z",
+      "nameKey": "isac crozzoli",
+      "number": "19",
+      "position": "CE",
+      "stats": {
+        "GP": 2,
+        "G": 0,
+        "A": 0,
+        "TP": 0
+      },
+      "statsSource": "https://stats.swehockey.se/Teams/Info/PlayersByTeam/21043",
+      "statsUpdatedAt": "2026-10-01T20:27:07.901898+00:00",
+      "updatedAt": "2026-10-01T20:27:07.901898+00:00",
+      "profileSourceLabel": "Eliteprospects"
+    },
+    {
+      "id": 448929,
+      "name": "Isac Grönhagen",
+      "dateOfBirth": "2004-08-18",
+      "birthYear": 2004,
+      "youthTeam": "Värmdö HC",
+      "previousSeason": "2025-2026",
+      "previousTeams": [
+        "Sollentuna HC"
+      ],
+      "source": "https://www.eliteprospects.com/player/448929/isac-gronhagen",
+      "profileCheckedAt": "2026-10-01T20:24:07.560Z",
+      "nameKey": "isac gronhagen",
+      "number": "31",
+      "position": "GK",
+      "stats": {
+        "GP": 1,
+        "G": 0,
+        "A": 0,
+        "TP": 0
+      },
+      "statsSource": "https://stats.swehockey.se/Teams/Info/PlayersByTeam/21043",
+      "statsUpdatedAt": "2026-10-01T20:27:07.901898+00:00",
+      "updatedAt": "2026-10-01T20:27:07.901898+00:00",
+      "profileSourceLabel": "Eliteprospects"
+    },
+    {
+      "id": 649573,
+      "name": "Jonathan Ahlzén",
+      "dateOfBirth": "2004-12-29",
+      "birthYear": 2004,
+      "youthTeam": "Sollentuna HC",
+      "previousSeason": "2025-2026",
+      "previousTeams": [
+        "HKL Make Believes"
+      ],
+      "source": "https://www.eliteprospects.com/player/649573/jonathan-ahlzen",
+      "profileCheckedAt": "2026-10-01T20:24:07.558Z",
+      "nameKey": "jonathan ahlzen",
+      "number": "23",
+      "position": "RW",
+      "stats": {
+        "GP": 2,
+        "G": 0,
+        "A": 0,
+        "TP": 0
+      },
+      "statsSource": "https://stats.swehockey.se/Teams/Info/PlayersByTeam/21043",
+      "statsUpdatedAt": "2026-10-01T20:27:07.901898+00:00",
+      "updatedAt": "2026-10-01T20:27:07.901898+00:00",
+      "profileSourceLabel": "Eliteprospects"
+    },
+    {
+      "id": 572827,
+      "name": "Karl Strömberg",
+      "dateOfBirth": "2002-03-22",
+      "birthYear": 2002,
+      "youthTeam": "Sollentuna HC",
+      "previousSeason": "2025-2026",
+      "previousTeams": [
+        "Sollentuna HC"
+      ],
+      "source": "https://www.eliteprospects.com/player/572827/karl-stromberg",
+      "profileCheckedAt": "2026-10-01T20:24:07.554Z",
+      "nameKey": "karl stromberg",
+      "number": "7",
+      "position": "LD",
+      "stats": {
+        "GP": 2,
+        "G": 0,
+        "A": 0,
+        "TP": 0
+      },
+      "statsSource": "https://stats.swehockey.se/Teams/Info/PlayersByTeam/21043",
+      "statsUpdatedAt": "2026-10-01T20:27:07.901898+00:00",
+      "updatedAt": "2026-10-01T20:27:07.901898+00:00",
+      "profileSourceLabel": "Eliteprospects"
+    },
+    {
+      "id": 571583,
+      "name": "Keanu Marinkovic",
+      "dateOfBirth": "2004-02-24",
+      "birthYear": 2004,
+      "youthTeam": "Jonstorps IF",
+      "previousSeason": "2025-2026",
+      "previousTeams": [
+        "Jonstorps IF"
+      ],
+      "source": "https://www.eliteprospects.com/player/571583/keanu-marinkovic",
+      "profileCheckedAt": "2026-10-01T20:24:07.557Z",
+      "nameKey": "keanu marinkovic",
+      "number": "43",
+      "position": "RW",
+      "stats": {
+        "GP": 2,
+        "G": 0,
+        "A": 0,
+        "TP": 0
+      },
+      "statsSource": "https://stats.swehockey.se/Teams/Info/PlayersByTeam/21043",
+      "statsUpdatedAt": "2026-10-01T20:27:07.901898+00:00",
+      "updatedAt": "2026-10-01T20:27:07.901898+00:00",
+      "profileSourceLabel": "Eliteprospects"
+    },
+    {
+      "id": 657786,
+      "name": "Linus Molin",
+      "dateOfBirth": "2004-11-13",
+      "birthYear": 2004,
+      "youthTeam": "Strömsbro IF",
+      "previousSeason": "2025-2026",
+      "previousTeams": [
+        "Sollentuna HC"
+      ],
+      "source": "https://www.eliteprospects.com/player/657786/linus-molin",
+      "profileCheckedAt": "2026-10-01T20:24:07.553Z",
+      "nameKey": "linus molin",
+      "number": "27",
+      "position": "RW",
+      "stats": {
+        "GP": 2,
+        "G": 0,
+        "A": 0,
+        "TP": 0
+      },
+      "statsSource": "https://stats.swehockey.se/Teams/Info/PlayersByTeam/21043",
+      "statsUpdatedAt": "2026-10-01T20:27:07.901898+00:00",
+      "updatedAt": "2026-10-01T20:27:07.901898+00:00",
+      "profileSourceLabel": "Eliteprospects"
+    },
     {
       "id": 279195,
       "name": "Lukas Paulsson",
-      "nameKey": "lukas paulsson",
-      "number": "20",
       "dateOfBirth": "2000-04-04",
       "birthYear": 2000,
       "youthTeam": "Väsby IK",
       "previousSeason": "2025-2026",
-      "previousTeams": ["Sollentuna HC"],
-      "stats": {"GP": 2, "G": 0, "A": 0, "TP": 0},
+      "previousTeams": [
+        "Sollentuna HC"
+      ],
       "source": "https://www.eliteprospects.com/player/279195/lukas-paulsson",
-      "statsSource": "https://www.eliteprospects.com/team/494/sollentuna-hc?tab=stats",
-      "historyCheckedAt": "2026-10-01T19:53:40+00:00",
-      "updatedAt": "2026-10-01T19:53:40+00:00"
+      "profileCheckedAt": "2026-10-01T20:24:07.556Z",
+      "nameKey": "lukas paulsson",
+      "number": "20",
+      "position": "LW",
+      "stats": {
+        "GP": 2,
+        "G": 0,
+        "A": 0,
+        "TP": 0
+      },
+      "statsSource": "https://stats.swehockey.se/Teams/Info/PlayersByTeam/21043",
+      "statsUpdatedAt": "2026-10-01T20:27:07.901898+00:00",
+      "updatedAt": "2026-10-01T20:27:07.901898+00:00",
+      "profileSourceLabel": "Eliteprospects"
+    },
+    {
+      "id": 448939,
+      "name": "Marwin Wedemo",
+      "dateOfBirth": "2004-03-04",
+      "birthYear": 2004,
+      "youthTeam": "IFK Österåker",
+      "previousSeason": "2025-2026",
+      "previousTeams": [
+        "Mörrums GoIS"
+      ],
+      "source": "https://www.eliteprospects.com/player/448939/marwin-wedemo",
+      "profileCheckedAt": "2026-10-01T20:24:07.554Z",
+      "nameKey": "marwin wedemo",
+      "number": "76",
+      "position": "RD",
+      "stats": {
+        "GP": 2,
+        "G": 0,
+        "A": 0,
+        "TP": 0
+      },
+      "statsSource": "https://stats.swehockey.se/Teams/Info/PlayersByTeam/21043",
+      "statsUpdatedAt": "2026-10-01T20:27:07.901898+00:00",
+      "updatedAt": "2026-10-01T20:27:07.901898+00:00",
+      "profileSourceLabel": "Eliteprospects"
+    },
+    {
+      "id": 721562,
+      "name": "Oliver Magnusson",
+      "dateOfBirth": "2006-07-21",
+      "birthYear": 2006,
+      "youthTeam": "Karlskrona HK",
+      "previousSeason": "2025-2026",
+      "previousTeams": [
+        "Almtuna IS U20",
+        "Almtuna IS",
+        "Enköpings SK"
+      ],
+      "source": "https://www.eliteprospects.com/player/721562/oliver-magnusson",
+      "profileCheckedAt": "2026-10-01T20:24:07.558Z",
+      "nameKey": "oliver magnusson",
+      "number": "36",
+      "position": "LD",
+      "stats": {
+        "GP": 2,
+        "G": 0,
+        "A": 0,
+        "TP": 0
+      },
+      "statsSource": "https://stats.swehockey.se/Teams/Info/PlayersByTeam/21043",
+      "statsUpdatedAt": "2026-10-01T20:27:07.901898+00:00",
+      "updatedAt": "2026-10-01T20:27:07.901898+00:00",
+      "profileSourceLabel": "Eliteprospects"
+    },
+    {
+      "id": 677794,
+      "name": "Pelle Ringström",
+      "dateOfBirth": "2004-02-12",
+      "birthYear": 2004,
+      "youthTeam": "Nacka HK",
+      "previousSeason": "2025-2026",
+      "previousTeams": [
+        "Sollentuna HC"
+      ],
+      "source": "https://www.eliteprospects.com/player/677794/pelle-ringstrom",
+      "profileCheckedAt": "2026-10-01T20:24:07.552Z",
+      "nameKey": "pelle ringstrom",
+      "number": "62",
+      "position": "CE",
+      "stats": {
+        "GP": 2,
+        "G": 0,
+        "A": 1,
+        "TP": 1
+      },
+      "statsSource": "https://stats.swehockey.se/Teams/Info/PlayersByTeam/21043",
+      "statsUpdatedAt": "2026-10-01T20:27:07.901898+00:00",
+      "updatedAt": "2026-10-01T20:27:07.901898+00:00",
+      "profileSourceLabel": "Eliteprospects"
+    },
+    {
+      "id": 946882,
+      "name": "Sebastian Brunnberg",
+      "dateOfBirth": "2007-09-15",
+      "birthYear": 2007,
+      "youthTeam": "AIK",
+      "previousSeason": "2025-2026",
+      "previousTeams": [
+        "Almtuna IS U20"
+      ],
+      "source": "https://www.eliteprospects.com/player/946882/sebastian-brunnberg",
+      "profileCheckedAt": "2026-10-01T20:24:07.559Z",
+      "nameKey": "sebastian brunnberg",
+      "number": "8",
+      "position": "LW",
+      "stats": {
+        "GP": null,
+        "G": null,
+        "A": null,
+        "TP": null
+      },
+      "statsSource": "https://stats.swehockey.se/Teams/Info/PlayersByTeam/21043",
+      "statsUpdatedAt": "2026-10-01T20:27:07.901898+00:00",
+      "updatedAt": "2026-10-01T20:27:07.901898+00:00",
+      "profileSourceLabel": "Eliteprospects"
+    },
+    {
+      "id": 870431,
+      "name": "Tim Landis",
+      "dateOfBirth": "2006-06-10",
+      "birthYear": 2006,
+      "youthTeam": "Vallentuna Hockey",
+      "previousSeason": "2025-2026",
+      "previousTeams": [
+        "Sollentuna HC U20"
+      ],
+      "source": "https://www.eliteprospects.com/player/870431/tim-landis",
+      "profileCheckedAt": "2026-10-01T20:24:07.555Z",
+      "nameKey": "tim landis",
+      "number": "97",
+      "position": "LD",
+      "stats": {
+        "GP": 2,
+        "G": 0,
+        "A": 0,
+        "TP": 0
+      },
+      "statsSource": "https://stats.swehockey.se/Teams/Info/PlayersByTeam/21043",
+      "statsUpdatedAt": "2026-10-01T20:27:07.901898+00:00",
+      "updatedAt": "2026-10-01T20:27:07.901898+00:00",
+      "profileSourceLabel": "Eliteprospects"
+    },
+    {
+      "id": 619009,
+      "name": "Victor Logren",
+      "dateOfBirth": "2006-05-06",
+      "birthYear": 2006,
+      "youthTeam": "Väsby IK",
+      "previousSeason": "2025-2026",
+      "previousTeams": [
+        "Sollentuna HC U20",
+        "Sollentuna HC"
+      ],
+      "source": "https://www.eliteprospects.com/player/619009/victor-logren",
+      "profileCheckedAt": "2026-10-01T20:24:07.552Z",
+      "nameKey": "victor logren",
+      "number": "40",
+      "position": "RW",
+      "stats": {
+        "GP": 2,
+        "G": 0,
+        "A": 1,
+        "TP": 1
+      },
+      "statsSource": "https://stats.swehockey.se/Teams/Info/PlayersByTeam/21043",
+      "statsUpdatedAt": "2026-10-01T20:27:07.901898+00:00",
+      "updatedAt": "2026-10-01T20:27:07.901898+00:00",
+      "profileSourceLabel": "Eliteprospects"
+    },
+    {
+      "name": "Wilmer Svensson",
+      "nameKey": "wilmer svensson",
+      "number": "41",
+      "position": "CE",
+      "stats": {
+        "GP": null,
+        "G": null,
+        "A": null,
+        "TP": null
+      },
+      "statsSource": "https://stats.swehockey.se/Teams/Info/PlayersByTeam/21043",
+      "statsUpdatedAt": "2026-10-01T20:27:07.901898+00:00",
+      "updatedAt": "2026-10-01T20:27:07.901898+00:00",
+      "dateOfBirth": "2001-09-12",
+      "birthYear": 2001,
+      "youthTeam": "Tullinge TP HC",
+      "previousSeason": "2025-2026",
+      "previousTeams": [],
+      "source": "https://stats.swehockey.se/Teams/Info/TeamRoster/21043",
+      "profileSourceLabel": "Swehockey",
+      "profileCheckedAt": "2026-10-01T20:27:07.901898+00:00"
     }
-  ]
+  ],
+  "attemptedAt": "2026-10-01T20:27:07.901898+00:00",
+  "mode": "saved_profiles_swehockey",
+  "profileDigest": "df5cad88bfec2c751a7688f3175520ce03fe6e69d23ac6913bc6a2d23488c6c2",
+  "profileCount": 24,
+  "statisticsCount": 22
 }
