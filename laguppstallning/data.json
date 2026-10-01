@@ -6,7 +6,7 @@
   "csvUrl": "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/Spelschema_2627.csv",
   "configurationSource": "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/nyindex_tizen.html",
   "workerUrl": "https://sollentuna-hockey-live.gunnar-127.workers.dev/live?match=",
-  "scheduleCheckedAt": "2026-10-01T21:41:21.724005+02:00",
+  "scheduleCheckedAt": "2026-10-01T22:47:27.440112+02:00",
   "games": [
     {
       "date": "2026-10-03",
@@ -19,7 +19,8 @@
       "gameId": null,
       "lineup": null,
       "checkedAt": "2026-10-01T21:41:21.724005+02:00",
-      "status": "unpublished"
+      "status": "unpublished",
+      "lineupChecks": {}
     },
     {
       "date": "2026-10-04",
@@ -32,7 +33,8 @@
       "gameId": null,
       "lineup": null,
       "checkedAt": "2026-10-01T21:41:21.724005+02:00",
-      "status": "unpublished"
+      "status": "unpublished",
+      "lineupChecks": {}
     },
     {
       "date": "2026-10-11",
@@ -45,7 +47,8 @@
       "gameId": null,
       "lineup": null,
       "checkedAt": null,
-      "status": "unpublished"
+      "status": "unpublished",
+      "lineupChecks": {}
     },
     {
       "date": "2026-10-21",
@@ -58,7 +61,8 @@
       "gameId": null,
       "lineup": null,
       "checkedAt": null,
-      "status": "unpublished"
+      "status": "unpublished",
+      "lineupChecks": {}
     },
     {
       "date": "2026-10-25",
@@ -71,7 +75,8 @@
       "gameId": null,
       "lineup": null,
       "checkedAt": null,
-      "status": "unpublished"
+      "status": "unpublished",
+      "lineupChecks": {}
     },
     {
       "date": "2026-11-14",
@@ -84,7 +89,8 @@
       "gameId": null,
       "lineup": null,
       "checkedAt": null,
-      "status": "unpublished"
+      "status": "unpublished",
+      "lineupChecks": {}
     },
     {
       "date": "2026-11-15",
@@ -97,7 +103,8 @@
       "gameId": null,
       "lineup": null,
       "checkedAt": null,
-      "status": "unpublished"
+      "status": "unpublished",
+      "lineupChecks": {}
     },
     {
       "date": "2026-11-22",
@@ -110,7 +117,8 @@
       "gameId": null,
       "lineup": null,
       "checkedAt": null,
-      "status": "unpublished"
+      "status": "unpublished",
+      "lineupChecks": {}
     },
     {
       "date": "2026-11-27",
@@ -123,7 +131,8 @@
       "gameId": null,
       "lineup": null,
       "checkedAt": null,
-      "status": "unpublished"
+      "status": "unpublished",
+      "lineupChecks": {}
     },
     {
       "date": "2026-12-18",
@@ -136,7 +145,8 @@
       "gameId": null,
       "lineup": null,
       "checkedAt": null,
-      "status": "unpublished"
+      "status": "unpublished",
+      "lineupChecks": {}
     },
     {
       "date": "2026-12-28",
@@ -149,7 +159,8 @@
       "gameId": null,
       "lineup": null,
       "checkedAt": null,
-      "status": "unpublished"
+      "status": "unpublished",
+      "lineupChecks": {}
     },
     {
       "date": "2027-01-06",
@@ -162,7 +173,8 @@
       "gameId": null,
       "lineup": null,
       "checkedAt": null,
-      "status": "unpublished"
+      "status": "unpublished",
+      "lineupChecks": {}
     },
     {
       "date": "2027-01-17",
@@ -175,7 +187,8 @@
       "gameId": null,
       "lineup": null,
       "checkedAt": null,
-      "status": "unpublished"
+      "status": "unpublished",
+      "lineupChecks": {}
     },
     {
       "date": "2027-01-27",
@@ -188,7 +201,8 @@
       "gameId": null,
       "lineup": null,
       "checkedAt": null,
-      "status": "unpublished"
+      "status": "unpublished",
+      "lineupChecks": {}
     },
     {
       "date": "2027-02-06",
@@ -201,7 +215,8 @@
       "gameId": null,
       "lineup": null,
       "checkedAt": null,
-      "status": "unpublished"
+      "status": "unpublished",
+      "lineupChecks": {}
     },
     {
       "date": "2027-02-07",
@@ -214,7 +229,8 @@
       "gameId": null,
       "lineup": null,
       "checkedAt": null,
-      "status": "unpublished"
+      "status": "unpublished",
+      "lineupChecks": {}
     },
     {
       "date": "2027-02-24",
@@ -227,7 +243,8 @@
       "gameId": null,
       "lineup": null,
       "checkedAt": null,
-      "status": "unpublished"
+      "status": "unpublished",
+      "lineupChecks": {}
     },
     {
       "date": "2027-02-28",
@@ -240,7 +257,8 @@
       "gameId": null,
       "lineup": null,
       "checkedAt": null,
-      "status": "unpublished"
+      "status": "unpublished",
+      "lineupChecks": {}
     }
   ],
   "demo": {
@@ -393,7 +411,7 @@
       "source": "https://stats.swehockey.se/Game/LineUps/1113118"
     },
     "status": "published",
-    "checkedAt": "2026-10-01T21:41:21.724005+02:00"
+    "checkedAt": "2026-10-01T22:47:27.440112+02:00"
   },
   "errors": []
 }
