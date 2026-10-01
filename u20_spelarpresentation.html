@@ -29,7 +29,7 @@ function display(value){return value===null||value===undefined||value===''?'—'
 function key(name){return name.toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9\s]/g,'').replace(/\s+/g,' ').trim()}
 function message(value){byId('status').textContent=value;byId('status').classList.toggle('show',Boolean(value))}
 function size(){var box=document.querySelector('.viewport'),scale=Math.min(box.clientWidth/1920,box.clientHeight/1080);document.querySelector('.frame').style.width=1920*scale+'px';document.querySelector('.frame').style.height=1080*scale+'px';document.querySelector('.screen').style.transform='scale('+scale+')'}
-function photo(player){var image=el('img','profile-photo');image.alt='';image.src=player.number?new URL(photos[key(player.name)]||photos[player.number]||'u20/spelarfoton/'+key(player.name).replace(/ /g,'-')+'.jpg',location.href).href:dragon;image.onerror=function(){image.onerror=null;image.src=dragon};return image}
+function photo(player){var image=el('img','profile-photo');image.alt='';image.src=player.number?new URL(photos[player.number]||photos[key(player.name)]||'u20/spelarfoton/'+player.number+'.jpg',location.href).href:dragon;image.onerror=function(){image.onerror=null;image.src=dragon};return image}
 function render(){
 var panel=clear('presentation');
 if(!players.length){panel.appendChild(el('h2','profile-name','Väntar på spelaruppgifter'));size();return}
