@@ -1,1 +1,42 @@
+name: Uppdatera A-lagets laguppställning
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'Spelschema_2627.csv'
+      - 'nyindex_tizen.html'
+      - 'scripts/update-lineup.py'
+      - 'scripts/update-player-info.py'
+      - '.github/workflows/laguppstallning.yml'
+  schedule:
+    - cron: '*/15 * * * *'
+permissions:
+  contents: write
+concurrency:
+  group: shc-laguppstallning
+  cancel-in-progress: false
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Hämta Swehockey
+        run: python scripts/update-lineup.py ${{ github.event_name != 'schedule' && '--force' || '' }}
+      - name: Hämta Eliteprospects
+        continue-on-error: true
+        env:
+          EP_API_KEY: ${{ secrets.EP_API_KEY }}
+        run: python scripts/update-player-info.py
+      - name: Spara uppdatering
+        run: |
+          if ! git diff --quiet -- laguppstallning/data.json laguppstallning/spelarinfo.json; then
+            git config user.name "SHC matchskärm"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add laguppstallning/data.json laguppstallning/spelarinfo.json
+            git commit -m "Uppdatera A-lagets laguppställning från Swehockey"
+            git push
+          fi
 
