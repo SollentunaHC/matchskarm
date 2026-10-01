@@ -1,0 +1,378 @@
+{
+  "season": "2026-2027",
+  "previousSeason": "2025-2026",
+  "team": "Sollentuna HC U20",
+  "players": [
+    {
+      "id": 955486,
+      "name": "Nils Dalgård",
+      "dateOfBirth": "2007-05-16",
+      "birthYear": 2007,
+      "youthTeam": "Vallentuna Rangers HF",
+      "previousSeason": "2025-2026",
+      "previousTeams": [
+        "Sollentuna HC U20"
+      ],
+      "source": "https://www.eliteprospects.com/player/955486/nils-dalgard",
+      "profileCheckedAt": "2026-10-01T21:11:04.409Z"
+    },
+    {
+      "id": 975571,
+      "name": "Theo Gidlund",
+      "dateOfBirth": "2008-07-18",
+      "birthYear": 2008,
+      "youthTeam": "Tullinge TP",
+      "previousSeason": "2025-2026",
+      "previousTeams": [
+        "Sollentuna HC U18",
+        "Sollentuna HC U20"
+      ],
+      "source": "https://www.eliteprospects.com/player/975571/theo-gidlund",
+      "profileCheckedAt": "2026-10-01T21:11:04.409Z"
+    },
+    {
+      "id": 968064,
+      "name": "Elias Nilsson",
+      "dateOfBirth": "2008-07-21",
+      "birthYear": 2008,
+      "youthTeam": "Tranås AIF",
+      "previousSeason": "2025-2026",
+      "previousTeams": [
+        "Sollentuna HC U18"
+      ],
+      "source": "https://www.eliteprospects.com/player/968064/elias-nilsson",
+      "profileCheckedAt": "2026-10-01T21:11:04.410Z"
+    },
+    {
+      "id": 890853,
+      "name": "Martin Berglund",
+      "dateOfBirth": "2007-08-03",
+      "birthYear": 2007,
+      "youthTeam": "Sollentuna HC",
+      "previousSeason": "2025-2026",
+      "previousTeams": [
+        "Sollentuna HC U20"
+      ],
+      "source": "https://www.eliteprospects.com/player/890853/martin-berglund",
+      "profileCheckedAt": "2026-10-01T21:11:04.412Z"
+    },
+    {
+      "id": 906684,
+      "name": "Vincent De Alencar",
+      "dateOfBirth": "2007-02-22",
+      "birthYear": 2007,
+      "youthTeam": "Sollentuna HC",
+      "previousSeason": "2025-2026",
+      "previousTeams": [
+        "Sollentuna HC U20"
+      ],
+      "source": "https://www.eliteprospects.com/player/906684/vincent-de-alencar",
+      "profileCheckedAt": "2026-10-01T21:11:04.412Z"
+    },
+    {
+      "id": 1041607,
+      "name": "Jonathan Edin",
+      "dateOfBirth": "2008-08-13",
+      "birthYear": 2008,
+      "youthTeam": "Bålsta HC",
+      "previousSeason": "2025-2026",
+      "previousTeams": [
+        "Almtuna IS U18",
+        "Almtuna IS U20"
+      ],
+      "source": "https://www.eliteprospects.com/player/1041607/jonathan-edin",
+      "profileCheckedAt": "2026-10-01T21:11:04.412Z"
+    },
+    {
+      "id": 980765,
+      "name": "Alvin Ferm",
+      "dateOfBirth": "2008-12-31",
+      "birthYear": 2008,
+      "youthTeam": "Vallentuna Hockey",
+      "previousSeason": "2025-2026",
+      "previousTeams": [
+        "Vallentuna Hockey U18",
+        "Vallentuna Hockey U20"
+      ],
+      "source": "https://www.eliteprospects.com/player/980765/alvin-ferm",
+      "profileCheckedAt": "2026-10-01T21:11:04.413Z"
+    },
+    {
+      "id": 1028179,
+      "name": "Filip Larsson",
+      "dateOfBirth": "2008-06-27",
+      "birthYear": 2008,
+      "youthTeam": "Viggbyholms IK",
+      "previousSeason": "2025-2026",
+      "previousTeams": [
+        "Kalmar HC U20",
+        "Sollentuna HC U18"
+      ],
+      "source": "https://www.eliteprospects.com/player/1028179/filip-larsson",
+      "profileCheckedAt": "2026-10-01T21:11:04.413Z"
+    },
+    {
+      "id": 955896,
+      "name": "Alfred Lindberg",
+      "dateOfBirth": "2008-06-13",
+      "birthYear": 2008,
+      "youthTeam": "Sollentuna HC",
+      "previousSeason": "2025-2026",
+      "previousTeams": [
+        "IFK Täby HC U18",
+        "IFK Täby HC U20"
+      ],
+      "source": "https://www.eliteprospects.com/player/955896/alfred-lindberg",
+      "profileCheckedAt": "2026-10-01T21:11:04.413Z"
+    },
+    {
+      "id": 1028492,
+      "name": "David Svedlund",
+      "dateOfBirth": "2008-05-14",
+      "birthYear": 2008,
+      "youthTeam": "Skå IK",
+      "previousSeason": "2025-2026",
+      "previousTeams": [
+        "Värmdö HC U18",
+        "Värmdö HC"
+      ],
+      "source": "https://www.eliteprospects.com/player/1028492/david-svedlund",
+      "profileCheckedAt": "2026-10-01T21:11:04.414Z"
+    },
+    {
+      "id": 882960,
+      "name": "Itay Tamir",
+      "dateOfBirth": "2007-07-29",
+      "birthYear": 2007,
+      "youthTeam": "Vallentuna Rangers HF",
+      "previousSeason": "2025-2026",
+      "previousTeams": [
+        "Sollentuna HC U20"
+      ],
+      "source": "https://www.eliteprospects.com/player/882960/itay-tamir",
+      "profileCheckedAt": "2026-10-01T21:11:04.414Z"
+    },
+    {
+      "id": 859597,
+      "name": "Hugo Wiberg",
+      "dateOfBirth": "2006-02-17",
+      "birthYear": 2006,
+      "youthTeam": "Spånga IS",
+      "previousSeason": "2025-2026",
+      "previousTeams": [
+        "Sollentuna HC U20",
+        "Sollentuna HC"
+      ],
+      "source": "https://www.eliteprospects.com/player/859597/hugo-wiberg",
+      "profileCheckedAt": "2026-10-01T21:11:04.414Z"
+    },
+    {
+      "id": 872513,
+      "name": "Noah Wideberg",
+      "dateOfBirth": "2007-08-19",
+      "birthYear": 2007,
+      "youthTeam": "Hässelby Kälvesta HC",
+      "previousSeason": "2025-2026",
+      "previousTeams": [
+        "Flemingsbergs IK U20",
+        "Flemingsbergs IK"
+      ],
+      "source": "https://www.eliteprospects.com/player/872513/noah-wideberg",
+      "profileCheckedAt": "2026-10-01T21:11:04.414Z"
+    },
+    {
+      "id": 1009139,
+      "name": "Nikolaj Alkas Alias",
+      "dateOfBirth": "2008-02-19",
+      "birthYear": 2008,
+      "youthTeam": "Hässelby-Kälvesta SK",
+      "previousSeason": "2025-2026",
+      "previousTeams": [
+        "Sollentuna HC U18"
+      ],
+      "source": "https://www.eliteprospects.com/player/1009139/nikolaj-alkas-alias",
+      "profileCheckedAt": "2026-10-01T21:11:04.415Z"
+    },
+    {
+      "id": 892384,
+      "name": "Alexander Borgström",
+      "dateOfBirth": "2008-09-07",
+      "birthYear": 2008,
+      "youthTeam": "Örebro HUF",
+      "previousSeason": "2025-2026",
+      "previousTeams": [
+        "Värmdö HC U18",
+        "Värmdö HC"
+      ],
+      "source": "https://www.eliteprospects.com/player/892384/alexander-borgstrom",
+      "profileCheckedAt": "2026-10-01T21:11:04.415Z"
+    },
+    {
+      "id": 946882,
+      "name": "Sebastian Brunnberg",
+      "dateOfBirth": "2007-09-15",
+      "birthYear": 2007,
+      "youthTeam": "AIK",
+      "previousSeason": "2025-2026",
+      "previousTeams": [
+        "Almtuna IS U20"
+      ],
+      "source": "https://www.eliteprospects.com/player/946882/sebastian-brunnberg",
+      "profileCheckedAt": "2026-10-01T21:11:04.415Z"
+    },
+    {
+      "id": 810971,
+      "name": "Daniel Dyment",
+      "dateOfBirth": "2008-06-22",
+      "birthYear": 2008,
+      "youthTeam": "EHC München",
+      "previousSeason": "2025-2026",
+      "previousTeams": [
+        "IFK Täby HC U18",
+        "IFK Täby HC U20"
+      ],
+      "source": "https://www.eliteprospects.com/player/810971/daniel-dyment",
+      "profileCheckedAt": "2026-10-01T21:11:04.416Z",
+      "aliases": [
+        "Daniel Kazimov"
+      ]
+    },
+    {
+      "id": 873363,
+      "name": "Branislav Fatul",
+      "dateOfBirth": "2007-08-07",
+      "birthYear": 2007,
+      "youthTeam": null,
+      "previousSeason": "2025-2026",
+      "previousTeams": [
+        "Sollentuna HC U20",
+        "Sollentuna HC"
+      ],
+      "source": "https://www.eliteprospects.com/player/873363/branislav-fatul",
+      "profileCheckedAt": "2026-10-01T21:11:04.416Z"
+    },
+    {
+      "id": 955897,
+      "name": "Olle Fredén Ericsson",
+      "dateOfBirth": "2008-08-25",
+      "birthYear": 2008,
+      "youthTeam": "Sollentuna HC",
+      "previousSeason": "2025-2026",
+      "previousTeams": [
+        "IFK Täby HC U18",
+        "IFK Täby HC U20"
+      ],
+      "source": "https://www.eliteprospects.com/player/955897/olle-freden-ericsson",
+      "profileCheckedAt": "2026-10-01T21:11:04.417Z"
+    },
+    {
+      "id": 859976,
+      "name": "Joel Ishäll",
+      "dateOfBirth": "2006-11-25",
+      "birthYear": 2006,
+      "youthTeam": "AIK",
+      "previousSeason": "2025-2026",
+      "previousTeams": [
+        "Sollentuna HC U20"
+      ],
+      "source": "https://www.eliteprospects.com/player/859976/joel-ishall",
+      "profileCheckedAt": "2026-10-01T21:11:04.417Z"
+    },
+    {
+      "id": 951503,
+      "name": "Melker Kastevik",
+      "dateOfBirth": "2008-02-27",
+      "birthYear": 2008,
+      "youthTeam": "Järfälla HC",
+      "previousSeason": "2025-2026",
+      "previousTeams": [
+        "SDE HF U18",
+        "SDE HF U20"
+      ],
+      "source": "https://www.eliteprospects.com/player/951503/melker-kastevik",
+      "profileCheckedAt": "2026-10-01T21:11:04.418Z"
+    },
+    {
+      "id": 955899,
+      "name": "Carl-Edward Klint",
+      "dateOfBirth": "2008-01-16",
+      "birthYear": 2008,
+      "youthTeam": "Sollentuna HC",
+      "previousSeason": "2025-2026",
+      "previousTeams": [
+        "Sollentuna HC U18"
+      ],
+      "source": "https://www.eliteprospects.com/player/955899/carl-edward-klint",
+      "profileCheckedAt": "2026-10-01T21:11:04.418Z"
+    },
+    {
+      "id": 1011360,
+      "name": "William Kolm",
+      "dateOfBirth": "2008-01-22",
+      "birthYear": 2008,
+      "youthTeam": "Sundbybergs IK",
+      "previousSeason": "2025-2026",
+      "previousTeams": [
+        "Nacka HK U18",
+        "Nacka HK U20"
+      ],
+      "source": "https://www.eliteprospects.com/player/1011360/william-kolm",
+      "profileCheckedAt": "2026-10-01T21:11:04.419Z"
+    },
+    {
+      "id": 955485,
+      "name": "Alexander Konnebäck",
+      "dateOfBirth": "2007-07-24",
+      "birthYear": 2007,
+      "youthTeam": "IK Waxholm",
+      "previousSeason": "2025-2026",
+      "previousTeams": [
+        "Viggbyholms IK",
+        "Sollentuna HC U20"
+      ],
+      "source": "https://www.eliteprospects.com/player/955485/alexander-konneback",
+      "profileCheckedAt": "2026-10-01T21:11:04.419Z"
+    },
+    {
+      "id": 973696,
+      "name": "Elton Mannerhill",
+      "dateOfBirth": "2008-02-08",
+      "birthYear": 2008,
+      "youthTeam": "Kista HC",
+      "previousSeason": "2025-2026",
+      "previousTeams": [],
+      "source": "https://www.eliteprospects.com/player/973696/elton-mannerhill",
+      "profileCheckedAt": "2026-10-01T21:11:04.420Z"
+    },
+    {
+      "id": 918033,
+      "name": "Milan Ruzicka",
+      "dateOfBirth": "2007-05-26",
+      "birthYear": 2007,
+      "youthTeam": "BK Mlada Boleslav",
+      "previousSeason": "2025-2026",
+      "previousTeams": [
+        "Sollentuna HC U20"
+      ],
+      "source": "https://www.eliteprospects.com/player/918033/milan-ruzicka",
+      "profileCheckedAt": "2026-10-01T21:11:04.420Z",
+      "aliases": [
+        "Milan Jiri Ruzicka"
+      ]
+    },
+    {
+      "id": 857791,
+      "name": "Erik Wiberg",
+      "dateOfBirth": "2006-02-17",
+      "birthYear": 2006,
+      "youthTeam": "Spånga IS",
+      "previousSeason": "2025-2026",
+      "previousTeams": [
+        "Sollentuna HC U20",
+        "Sollentuna HC"
+      ],
+      "source": "https://www.eliteprospects.com/player/857791/erik-wiberg",
+      "profileCheckedAt": "2026-10-01T21:11:04.421Z"
+    }
+  ]
+}
