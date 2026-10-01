@@ -40,6 +40,26 @@ För andra filnamn eller PNG-foton, redigera `laguppstallning/spelarfoton.json`:
 }
 ```
 
+## Spelarinformation från Eliteprospects
+
+Klicka på en spelare för en större 16:9-presentation. Knappen **Spelarpresentation** växlar från laguppställningen till en spelare i taget, med byte var tolfte sekund. Pilarna går till föregående/nästa spelare.
+
+- Automatisk presentation för arenaskärmen: `laguppstallning.html?info=1&kiosk=1`
+- Test med laget den 25 september: `laguppstallning.html?demo=1&info=1&kiosk=1`
+
+Fälten är namn, födelseår från Date of Birth, moderförening från Youth Team, samtliga föreningar med spelade matcher 2025–2026 samt GP, G, A och TP för Sollentuna HC i Hockeyettan 2026–2027 (grundserie). API-fältet `regularStats.PTS` motsvarar webbplatsens TP. Slutspel, andra lag och juniorserier blandas inte in i årets statistik. Spelaridentiteten matchas via namn och en stabil Eliteprospects-identitet; tröjnummer ensamt används inte för att gissa identitet.
+
+**Automatiken behöver en Eliteprospects API-nyckel.** Den vanliga webbsidan blockerar automatisk hämtning. Paketet har ett verifierat exempel för Lukas Paulsson; resterande profilfält är tomma tills API-anslutningen är klar. Saknade uppgifter visas som ”—”, medan riktiga nollor visas som 0. GP 2 i exemplet kommer från lagets statistiksida, som var mer aktuell än spelarprofilens GP 1.
+
+1. Skaffa API-åtkomst via https://developer.eliteprospects.com/. För föregående förening behöver nyckeln även åtkomst till säsongen 2025–2026.
+2. I GitHub-repot: **Settings → Secrets and variables → Actions → New repository secret**.
+3. Namn: `EP_API_KEY`. Värde: din API-nyckel. Lägg aldrig nyckeln i HTML, JSON eller ett vanligt repo-dokument.
+4. Kör **Actions → Uppdatera A-lagets laguppställning → Run workflow** igen.
+
+Profiluppgifterna uppdateras högst en gång per dag. Föregående säsongs föreningar cachas i 30 dagar. Hämtningen begränsas till högst ungefär 10 API-anrop/minut. Om historisk API-åtkomst saknas uppdateras årets uppgifter ändå och föregående förening förblir okänd. API-anslutningen är förberedd enligt dokumentationen, men kan inte kontrolleras mot autentiserade svar förrän nyckeln är tillagd.
+
+Skript: `scripts/update-player-info.py`. Data: `laguppstallning/spelarinfo.json`.
+
 ## Felsökning
 
 Kör `python scripts/update-lineup.py --force` för en manuell hämtning. Kräver Python 3.9 eller senare. Inga externa Python-paket behövs. Om Swehockey ändrar HTML-strukturen misslyckas kontrollen synligt, utan att ersätta tidigare uppgifter med tomma matcher.

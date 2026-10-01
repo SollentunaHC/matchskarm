@@ -1,0 +1,28 @@
+{
+  "team": "Sollentuna HC",
+  "teamId": 494,
+  "season": "2026-2027",
+  "previousSeason": "2025-2026",
+  "status": "needs_api_key",
+  "message": "Automatisk uppdatering väntar på EP_API_KEY. Ett verifierat exempel visas tills anslutningen är klar.",
+  "updatedAt": "2026-10-01T19:53:40+00:00",
+  "source": "https://www.eliteprospects.com/team/494/sollentuna-hc?tab=stats",
+  "players": [
+    {
+      "id": 279195,
+      "name": "Lukas Paulsson",
+      "nameKey": "lukas paulsson",
+      "number": "20",
+      "dateOfBirth": "2000-04-04",
+      "birthYear": 2000,
+      "youthTeam": "Väsby IK",
+      "previousSeason": "2025-2026",
+      "previousTeams": ["Sollentuna HC"],
+      "stats": {"GP": 2, "G": 0, "A": 0, "TP": 0},
+      "source": "https://www.eliteprospects.com/player/279195/lukas-paulsson",
+      "statsSource": "https://www.eliteprospects.com/team/494/sollentuna-hc?tab=stats",
+      "historyCheckedAt": "2026-10-01T19:53:40+00:00",
+      "updatedAt": "2026-10-01T19:53:40+00:00"
+    }
+  ]
+}
