@@ -13,7 +13,26 @@
 <style>
 /* U20: horizontal lines and a light presentation with the portrait on the right. */
 body{background:#e9eef5}.screen{background:linear-gradient(140deg,#fff,#e7eef6);color:#102a49;border-top:0;border-left:14px solid #e32642;padding:34px 40px;grid-template-rows:142px minmax(0,1fr)150px 32px;gap:16px}.kicker{color:#d92340;letter-spacing:3px}.header h1{font-size:56px;color:#102a49}.club{color:#102a49}.match-name{color:#102a49}.match-meta{color:#375675}.match-tag{color:#d92340}.lines{grid-template-columns:1fr;grid-template-rows:repeat(4,minmax(0,1fr));gap:12px}.line{display:grid;grid-template-columns:145px minmax(0,3fr) minmax(0,2fr);gap:16px;align-items:center;background:#fff;border-top:0;border-left:5px solid #153d69;border-radius:10px;padding:8px 14px;box-shadow:0 3px 10px #14365210}.line h2{font-size:26px;letter-spacing:1px;color:#153d69;margin:0;text-align:left}.forwards,.defenders{gap:10px}.defenders{border-top:0;border-left:1px solid #d1dce9;margin:0;padding:0 0 0 16px}.player,.goalie{color:#102a49}.player:hover{background:#edf3fa}.portrait{height:56px}.player-number{font-size:25px;color:#d92340;margin-top:0}.player-first{font-size:17px;margin-top:2px}.player-last{font-size:20px;margin-top:1px}.goalies{background:#153d69;border-radius:10px;padding:15px 24px;color:#fff}.goalies h2{font-size:20px;margin-bottom:8px}.goalie{color:#fff}.goalie .player-number{color:#fff}.coaches{border-radius:10px;background:#fff;border:1px solid #d7e1ed;padding:20px 24px}.coach-name{font-size:30px}.coach-role{font-size:20px;margin-bottom:8px}footer{color:#375675;border-color:#becde0;font-size:18px}.update{font-size:17px}.empty{background:#fff;border:1px solid #d7e1ed;border-radius:12px}.empty p{color:#375675}.empty h2{color:#102a49}.presentation{grid-template-columns:minmax(0,1fr) 460px;gap:40px;background:#fff;border-top:0;border-radius:14px;border-left:6px solid #d92340;box-shadow:0 5px 20px #17375312;padding:30px 42px;overflow:hidden}.presentation>div:first-child{grid-column:2;grid-row:1;min-width:0}.presentation>div:nth-child(2){grid-column:1;grid-row:1;min-width:0}.profile-photo{display:block;width:440px;max-width:100%;height:440px;object-fit:contain;margin:auto}.profile-number{color:#d92340;font-size:76px}.profile-counter{color:#375675}.profile-name{color:#102a49;font-size:62px;margin-bottom:22px}.profile-bio{font-size:27px;gap:12px;color:#102a49}.profile-bio .label{color:#476584;font-size:19px}.profile-stats{gap:14px;margin-top:26px}.profile-stat{background:#edf3fa;border-bottom:0;border-top:4px solid #d92340;border-radius:8px;padding:12px 14px}.profile-stat-label{color:#375675;font-size:21px}.profile-stat-value{color:#153d69;font-size:62px}.profile-note{color:#375675;font-size:20px;margin-top:16px}
-</style><style>.signature{position:absolute;right:40px;bottom:12px;font-size:16px;line-height:1.2;color:inherit;opacity:.7;white-space:nowrap;pointer-events:none}</style></head>
+</style><style>.signature{position:absolute;right:40px;bottom:12px;font-size:16px;line-height:1.2;color:inherit;opacity:.7;white-space:nowrap;pointer-events:none}</style>
+<style id="portrait-layout">
+.portrait-mode .screen{width:1080px;height:1920px;padding:38px;grid-template-rows:245px minmax(0,1fr)225px 44px;gap:20px}
+.portrait-mode .header{flex-direction:column;align-items:flex-start;justify-content:center;gap:20px}
+.portrait-mode .header h1{font-size:59px;margin:10px 0}.portrait-mode .kicker{font-size:22px;letter-spacing:2px}.portrait-mode .club{display:none}
+.portrait-mode .match{text-align:left;max-width:100%;width:100%}.portrait-mode .match-name{font-size:35px}.portrait-mode .match-meta{font-size:25px;margin-top:8px}.portrait-mode .match-tag{font-size:19px;margin-top:8px}
+.portrait-mode .lines{grid-template-columns:1fr;grid-template-rows:repeat(4,minmax(0,1fr));gap:18px}
+.portrait-mode .line{display:grid;grid-template-columns:55px minmax(0,3fr) minmax(0,2fr);gap:10px;padding:16px 12px;align-items:center;border-radius:8px}
+.portrait-mode .line h2{font-size:25px;letter-spacing:0;margin:0;text-align:center}
+.portrait-mode .forwards{gap:8px}.portrait-mode .defenders{border-top:0;border-left:1px solid #72859a66;margin:0;padding:0 0 0 10px;gap:8px}
+.portrait-mode .portrait{height:140px}.portrait-mode .player-number{font-size:39px;margin-top:3px}.portrait-mode .player-first{font-size:23px;margin-top:4px}.portrait-mode .player-last{font-size:25px;margin-top:3px}
+.portrait-mode .bottom{grid-template-columns:1fr 1fr;gap:18px}.portrait-mode .goalies{padding:20px}.portrait-mode .goalie-list{gap:15px}.portrait-mode .goalie{flex-direction:column;align-items:flex-start;gap:5px}.portrait-mode .goalie .portrait{display:none}.portrait-mode .goalie .player-number{font-size:38px}.portrait-mode .goalie .player-first{font-size:23px}.portrait-mode .goalie .player-last{font-size:25px}
+.portrait-mode .coaches{padding:20px;gap:18px;grid-template-columns:1fr}.portrait-mode .coach-role{font-size:20px;margin-bottom:5px}.portrait-mode .coach-name{font-size:30px}
+.portrait-mode .presentation{grid-template-columns:1fr;grid-template-rows:650px minmax(0,1fr);align-items:start;padding:30px 40px;gap:25px}
+.portrait-mode .presentation>div:first-child{grid-column:1;grid-row:1;min-width:0}.portrait-mode .presentation>div:nth-child(2){grid-column:1;grid-row:2;min-width:0}
+.portrait-mode .profile-photo{display:block;width:100%;max-width:100%;height:510px;margin:auto;object-fit:contain}.portrait-mode .profile-number{font-size:88px;margin-top:10px}.portrait-mode .profile-counter{font-size:22px;margin-top:12px}
+.portrait-mode .profile-name{font-size:62px;text-align:center;line-height:1.08;margin:0 0 30px;overflow-wrap:anywhere}.portrait-mode .profile-bio{font-size:31px;gap:20px}.portrait-mode .profile-bio .label{font-size:23px}.portrait-mode .profile-stats{gap:15px;margin-top:30px}.portrait-mode .profile-stat{padding:20px 10px}.portrait-mode .profile-stat-value{font-size:70px}.portrait-mode .profile-stat-label{font-size:22px}.portrait-mode .profile-note{font-size:21px}
+.portrait-mode footer{font-size:17px;gap:12px}.portrait-mode .update{font-size:16px}.portrait-mode .signature{right:38px;bottom:10px;font-size:16px}
+</style>
+</head>
 <body>
 <nav class="toolbar" aria-label="Välj match">
 <label>Match <select id="match-select"><option>Hämtar matcher…</option></select></label>
@@ -38,6 +57,9 @@ body{background:#e9eef5}.screen{background:linear-gradient(140deg,#fff,#e7eef6);
 (function(){
 'use strict';
 var params=new URLSearchParams(location.search);
+var portraitMode=params.get('portrait')==='1';
+if(portraitMode){document.body.classList.add('portrait-mode');document.querySelector('.viewport').setAttribute('aria-label','Laguppställning på stående skärm');}
+var screenWidth=portraitMode?1080:1920,screenHeight=portraitMode?1920:1080;
 var raw='https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/';
 var local=location.hostname==='localhost'||location.hostname==='127.0.0.1';
 var base=local?'./':raw;
@@ -49,7 +71,7 @@ if(params.get('kiosk')==='1')document.body.classList.add('kiosk');
 function byId(id){return document.getElementById(id)}
 function el(tag,cls,value){var node=document.createElement(tag);if(cls)node.className=cls;if(value!==undefined)node.textContent=value;return node}
 function today(){return new Intl.DateTimeFormat('sv-SE',{timeZone:'Europe/Stockholm',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date())}
-function size(){var box=document.querySelector('.viewport');var scale=Math.min(box.clientWidth/1920,box.clientHeight/1080);document.querySelector('.frame').style.width=1920*scale+'px';document.querySelector('.frame').style.height=1080*scale+'px';document.querySelector('.screen').style.transform='scale('+scale+')'}
+function size(){var box=document.querySelector('.viewport');var scale=Math.min(box.clientWidth/screenWidth,box.clientHeight/screenHeight);document.querySelector('.frame').style.width=screenWidth*scale+'px';document.querySelector('.frame').style.height=screenHeight*scale+'px';document.querySelector('.screen').style.transform='scale('+scale+')'}
 window.addEventListener('resize',size);document.addEventListener('fullscreenchange',size);size();
 function photo(player){var image=el('img','portrait');image.alt='';var path=photos[player.number]||photos[nameKey(player.firstName+' '+player.lastName)]||'u20/spelarfoton/'+player.number+'.jpg';image.src=new URL(path,location.href).href;image.onerror=function(){image.onerror=null;image.src=dragon};return image}
 function playerCard(player,goalie){var card=el('button',goalie?'goalie':'player');card.type='button';card.setAttribute('aria-label','Visa spelarinformation för '+player.firstName+' '+player.lastName);card.appendChild(photo(player));var info=goalie?el('div'):card;info.appendChild(el('div','player-number',player.number));info.appendChild(el('div','player-first',player.firstName));info.appendChild(el('div','player-last',player.lastName));if(goalie)card.appendChild(info);card.addEventListener('click',function(){var list=playersForGame();profileIndex=list.findIndex(function(p){return p.number===player.number&&p.lastName===player.lastName});infoMode=true;updateAddress();renderPresentation()});return card}
