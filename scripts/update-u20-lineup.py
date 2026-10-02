@@ -90,7 +90,7 @@ def screen_config(source):
             'check': variable('MATCH_CHECK_URL'), 'knownIds': known_ids}
 
 
-def resolve_game_id(game, config):
+def resolve_worker_game_id(game, config):
     # Same direct-ID fallback and query fields as loadLiveResult() in nyindex_tizen.html.
     direct = game.get('gameId') or config['knownIds'].get(game['matchNumber'])
     values = {'match': direct or game['matchNumber'], 'series': game.get('competition', '')}
@@ -113,6 +113,38 @@ def resolve_game_id(game, config):
         if actual and text(str(actual)).casefold() != text(expected).casefold():
             raise ValueError('Worker game does not match CSV: ' + key)
     return game_id
+
+
+def resolve_schedule_game_id(game):
+    markup = download(SCHEDULE)
+    for row in re.findall(r'<tr\b[^>]*>(.*?)</tr>', markup, re.S | re.I):
+        if not re.search(r'title=["\']' + re.escape(game['matchNumber']) + r'["\']', row):
+            continue
+        if game['home'] not in text(row) or game['away'] not in text(row):
+            raise ValueError('Schedule match identity does not match CSV')
+        ids = set(re.findall(r'/Game/(?:Events|LineUps|GamePreview)/(\d+)', row))
+        if len(ids) == 1:
+            return ids.pop()
+    # Unplayed games may only have their GameID on today's Live page.
+    if game['date'] == datetime.now(ZoneInfo('Europe/Stockholm')).date().isoformat():
+        live = download(BASE + '/ScheduleAndResults/Live/20963')
+        if not re.search(r'Last update:.*?' + re.escape(game['date']), text(live)):
+            raise MatchUnavailable('Live page is not dated for this match')
+        pattern = (re.escape(game['home']) + r'.{0,1000}?/Game/Events/(\d+)'
+                   + r'.{0,500}?' + re.escape(game['time'])
+                   + r'.{0,500}?' + re.escape(game['away']))
+        ids = set(re.findall(pattern, html.unescape(live), re.S))
+        if len(ids) == 1:
+            return ids.pop()
+    raise MatchUnavailable('Match-ID är ännu inte tillgängligt i Swehockeys spelschema eller Live.')
+
+
+def resolve_game_id(game, config):
+    try:
+        return resolve_worker_game_id(game, config)
+    except Exception as worker_error:
+        print('Worker lookup failed; trying Swehockey directly:', worker_error)
+        return resolve_schedule_game_id(game)
 
 
 def check_future_game(game, config):
@@ -198,11 +230,13 @@ def build(force=False):
         game['gameId'] = game['gameId'] or previous.get('gameId')
         game['lineup'] = previous.get('lineup')
         game['checkedAt'] = previous.get('checkedAt')
-        game['status'] = 'published' if game['lineup'] else 'unpublished'
+        game['status'] = previous.get('status', 'published' if game['lineup'] else 'unpublished')
+        if previous.get('resolutionMessage'):
+            game['resolutionMessage'] = previous['resolutionMessage']
         game['lineupChecks'] = dict(previous.get('lineupChecks', {}))
         slot = due_checkpoint(game, 'lineup', now, game['lineupChecks'])
-        historical_manual = force and game['date'] < now.date().isoformat()
-        if slot or historical_manual:
+        manual_refresh = force and game['date'] <= now.date().isoformat()
+        if slot or manual_refresh:
             if slot:
                 game['lineupChecks'][slot['key']] = dict(slot, result='attempted')
             try:
@@ -211,6 +245,7 @@ def build(force=False):
                     game['checkedAt'] = now.isoformat()
                     continue
                 game['gameId'] = resolve_game_id(game, config)
+                game.pop('resolutionMessage', None)
                 roster = parse_lineup(download(BASE + '/Game/LineUps/' + game['gameId']))
                 game['checkedAt'] = now.isoformat()
                 if roster:
