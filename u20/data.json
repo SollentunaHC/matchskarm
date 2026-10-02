@@ -6,7 +6,7 @@
   "csvUrl": "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/Spelschema_2627.csv",
   "configurationSource": "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/nyindex_tizen.html",
   "workerUrl": "https://sollentuna-hockey-live.gunnar-127.workers.dev/live?match=",
-  "scheduleCheckedAt": "2026-10-02T00:32:26.933212+02:00",
+  "scheduleCheckedAt": "2026-10-02T17:47:46.111371+02:00",
   "games": [
     {
       "date": "2026-09-25",
@@ -162,7 +162,7 @@
         },
         "source": "https://stats.swehockey.se/Game/LineUps/1111161"
       },
-      "checkedAt": "2026-10-02T00:32:26.933212+02:00",
+      "checkedAt": "2026-10-02T17:47:46.111371+02:00",
       "status": "published",
       "lineupChecks": {}
     },
@@ -315,7 +315,7 @@
         },
         "source": "https://stats.swehockey.se/Game/LineUps/1111155"
       },
-      "checkedAt": "2026-10-02T00:32:26.933212+02:00",
+      "checkedAt": "2026-10-02T17:47:46.111371+02:00",
       "status": "published",
       "lineupChecks": {}
     },
@@ -473,7 +473,7 @@
         },
         "source": "https://stats.swehockey.se/Game/LineUps/1111188"
       },
-      "checkedAt": "2026-10-02T00:32:26.933212+02:00",
+      "checkedAt": "2026-10-02T17:47:46.111371+02:00",
       "status": "published",
       "lineupChecks": {}
     },
@@ -488,8 +488,15 @@
       "gameId": null,
       "lineup": null,
       "checkedAt": null,
-      "status": "unpublished",
-      "lineupChecks": {}
+      "status": "error",
+      "lineupChecks": {
+        "97032079|2026-10-02T18:40:00+02:00|lineup|2026-10-02T17:41:00+02:00": {
+          "key": "97032079|2026-10-02T18:40:00+02:00|lineup|2026-10-02T17:41:00+02:00",
+          "scheduledAt": "2026-10-02T17:41:00+02:00",
+          "checkedAt": "2026-10-02T17:47:46.111371+02:00",
+          "result": "attempted"
+        }
+      }
     },
     {
       "date": "2026-10-18",
@@ -870,9 +877,11 @@
       },
       "source": "https://stats.swehockey.se/Game/LineUps/1111188"
     },
-    "checkedAt": "2026-10-02T00:32:26.933212+02:00",
+    "checkedAt": "2026-10-02T17:47:46.111371+02:00",
     "status": "published",
     "lineupChecks": {}
   },
-  "errors": []
+  "errors": [
+    "97032079: HTTP Error 502: Bad Gateway"
+  ]
 }
