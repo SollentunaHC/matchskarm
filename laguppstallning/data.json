@@ -6,7 +6,7 @@
   "csvUrl": "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/Spelschema_2627.csv",
   "configurationSource": "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/nyindex_tizen.html",
   "workerUrl": "https://sollentuna-hockey-live.gunnar-127.workers.dev/live?match=",
-  "scheduleCheckedAt": "2026-10-03T15:49:07.132090+02:00",
+  "scheduleCheckedAt": "2026-10-03T22:55:42.140997+02:00",
   "games": [
     {
       "date": "2026-10-03",
@@ -162,7 +162,7 @@
         },
         "source": "https://stats.swehockey.se/Game/LineUps/1112888"
       },
-      "checkedAt": "2026-10-03T15:49:07.132090+02:00",
+      "checkedAt": "2026-10-03T22:55:42.140997+02:00",
       "status": "published",
       "lineupChecks": {
         "90255135|2026-10-03T16:00:00+02:00|lineup|2026-10-03T15:01:00+02:00": {
@@ -568,7 +568,7 @@
       "source": "https://stats.swehockey.se/Game/LineUps/1113118"
     },
     "status": "published",
-    "checkedAt": "2026-10-03T15:49:07.132090+02:00"
+    "checkedAt": "2026-10-03T22:55:42.140997+02:00"
   },
   "errors": []
 }
