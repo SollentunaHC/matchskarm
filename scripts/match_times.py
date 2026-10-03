@@ -12,7 +12,7 @@ def start_time(game):
 def checkpoints(game, kind):
     start = start_time(game)
     if kind == 'lineup':
-        times = [start - timedelta(minutes=59), start - timedelta(minutes=29)]
+        times = [start - timedelta(minutes=minutes) for minutes in range(59, 0, -5)]
     elif kind == 'players':
         times = [start.replace(hour=6, minute=0), start.replace(hour=12, minute=0),
                  start - timedelta(minutes=90)]
