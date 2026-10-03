@@ -90,7 +90,7 @@ def screen_config(source):
             'check': variable('MATCH_CHECK_URL'), 'knownIds': known_ids}
 
 
-def resolve_game_id(game, config):
+def resolve_worker_game_id(game, config):
     # Same direct-ID fallback and query fields as loadLiveResult() in nyindex_tizen.html.
     direct = game.get('gameId') or config['knownIds'].get(game['matchNumber'])
     values = {'match': direct or game['matchNumber'], 'series': game.get('competition', '')}
@@ -115,6 +115,38 @@ def resolve_game_id(game, config):
     return game_id
 
 
+def resolve_schedule_game_id(game):
+    markup = download(SCHEDULE)
+    for row in re.findall(r'<tr\b[^>]*>(.*?)</tr>', markup, re.S | re.I):
+        if not re.search(r'title=["\']' + re.escape(game['matchNumber']) + r'["\']', row):
+            continue
+        if game['home'] not in text(row) or game['away'] not in text(row):
+            raise ValueError('Schedule match identity does not match CSV')
+        ids = set(re.findall(r'/Game/(?:Events|LineUps|GamePreview)/(\d+)', row))
+        if len(ids) == 1:
+            return ids.pop()
+    # Unplayed games may only have their GameID on today's Live page.
+    if game['date'] == datetime.now(ZoneInfo('Europe/Stockholm')).date().isoformat():
+        live = download(SCHEDULE.replace('/Schedule/', '/Live/'))
+        if not re.search(r'Last update:.*?' + re.escape(game['date']), text(live)):
+            raise MatchUnavailable('Live page is not dated for this match')
+        pattern = (re.escape(game['home']) + r'.{0,1000}?/Game/Events/(\d+)'
+                   + r'.{0,500}?' + re.escape(game['time'])
+                   + r'.{0,500}?' + re.escape(game['away']))
+        ids = set(re.findall(pattern, html.unescape(live), re.S))
+        if len(ids) == 1:
+            return ids.pop()
+    raise MatchUnavailable('Match-ID är ännu inte tillgängligt i Swehockeys spelschema eller Live.')
+
+
+def resolve_game_id(game, config):
+    try:
+        return resolve_worker_game_id(game, config)
+    except Exception as worker_error:
+        print('Worker lookup failed; trying Swehockey directly:', worker_error)
+        return resolve_schedule_game_id(game)
+
+
 def check_future_game(game, config):
     # Same requestFutureMatchCheck() call as the screen; future games need no scoreboard yet.
     values = {'date': game['date'], 'time': game['time'], 'home': game['home'],
@@ -132,7 +164,9 @@ def parse_lineup(markup):
     if not heading:
         return None
     section = markup[heading.end():]
-    section = section.split('</table>', 1)[0]
+    # U20 has a nested coach table before the players. Stop at the next team
+    # heading, not at the first closing table.
+    section = re.split(r'<h3\b', section, maxsplit=1, flags=re.I)[0]
     lines = {str(i): {'forwards': [], 'defenders': []} for i in range(1, 5)}
     goalies = []
     group = None
@@ -153,7 +187,7 @@ def parse_lineup(markup):
         if group == 'goalies':
             goalies.extend(players)
         elif group and players:
-            lines[group]['forwards' if first_row else 'defenders'].extend(players)
+            lines[group]['defenders' if first_row else 'forwards'].extend(players)
             first_row = False
     coaches = {}
     for label, key in [('Head Coach', 'head'), ('Assistant Coach', 'assistant')]:
@@ -196,11 +230,11 @@ def build(force=False):
         game['gameId'] = game['gameId'] or previous.get('gameId')
         game['lineup'] = previous.get('lineup')
         game['checkedAt'] = previous.get('checkedAt')
-        game['status'] = 'published' if game['lineup'] else 'unpublished'
+        game['status'] = previous.get('status', 'published' if game['lineup'] else 'unpublished')
         game['lineupChecks'] = dict(previous.get('lineupChecks', {}))
         slot = due_checkpoint(game, 'lineup', now, game['lineupChecks'])
-        historical_manual = force and game['date'] < now.date().isoformat()
-        if slot or historical_manual:
+        manual_refresh = force and game['date'] <= now.date().isoformat()
+        if slot or manual_refresh:
             if slot:
                 game['lineupChecks'][slot['key']] = dict(slot, result='attempted')
             try:
