@@ -461,7 +461,7 @@ export default {
       }
     }
 
-    if(url.pathname === '/matches'){const league=url.searchParams.get('league')||'hockeyettan';if(!['hockeyettan','u20h'].includes(league))return json({error:'Okänd serie'},400);try{return json(await leagueMatches(league),200,{'Cache-Control':'public,max-age=20'})}catch(e){return json({error:e.message},502,{'Cache-Control':'no-store'})}}
+    if(url.pathname === '/matches'){const league=url.searchParams.get('league')||'hockeyettan';if(!['hockeyettan','u20h','u18h'].includes(league))return json({error:'Okänd serie'},400);try{return json(await leagueMatches(league),200,{'Cache-Control':'public,max-age=20'})}catch(e){return json({error:e.message},502,{'Cache-Control':'no-store'})}}
     if (url.pathname !== "/live") return json({ error: "Not found" }, 404);
 
     try {
@@ -526,4 +526,4 @@ function live(html) { const result = []; for (const m of html.matchAll(/<div cla
     result.push({ home: teams[0], away: teams[1], score, status, detail });
 } return result; }
 
-async function leagueMatches(league){const id=league==='u20h'?'20963':'21043';const date=today();const opts={signal:AbortSignal.timeout(18000),cf:{cacheTtl:20,cacheEverything:true}};async function get(kind){const r=await fetch('https://stats.swehockey.se/ScheduleAndResults/'+kind+'/'+id,opts);if(!r.ok)throw Error('Matchkällan svarar inte');return r.text()}const [s,l]=await Promise.all([get('Schedule'),get('Live').catch(()=>null)]);const games=schedule(s,date);const sourceDate=l?.match(/Last update:[\s\S]{0,30}?(\d{4}-\d{2}-\d{2})/)?.[1];if(l&&sourceDate===date){for(const g of games){const v=live(l).find(v=>v.home===g.home&&v.away===g.away);if(v){if(v.score)g.score=v.score;g.status=v.status;g.detail=v.detail}}}return {date,games,updatedAt:new Date().toISOString(),liveAvailable:!!l&&sourceDate===date}}
+async function leagueMatches(league){const id=league==='u20h'?'20963':league==='u18h'?'21274':'21043';const date=today();const opts={signal:AbortSignal.timeout(18000),cf:{cacheTtl:20,cacheEverything:true}};async function get(kind){const r=await fetch('https://stats.swehockey.se/ScheduleAndResults/'+kind+'/'+id,opts);if(!r.ok)throw Error('Matchkällan svarar inte');return r.text()}const [s,l]=await Promise.all([get('Schedule'),get('Live').catch(()=>null)]);const games=schedule(s,date);const sourceDate=l?.match(/Last update:[\s\S]{0,30}?(\d{4}-\d{2}-\d{2})/)?.[1];if(l&&sourceDate===date){for(const g of games){const v=live(l).find(v=>v.home===g.home&&v.away===g.away);if(v){if(v.score)g.score=v.score;g.status=v.status;g.detail=v.detail}}}return {date,games,updatedAt:new Date().toISOString(),liveAvailable:!!l&&sourceDate===date}}
