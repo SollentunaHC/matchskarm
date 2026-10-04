@@ -1,0 +1,13 @@
+{
+  "name": "sollentuna-hockey-live",
+  "version": "1.16.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy"
+  },
+  "devDependencies": {
+    "wrangler": "^4.0.0"
+  }
+}
