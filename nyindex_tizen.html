@@ -2,7 +2,7 @@
 <html lang="sv">
 <head>
 <meta charset="UTF-8">
-<title>Sollentuna Hockey – Tizen version 18.4</title>
+<title>Sollentuna Hockey – Tizen version 18.6</title>
 
 <style>
 
@@ -346,6 +346,19 @@ body::before {
   letter-spacing: 0.075em; text-shadow: none;
 }
 .section-heading span { font-size: 1vw; font-weight: 900; letter-spacing: 0.1em; }
+.page-info { margin-left: 0.8vw; color: #ffd447; }
+@-webkit-keyframes rowRollIn {
+  from { opacity: 0.35; -webkit-transform: translateY(1.3vh); }
+  to { opacity: 1; -webkit-transform: translateY(0); }
+}
+@keyframes rowRollIn {
+  from { opacity: 0.35; transform: translateY(1.3vh); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.rolling-row {
+  -webkit-animation: rowRollIn 0.55s ease-out;
+  animation: rowRollIn 0.55s ease-out;
+}
 .verification-summary { display: flex; align-items: center; justify-content: flex-end; margin-top: 0.55vh; }
 .verification-box + .verification-box { margin-left: 0.4vw; }
 .verification-box {
@@ -424,7 +437,7 @@ footer { display: none; }
 
   <main class="matches">
   <section class="section today-section">
-    <div class="section-heading"><h2>DAGENS MATCHER</h2><span>SOLLENTUNA HC</span></div>
+    <div class="section-heading"><h2>DAGENS MATCHER</h2><span>SOLLENTUNA HC <span class="page-info" id="todayPageInfo"></span></span></div>
     <div class="table-wrapper"><table class="match-table today-table">
       <thead>
         <tr>
@@ -474,7 +487,7 @@ footer { display: none; }
 
 <script>
 
-var ARENA_VERSION = "VERSION 18.4 TIZEN";
+var ARENA_VERSION = "VERSION 18.6 TIZEN";
 var CSV_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/Spelschema_2627.csv";
 var SPONSOR_LIST_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/sponsors/list.txt";
 var SPONSOR_BASE_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/sponsors/";
@@ -488,6 +501,13 @@ var SWEHOCKEY_ID_MAP = {
   "95097052": "1121968"
 };
 var activeTodayMatches = [];
+var allTodayMatches = [];
+var todayPageIndex = 0;
+var TODAY_PAGE_SIZE = 5;
+var TODAY_PAGE_INTERVAL_MS = 5000;
+var FINAL_RESULT_VISIBLE_MS = 70 * 60 * 1000;
+var finishedAtByMatch = {};
+try { finishedAtByMatch = JSON.parse(localStorage.getItem("shc-finished-at-v185") || "{}"); } catch (e) {}
 var latestLiveResults = {};
 var liveRequestNumbers = {};
 var goalFlashTokens = {};
@@ -496,6 +516,27 @@ var goalFlashStates = {};
 try { latestLiveResults = JSON.parse(sessionStorage.getItem("shc-live-v178") || "{}"); } catch (e) {}
 function liveMatchKey(match) {
   return [match.date, match.time, match.matchNumber, match.home, match.away].join("|");
+}
+function matchResult(match) {
+  return match ? latestLiveResults[liveMatchKey(match)] : null;
+}
+function matchStatus(match) {
+  var result = matchResult(match);
+  return result ? String(result.status || "").toUpperCase() : "";
+}
+function rememberFinishedMatch(match) {
+  if (!match || !match.matchNumber) return;
+  var key = liveMatchKey(match);
+  if (!finishedAtByMatch[key]) {
+    finishedAtByMatch[key] = new Date().getTime();
+    try { localStorage.setItem("shc-finished-at-v185", JSON.stringify(finishedAtByMatch)); } catch (e) {}
+  }
+}
+function finishedMatchHasExpired(match, nowMs) {
+  if (matchStatus(match) !== "SLUT") return false;
+  var finishedAt = finishedAtByMatch[liveMatchKey(match)];
+  if (!finishedAt) return false;
+  return nowMs - finishedAt >= FINAL_RESULT_VISIBLE_MS;
 }
 function resultProgress(result) {
   if (String(result.status).toUpperCase() === "SLUT") return 10000000;
@@ -934,9 +975,9 @@ function showLiveError(matchNumber, message) {
 }
 
 /* Visar resultat och tar bort LIVE-symbolen så snart status är SLUT. */
-function updateLiveResult(matchNumber, result) {
+function updateLiveResult(matchNumber, result, skipLayoutRefresh) {
   var scoreCell = document.getElementById("score-" + matchNumber);
-  if (!scoreCell || typeof result.homeScore !== "number" || typeof result.awayScore !== "number") return;
+  if (typeof result.homeScore !== "number" || typeof result.awayScore !== "number") return;
   var match = findActiveMatch(matchNumber);
   if (!match) return;
   var key = liveMatchKey(match);
@@ -964,6 +1005,12 @@ function updateLiveResult(matchNumber, result) {
   latestLiveResults[key] = result;
   try { sessionStorage.setItem("shc-live-v178", JSON.stringify(latestLiveResults)); } catch (e) {}
   var status = String(result.status || "RESULTAT").toUpperCase();
+  if (status === "SLUT") rememberFinishedMatch(match);
+  /* En dold rad ska fortfarande uppdateras och kunna bli synlig som LIVE. */
+  if (!scoreCell) {
+    if (!skipLayoutRefresh) scheduleTodayLayoutRefresh();
+    return;
+  }
   scoreCell.setAttribute("data-has-result", "yes");
   var isLive = status === "LIVE";
   var newGoal = isLive && (homeGoal || awayGoal);
@@ -1033,6 +1080,7 @@ function updateLiveResult(matchNumber, result) {
       if (awayNumber) awayNumber.className = "";
     }, 15000);
   }
+  if (!skipLayoutRefresh) scheduleTodayLayoutRefresh();
 }
 
 function loadAllLiveResults(matches) {
@@ -1077,8 +1125,49 @@ function splitTodayAndUpcoming(matches) {
   return { today: today, upcoming: upcoming.slice(0, 6) };
 }
 
-/* Render: dagens matcher */
-function renderTodayMatches(todayMatches) {
+var todayLayoutRefreshTimer = null;
+function scheduleTodayLayoutRefresh() {
+  if (todayLayoutRefreshTimer !== null) return;
+  todayLayoutRefreshTimer = setTimeout(function () {
+    todayLayoutRefreshTimer = null;
+    refreshTodayDisplay(false);
+  }, 100);
+}
+
+/*
+  Håll samtliga LIVE-matcher synliga. Resterande platser fylls med avslutade
+  matcher (högst 70 minuter) och kommande matcher. Vid platsbrist roterar bara
+  de matcher som inte är LIVE.
+*/
+function selectVisibleTodayMatches() {
+  var nowMs = new Date().getTime();
+  var live = [];
+  var other = [];
+  for (var i = 0; i < allTodayMatches.length; i++) {
+    var match = allTodayMatches[i];
+    if (finishedMatchHasExpired(match, nowMs)) continue;
+    if (matchStatus(match) === "LIVE") live.push(match);
+    else other.push(match);
+  }
+
+  var remainingSlots = Math.max(0, TODAY_PAGE_SIZE - live.length);
+  /* Flytta matchfönstret en enda rad per växling. */
+  var pageCount = remainingSlots > 0 && other.length > remainingSlots ? other.length : 1;
+  if (todayPageIndex >= pageCount) todayPageIndex = 0;
+  var selected = live.slice(0);
+  if (remainingSlots > 0) {
+    var visibleOtherCount = Math.min(remainingSlots, other.length);
+    for (var n = 0; n < visibleOtherCount; n++) {
+      selected.push(other[(todayPageIndex + n) % other.length]);
+    }
+  }
+  selected.sort(function (a, b) {
+    return (a.time || "").localeCompare(b.time || "");
+  });
+  return { matches: selected, page: todayPageIndex + 1, pages: pageCount };
+}
+
+function renderTodayRows(todayMatches) {
   var tbody = document.getElementById("todayMatchBody");
   var html = "";
 
@@ -1087,7 +1176,7 @@ function renderTodayMatches(todayMatches) {
   } else {
     for (var i = 0; i < todayMatches.length; i++) {
       var m = todayMatches[i];
-      html += "<tr>" +
+      html += "<tr class='" + (matchStatus(m) === "LIVE" ? "" : "rolling-row") + "'>" +
         "<td>" + formatDate(m.date) + "</td>" +
         "<td>" + m.time + "<span class='time-status' id='status-" + m.matchNumber + "'>" + getStatus(m.date, m.time) + "</span></td>" +
         "<td>" + m.series + "</td>" +
@@ -1100,12 +1189,26 @@ function renderTodayMatches(todayMatches) {
   }
 
   tbody.innerHTML = html;
-  activeTodayMatches = todayMatches || [];
-  // Återställ resultatet innan nya nätverksanrop så SNART/resultat inte blinkar.
-  for (var j = 0; j < activeTodayMatches.length; j++) {
-    var saved = latestLiveResults[liveMatchKey(activeTodayMatches[j])];
-    if (saved) updateLiveResult(activeTodayMatches[j].matchNumber, saved);
+  for (var j = 0; j < todayMatches.length; j++) {
+    var saved = matchResult(todayMatches[j]);
+    if (saved) updateLiveResult(todayMatches[j].matchNumber, saved, true);
   }
+}
+
+function refreshTodayDisplay(advancePage) {
+  if (advancePage) todayPageIndex++;
+  var view = selectVisibleTodayMatches();
+  renderTodayRows(view.matches);
+  var pageInfo = document.getElementById("todayPageInfo");
+  if (pageInfo) pageInfo.textContent = view.pages > 1 ? view.page + "/" + view.pages : "";
+}
+
+/* Render: dagens matcher */
+function renderTodayMatches(todayMatches) {
+  allTodayMatches = todayMatches || [];
+  activeTodayMatches = allTodayMatches;
+  todayPageIndex = 0;
+  refreshTodayDisplay(false);
   loadAllLiveResults(activeTodayMatches);
   maybeRunDailyChecks();
 }
@@ -1244,6 +1347,8 @@ function initArena() {
   /* Sponsorlistan läses om var 30:e minut utan att hela sidan startas om. */
   setInterval(loadSponsors, 1800000);
   setInterval(function () { loadAllLiveResults(activeTodayMatches); }, 30000);
+  /* LIVE-rader ligger kvar; övriga matcher rullar en rad var femte sekund. */
+  setInterval(function () { refreshTodayDisplay(true); }, TODAY_PAGE_INTERVAL_MS);
   /* Kör morgonkontrollen efter kl. 06 och byt automatiskt till vitt vid T-15. */
   setInterval(maybeRunDailyChecks, 60000);
   setInterval(maybeRunFutureChecks, 60000);
