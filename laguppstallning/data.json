@@ -6,7 +6,7 @@
   "csvUrl": "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/Spelschema_2627.csv",
   "configurationSource": "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/nyindex_tizen.html",
   "workerUrl": "https://sollentuna-hockey-live.gunnar-127.workers.dev/live?match=",
-  "scheduleCheckedAt": "2026-10-06T00:09:01.482370+02:00",
+  "scheduleCheckedAt": "2026-10-06T05:52:19.893270+02:00",
   "games": [
     {
       "date": "2026-10-04",
@@ -162,7 +162,7 @@
         },
         "source": "https://stats.swehockey.se/Game/LineUps/1112899"
       },
-      "checkedAt": "2026-10-04T13:20:47.403200+02:00",
+      "checkedAt": "2026-10-06T05:52:19.893270+02:00",
       "status": "published",
       "lineupChecks": {
         "90255146|2026-10-04T14:00:00+02:00|lineup|2026-10-04T13:16:00+02:00": {
@@ -404,9 +404,8 @@
     "home": "Strömsbro IF",
     "away": "Sollentuna HC",
     "venue": "Testebo Arena",
-    "matchNumber": "90255365",
-    "competition": "Hockeyettan Norra",
     "gameId": "1113118",
+    "matchNumber": "90255365",
     "lineup": {
       "lines": {
         "1": {
@@ -548,7 +547,7 @@
       "source": "https://stats.swehockey.se/Game/LineUps/1113118"
     },
     "status": "published",
-    "checkedAt": "2026-10-03T22:55:42.140997+02:00"
+    "checkedAt": "2026-10-06T05:52:19.893270+02:00"
   },
   "errors": []
 }

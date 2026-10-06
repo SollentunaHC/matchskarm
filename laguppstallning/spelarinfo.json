@@ -5,7 +5,7 @@
   "previousSeason": "2025-2026",
   "status": "ready",
   "message": null,
-  "updatedAt": "2026-10-04T11:21:01.070654+00:00",
+  "updatedAt": "2026-10-06T03:52:23.205654+00:00",
   "source": "https://stats.swehockey.se/Teams/Info/PlayersByTeam/21043",
   "players": [
     {
@@ -24,14 +24,14 @@
       "number": "60",
       "position": "GK",
       "stats": {
-        "GP": 2,
+        "GP": 3,
         "G": 0,
         "A": 0,
         "TP": 0
       },
       "statsSource": "https://stats.swehockey.se/Teams/Info/PlayersByTeam/21043",
-      "statsUpdatedAt": "2026-10-04T11:21:01.070654+00:00",
-      "updatedAt": "2026-10-04T11:21:01.070654+00:00",
+      "statsUpdatedAt": "2026-10-06T03:52:23.205654+00:00",
+      "updatedAt": "2026-10-06T03:52:23.205654+00:00",
       "profileSourceLabel": "Eliteprospects"
     },
     {
@@ -51,14 +51,14 @@
       "number": "45",
       "position": "RD",
       "stats": {
-        "GP": 3,
+        "GP": 4,
         "G": 0,
-        "A": 0,
-        "TP": 0
+        "A": 1,
+        "TP": 1
       },
       "statsSource": "https://stats.swehockey.se/Teams/Info/PlayersByTeam/21043",
-      "statsUpdatedAt": "2026-10-04T11:21:01.070654+00:00",
-      "updatedAt": "2026-10-04T11:21:01.070654+00:00",
+      "statsUpdatedAt": "2026-10-06T03:52:23.205654+00:00",
+      "updatedAt": "2026-10-06T03:52:23.205654+00:00",
       "profileSourceLabel": "Eliteprospects"
     },
     {
@@ -77,14 +77,14 @@
       "number": "18",
       "position": "RW",
       "stats": {
-        "GP": 3,
+        "GP": 4,
         "G": 1,
         "A": 0,
         "TP": 1
       },
       "statsSource": "https://stats.swehockey.se/Teams/Info/PlayersByTeam/21043",
-      "statsUpdatedAt": "2026-10-04T11:21:01.070654+00:00",
-      "updatedAt": "2026-10-04T11:21:01.070654+00:00",
+      "statsUpdatedAt": "2026-10-06T03:52:23.205654+00:00",
+      "updatedAt": "2026-10-06T03:52:23.205654+00:00",
       "profileSourceLabel": "Eliteprospects"
     },
     {
@@ -103,14 +103,14 @@
       "number": "44",
       "position": "LD",
       "stats": {
-        "GP": 3,
+        "GP": 4,
         "G": 0,
         "A": 2,
         "TP": 2
       },
       "statsSource": "https://stats.swehockey.se/Teams/Info/PlayersByTeam/21043",
-      "statsUpdatedAt": "2026-10-04T11:21:01.070654+00:00",
-      "updatedAt": "2026-10-04T11:21:01.070654+00:00",
+      "statsUpdatedAt": "2026-10-06T03:52:23.205654+00:00",
+      "updatedAt": "2026-10-06T03:52:23.205654+00:00",
       "profileSourceLabel": "Eliteprospects"
     },
     {
@@ -130,14 +130,14 @@
       "number": "11",
       "position": "LW",
       "stats": {
-        "GP": 1,
+        "GP": 2,
         "G": 0,
         "A": 0,
         "TP": 0
       },
       "statsSource": "https://stats.swehockey.se/Teams/Info/PlayersByTeam/21043",
-      "statsUpdatedAt": "2026-10-04T11:21:01.070654+00:00",
-      "updatedAt": "2026-10-04T11:21:01.070654+00:00",
+      "statsUpdatedAt": "2026-10-06T03:52:23.205654+00:00",
+      "updatedAt": "2026-10-06T03:52:23.205654+00:00",
       "profileSourceLabel": "Eliteprospects"
     },
     {
@@ -157,14 +157,14 @@
       "number": "26",
       "position": "LW",
       "stats": {
-        "GP": 3,
+        "GP": 4,
         "G": 0,
         "A": 0,
         "TP": 0
       },
       "statsSource": "https://stats.swehockey.se/Teams/Info/PlayersByTeam/21043",
-      "statsUpdatedAt": "2026-10-04T11:21:01.070654+00:00",
-      "updatedAt": "2026-10-04T11:21:01.070654+00:00",
+      "statsUpdatedAt": "2026-10-06T03:52:23.205654+00:00",
+      "updatedAt": "2026-10-06T03:52:23.205654+00:00",
       "profileSourceLabel": "Eliteprospects"
     },
     {
@@ -184,14 +184,14 @@
       "number": "25",
       "position": "CE",
       "stats": {
-        "GP": 1,
-        "G": 0,
+        "GP": 2,
+        "G": 1,
         "A": 2,
-        "TP": 2
+        "TP": 3
       },
       "statsSource": "https://stats.swehockey.se/Teams/Info/PlayersByTeam/21043",
-      "statsUpdatedAt": "2026-10-04T11:21:01.070654+00:00",
-      "updatedAt": "2026-10-04T11:21:01.070654+00:00",
+      "statsUpdatedAt": "2026-10-06T03:52:23.205654+00:00",
+      "updatedAt": "2026-10-06T03:52:23.205654+00:00",
       "profileSourceLabel": "Eliteprospects"
     },
     {
@@ -210,14 +210,14 @@
       "number": "37",
       "position": "LD",
       "stats": {
-        "GP": 3,
+        "GP": 4,
         "G": 0,
         "A": 0,
         "TP": 0
       },
       "statsSource": "https://stats.swehockey.se/Teams/Info/PlayersByTeam/21043",
-      "statsUpdatedAt": "2026-10-04T11:21:01.070654+00:00",
-      "updatedAt": "2026-10-04T11:21:01.070654+00:00",
+      "statsUpdatedAt": "2026-10-06T03:52:23.205654+00:00",
+      "updatedAt": "2026-10-06T03:52:23.205654+00:00",
       "profileSourceLabel": "Eliteprospects"
     },
     {
@@ -236,14 +236,14 @@
       "number": "39",
       "position": "LD",
       "stats": {
-        "GP": 3,
+        "GP": 4,
         "G": 1,
         "A": 0,
         "TP": 1
       },
       "statsSource": "https://stats.swehockey.se/Teams/Info/PlayersByTeam/21043",
-      "statsUpdatedAt": "2026-10-04T11:21:01.070654+00:00",
-      "updatedAt": "2026-10-04T11:21:01.070654+00:00",
+      "statsUpdatedAt": "2026-10-06T03:52:23.205654+00:00",
+      "updatedAt": "2026-10-06T03:52:23.205654+00:00",
       "profileSourceLabel": "Eliteprospects"
     },
     {
@@ -263,14 +263,14 @@
       "number": "28",
       "position": "LD",
       "stats": {
-        "GP": 3,
+        "GP": 4,
         "G": 0,
         "A": 0,
         "TP": 0
       },
       "statsSource": "https://stats.swehockey.se/Teams/Info/PlayersByTeam/21043",
-      "statsUpdatedAt": "2026-10-04T11:21:01.070654+00:00",
-      "updatedAt": "2026-10-04T11:21:01.070654+00:00",
+      "statsUpdatedAt": "2026-10-06T03:52:23.205654+00:00",
+      "updatedAt": "2026-10-06T03:52:23.205654+00:00",
       "profileSourceLabel": "Eliteprospects"
     },
     {
@@ -290,14 +290,14 @@
       "number": "5",
       "position": "LD",
       "stats": {
-        "GP": 2,
+        "GP": 3,
         "G": 0,
         "A": 0,
         "TP": 0
       },
       "statsSource": "https://stats.swehockey.se/Teams/Info/PlayersByTeam/21043",
-      "statsUpdatedAt": "2026-10-04T11:21:01.070654+00:00",
-      "updatedAt": "2026-10-04T11:21:01.070654+00:00",
+      "statsUpdatedAt": "2026-10-06T03:52:23.205654+00:00",
+      "updatedAt": "2026-10-06T03:52:23.205654+00:00",
       "profileSourceLabel": "Eliteprospects"
     },
     {
@@ -323,8 +323,8 @@
         "TP": 0
       },
       "statsSource": "https://stats.swehockey.se/Teams/Info/PlayersByTeam/21043",
-      "statsUpdatedAt": "2026-10-04T11:21:01.070654+00:00",
-      "updatedAt": "2026-10-04T11:21:01.070654+00:00",
+      "statsUpdatedAt": "2026-10-06T03:52:23.205654+00:00",
+      "updatedAt": "2026-10-06T03:52:23.205654+00:00",
       "profileSourceLabel": "Eliteprospects"
     },
     {
@@ -349,8 +349,8 @@
         "TP": 0
       },
       "statsSource": "https://stats.swehockey.se/Teams/Info/PlayersByTeam/21043",
-      "statsUpdatedAt": "2026-10-04T11:21:01.070654+00:00",
-      "updatedAt": "2026-10-04T11:21:01.070654+00:00",
+      "statsUpdatedAt": "2026-10-06T03:52:23.205654+00:00",
+      "updatedAt": "2026-10-06T03:52:23.205654+00:00",
       "profileSourceLabel": "Eliteprospects"
     },
     {
@@ -369,14 +369,14 @@
       "number": "23",
       "position": "RW",
       "stats": {
-        "GP": 3,
+        "GP": 4,
         "G": 0,
         "A": 0,
         "TP": 0
       },
       "statsSource": "https://stats.swehockey.se/Teams/Info/PlayersByTeam/21043",
-      "statsUpdatedAt": "2026-10-04T11:21:01.070654+00:00",
-      "updatedAt": "2026-10-04T11:21:01.070654+00:00",
+      "statsUpdatedAt": "2026-10-06T03:52:23.205654+00:00",
+      "updatedAt": "2026-10-06T03:52:23.205654+00:00",
       "profileSourceLabel": "Eliteprospects"
     },
     {
@@ -395,14 +395,14 @@
       "number": "7",
       "position": "LD",
       "stats": {
-        "GP": 3,
+        "GP": 4,
         "G": 0,
-        "A": 0,
-        "TP": 0
+        "A": 1,
+        "TP": 1
       },
       "statsSource": "https://stats.swehockey.se/Teams/Info/PlayersByTeam/21043",
-      "statsUpdatedAt": "2026-10-04T11:21:01.070654+00:00",
-      "updatedAt": "2026-10-04T11:21:01.070654+00:00",
+      "statsUpdatedAt": "2026-10-06T03:52:23.205654+00:00",
+      "updatedAt": "2026-10-06T03:52:23.205654+00:00",
       "profileSourceLabel": "Eliteprospects"
     },
     {
@@ -421,14 +421,14 @@
       "number": "43",
       "position": "RW",
       "stats": {
-        "GP": 3,
+        "GP": 4,
         "G": 0,
         "A": 1,
         "TP": 1
       },
       "statsSource": "https://stats.swehockey.se/Teams/Info/PlayersByTeam/21043",
-      "statsUpdatedAt": "2026-10-04T11:21:01.070654+00:00",
-      "updatedAt": "2026-10-04T11:21:01.070654+00:00",
+      "statsUpdatedAt": "2026-10-06T03:52:23.205654+00:00",
+      "updatedAt": "2026-10-06T03:52:23.205654+00:00",
       "profileSourceLabel": "Eliteprospects"
     },
     {
@@ -447,14 +447,14 @@
       "number": "27",
       "position": "RW",
       "stats": {
-        "GP": 3,
-        "G": 0,
+        "GP": 4,
+        "G": 2,
         "A": 0,
-        "TP": 0
+        "TP": 2
       },
       "statsSource": "https://stats.swehockey.se/Teams/Info/PlayersByTeam/21043",
-      "statsUpdatedAt": "2026-10-04T11:21:01.070654+00:00",
-      "updatedAt": "2026-10-04T11:21:01.070654+00:00",
+      "statsUpdatedAt": "2026-10-06T03:52:23.205654+00:00",
+      "updatedAt": "2026-10-06T03:52:23.205654+00:00",
       "profileSourceLabel": "Eliteprospects"
     },
     {
@@ -473,14 +473,14 @@
       "number": "20",
       "position": "LW",
       "stats": {
-        "GP": 3,
+        "GP": 4,
         "G": 2,
         "A": 0,
         "TP": 2
       },
       "statsSource": "https://stats.swehockey.se/Teams/Info/PlayersByTeam/21043",
-      "statsUpdatedAt": "2026-10-04T11:21:01.070654+00:00",
-      "updatedAt": "2026-10-04T11:21:01.070654+00:00",
+      "statsUpdatedAt": "2026-10-06T03:52:23.205654+00:00",
+      "updatedAt": "2026-10-06T03:52:23.205654+00:00",
       "profileSourceLabel": "Eliteprospects"
     },
     {
@@ -499,14 +499,14 @@
       "number": "76",
       "position": "RD",
       "stats": {
-        "GP": 3,
+        "GP": 4,
         "G": 1,
-        "A": 1,
-        "TP": 2
+        "A": 2,
+        "TP": 3
       },
       "statsSource": "https://stats.swehockey.se/Teams/Info/PlayersByTeam/21043",
-      "statsUpdatedAt": "2026-10-04T11:21:01.070654+00:00",
-      "updatedAt": "2026-10-04T11:21:01.070654+00:00",
+      "statsUpdatedAt": "2026-10-06T03:52:23.205654+00:00",
+      "updatedAt": "2026-10-06T03:52:23.205654+00:00",
       "profileSourceLabel": "Eliteprospects"
     },
     {
@@ -527,14 +527,14 @@
       "number": "36",
       "position": "LD",
       "stats": {
-        "GP": 3,
+        "GP": 4,
         "G": 0,
         "A": 0,
         "TP": 0
       },
       "statsSource": "https://stats.swehockey.se/Teams/Info/PlayersByTeam/21043",
-      "statsUpdatedAt": "2026-10-04T11:21:01.070654+00:00",
-      "updatedAt": "2026-10-04T11:21:01.070654+00:00",
+      "statsUpdatedAt": "2026-10-06T03:52:23.205654+00:00",
+      "updatedAt": "2026-10-06T03:52:23.205654+00:00",
       "profileSourceLabel": "Eliteprospects"
     },
     {
@@ -553,14 +553,14 @@
       "number": "62",
       "position": "CE",
       "stats": {
-        "GP": 3,
+        "GP": 4,
         "G": 0,
-        "A": 1,
-        "TP": 1
+        "A": 3,
+        "TP": 3
       },
       "statsSource": "https://stats.swehockey.se/Teams/Info/PlayersByTeam/21043",
-      "statsUpdatedAt": "2026-10-04T11:21:01.070654+00:00",
-      "updatedAt": "2026-10-04T11:21:01.070654+00:00",
+      "statsUpdatedAt": "2026-10-06T03:52:23.205654+00:00",
+      "updatedAt": "2026-10-06T03:52:23.205654+00:00",
       "profileSourceLabel": "Eliteprospects"
     },
     {
@@ -585,8 +585,8 @@
         "TP": null
       },
       "statsSource": "https://stats.swehockey.se/Teams/Info/PlayersByTeam/21043",
-      "statsUpdatedAt": "2026-10-04T11:21:01.070654+00:00",
-      "updatedAt": "2026-10-04T11:21:01.070654+00:00",
+      "statsUpdatedAt": "2026-10-06T03:52:23.205654+00:00",
+      "updatedAt": "2026-10-06T03:52:23.205654+00:00",
       "profileSourceLabel": "Eliteprospects"
     },
     {
@@ -595,14 +595,14 @@
       "number": "33",
       "position": "RW",
       "stats": {
-        "GP": null,
-        "G": null,
-        "A": null,
-        "TP": null
+        "GP": 1,
+        "G": 0,
+        "A": 0,
+        "TP": 0
       },
       "statsSource": "https://stats.swehockey.se/Teams/Info/PlayersByTeam/21043",
-      "statsUpdatedAt": "2026-10-04T11:21:01.070654+00:00",
-      "updatedAt": "2026-10-04T11:21:01.070654+00:00",
+      "statsUpdatedAt": "2026-10-06T03:52:23.205654+00:00",
+      "updatedAt": "2026-10-06T03:52:23.205654+00:00",
       "dateOfBirth": "1997-08-28",
       "birthYear": 1997,
       "youthTeam": "Sollentuna HC",
@@ -610,7 +610,7 @@
       "previousTeams": [],
       "source": "https://stats.swehockey.se/Teams/Info/TeamRoster/21043",
       "profileSourceLabel": "Swehockey",
-      "profileCheckedAt": "2026-10-04T11:21:01.070654+00:00"
+      "profileCheckedAt": "2026-10-06T03:52:23.205654+00:00"
     },
     {
       "id": 870431,
@@ -634,8 +634,8 @@
         "TP": 0
       },
       "statsSource": "https://stats.swehockey.se/Teams/Info/PlayersByTeam/21043",
-      "statsUpdatedAt": "2026-10-04T11:21:01.070654+00:00",
-      "updatedAt": "2026-10-04T11:21:01.070654+00:00",
+      "statsUpdatedAt": "2026-10-06T03:52:23.205654+00:00",
+      "updatedAt": "2026-10-06T03:52:23.205654+00:00",
       "profileSourceLabel": "Eliteprospects"
     },
     {
@@ -655,14 +655,14 @@
       "number": "40",
       "position": "RW",
       "stats": {
-        "GP": 3,
+        "GP": 4,
         "G": 0,
-        "A": 1,
-        "TP": 1
+        "A": 2,
+        "TP": 2
       },
       "statsSource": "https://stats.swehockey.se/Teams/Info/PlayersByTeam/21043",
-      "statsUpdatedAt": "2026-10-04T11:21:01.070654+00:00",
-      "updatedAt": "2026-10-04T11:21:01.070654+00:00",
+      "statsUpdatedAt": "2026-10-06T03:52:23.205654+00:00",
+      "updatedAt": "2026-10-06T03:52:23.205654+00:00",
       "profileSourceLabel": "Eliteprospects"
     },
     {
@@ -677,8 +677,8 @@
         "TP": null
       },
       "statsSource": "https://stats.swehockey.se/Teams/Info/PlayersByTeam/21043",
-      "statsUpdatedAt": "2026-10-04T11:21:01.070654+00:00",
-      "updatedAt": "2026-10-04T11:21:01.070654+00:00",
+      "statsUpdatedAt": "2026-10-06T03:52:23.205654+00:00",
+      "updatedAt": "2026-10-06T03:52:23.205654+00:00",
       "dateOfBirth": "2001-09-12",
       "birthYear": 2001,
       "youthTeam": "Tullinge TP HC",
@@ -686,14 +686,14 @@
       "previousTeams": [],
       "source": "https://stats.swehockey.se/Teams/Info/TeamRoster/21043",
       "profileSourceLabel": "Swehockey",
-      "profileCheckedAt": "2026-10-04T11:21:01.070654+00:00"
+      "profileCheckedAt": "2026-10-06T03:52:23.205654+00:00"
     }
   ],
-  "attemptedAt": "2026-10-04T11:21:01.070654+00:00",
+  "attemptedAt": "2026-10-06T03:52:23.205654+00:00",
   "mode": "saved_profiles_swehockey",
   "profileDigest": "df5cad88bfec2c751a7688f3175520ce03fe6e69d23ac6913bc6a2d23488c6c2",
   "profileCount": 24,
-  "statisticsCount": 23,
+  "statisticsCount": 24,
   "playerChecks": {
     "90255135|2026-10-03T16:00:00+02:00|players|2026-10-03T06:00:00+02:00": {
       "key": "90255135|2026-10-03T16:00:00+02:00|players|2026-10-03T06:00:00+02:00",
