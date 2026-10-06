@@ -2,7 +2,7 @@
 <html lang="sv">
 <head>
 <meta charset="UTF-8">
-<title>Sollentuna Hockey – Tizen version 18.7</title>
+<title>Sollentuna Hockey – Tizen version 18.8</title>
 
 <style>
 
@@ -487,7 +487,7 @@ footer { display: none; }
 
 <script>
 
-var ARENA_VERSION = "VERSION 18.7 TIZEN";
+var ARENA_VERSION = "VERSION 18.8 TIZEN";
 var CSV_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/Spelschema_2627.csv";
 var SPONSOR_LIST_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/sponsors/list.txt";
 var SPONSOR_BASE_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/sponsors/";
@@ -516,6 +516,10 @@ var goalFlashStates = {};
 try { latestLiveResults = JSON.parse(sessionStorage.getItem("shc-live-v178") || "{}"); } catch (e) {}
 function liveMatchKey(match) {
   return [match.date, match.time, match.matchNumber, match.home, match.away].join("|");
+}
+/* Poolspel redovisar inte resultat och ska därför inte livehämtas. */
+function isPoolspel(match) {
+  return !!(match && String(match.series || "").toLowerCase().indexOf("poolspel") >= 0);
 }
 function matchResult(match) {
   return match ? latestLiveResults[liveMatchKey(match)] : null;
@@ -705,6 +709,10 @@ function renderPendingIndicator(matchNumber) {
   if (!scoreCell || scoreCell.getAttribute("data-has-result") === "yes") return;
 
   var match = findActiveMatch(matchNumber);
+  if (isPoolspel(match)) {
+    scoreCell.innerHTML = "";
+    return;
+  }
   var state = scoreCell.getAttribute("data-check-state") || "";
   var className = "";
   if (match && minutesUntilMatch(match) > 15) {
@@ -909,7 +917,7 @@ function maybeRunFutureChecks() {
 
 /* Hämtar resultat från Cloudflare Workern med Tizen-kompatibel XMLHttpRequest. */
 function loadLiveResult(match) {
-  if (!match || !match.matchNumber) return;
+  if (!match || !match.matchNumber || isPoolspel(match)) return;
   var key = liveMatchKey(match);
   var requestNumber = (liveRequestNumbers[key] || 0) + 1;
   liveRequestNumbers[key] = requestNumber;
@@ -980,6 +988,7 @@ function updateLiveResult(matchNumber, result, skipLayoutRefresh) {
   if (typeof result.homeScore !== "number" || typeof result.awayScore !== "number") return;
   var match = findActiveMatch(matchNumber);
   if (!match) return;
+  if (isPoolspel(match)) return;
   var key = liveMatchKey(match);
   var previous = latestLiveResults[key];
   var homeGoal = false;
@@ -1182,7 +1191,8 @@ function renderTodayRows(todayMatches) {
         "<td>" + m.series + "</td>" +
         teamCell(m.home) +
         teamCell(m.away) +
-        "<td class='score-cell' id='score-" + m.matchNumber + "'><span class='score'>–</span></td>" +
+        "<td class='score-cell' id='score-" + m.matchNumber + "'>" +
+          (isPoolspel(m) ? "" : "<span class='score'>–</span>") + "</td>" +
         "<td>" + hallWithLogo(m.arena) + "</td>" +
       "</tr>";
     }
