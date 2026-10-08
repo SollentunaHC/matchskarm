@@ -3,10 +3,7 @@
   "competition": "U18H Allettan Östra",
   "season": "2026–2027",
   "scheduleUrl": "https://stats.swehockey.se/ScheduleAndResults/Schedule/21274",
-  "csvUrl": "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/Spelschema_2627.csv",
-  "configurationSource": "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/nyindex_tizen.html",
-  "workerUrl": "https://sollentuna-hockey-live.gunnar-127.workers.dev/live?match=",
-  "scheduleCheckedAt": "2026-10-08T08:33:09.256329+02:00",
+  "scheduleCheckedAt": "2026-10-08T06:21:52.113407+00:00",
   "games": [
     {
       "date": "2026-10-08",
@@ -18,10 +15,8 @@
       "competition": "U18H Allettan Östra",
       "gameId": null,
       "lineup": null,
-      "checkedAt": null,
-      "status": "unresolved",
-      "lineupChecks": {},
-      "resolutionMessage": "Match-ID är ännu inte tillgängligt i Swehockeys spelschema eller Live."
+      "status": "unpublished",
+      "lineupChecks": {}
     },
     {
       "date": "2026-10-15",
@@ -33,7 +28,6 @@
       "competition": "U18H Allettan Östra",
       "gameId": null,
       "lineup": null,
-      "checkedAt": null,
       "status": "unpublished",
       "lineupChecks": {}
     },
@@ -47,7 +41,6 @@
       "competition": "U18H Allettan Östra",
       "gameId": null,
       "lineup": null,
-      "checkedAt": null,
       "status": "unpublished",
       "lineupChecks": {}
     },
@@ -61,7 +54,6 @@
       "competition": "U18H Allettan Östra",
       "gameId": null,
       "lineup": null,
-      "checkedAt": null,
       "status": "unpublished",
       "lineupChecks": {}
     },
@@ -75,7 +67,6 @@
       "competition": "U18H Allettan Östra",
       "gameId": null,
       "lineup": null,
-      "checkedAt": null,
       "status": "unpublished",
       "lineupChecks": {}
     },
@@ -89,7 +80,6 @@
       "competition": "U18H Allettan Östra",
       "gameId": null,
       "lineup": null,
-      "checkedAt": null,
       "status": "unpublished",
       "lineupChecks": {}
     },
@@ -103,7 +93,6 @@
       "competition": "U18H Allettan Östra",
       "gameId": null,
       "lineup": null,
-      "checkedAt": null,
       "status": "unpublished",
       "lineupChecks": {}
     },
@@ -117,7 +106,6 @@
       "competition": "U18H Allettan Östra",
       "gameId": null,
       "lineup": null,
-      "checkedAt": null,
       "status": "unpublished",
       "lineupChecks": {}
     }
@@ -136,18 +124,6 @@
         "1": {
           "forwards": [
             {
-              "number": "14",
-              "lastName": "Lejelöv",
-              "firstName": "Hannes"
-            },
-            {
-              "number": "3",
-              "lastName": "Gillberg",
-              "firstName": "Oskar"
-            }
-          ],
-          "defenders": [
-            {
               "number": "9",
               "lastName": "Kalata",
               "firstName": "Karol"
@@ -162,22 +138,22 @@
               "lastName": "Fennrup",
               "firstName": "Edvin"
             }
+          ],
+          "defenders": [
+            {
+              "number": "14",
+              "lastName": "Lejelöv",
+              "firstName": "Hannes"
+            },
+            {
+              "number": "3",
+              "lastName": "Gillberg",
+              "firstName": "Oskar"
+            }
           ]
         },
         "2": {
           "forwards": [
-            {
-              "number": "25",
-              "lastName": "Öhman",
-              "firstName": "Albert"
-            },
-            {
-              "number": "17",
-              "lastName": "Sjöström",
-              "firstName": "Levi"
-            }
-          ],
-          "defenders": [
             {
               "number": "23",
               "lastName": "Paulsson",
@@ -193,22 +169,22 @@
               "lastName": "Persson",
               "firstName": "Anton"
             }
+          ],
+          "defenders": [
+            {
+              "number": "25",
+              "lastName": "Öhman",
+              "firstName": "Albert"
+            },
+            {
+              "number": "17",
+              "lastName": "Sjöström",
+              "firstName": "Levi"
+            }
           ]
         },
         "3": {
           "forwards": [
-            {
-              "number": "4",
-              "lastName": "Wilander",
-              "firstName": "Dexter"
-            },
-            {
-              "number": "15",
-              "lastName": "Lindqvist",
-              "firstName": "Leo"
-            }
-          ],
-          "defenders": [
             {
               "number": "16",
               "lastName": "Clerkestam",
@@ -224,11 +200,22 @@
               "lastName": "Thulin",
               "firstName": "Erik"
             }
+          ],
+          "defenders": [
+            {
+              "number": "4",
+              "lastName": "Wilander",
+              "firstName": "Dexter"
+            },
+            {
+              "number": "15",
+              "lastName": "Lindqvist",
+              "firstName": "Leo"
+            }
           ]
         },
         "4": {
-          "forwards": [],
-          "defenders": [
+          "forwards": [
             {
               "number": "12",
               "lastName": "Mattsson",
@@ -244,7 +231,8 @@
               "lastName": "Ronquist",
               "firstName": "Caspian"
             }
-          ]
+          ],
+          "defenders": []
         }
       },
       "goalies": [
@@ -263,12 +251,11 @@
         "head": "Claes Lundén",
         "assistant": "Jan Lindekrans"
       },
-      "source": "https://stats.swehockey.se/Game/LineUps/1115202"
+      "source": "https://stats.swehockey.se/Game/LineUps/1115202",
+      "schemaVersion": 2
     },
     "status": "published",
-    "checkedAt": "2026-10-08T08:33:09.256329+02:00"
+    "checkedAt": "2026-10-08T06:21:52.113383+00:00"
   },
-  "errors": [
-    "95752016: Match-ID är ännu inte tillgängligt i Swehockeys spelschema eller Live."
-  ]
+  "errors": []
 }

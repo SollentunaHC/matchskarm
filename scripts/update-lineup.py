@@ -187,7 +187,12 @@ def parse_lineup(markup):
         if group == 'goalies':
             goalies.extend(players)
         elif group and players:
-            lines[group]['defenders' if first_row else 'forwards'].extend(players)
+            # Three wide cells are forwards; two wide cells are defenders.
+            # Away teams list these rows in the opposite order.
+            slots = len(re.findall(r'<td\b[^>]*colspan=[\"\']2[\"\']', row, re.I))
+            if slots not in (2, 3):
+                raise ValueError('Unrecognized lineup row positions')
+            lines[group]['forwards' if slots == 3 else 'defenders'].extend(players)
             first_row = False
     coaches = {}
     for label, key in [('Head Coach', 'head'), ('Assistant Coach', 'assistant')]:
@@ -201,7 +206,7 @@ def parse_lineup(markup):
         return None
     if not goalies or not any(v['forwards'] for v in lines.values()):
         raise ValueError('Incomplete or unexpected lineup structure')
-    return {'lines': lines, 'goalies': goalies, 'coaches': coaches,
+    return {'schemaVersion': 2, 'lines': lines, 'goalies': goalies, 'coaches': coaches,
             'source': BASE + '/Game/LineUps/'}
 
 

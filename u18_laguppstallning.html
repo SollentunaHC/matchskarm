@@ -35,7 +35,9 @@ body{background:#160b1b}.screen{background:linear-gradient(145deg,#551527,#170e2
 .portrait-mode .profile-name{font-size:62px;text-align:center;line-height:1.08;margin:0 0 30px;overflow-wrap:anywhere}.portrait-mode .profile-bio{font-size:31px;gap:20px}.portrait-mode .profile-bio .label{font-size:23px}.portrait-mode .profile-stats{gap:15px;margin-top:30px}.portrait-mode .profile-stat{padding:20px 10px}.portrait-mode .profile-stat-value{font-size:70px}.portrait-mode .profile-stat-label{font-size:22px}.portrait-mode .profile-note{font-size:21px}
 .portrait-mode footer{font-size:17px;gap:12px}.portrait-mode .update{font-size:16px}.portrait-mode .signature{right:38px;bottom:10px;font-size:16px}
 </style>
-</head>
+<style id="layout-fit">
+.line{min-height:0;min-width:0}.player{align-self:start}.forwards,.defenders{align-items:start}.player-first,.player-last{overflow-wrap:normal;word-break:normal}.portrait-mode .player-last{font-size:23px}
+</style></head>
 <body>
 <nav class="toolbar" aria-label="Välj match">
 <label>Match <select id="match-select"><option>Hämtar matcher…</option></select></label>
@@ -117,7 +119,7 @@ size();
 renderPresentation();
 }
 function updateOptions(){var select=clear('match-select');data.games.forEach(function(g){var option=el('option',null,g.date+' · '+g.away);option.value=g.date;select.appendChild(option)});var option=el('option',null,'Test · Sollentuna – Tumba · 4 oktober');option.value='demo';select.appendChild(option)}
-async function load(){if(busy)return;busy=true;try{var response=await fetch(dataUrl+'?v='+Date.now(),{cache:'no-store'});if(!response.ok)throw new Error('HTTP '+response.status);var fresh=await response.json();if(!Array.isArray(fresh.games)||!fresh.scheduleCheckedAt)throw new Error('Ogiltiga matchuppgifter');data=fresh;updateOptions();render()}catch(error){message(data?'Ingen anslutning till matchuppgifterna. Visar senast hämtade uppgifter.':'Matchuppgifterna kunde inte hämtas. Försöker igen automatiskt.');if(!data)empty('Väntar på matchuppgifter','Kontrollera internetanslutningen. Sidan försöker igen automatiskt.')}finally{busy=false}}
+async function load(){if(busy)return;busy=true;try{var response=await fetch(dataUrl+'?v='+Date.now(),{cache:'no-store'});if(!response.ok)throw new Error('HTTP '+response.status);var fresh=await response.json();if(!Array.isArray(fresh.games)||!fresh.scheduleCheckedAt)throw new Error('Ogiltiga matchuppgifter');[fresh.demo].concat(fresh.games).forEach(function(g){if(!g||!g.lineup||g.lineup.schemaVersion===2)return;var away=g.away===fresh.team;if(away){Object.keys(g.lineup.lines).forEach(function(k){var l=g.lineup.lines[k],f=l.forwards;l.forwards=l.defenders;l.defenders=f;});}g.lineup.schemaVersion=2;});data=fresh;updateOptions();render()}catch(error){message(data?'Ingen anslutning till matchuppgifterna. Visar senast hämtade uppgifter.':'Matchuppgifterna kunde inte hämtas. Försöker igen automatiskt.');if(!data)empty('Väntar på matchuppgifter','Kontrollera internetanslutningen. Sidan försöker igen automatiskt.')}finally{busy=false}}
 function updateAddress(){var url=new URL(location.href);url.searchParams.delete('demo');url.searchParams.delete('date');url.searchParams.delete('info');if(demo)url.searchParams.set('demo','1');else if(selected!=='auto')url.searchParams.set('date',selected);if(infoMode)url.searchParams.set('info','1');history.replaceState(null,'',url)}
 byId('match-select').addEventListener('change',function(){demo=this.value==='demo';selected=demo?'auto':this.value;updateAddress();render()});
 byId('auto').addEventListener('click',function(){demo=false;selected='auto';updateAddress();render()});
