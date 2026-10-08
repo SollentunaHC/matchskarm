@@ -2,7 +2,7 @@
 <html lang="sv">
 <head>
 <meta charset="UTF-8">
-<title>Sollentuna Hockey – Tizen version 18.8</title>
+<title>Sollentuna Hockey – Tizen version 18.9</title>
 
 <style>
 
@@ -487,7 +487,7 @@ footer { display: none; }
 
 <script>
 
-var ARENA_VERSION = "VERSION 18.8 TIZEN";
+var ARENA_VERSION = "VERSION 18.9 TIZEN";
 var CSV_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/Spelschema_2627.csv";
 var SPONSOR_LIST_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/sponsors/list.txt";
 var SPONSOR_BASE_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/sponsors/";
@@ -1176,7 +1176,7 @@ function selectVisibleTodayMatches() {
   return { matches: selected, page: todayPageIndex + 1, pages: pageCount };
 }
 
-function renderTodayRows(todayMatches) {
+function renderTodayRows(todayMatches, animateRollingRows) {
   var tbody = document.getElementById("todayMatchBody");
   var html = "";
 
@@ -1185,7 +1185,7 @@ function renderTodayRows(todayMatches) {
   } else {
     for (var i = 0; i < todayMatches.length; i++) {
       var m = todayMatches[i];
-      html += "<tr class='" + (matchStatus(m) === "LIVE" ? "" : "rolling-row") + "'>" +
+      html += "<tr class='" + (animateRollingRows && matchStatus(m) !== "LIVE" ? "rolling-row" : "") + "'>" +
         "<td>" + formatDate(m.date) + "</td>" +
         "<td>" + m.time + "<span class='time-status' id='status-" + m.matchNumber + "'>" + getStatus(m.date, m.time) + "</span></td>" +
         "<td>" + m.series + "</td>" +
@@ -1206,9 +1206,14 @@ function renderTodayRows(todayMatches) {
 }
 
 function refreshTodayDisplay(advancePage) {
-  if (advancePage) todayPageIndex++;
+  /* Rör inte DOM:en var femte sekund när alla dagens matcher redan ryms. */
+  if (advancePage) {
+    var currentView = selectVisibleTodayMatches();
+    if (currentView.pages <= 1) return;
+    todayPageIndex++;
+  }
   var view = selectVisibleTodayMatches();
-  renderTodayRows(view.matches);
+  renderTodayRows(view.matches, advancePage === true);
   var pageInfo = document.getElementById("todayPageInfo");
   if (pageInfo) pageInfo.textContent = view.pages > 1 ? view.page + "/" + view.pages : "";
 }
