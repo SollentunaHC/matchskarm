@@ -47,6 +47,15 @@ def number(value):
     return int(value)
 
 
+def decimal(value):
+    if value in ('', '-', 'N/A'):
+        return None
+    value = value.replace(',', '.')
+    if not re.fullmatch(r'\d+(?:\.\d+)?', value):
+        raise ValueError('Invalid decimal statistic: ' + value)
+    return float(value)
+
+
 def download(url):
     with urlopen(Request(url, headers={'User-Agent': 'SollentunaHC-matchskarm/1.0'}), timeout=35) as response:
         return response.read().decode('utf-8-sig')
@@ -111,7 +120,10 @@ def parse_stats(markup):
         if 'GPT' in headers:
             if key in goalie_games:
                 raise ValueError('Duplicate goalie statistics')
-            goalie_games[key] = number(row['GPI'])
+            goalie_games[key] = {'GP': number(row['GPI']), 'SVP': decimal(row['SVS%']),
+                                 'GAA': decimal(row['GAA']), 'SO': number(row['SO'])}
+            if row.get('MIP', '0:00') in ('0:00', '00:00'):
+                goalie_games[key]['GAA'] = goalie_games[key]['SVP'] = None
             continue
         if key in players:
             raise ValueError('Duplicate statistics: ' + name)
@@ -125,7 +137,8 @@ def parse_stats(markup):
         if player['position'] == 'GK':
             if key not in goalie_games:
                 raise ValueError('Missing goalie appearance count')
-            player['stats']['GP'] = goalie_games[key]
+            player['stats']['GP'] = goalie_games[key]['GP']
+            player['goalieStats'] = goalie_games[key]
     if not players:
         raise ValueError('No Sollentuna playing statistics found')
     return players
@@ -186,6 +199,7 @@ def update(force=False):
                           number=(counted or listed or {}).get('number'),
                           position=(counted or listed or {}).get('position'),
                           stats=counted['stats'] if counted else {k: None for k in ('GP', 'G', 'A', 'TP')},
+                          goalieStats=(counted or {}).get('goalieStats'),
                           statsSource=STATS_URL, statsUpdatedAt=stamp, updatedAt=stamp)
             if not saved:
                 player.update(dateOfBirth=(listed or {}).get('dateOfBirth'), birthYear=(listed or {}).get('birthYear'),
@@ -194,6 +208,10 @@ def update(force=False):
             else:
                 player['profileSourceLabel'] = 'Eliteprospects'
             players.append(player)
+        history_spec = importlib.util.spec_from_file_location('player_history', ROOT / 'scripts/player-history.py')
+        history_module = importlib.util.module_from_spec(history_spec)
+        history_spec.loader.exec_module(history_module)
+        payload['historyWarnings'] = history_module.enrich(players, old, 2172, name_key, force=force)
         for slot in slots:
             completed[slot['key']]['result'] = 'updated'
         payload.update(players=players, status='ready', updatedAt=stamp, message=None,

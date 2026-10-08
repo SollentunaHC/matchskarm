@@ -5,7 +5,7 @@
   "previousSeason": "2025-2026",
   "status": "ready",
   "message": null,
-  "updatedAt": "2026-10-08T16:39:59.547929+00:00",
+  "updatedAt": "2026-10-08T17:25:28.700862+00:00",
   "source": "https://stats.swehockey.se/Teams/Info/PlayersByTeam/21043",
   "players": [
     {
@@ -29,10 +29,19 @@
         "A": 0,
         "TP": 0
       },
+      "goalieStats": {
+        "GP": 3,
+        "SVP": 79.52,
+        "GAA": 6.19,
+        "SO": 0
+      },
       "statsSource": "https://stats.swehockey.se/Teams/Info/PlayersByTeam/21043",
-      "statsUpdatedAt": "2026-10-08T16:39:59.547929+00:00",
-      "updatedAt": "2026-10-08T16:39:59.547929+00:00",
-      "profileSourceLabel": "Eliteprospects"
+      "statsUpdatedAt": "2026-10-08T17:25:28.700862+00:00",
+      "updatedAt": "2026-10-08T17:25:28.700862+00:00",
+      "profileSourceLabel": "Eliteprospects",
+      "historySource": "https://www.eliteprospects.com/player/581524/alec-rajalin-scharp",
+      "historyCheckedAt": "2026-10-08T17:25:39.389481+00:00",
+      "historyStatus": "verified"
     },
     {
       "id": 283059,
@@ -42,8 +51,7 @@
       "youthTeam": "Sollentuna HC",
       "previousSeason": "2025-2026",
       "previousTeams": [
-        "Sollentuna HC",
-        "Villarelining Wolfpack"
+        "Sollentuna HC"
       ],
       "source": "https://www.eliteprospects.com/player/283059/andreas-ekstrom",
       "profileCheckedAt": "2026-10-01T20:24:07.559Z",
@@ -56,10 +64,14 @@
         "A": 1,
         "TP": 1
       },
+      "goalieStats": null,
       "statsSource": "https://stats.swehockey.se/Teams/Info/PlayersByTeam/21043",
-      "statsUpdatedAt": "2026-10-08T16:39:59.547929+00:00",
-      "updatedAt": "2026-10-08T16:39:59.547929+00:00",
-      "profileSourceLabel": "Eliteprospects"
+      "statsUpdatedAt": "2026-10-08T17:25:28.700862+00:00",
+      "updatedAt": "2026-10-08T17:25:28.700862+00:00",
+      "profileSourceLabel": "Eliteprospects",
+      "historySource": "https://www.eliteprospects.com/player/283059/andreas-ekstrom",
+      "historyCheckedAt": "2026-10-08T17:25:39.389481+00:00",
+      "historyStatus": "verified"
     },
     {
       "id": 560996,
@@ -82,10 +94,14 @@
         "A": 0,
         "TP": 1
       },
+      "goalieStats": null,
       "statsSource": "https://stats.swehockey.se/Teams/Info/PlayersByTeam/21043",
-      "statsUpdatedAt": "2026-10-08T16:39:59.547929+00:00",
-      "updatedAt": "2026-10-08T16:39:59.547929+00:00",
-      "profileSourceLabel": "Eliteprospects"
+      "statsUpdatedAt": "2026-10-08T17:25:28.700862+00:00",
+      "updatedAt": "2026-10-08T17:25:28.700862+00:00",
+      "profileSourceLabel": "Eliteprospects",
+      "historySource": "https://www.eliteprospects.com/player/560996/axel-blom",
+      "historyCheckedAt": "2026-10-08T17:25:39.389481+00:00",
+      "historyStatus": "verified"
     },
     {
       "id": 705850,
@@ -108,10 +124,14 @@
         "A": 2,
         "TP": 2
       },
+      "goalieStats": null,
       "statsSource": "https://stats.swehockey.se/Teams/Info/PlayersByTeam/21043",
-      "statsUpdatedAt": "2026-10-08T16:39:59.547929+00:00",
-      "updatedAt": "2026-10-08T16:39:59.547929+00:00",
-      "profileSourceLabel": "Eliteprospects"
+      "statsUpdatedAt": "2026-10-08T17:25:28.700862+00:00",
+      "updatedAt": "2026-10-08T17:25:28.700862+00:00",
+      "profileSourceLabel": "Eliteprospects",
+      "historySource": "https://www.eliteprospects.com/player/705850/elias-ek",
+      "historyCheckedAt": "2026-10-08T17:25:39.389481+00:00",
+      "historyStatus": "verified"
     },
     {
       "id": 859965,
@@ -135,10 +155,14 @@
         "A": 0,
         "TP": 0
       },
+      "goalieStats": null,
       "statsSource": "https://stats.swehockey.se/Teams/Info/PlayersByTeam/21043",
-      "statsUpdatedAt": "2026-10-08T16:39:59.547929+00:00",
-      "updatedAt": "2026-10-08T16:39:59.547929+00:00",
-      "profileSourceLabel": "Eliteprospects"
+      "statsUpdatedAt": "2026-10-08T17:25:28.700862+00:00",
+      "updatedAt": "2026-10-08T17:25:28.700862+00:00",
+      "profileSourceLabel": "Eliteprospects",
+      "historySource": "https://www.eliteprospects.com/player/859965/elias-suneback",
+      "historyCheckedAt": "2026-10-08T17:25:39.389481+00:00",
+      "historyStatus": "verified"
     },
     {
       "id": 857791,
@@ -162,10 +186,14 @@
         "A": 0,
         "TP": 0
       },
+      "goalieStats": null,
       "statsSource": "https://stats.swehockey.se/Teams/Info/PlayersByTeam/21043",
-      "statsUpdatedAt": "2026-10-08T16:39:59.547929+00:00",
-      "updatedAt": "2026-10-08T16:39:59.547929+00:00",
-      "profileSourceLabel": "Eliteprospects"
+      "statsUpdatedAt": "2026-10-08T17:25:28.700862+00:00",
+      "updatedAt": "2026-10-08T17:25:28.700862+00:00",
+      "profileSourceLabel": "Eliteprospects",
+      "historySource": "https://www.eliteprospects.com/player/857791/erik-wiberg",
+      "historyCheckedAt": "2026-10-08T17:25:39.389481+00:00",
+      "historyStatus": "verified"
     },
     {
       "id": 323304,
@@ -175,8 +203,7 @@
       "youthTeam": "Hörnefors IF",
       "previousSeason": "2025-2026",
       "previousTeams": [
-        "HC Landsberg",
-        "Nocco"
+        "HC Landsberg"
       ],
       "source": "https://www.eliteprospects.com/player/323304/filip-bergsdorf",
       "profileCheckedAt": "2026-10-01T20:24:07.561Z",
@@ -189,10 +216,14 @@
         "A": 2,
         "TP": 3
       },
+      "goalieStats": null,
       "statsSource": "https://stats.swehockey.se/Teams/Info/PlayersByTeam/21043",
-      "statsUpdatedAt": "2026-10-08T16:39:59.547929+00:00",
-      "updatedAt": "2026-10-08T16:39:59.547929+00:00",
-      "profileSourceLabel": "Eliteprospects"
+      "statsUpdatedAt": "2026-10-08T17:25:28.700862+00:00",
+      "updatedAt": "2026-10-08T17:25:28.700862+00:00",
+      "profileSourceLabel": "Eliteprospects",
+      "historySource": "https://www.eliteprospects.com/player/323304/filip-bergsdorf",
+      "historyCheckedAt": "2026-10-08T17:25:39.389481+00:00",
+      "historyStatus": "verified"
     },
     {
       "id": 227491,
@@ -215,10 +246,14 @@
         "A": 0,
         "TP": 0
       },
+      "goalieStats": null,
       "statsSource": "https://stats.swehockey.se/Teams/Info/PlayersByTeam/21043",
-      "statsUpdatedAt": "2026-10-08T16:39:59.547929+00:00",
-      "updatedAt": "2026-10-08T16:39:59.547929+00:00",
-      "profileSourceLabel": "Eliteprospects"
+      "statsUpdatedAt": "2026-10-08T17:25:28.700862+00:00",
+      "updatedAt": "2026-10-08T17:25:28.700862+00:00",
+      "profileSourceLabel": "Eliteprospects",
+      "historySource": "https://www.eliteprospects.com/player/227491/filip-mollerstedt",
+      "historyCheckedAt": "2026-10-08T17:25:39.389481+00:00",
+      "historyStatus": "verified"
     },
     {
       "id": 485786,
@@ -241,10 +276,14 @@
         "A": 0,
         "TP": 1
       },
+      "goalieStats": null,
       "statsSource": "https://stats.swehockey.se/Teams/Info/PlayersByTeam/21043",
-      "statsUpdatedAt": "2026-10-08T16:39:59.547929+00:00",
-      "updatedAt": "2026-10-08T16:39:59.547929+00:00",
-      "profileSourceLabel": "Eliteprospects"
+      "statsUpdatedAt": "2026-10-08T17:25:28.700862+00:00",
+      "updatedAt": "2026-10-08T17:25:28.700862+00:00",
+      "profileSourceLabel": "Eliteprospects",
+      "historySource": "https://www.eliteprospects.com/player/485786/gusten-persson",
+      "historyCheckedAt": "2026-10-08T17:25:39.389481+00:00",
+      "historyStatus": "verified"
     },
     {
       "id": 730113,
@@ -268,10 +307,14 @@
         "A": 0,
         "TP": 0
       },
+      "goalieStats": null,
       "statsSource": "https://stats.swehockey.se/Teams/Info/PlayersByTeam/21043",
-      "statsUpdatedAt": "2026-10-08T16:39:59.547929+00:00",
-      "updatedAt": "2026-10-08T16:39:59.547929+00:00",
-      "profileSourceLabel": "Eliteprospects"
+      "statsUpdatedAt": "2026-10-08T17:25:28.700862+00:00",
+      "updatedAt": "2026-10-08T17:25:28.700862+00:00",
+      "profileSourceLabel": "Eliteprospects",
+      "historySource": "https://www.eliteprospects.com/player/730113/hannes-ersmark",
+      "historyCheckedAt": "2026-10-08T17:25:39.389481+00:00",
+      "historyStatus": "verified"
     },
     {
       "id": 859597,
@@ -295,10 +338,14 @@
         "A": 0,
         "TP": 0
       },
+      "goalieStats": null,
       "statsSource": "https://stats.swehockey.se/Teams/Info/PlayersByTeam/21043",
-      "statsUpdatedAt": "2026-10-08T16:39:59.547929+00:00",
-      "updatedAt": "2026-10-08T16:39:59.547929+00:00",
-      "profileSourceLabel": "Eliteprospects"
+      "statsUpdatedAt": "2026-10-08T17:25:28.700862+00:00",
+      "updatedAt": "2026-10-08T17:25:28.700862+00:00",
+      "profileSourceLabel": "Eliteprospects",
+      "historySource": "https://www.eliteprospects.com/player/859597/hugo-wiberg",
+      "historyCheckedAt": "2026-10-08T17:25:39.389481+00:00",
+      "historyStatus": "verified"
     },
     {
       "id": 862717,
@@ -322,10 +369,14 @@
         "A": 0,
         "TP": 0
       },
+      "goalieStats": null,
       "statsSource": "https://stats.swehockey.se/Teams/Info/PlayersByTeam/21043",
-      "statsUpdatedAt": "2026-10-08T16:39:59.547929+00:00",
-      "updatedAt": "2026-10-08T16:39:59.547929+00:00",
-      "profileSourceLabel": "Eliteprospects"
+      "statsUpdatedAt": "2026-10-08T17:25:28.700862+00:00",
+      "updatedAt": "2026-10-08T17:25:28.700862+00:00",
+      "profileSourceLabel": "Eliteprospects",
+      "historySource": "https://www.eliteprospects.com/player/862717/isac-crozzoli",
+      "historyCheckedAt": "2026-10-08T17:25:39.389481+00:00",
+      "historyStatus": "verified"
     },
     {
       "id": 448929,
@@ -348,10 +399,19 @@
         "A": 0,
         "TP": 0
       },
+      "goalieStats": {
+        "GP": 2,
+        "SVP": 84.78,
+        "GAA": 5.38,
+        "SO": 0
+      },
       "statsSource": "https://stats.swehockey.se/Teams/Info/PlayersByTeam/21043",
-      "statsUpdatedAt": "2026-10-08T16:39:59.547929+00:00",
-      "updatedAt": "2026-10-08T16:39:59.547929+00:00",
-      "profileSourceLabel": "Eliteprospects"
+      "statsUpdatedAt": "2026-10-08T17:25:28.700862+00:00",
+      "updatedAt": "2026-10-08T17:25:28.700862+00:00",
+      "profileSourceLabel": "Eliteprospects",
+      "historySource": "https://www.eliteprospects.com/player/448929/isac-gronhagen",
+      "historyCheckedAt": "2026-10-08T17:25:39.389481+00:00",
+      "historyStatus": "verified"
     },
     {
       "id": 649573,
@@ -374,10 +434,14 @@
         "A": 0,
         "TP": 0
       },
+      "goalieStats": null,
       "statsSource": "https://stats.swehockey.se/Teams/Info/PlayersByTeam/21043",
-      "statsUpdatedAt": "2026-10-08T16:39:59.547929+00:00",
-      "updatedAt": "2026-10-08T16:39:59.547929+00:00",
-      "profileSourceLabel": "Eliteprospects"
+      "statsUpdatedAt": "2026-10-08T17:25:28.700862+00:00",
+      "updatedAt": "2026-10-08T17:25:28.700862+00:00",
+      "profileSourceLabel": "Eliteprospects",
+      "historySource": "https://www.eliteprospects.com/player/649573/jonathan-ahlzen",
+      "historyCheckedAt": "2026-10-08T17:25:39.389481+00:00",
+      "historyStatus": "verified"
     },
     {
       "id": 572827,
@@ -400,10 +464,14 @@
         "A": 1,
         "TP": 1
       },
+      "goalieStats": null,
       "statsSource": "https://stats.swehockey.se/Teams/Info/PlayersByTeam/21043",
-      "statsUpdatedAt": "2026-10-08T16:39:59.547929+00:00",
-      "updatedAt": "2026-10-08T16:39:59.547929+00:00",
-      "profileSourceLabel": "Eliteprospects"
+      "statsUpdatedAt": "2026-10-08T17:25:28.700862+00:00",
+      "updatedAt": "2026-10-08T17:25:28.700862+00:00",
+      "profileSourceLabel": "Eliteprospects",
+      "historySource": "https://www.eliteprospects.com/player/572827/karl-stromberg",
+      "historyCheckedAt": "2026-10-08T17:25:39.389481+00:00",
+      "historyStatus": "verified"
     },
     {
       "id": 571583,
@@ -426,10 +494,14 @@
         "A": 1,
         "TP": 1
       },
+      "goalieStats": null,
       "statsSource": "https://stats.swehockey.se/Teams/Info/PlayersByTeam/21043",
-      "statsUpdatedAt": "2026-10-08T16:39:59.547929+00:00",
-      "updatedAt": "2026-10-08T16:39:59.547929+00:00",
-      "profileSourceLabel": "Eliteprospects"
+      "statsUpdatedAt": "2026-10-08T17:25:28.700862+00:00",
+      "updatedAt": "2026-10-08T17:25:28.700862+00:00",
+      "profileSourceLabel": "Eliteprospects",
+      "historySource": "https://www.eliteprospects.com/player/571583/keanu-marinkovic",
+      "historyCheckedAt": "2026-10-08T17:25:39.389481+00:00",
+      "historyStatus": "verified"
     },
     {
       "id": 657786,
@@ -452,10 +524,14 @@
         "A": 0,
         "TP": 2
       },
+      "goalieStats": null,
       "statsSource": "https://stats.swehockey.se/Teams/Info/PlayersByTeam/21043",
-      "statsUpdatedAt": "2026-10-08T16:39:59.547929+00:00",
-      "updatedAt": "2026-10-08T16:39:59.547929+00:00",
-      "profileSourceLabel": "Eliteprospects"
+      "statsUpdatedAt": "2026-10-08T17:25:28.700862+00:00",
+      "updatedAt": "2026-10-08T17:25:28.700862+00:00",
+      "profileSourceLabel": "Eliteprospects",
+      "historySource": "https://www.eliteprospects.com/player/657786/linus-molin",
+      "historyCheckedAt": "2026-10-08T17:25:39.389481+00:00",
+      "historyStatus": "verified"
     },
     {
       "id": 279195,
@@ -478,10 +554,14 @@
         "A": 0,
         "TP": 2
       },
+      "goalieStats": null,
       "statsSource": "https://stats.swehockey.se/Teams/Info/PlayersByTeam/21043",
-      "statsUpdatedAt": "2026-10-08T16:39:59.547929+00:00",
-      "updatedAt": "2026-10-08T16:39:59.547929+00:00",
-      "profileSourceLabel": "Eliteprospects"
+      "statsUpdatedAt": "2026-10-08T17:25:28.700862+00:00",
+      "updatedAt": "2026-10-08T17:25:28.700862+00:00",
+      "profileSourceLabel": "Eliteprospects",
+      "historySource": "https://www.eliteprospects.com/player/279195/lukas-paulsson",
+      "historyCheckedAt": "2026-10-08T17:25:39.389481+00:00",
+      "historyStatus": "verified"
     },
     {
       "id": 448939,
@@ -504,10 +584,14 @@
         "A": 2,
         "TP": 3
       },
+      "goalieStats": null,
       "statsSource": "https://stats.swehockey.se/Teams/Info/PlayersByTeam/21043",
-      "statsUpdatedAt": "2026-10-08T16:39:59.547929+00:00",
-      "updatedAt": "2026-10-08T16:39:59.547929+00:00",
-      "profileSourceLabel": "Eliteprospects"
+      "statsUpdatedAt": "2026-10-08T17:25:28.700862+00:00",
+      "updatedAt": "2026-10-08T17:25:28.700862+00:00",
+      "profileSourceLabel": "Eliteprospects",
+      "historySource": "https://www.eliteprospects.com/player/448939/marwin-wedemo",
+      "historyCheckedAt": "2026-10-08T17:25:39.389481+00:00",
+      "historyStatus": "verified"
     },
     {
       "id": 721562,
@@ -532,10 +616,14 @@
         "A": 0,
         "TP": 0
       },
+      "goalieStats": null,
       "statsSource": "https://stats.swehockey.se/Teams/Info/PlayersByTeam/21043",
-      "statsUpdatedAt": "2026-10-08T16:39:59.547929+00:00",
-      "updatedAt": "2026-10-08T16:39:59.547929+00:00",
-      "profileSourceLabel": "Eliteprospects"
+      "statsUpdatedAt": "2026-10-08T17:25:28.700862+00:00",
+      "updatedAt": "2026-10-08T17:25:28.700862+00:00",
+      "profileSourceLabel": "Eliteprospects",
+      "historySource": "https://www.eliteprospects.com/player/721562/oliver-magnusson",
+      "historyCheckedAt": "2026-10-08T17:25:39.389481+00:00",
+      "historyStatus": "verified"
     },
     {
       "id": 677794,
@@ -558,10 +646,14 @@
         "A": 3,
         "TP": 3
       },
+      "goalieStats": null,
       "statsSource": "https://stats.swehockey.se/Teams/Info/PlayersByTeam/21043",
-      "statsUpdatedAt": "2026-10-08T16:39:59.547929+00:00",
-      "updatedAt": "2026-10-08T16:39:59.547929+00:00",
-      "profileSourceLabel": "Eliteprospects"
+      "statsUpdatedAt": "2026-10-08T17:25:28.700862+00:00",
+      "updatedAt": "2026-10-08T17:25:28.700862+00:00",
+      "profileSourceLabel": "Eliteprospects",
+      "historySource": "https://www.eliteprospects.com/player/677794/pelle-ringstrom",
+      "historyCheckedAt": "2026-10-08T17:25:39.389481+00:00",
+      "historyStatus": "verified"
     },
     {
       "id": 946882,
@@ -584,10 +676,14 @@
         "A": null,
         "TP": null
       },
+      "goalieStats": null,
       "statsSource": "https://stats.swehockey.se/Teams/Info/PlayersByTeam/21043",
-      "statsUpdatedAt": "2026-10-08T16:39:59.547929+00:00",
-      "updatedAt": "2026-10-08T16:39:59.547929+00:00",
-      "profileSourceLabel": "Eliteprospects"
+      "statsUpdatedAt": "2026-10-08T17:25:28.700862+00:00",
+      "updatedAt": "2026-10-08T17:25:28.700862+00:00",
+      "profileSourceLabel": "Eliteprospects",
+      "historySource": "https://www.eliteprospects.com/player/946882/sebastian-brunnberg",
+      "historyCheckedAt": "2026-10-08T17:25:39.389481+00:00",
+      "historyStatus": "verified"
     },
     {
       "name": "Simon Boman",
@@ -600,17 +696,23 @@
         "A": 0,
         "TP": 0
       },
+      "goalieStats": null,
       "statsSource": "https://stats.swehockey.se/Teams/Info/PlayersByTeam/21043",
-      "statsUpdatedAt": "2026-10-08T16:39:59.547929+00:00",
-      "updatedAt": "2026-10-08T16:39:59.547929+00:00",
+      "statsUpdatedAt": "2026-10-08T17:25:28.700862+00:00",
+      "updatedAt": "2026-10-08T17:25:28.700862+00:00",
       "dateOfBirth": "1997-08-28",
       "birthYear": 1997,
       "youthTeam": "Sollentuna HC",
       "previousSeason": "2025-2026",
-      "previousTeams": [],
+      "previousTeams": [
+        "Sollentuna HC"
+      ],
       "source": "https://stats.swehockey.se/Teams/Info/TeamRoster/21043",
       "profileSourceLabel": "Swehockey",
-      "profileCheckedAt": "2026-10-08T16:39:59.547929+00:00"
+      "profileCheckedAt": "2026-10-08T17:25:28.700862+00:00",
+      "historySource": "https://www.eliteprospects.com/player/244707/simon-boman",
+      "historyCheckedAt": "2026-10-08T17:25:39.389481+00:00",
+      "historyStatus": "verified"
     },
     {
       "id": 870431,
@@ -633,10 +735,14 @@
         "A": 0,
         "TP": 0
       },
+      "goalieStats": null,
       "statsSource": "https://stats.swehockey.se/Teams/Info/PlayersByTeam/21043",
-      "statsUpdatedAt": "2026-10-08T16:39:59.547929+00:00",
-      "updatedAt": "2026-10-08T16:39:59.547929+00:00",
-      "profileSourceLabel": "Eliteprospects"
+      "statsUpdatedAt": "2026-10-08T17:25:28.700862+00:00",
+      "updatedAt": "2026-10-08T17:25:28.700862+00:00",
+      "profileSourceLabel": "Eliteprospects",
+      "historySource": "https://www.eliteprospects.com/player/870431/tim-landis",
+      "historyCheckedAt": "2026-10-08T17:25:39.389481+00:00",
+      "historyStatus": "verified"
     },
     {
       "id": 619009,
@@ -660,10 +766,14 @@
         "A": 2,
         "TP": 2
       },
+      "goalieStats": null,
       "statsSource": "https://stats.swehockey.se/Teams/Info/PlayersByTeam/21043",
-      "statsUpdatedAt": "2026-10-08T16:39:59.547929+00:00",
-      "updatedAt": "2026-10-08T16:39:59.547929+00:00",
-      "profileSourceLabel": "Eliteprospects"
+      "statsUpdatedAt": "2026-10-08T17:25:28.700862+00:00",
+      "updatedAt": "2026-10-08T17:25:28.700862+00:00",
+      "profileSourceLabel": "Eliteprospects",
+      "historySource": "https://www.eliteprospects.com/player/619009/victor-logren",
+      "historyCheckedAt": "2026-10-08T17:25:39.389481+00:00",
+      "historyStatus": "verified"
     },
     {
       "name": "Wilmer Svensson",
@@ -676,20 +786,26 @@
         "A": null,
         "TP": null
       },
+      "goalieStats": null,
       "statsSource": "https://stats.swehockey.se/Teams/Info/PlayersByTeam/21043",
-      "statsUpdatedAt": "2026-10-08T16:39:59.547929+00:00",
-      "updatedAt": "2026-10-08T16:39:59.547929+00:00",
+      "statsUpdatedAt": "2026-10-08T17:25:28.700862+00:00",
+      "updatedAt": "2026-10-08T17:25:28.700862+00:00",
       "dateOfBirth": "2001-09-12",
       "birthYear": 2001,
-      "youthTeam": "Tullinge TP HC",
+      "youthTeam": "Tullinge TP",
       "previousSeason": "2025-2026",
-      "previousTeams": [],
+      "previousTeams": [
+        "Gustavus Adolphus College"
+      ],
       "source": "https://stats.swehockey.se/Teams/Info/TeamRoster/21043",
       "profileSourceLabel": "Swehockey",
-      "profileCheckedAt": "2026-10-08T16:39:59.547929+00:00"
+      "profileCheckedAt": "2026-10-08T17:25:28.700862+00:00",
+      "historyStatus": "verified",
+      "historySource": "https://www.eliteprospects.com/player/398120/wilmer-svensson",
+      "historyCheckedAt": "2026-10-08T17:28:52.640973+00:00"
     }
   ],
-  "attemptedAt": "2026-10-08T16:39:59.547929+00:00",
+  "attemptedAt": "2026-10-08T17:25:28.700862+00:00",
   "mode": "saved_profiles_swehockey",
   "profileDigest": "df5cad88bfec2c751a7688f3175520ce03fe6e69d23ac6913bc6a2d23488c6c2",
   "profileCount": 24,
@@ -725,5 +841,6 @@
       "checkedAt": "2026-10-04T13:21:01.070654+02:00",
       "result": "updated"
     }
-  }
+  },
+  "historyWarnings": []
 }
