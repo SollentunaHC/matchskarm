@@ -3,7 +3,10 @@
   "competition": "U18H Allettan Östra",
   "season": "2026–2027",
   "scheduleUrl": "https://stats.swehockey.se/ScheduleAndResults/Schedule/21274",
-  "scheduleCheckedAt": "2026-10-08T06:21:52.113407+00:00",
+  "csvUrl": "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/Spelschema_2627.csv",
+  "configurationSource": "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/nyindex_tizen.html",
+  "workerUrl": "https://sollentuna-hockey-live.gunnar-127.workers.dev/live?match=",
+  "scheduleCheckedAt": "2026-10-08T08:45:11.941648+02:00",
   "games": [
     {
       "date": "2026-10-08",
@@ -15,8 +18,10 @@
       "competition": "U18H Allettan Östra",
       "gameId": null,
       "lineup": null,
-      "status": "unpublished",
-      "lineupChecks": {}
+      "checkedAt": null,
+      "status": "unresolved",
+      "lineupChecks": {},
+      "resolutionMessage": "Match-ID är ännu inte tillgängligt i Swehockeys spelschema eller Live."
     },
     {
       "date": "2026-10-15",
@@ -28,6 +33,7 @@
       "competition": "U18H Allettan Östra",
       "gameId": null,
       "lineup": null,
+      "checkedAt": null,
       "status": "unpublished",
       "lineupChecks": {}
     },
@@ -41,6 +47,7 @@
       "competition": "U18H Allettan Östra",
       "gameId": null,
       "lineup": null,
+      "checkedAt": null,
       "status": "unpublished",
       "lineupChecks": {}
     },
@@ -54,6 +61,7 @@
       "competition": "U18H Allettan Östra",
       "gameId": null,
       "lineup": null,
+      "checkedAt": null,
       "status": "unpublished",
       "lineupChecks": {}
     },
@@ -67,6 +75,7 @@
       "competition": "U18H Allettan Östra",
       "gameId": null,
       "lineup": null,
+      "checkedAt": null,
       "status": "unpublished",
       "lineupChecks": {}
     },
@@ -80,6 +89,7 @@
       "competition": "U18H Allettan Östra",
       "gameId": null,
       "lineup": null,
+      "checkedAt": null,
       "status": "unpublished",
       "lineupChecks": {}
     },
@@ -93,6 +103,7 @@
       "competition": "U18H Allettan Östra",
       "gameId": null,
       "lineup": null,
+      "checkedAt": null,
       "status": "unpublished",
       "lineupChecks": {}
     },
@@ -106,6 +117,7 @@
       "competition": "U18H Allettan Östra",
       "gameId": null,
       "lineup": null,
+      "checkedAt": null,
       "status": "unpublished",
       "lineupChecks": {}
     }
@@ -120,6 +132,7 @@
     "competition": "U18H Allettan Östra",
     "gameId": "1115202",
     "lineup": {
+      "schemaVersion": 2,
       "lines": {
         "1": {
           "forwards": [
@@ -251,11 +264,12 @@
         "head": "Claes Lundén",
         "assistant": "Jan Lindekrans"
       },
-      "source": "https://stats.swehockey.se/Game/LineUps/1115202",
-      "schemaVersion": 2
+      "source": "https://stats.swehockey.se/Game/LineUps/1115202"
     },
     "status": "published",
-    "checkedAt": "2026-10-08T06:21:52.113383+00:00"
+    "checkedAt": "2026-10-08T08:45:11.941648+02:00"
   },
-  "errors": []
+  "errors": [
+    "95752016: Match-ID är ännu inte tillgängligt i Swehockeys spelschema eller Live."
+  ]
 }
