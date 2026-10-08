@@ -1,18 +1,17 @@
-name: Uppdatera A-lagets laguppställning
+name: Uppdatera laguppställning – A-lag, U20 och U18
 on:
   workflow_dispatch:
   push:
     paths:
       - 'Spelschema_2627.csv'
       - 'nyindex_tizen.html'
-      - 'scripts/update-lineup.py'
-      - 'scripts/update-player-info.py'
-      - 'scripts/match_times.py'
+      - 'scripts/**'
       - 'laguppstallning/spelarprofiler.json'
+      - 'u20/spelarprofiler.json'
+      - 'u18/spelarprofiler.json'
       - '.github/workflows/laguppstallning.yml'
   schedule:
     - cron: '*/5 * * * *'
-    - cron: '1-56/5 * * * *'
 permissions:
   contents: write
 concurrency:
@@ -23,22 +22,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          ref: ${{ github.ref }}
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Hämta Swehockey
-        run: python scripts/update-lineup.py ${{ github.event_name != 'schedule' && '--force' || '' }}
-      - name: Uppdatera spelarstatistik från Swehockey
-        continue-on-error: true
-        run: python scripts/update-player-info.py ${{ github.event_name != 'schedule' && '--force' || '' }}
-      - name: Spara uppdatering
+      - name: Hämta samtliga lag
+        run: python scripts/update-all-teams.py ${{ github.event_name != 'schedule' && '--force' || '' }}
+      - name: Spara uppdatering även om en annan källa misslyckades
+        if: always()
         run: |
-          if ! git diff --quiet -- laguppstallning/data.json laguppstallning/spelarinfo.json; then
+          git add laguppstallning/data.json laguppstallning/spelarinfo.json u20/data.json u20/spelarinfo.json u18/data.json u18/spelarinfo.json
+          if ! git diff --cached --quiet; then
             git config user.name "SHC matchskärm"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add laguppstallning/data.json laguppstallning/spelarinfo.json
-            git commit -m "Uppdatera A-lagets laguppställning från Swehockey"
+            git commit -m "Uppdatera A-lag, U20 och U18"
+            git pull --rebase origin main
             git push
           fi

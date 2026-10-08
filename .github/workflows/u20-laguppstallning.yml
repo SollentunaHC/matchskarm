@@ -1,18 +1,7 @@
-name: Uppdatera U20 H Nationell
+# Automatic U20 updates are included in laguppstallning.yml.
+name: Uppdatera endast U20 manuellt
 on:
   workflow_dispatch:
-  push:
-    paths:
-      - 'Spelschema_2627.csv'
-      - 'nyindex_tizen.html'
-      - 'scripts/update-u20-lineup.py'
-      - 'scripts/update-u20-player-info.py'
-      - 'scripts/match_times.py'
-      - 'u20/spelarprofiler.json'
-      - '.github/workflows/u20-laguppstallning.yml'
-  schedule:
-    - cron: '*/5 * * * *'
-    - cron: '1-56/5 * * * *'
 permissions:
   contents: write
 concurrency:
@@ -23,22 +12,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          ref: ${{ github.ref }}
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Hämta Swehockey
-        run: python scripts/update-u20-lineup.py ${{ github.event_name != 'schedule' && '--force' || '' }}
-      - name: Uppdatera spelarstatistik från Swehockey
-        continue-on-error: true
-        run: python scripts/update-u20-player-info.py ${{ github.event_name != 'schedule' && '--force' || '' }}
-      - name: Spara uppdatering
+      - run: python scripts/update-u20-lineup.py --force
+      - run: python scripts/update-u20-player-info.py --force
+      - name: Spara
         run: |
-          if ! git diff --quiet -- u20/data.json u20/spelarinfo.json; then
+          git add u20/data.json u20/spelarinfo.json
+          if ! git diff --cached --quiet; then
             git config user.name "SHC matchskärm"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add u20/data.json u20/spelarinfo.json
-            git commit -m "Uppdatera U20 H Nationell från Swehockey"
+            git commit -m "Uppdatera U20"
+            git pull --rebase origin main
             git push
           fi
