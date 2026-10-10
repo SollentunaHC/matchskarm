@@ -2,7 +2,7 @@
 <html lang="sv">
 <head>
 <meta charset="UTF-8">
-<title>Sollentuna Hockey – Tizen version 18.11</title>
+<title>Sollentuna Hockey – Tizen version 18.12</title>
 
 <style>
 
@@ -489,7 +489,7 @@ footer { display: none; }
 
 <script>
 
-var ARENA_VERSION = "VERSION 18.11 TIZEN";
+var ARENA_VERSION = "VERSION 18.12 TIZEN";
 var CSV_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/Spelschema_2627.csv";
 var SPONSOR_LIST_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/sponsors/list.txt";
 var SPONSOR_BASE_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/sponsors/";
@@ -502,6 +502,13 @@ var MATCH_CHECK_URL = "https://sollentuna-hockey-live.gunnar-127.workers.dev/che
 var SWEHOCKEY_ID_MAP = {
   "95097052": "1121968"
 };
+// Worker v1.18: samma URL på alla skärmar för delad edge-cache.
+// Uppdatera live oftare, men gör inte resultatfrågor långt före start.
+var LIVE_POLL_MS = 30000;
+var NEAR_POLL_MS = 60000;
+var BEFORE_POLL_MS = 300000;
+var liveLastPollAt = {};
+var livePollInFlight = {};
 var activeTodayMatches = [];
 var allTodayMatches = [];
 var todayPageIndex = 0;
@@ -739,8 +746,7 @@ function loadMatchCheck(match) {
     "&time=" + encodeURIComponent(match.time || "") +
     "&home=" + encodeURIComponent(match.home || "") +
     "&away=" + encodeURIComponent(match.away || "") +
-    "&series=" + encodeURIComponent(match.series || "") +
-    "&nocache=" + new Date().getTime();
+    "&series=" + encodeURIComponent(match.series || "");
   var xhr = new XMLHttpRequest();
   xhr.open("GET", query, true);
   xhr.timeout = 20000;
@@ -817,8 +823,7 @@ function requestFutureMatchCheck(match, callback) {
     "&time=" + encodeURIComponent(match.time || "") +
     "&home=" + encodeURIComponent(match.home || "") +
     "&away=" + encodeURIComponent(match.away || "") +
-    "&series=" + encodeURIComponent(match.series || "") +
-    "&nocache=" + new Date().getTime();
+    "&series=" + encodeURIComponent(match.series || "");
   var xhr = new XMLHttpRequest();
   var finished = false;
 
@@ -922,6 +927,8 @@ function maybeRunFutureChecks() {
 function loadLiveResult(match) {
   if (!match || !match.matchNumber || isPoolspel(match)) return;
   var key = liveMatchKey(match);
+  if (livePollInFlight[key]) return;
+  livePollInFlight[key] = true;
   var requestNumber = (liveRequestNumbers[key] || 0) + 1;
   liveRequestNumbers[key] = requestNumber;
   var directId = SWEHOCKEY_ID_MAP[match.matchNumber];
@@ -929,21 +936,20 @@ function loadLiveResult(match) {
   if (directId) {
     /* Med ett känt internt ID ska Workern inte försöka slå upp GamesByDate. */
     query = LIVE_RESULT_PROXY + encodeURIComponent(directId) +
-      "&series=" + encodeURIComponent(match.series || "") +
-      "&nocache=" + new Date().getTime();
+      "&series=" + encodeURIComponent(match.series || "");
   } else {
     query = LIVE_RESULT_PROXY + encodeURIComponent(match.matchNumber) +
       "&date=" + encodeURIComponent(match.date || "") +
       "&home=" + encodeURIComponent(match.home || "") +
       "&away=" + encodeURIComponent(match.away || "") +
-      "&series=" + encodeURIComponent(match.series || "") +
-      "&nocache=" + new Date().getTime();
+      "&series=" + encodeURIComponent(match.series || "");
   }
   var xhr = new XMLHttpRequest();
   xhr.open("GET", query, true);
   xhr.timeout = 15000;
   xhr.onreadystatechange = function () {
     if (xhr.readyState !== 4) return;
+    livePollInFlight[key] = false;
     // Ett tidigare anrop får inte skriva över svaret från ett senare anrop.
     if (liveRequestNumbers[key] !== requestNumber) return;
     /* Äldre Tizen kan rapportera status 0 trots att HTTPS-svaret kom fram. */
@@ -964,9 +970,11 @@ function loadLiveResult(match) {
     }
   };
   xhr.onerror = function () {
+    livePollInFlight[key] = false;
     showLiveError(match.matchNumber, "INGEN KONTAKT");
   };
   xhr.ontimeout = function () {
+    livePollInFlight[key] = false;
     showLiveError(match.matchNumber, "TIMEOUT");
   };
   xhr.send(null);
@@ -1095,8 +1103,28 @@ function updateLiveResult(matchNumber, result, skipLayoutRefresh) {
   if (!skipLayoutRefresh) scheduleTodayLayoutRefresh();
 }
 
-function loadAllLiveResults(matches) {
-  for (var i = 0; i < matches.length; i++) loadLiveResult(matches[i]);
+function pollTodayResults() {
+  var nowMs = new Date().getTime();
+  for (var i = 0; i < activeTodayMatches.length; i++) {
+    var match = activeTodayMatches[i];
+    if (!match || !match.matchNumber || isPoolspel(match)) continue;
+    var key = liveMatchKey(match);
+    var previous = matchResult(match);
+    var status = matchStatus(match);
+    // Slutresultat behöver inte frågas om igen. Behåll visningen i 70 minuter.
+    if (status === "SLUT") continue;
+    var startMs = new Date(match.date + "T" + match.time).getTime();
+    if (isNaN(startMs)) continue;
+    var untilStart = startMs - nowMs;
+    // Vänta tills 60 minuter före start. Morgon-/framtidskontrollerna är separata.
+    if (untilStart > 60 * 60000) continue;
+    var interval = status === "LIVE" ? LIVE_POLL_MS :
+      (untilStart <= 0 ? NEAR_POLL_MS : BEFORE_POLL_MS);
+    if (livePollInFlight[key]) continue;
+    if (liveLastPollAt[key] && nowMs - liveLastPollAt[key] < interval) continue;
+    liveLastPollAt[key] = nowMs;
+    loadLiveResult(match);
+  }
 }
 
 /* Dela upp i dagens + kommande */
@@ -1244,7 +1272,7 @@ function renderTodayMatches(todayMatches) {
   activeTodayMatches = allTodayMatches;
   todayPageIndex = 0;
   refreshTodayDisplay(false);
-  loadAllLiveResults(activeTodayMatches);
+  pollTodayResults();
   maybeRunDailyChecks();
 }
 
@@ -1381,7 +1409,7 @@ function initArena() {
   setInterval(loadMatches, 300000);
   /* Sponsorlistan läses om var 30:e minut utan att hela sidan startas om. */
   setInterval(loadSponsors, 1800000);
-  setInterval(function () { loadAllLiveResults(activeTodayMatches); }, 30000);
+  setInterval(pollTodayResults, 15000);
   /* LIVE-rader ligger kvar; övriga matcher rullar en rad var femte sekund. */
   setInterval(function () { refreshTodayDisplay(true); }, TODAY_PAGE_INTERVAL_MS);
   /* Kör morgonkontrollen efter kl. 06 och byt automatiskt till vitt vid T-15. */
