@@ -2,7 +2,7 @@
 <html lang="sv">
 <head>
 <meta charset="UTF-8">
-<title>Sollentuna Hockey – Tizen version 18.9</title>
+<title>Sollentuna Hockey – Tizen version 18.10</title>
 
 <style>
 
@@ -487,7 +487,7 @@ footer { display: none; }
 
 <script>
 
-var ARENA_VERSION = "VERSION 18.9 TIZEN";
+var ARENA_VERSION = "VERSION 18.10 TIZEN";
 var CSV_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/Spelschema_2627.csv";
 var SPONSOR_LIST_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/sponsors/list.txt";
 var SPONSOR_BASE_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/sponsors/";
@@ -503,6 +503,7 @@ var SWEHOCKEY_ID_MAP = {
 var activeTodayMatches = [];
 var allTodayMatches = [];
 var todayPageIndex = 0;
+var fixedTodayMatchKeys = {};
 var TODAY_PAGE_SIZE = 5;
 var TODAY_PAGE_INTERVAL_MS = 5000;
 var FINAL_RESULT_VISIBLE_MS = 70 * 60 * 1000;
@@ -1144,30 +1145,47 @@ function scheduleTodayLayoutRefresh() {
 }
 
 /*
-  Håll samtliga LIVE-matcher synliga. Resterande platser fylls med avslutade
-  matcher (högst 70 minuter) och kommande matcher. Vid platsbrist roterar bara
-  de matcher som inte är LIVE.
+  Håll samtliga LIVE-matcher och den tidsmässigt nästkommande matchen synliga.
+  Resterande platser fylls med avslutade matcher (högst 70 minuter) och övriga
+  kommande matcher. Vid platsbrist roterar bara de matcher som inte är fasta.
 */
 function selectVisibleTodayMatches() {
   var nowMs = new Date().getTime();
-  var live = [];
-  var other = [];
+  var fixed = [];
+  var rotating = [];
+  var nextMatch = null;
+  fixedTodayMatchKeys = {};
+
+  /* Välj den första matchen som ännu inte har startat. */
+  for (var n = 0; n < allTodayMatches.length; n++) {
+    var possibleNext = allTodayMatches[n];
+    if (finishedMatchHasExpired(possibleNext, nowMs)) continue;
+    var startMs = new Date(possibleNext.date + "T" + possibleNext.time).getTime();
+    if (startMs > nowMs && (!nextMatch || startMs < new Date(nextMatch.date + "T" + nextMatch.time).getTime())) {
+      nextMatch = possibleNext;
+    }
+  }
+
   for (var i = 0; i < allTodayMatches.length; i++) {
     var match = allTodayMatches[i];
     if (finishedMatchHasExpired(match, nowMs)) continue;
-    if (matchStatus(match) === "LIVE") live.push(match);
-    else other.push(match);
+    if (matchStatus(match) === "LIVE" || match === nextMatch) {
+      fixed.push(match);
+      fixedTodayMatchKeys[liveMatchKey(match)] = true;
+    } else {
+      rotating.push(match);
+    }
   }
 
-  var remainingSlots = Math.max(0, TODAY_PAGE_SIZE - live.length);
+  var remainingSlots = Math.max(0, TODAY_PAGE_SIZE - fixed.length);
   /* Flytta matchfönstret en enda rad per växling. */
-  var pageCount = remainingSlots > 0 && other.length > remainingSlots ? other.length : 1;
+  var pageCount = remainingSlots > 0 && rotating.length > remainingSlots ? rotating.length : 1;
   if (todayPageIndex >= pageCount) todayPageIndex = 0;
-  var selected = live.slice(0);
+  var selected = fixed.slice(0);
   if (remainingSlots > 0) {
-    var visibleOtherCount = Math.min(remainingSlots, other.length);
-    for (var n = 0; n < visibleOtherCount; n++) {
-      selected.push(other[(todayPageIndex + n) % other.length]);
+    var visibleOtherCount = Math.min(remainingSlots, rotating.length);
+    for (var r = 0; r < visibleOtherCount; r++) {
+      selected.push(rotating[(todayPageIndex + r) % rotating.length]);
     }
   }
   selected.sort(function (a, b) {
@@ -1185,7 +1203,7 @@ function renderTodayRows(todayMatches, animateRollingRows) {
   } else {
     for (var i = 0; i < todayMatches.length; i++) {
       var m = todayMatches[i];
-      html += "<tr class='" + (animateRollingRows && matchStatus(m) !== "LIVE" ? "rolling-row" : "") + "'>" +
+      html += "<tr class='" + (animateRollingRows && !fixedTodayMatchKeys[liveMatchKey(m)] ? "rolling-row" : "") + "'>" +
         "<td>" + formatDate(m.date) + "</td>" +
         "<td>" + m.time + "<span class='time-status' id='status-" + m.matchNumber + "'>" + getStatus(m.date, m.time) + "</span></td>" +
         "<td>" + m.series + "</td>" +
