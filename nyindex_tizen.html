@@ -2,7 +2,7 @@
 <html lang="sv">
 <head>
 <meta charset="UTF-8">
-<title>Sollentuna Hockey – Tizen version 18.10</title>
+<title>Sollentuna Hockey – Tizen version 18.11</title>
 
 <style>
 
@@ -348,16 +348,18 @@ body::before {
 .section-heading span { font-size: 1vw; font-weight: 900; letter-spacing: 0.1em; }
 .page-info { margin-left: 0.8vw; color: #ffd447; }
 @-webkit-keyframes rowRollIn {
-  from { opacity: 0.35; -webkit-transform: translateY(1.3vh); }
+  from { opacity: 0.08; -webkit-transform: translateY(0.55vh); }
+  55% { opacity: 0.72; }
   to { opacity: 1; -webkit-transform: translateY(0); }
 }
 @keyframes rowRollIn {
-  from { opacity: 0.35; transform: translateY(1.3vh); }
+  from { opacity: 0.08; transform: translateY(0.55vh); }
+  55% { opacity: 0.72; }
   to { opacity: 1; transform: translateY(0); }
 }
 .rolling-row {
-  -webkit-animation: rowRollIn 0.55s ease-out;
-  animation: rowRollIn 0.55s ease-out;
+  -webkit-animation: rowRollIn 1.15s cubic-bezier(0.22, 0.61, 0.36, 1);
+  animation: rowRollIn 1.15s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 .verification-summary { display: flex; align-items: center; justify-content: flex-end; margin-top: 0.55vh; }
 .verification-box + .verification-box { margin-left: 0.4vw; }
@@ -487,7 +489,7 @@ footer { display: none; }
 
 <script>
 
-var ARENA_VERSION = "VERSION 18.10 TIZEN";
+var ARENA_VERSION = "VERSION 18.11 TIZEN";
 var CSV_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/Spelschema_2627.csv";
 var SPONSOR_LIST_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/sponsors/list.txt";
 var SPONSOR_BASE_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/sponsors/";
