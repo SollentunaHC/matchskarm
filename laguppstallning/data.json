@@ -6,8 +6,167 @@
   "csvUrl": "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/Spelschema_2627.csv",
   "configurationSource": "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/nyindex_tizen.html",
   "workerUrl": "https://sollentuna-hockey-live.gunnar-127.workers.dev/live?match=",
-  "scheduleCheckedAt": "2026-10-14T02:23:14.479656+02:00",
+  "scheduleCheckedAt": "2026-10-14T11:27:07.855558+02:00",
   "games": [
+    {
+      "date": "2026-10-03",
+      "time": "16:00",
+      "home": "Sollentuna HC",
+      "away": "Bodens HF",
+      "venue": "CYLOQ Arena",
+      "matchNumber": "90255135",
+      "competition": "Hockeyettan Norra",
+      "gameId": "1112888",
+      "lineup": {
+        "schemaVersion": 2,
+        "lines": {
+          "1": {
+            "forwards": [
+              {
+                "number": "27",
+                "lastName": "Molin",
+                "firstName": "Linus"
+              },
+              {
+                "number": "62",
+                "lastName": "Ringström",
+                "firstName": "Pelle"
+              },
+              {
+                "number": "45",
+                "lastName": "Ekström",
+                "firstName": "Andreas"
+              }
+            ],
+            "defenders": [
+              {
+                "number": "7",
+                "lastName": "Strömberg",
+                "firstName": "Karl"
+              },
+              {
+                "number": "39",
+                "lastName": "Persson",
+                "firstName": "Gusten"
+              }
+            ]
+          },
+          "2": {
+            "forwards": [
+              {
+                "number": "40",
+                "lastName": "Logren",
+                "firstName": "Victor"
+              },
+              {
+                "number": "25",
+                "lastName": "Bergsdorf",
+                "firstName": "Filip"
+              },
+              {
+                "number": "20",
+                "lastName": "Paulsson",
+                "firstName": "Lukas"
+              }
+            ],
+            "defenders": [
+              {
+                "number": "44",
+                "lastName": "Ek",
+                "firstName": "Elias"
+              },
+              {
+                "number": "76",
+                "lastName": "Wedemo",
+                "firstName": "Marwin"
+              }
+            ]
+          },
+          "3": {
+            "forwards": [
+              {
+                "number": "23",
+                "lastName": "Ahlzén",
+                "firstName": "Jonathan"
+              },
+              {
+                "number": "18",
+                "lastName": "Blom",
+                "firstName": "Axel"
+              },
+              {
+                "number": "43",
+                "lastName": "Marinkovic",
+                "firstName": "Keanu"
+              }
+            ],
+            "defenders": [
+              {
+                "number": "37",
+                "lastName": "Möllerstedt",
+                "firstName": "Filip"
+              },
+              {
+                "number": "36",
+                "lastName": "Magnusson",
+                "firstName": "Oliver"
+              }
+            ]
+          },
+          "4": {
+            "forwards": [
+              {
+                "number": "97",
+                "lastName": "Landis",
+                "firstName": "Tim"
+              },
+              {
+                "number": "19",
+                "lastName": "Crozzoli",
+                "firstName": "Isac"
+              },
+              {
+                "number": "26",
+                "lastName": "Wiberg",
+                "firstName": "Erik"
+              }
+            ],
+            "defenders": [
+              {
+                "number": "5",
+                "lastName": "Wiberg",
+                "firstName": "Hugo"
+              },
+              {
+                "number": "28",
+                "lastName": "Ersmark",
+                "firstName": "Hannes"
+              }
+            ]
+          }
+        },
+        "goalies": [
+          {
+            "number": "31",
+            "lastName": "Grönhagen",
+            "firstName": "Isac"
+          },
+          {
+            "number": "60",
+            "lastName": "Rajalin-Scharp",
+            "firstName": "Alec"
+          }
+        ],
+        "coaches": {
+          "head": "Kjell G Lindqvist",
+          "assistant": "Andreas Paulsson"
+        },
+        "source": "https://stats.swehockey.se/Game/LineUps/1112888"
+      },
+      "checkedAt": "2026-10-14T11:27:07.855558+02:00",
+      "status": "published",
+      "lineupChecks": {}
+    },
     {
       "date": "2026-10-04",
       "time": "14:00",
@@ -163,7 +322,7 @@
         },
         "source": "https://stats.swehockey.se/Game/LineUps/1112899"
       },
-      "checkedAt": "2026-10-12T10:10:09.186499+02:00",
+      "checkedAt": "2026-10-14T11:27:07.855558+02:00",
       "status": "published",
       "lineupChecks": {
         "90255146|2026-10-04T14:00:00+02:00|lineup|2026-10-04T13:16:00+02:00": {
@@ -329,7 +488,7 @@
         },
         "source": "https://stats.swehockey.se/Game/LineUps/1113012"
       },
-      "checkedAt": "2026-10-12T10:10:09.186499+02:00",
+      "checkedAt": "2026-10-14T11:27:07.855558+02:00",
       "status": "published",
       "lineupChecks": {
         "90255259|2026-10-11T16:00:00+02:00|lineup|2026-10-11T15:56:00+02:00": {
@@ -557,8 +716,9 @@
     "home": "Strömsbro IF",
     "away": "Sollentuna HC",
     "venue": "Testebo Arena",
-    "gameId": "1113118",
     "matchNumber": "90255365",
+    "competition": "Hockeyettan Norra",
+    "gameId": "1113118",
     "lineup": {
       "schemaVersion": 2,
       "lines": {
@@ -701,7 +861,7 @@
       "source": "https://stats.swehockey.se/Game/LineUps/1113118"
     },
     "status": "published",
-    "checkedAt": "2026-10-12T10:10:09.186499+02:00"
+    "checkedAt": "2026-10-14T11:27:07.855558+02:00"
   },
   "errors": []
 }
