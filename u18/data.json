@@ -6,7 +6,7 @@
   "csvUrl": "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/Spelschema_2627.csv",
   "configurationSource": "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/nyindex_tizen.html",
   "workerUrl": "https://sollentuna-hockey-live.gunnar-127.workers.dev/live?match=",
-  "scheduleCheckedAt": "2026-10-13T03:32:16.896102+02:00",
+  "scheduleCheckedAt": "2026-10-14T02:23:15.961522+02:00",
   "games": [
     {
       "date": "2026-10-08",
