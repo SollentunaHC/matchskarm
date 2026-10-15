@@ -1,6 +1,17 @@
 name: Uppdatera laguppställning – A-lag, U20 och U18
 on:
   workflow_dispatch:
+    inputs:
+      force:
+        description: 'Tvinga full omhämtning (avmarkeras av Cloudflare)'
+        type: boolean
+        required: false
+        default: true
+      trigger_reason:
+        description: 'Orsak från Cloudflare-styrningen'
+        type: string
+        required: false
+        default: 'manuell'
   push:
     paths:
       - 'Spelschema_2627.csv'
@@ -26,7 +37,7 @@ jobs:
         with:
           python-version: '3.12'
       - name: Hämta samtliga lag
-        run: python scripts/update-all-teams.py ${{ github.event_name == 'workflow_dispatch' && '--force' || '' }}
+        run: python scripts/update-all-teams.py ${{ github.event_name == 'workflow_dispatch' && inputs.force && '--force' || '' }}
       - name: Spara uppdatering även om en annan källa misslyckades
         if: always()
         run: |
