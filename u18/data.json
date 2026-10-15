@@ -6,7 +6,7 @@
   "csvUrl": "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/Spelschema_2627.csv",
   "configurationSource": "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/nyindex_tizen.html",
   "workerUrl": "https://sollentuna-hockey-live.gunnar-127.workers.dev/live?match=",
-  "scheduleCheckedAt": "2026-10-15T16:11:13.481824+02:00",
+  "scheduleCheckedAt": "2026-10-15T16:12:24.236681+02:00",
   "games": [
     {
       "date": "2026-09-27",
@@ -158,7 +158,7 @@
         },
         "source": "https://stats.swehockey.se/Game/LineUps/1115193"
       },
-      "checkedAt": "2026-10-14T11:27:47.999724+02:00",
+      "checkedAt": "2026-10-15T16:12:24.236681+02:00",
       "status": "published",
       "lineupChecks": {}
     },
@@ -312,7 +312,7 @@
         },
         "source": "https://stats.swehockey.se/Game/LineUps/1115204"
       },
-      "checkedAt": "2026-10-14T11:27:47.999724+02:00",
+      "checkedAt": "2026-10-15T16:12:24.236681+02:00",
       "status": "published",
       "lineupChecks": {
         "95752016|2026-10-08T19:10:00+02:00|lineup|2026-10-08T18:36:00+02:00": {
@@ -334,8 +334,9 @@
       "gameId": null,
       "lineup": null,
       "checkedAt": null,
-      "status": "unpublished",
-      "lineupChecks": {}
+      "status": "unresolved",
+      "lineupChecks": {},
+      "resolutionMessage": "Match-ID är ännu inte tillgängligt i Swehockeys spelschema eller Live."
     },
     {
       "date": "2026-10-17",
@@ -428,9 +429,8 @@
     "home": "IFK Tumba IK",
     "away": "Sollentuna HC",
     "venue": "Ishuset",
-    "matchNumber": "95752014",
-    "competition": "U18H Allettan Östra",
     "gameId": "1115202",
+    "matchNumber": "95752014",
     "lineup": {
       "schemaVersion": 2,
       "lines": {
@@ -567,9 +567,11 @@
       "source": "https://stats.swehockey.se/Game/LineUps/1115202"
     },
     "status": "published",
-    "checkedAt": "2026-10-14T11:27:47.999724+02:00"
+    "checkedAt": "2026-10-15T16:12:24.236681+02:00"
   },
-  "errors": [],
+  "errors": [
+    "95752027: Match-ID är ännu inte tillgängligt i Swehockeys spelschema eller Live."
+  ],
   "screenConfig": {
     "csv": "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/Spelschema_2627.csv",
     "live": "https://sollentuna-hockey-live.gunnar-127.workers.dev/live?match=",
