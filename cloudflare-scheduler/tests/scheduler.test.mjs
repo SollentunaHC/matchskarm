@@ -41,12 +41,12 @@ class MemoryState {
  constructor(){this.data=new Map();this.queue=Promise.resolve();this.storage={get:async k=>structuredClone(this.data.get(k)),put:async(k,v)=>this.data.set(k,structuredClone(v))};}
  blockConcurrencyWhile(fn){const next=this.queue.then(fn);this.queue=next.catch(()=>{});return next;}
 }
-test('actual worker: simultaneous cron ticks dispatch once, false force, persistent restart',async()=>{
+test('actual worker: HTTP 200 is accepted, concurrent ticks and restart dispatch once',async()=>{
  const oldFetch=globalThis.fetch,oldNow=Date.now;let calls=0,downloads=0;
  Date.now=()=>at('16:20');
  globalThis.fetch=async(url,opts)=>{
   if(String(url).includes('raw.githubusercontent.com')){downloads++;return new Response(csv);}
-  calls++;const body=JSON.parse(opts.body);assert.equal(body.inputs.force,false);assert.equal(body.ref,'main');return new Response(null,{status:204});
+  calls++;const body=JSON.parse(opts.body);assert.equal(body.inputs.force,false);assert.equal(body.ref,'main');return Response.json({workflow_run_id:123});
  };
  try{
   const state=new MemoryState(),scheduler=new MatchScheduler(state,{GITHUB_TOKEN:'test-only'});
