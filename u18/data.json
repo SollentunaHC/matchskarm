@@ -331,12 +331,140 @@
       "venue": "CYLOQ Arena",
       "matchNumber": "95752027",
       "competition": "U18H Allettan Östra",
-      "gameId": null,
-      "lineup": null,
-      "checkedAt": null,
-      "status": "unresolved",
-      "lineupChecks": {},
-      "resolutionMessage": "Match-ID är ännu inte tillgängligt i Swehockeys spelschema eller Live."
+      "gameId": "1115215",
+      "lineup": {
+        "schemaVersion": 2,
+        "lines": {
+          "1": {
+            "forwards": [
+              {
+                "number": "12",
+                "lastName": "Mattsson",
+                "firstName": "Isac"
+              },
+              {
+                "number": "20",
+                "lastName": "Dahlberg",
+                "firstName": "Hugo"
+              },
+              {
+                "number": "16",
+                "lastName": "Clerkestam",
+                "firstName": "Axel"
+              }
+            ],
+            "defenders": [
+              {
+                "number": "25",
+                "lastName": "Öhman",
+                "firstName": "Albert"
+              },
+              {
+                "number": "3",
+                "lastName": "Gillberg",
+                "firstName": "Oskar"
+              }
+            ]
+          },
+          "2": {
+            "forwards": [
+              {
+                "number": "18",
+                "lastName": "Ronquist",
+                "firstName": "Caspian"
+              },
+              {
+                "number": "11",
+                "lastName": "Lindqvist",
+                "firstName": "Noah"
+              },
+              {
+                "number": "27",
+                "lastName": "Thulin",
+                "firstName": "Erik"
+              }
+            ],
+            "defenders": [
+              {
+                "number": "17",
+                "lastName": "Sjöström",
+                "firstName": "Levi"
+              },
+              {
+                "number": "24",
+                "lastName": "Srobar",
+                "firstName": "Peter"
+              }
+            ]
+          },
+          "3": {
+            "forwards": [
+              {
+                "number": "23",
+                "lastName": "Paulsson",
+                "firstName": "Loui"
+              },
+              {
+                "number": "19",
+                "lastName": "Ahnsjö",
+                "firstName": "Melker"
+              },
+              {
+                "number": "26",
+                "lastName": "Rondal",
+                "firstName": "Robin"
+              }
+            ],
+            "defenders": [
+              {
+                "number": "6",
+                "lastName": "Jäderlund",
+                "firstName": "Nils"
+              }
+            ]
+          },
+          "4": {
+            "forwards": [
+              {
+                "number": "7",
+                "lastName": "Fennrup",
+                "firstName": "Edvin"
+              },
+              {
+                "number": "28",
+                "lastName": "Sandberg",
+                "firstName": "Bruno"
+              },
+              {
+                "number": "9",
+                "lastName": "Kalata",
+                "firstName": "Karol"
+              }
+            ],
+            "defenders": []
+          }
+        },
+        "goalies": [
+          {
+            "number": "35",
+            "lastName": "Segerbrant",
+            "firstName": "Theo"
+          },
+          {
+            "number": "1",
+            "lastName": "Kurrti",
+            "firstName": "Elja"
+          }
+        ],
+        "coaches": {
+          "head": "Claes Lundén",
+          "assistant": "Jan Lindekrans"
+        },
+        "source": "https://stats.swehockey.se/Game/LineUps/1115215"
+      },
+      "checkedAt": "2026-10-15T19:28:46.117114+02:00",
+      "status": "published",
+      "lineupChecks": {}
     },
     {
       "date": "2026-10-17",
@@ -569,9 +697,7 @@
     "status": "published",
     "checkedAt": "2026-10-15T16:12:24.236681+02:00"
   },
-  "errors": [
-    "95752027: Match-ID är ännu inte tillgängligt i Swehockeys spelschema eller Live."
-  ],
+  "errors": [],
   "screenConfig": {
     "csv": "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/Spelschema_2627.csv",
     "live": "https://sollentuna-hockey-live.gunnar-127.workers.dev/live?match=",
