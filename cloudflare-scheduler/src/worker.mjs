@@ -1,5 +1,5 @@
 import {dueEvents,parseCSV,localParts} from './schedule.mjs';
-const VERSION='1.0';
+const VERSION='1.0.1';
 const CSV='https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/Spelschema_2627.csv';
 export async function dispatch(env,events) {
   if(!env.GITHUB_TOKEN)throw new Error('Missing GITHUB_TOKEN secret');
@@ -7,7 +7,8 @@ export async function dispatch(env,events) {
     method:'POST',headers:{'User-Agent':'SollentunaHC-lineup-scheduler','Accept':'application/vnd.github+json','Authorization':`Bearer ${env.GITHUB_TOKEN}`,'X-GitHub-Api-Version':'2026-03-10','Content-Type':'application/json'},
     body:JSON.stringify({ref:'main',inputs:{force:false,trigger_reason:[...new Set(events.map(e=>e.kind))].join(', ')}}),signal:AbortSignal.timeout(12000)
   });
-  if(response.status!==204)throw new Error(`GitHub dispatch HTTP ${response.status}`);
+  // GitHub returns 200 with run details or 204 without a response body.
+  if(response.status!==200&&response.status!==204)throw new Error(`GitHub dispatch HTTP ${response.status}`);
 }
 export class MatchScheduler {
   constructor(state,env){this.state=state;this.env=env;}
