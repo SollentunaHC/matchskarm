@@ -12,7 +12,7 @@ import time
 from urllib.request import Request, urlopen
 from urllib.parse import urlencode, urlsplit, urlunsplit, parse_qsl
 from zoneinfo import ZoneInfo
-from match_times import due_checkpoint, daily_schedule_due
+from match_times import due_checkpoint, daily_schedule_due, merge_schedule
 
 ROOT = Path(__file__).resolve().parents[1]
 OUTPUT = ROOT / 'laguppstallning/data.json'
@@ -228,8 +228,7 @@ def build(force=False):
     home_games = [g for g in csv_games if g['home'] == TEAM]
     if not home_games or len({g['matchNumber'] for g in csv_games}) != len(csv_games):
         raise ValueError('Missing home matches or duplicate match numbers')
-    if len(home_games) < len(old.get('games', [])) * 0.8:
-        raise ValueError('Unexpectedly many home matches missing; retaining previous file')
+    home_games = merge_schedule(home_games, old.get('games', []), now.date().isoformat())
     cache = {g['matchNumber']: g for g in old.get('games', [])}
     errors = []
     for game in home_games:

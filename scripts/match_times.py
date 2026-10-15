@@ -40,3 +40,14 @@ def due_checkpoint(game, kind, now, completed):
 def daily_schedule_due(now, last_checked):
     now = now.astimezone(ZONE)
     return now.hour >= 2 and not (last_checked or '').startswith(now.date().isoformat())
+
+
+def merge_schedule(current, previous, today):
+    # The shared CSV drops completed games. Keep those saved lineups as history.
+    old_upcoming = [g for g in previous if g['date'] >= today]
+    new_upcoming = [g for g in current if g['date'] >= today]
+    if len(new_upcoming) < len(old_upcoming) * 0.8:
+        raise ValueError('Unexpectedly many upcoming home matches missing; retaining previous file')
+    ids = {g['matchNumber'] for g in current}
+    archived = [dict(g) for g in previous if g['date'] < today and g['matchNumber'] not in ids]
+    return sorted(current + archived, key=lambda g: (g['date'], g['time']))
