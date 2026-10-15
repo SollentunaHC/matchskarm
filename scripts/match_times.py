@@ -12,10 +12,10 @@ def start_time(game):
 def checkpoints(game, kind):
     start = start_time(game)
     if kind == 'lineup':
-        times = [start - timedelta(minutes=minutes) for minutes in (55, 50, 45, 40, 35, 30, 25, 20, 15, 10)]
+        times = [start - timedelta(minutes=minutes) for minutes in range(55, 0, -5)]
     elif kind == 'players':
-        times = [start.replace(hour=6, minute=0), start.replace(hour=12, minute=0),
-                 start - timedelta(minutes=90)]
+        times = [start.replace(hour=6, minute=0), start.replace(hour=12, minute=0)]
+        times += [start - timedelta(minutes=minutes) for minutes in (90, 45, 30)]
     else:
         raise ValueError('Unknown checkpoint type')
     return sorted(set(times))
@@ -35,3 +35,8 @@ def due_checkpoint(game, kind, now, completed):
     if key in completed:
         return None
     return {'key': key, 'scheduledAt': stamp.isoformat(), 'checkedAt': now.isoformat()}
+
+
+def daily_schedule_due(now, last_checked):
+    now = now.astimezone(ZONE)
+    return now.hour >= 2 and not (last_checked or '').startswith(now.date().isoformat())

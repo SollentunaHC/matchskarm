@@ -12,7 +12,7 @@ import time
 from urllib.request import Request, urlopen
 from urllib.parse import urlencode, urlsplit, urlunsplit, parse_qsl
 from zoneinfo import ZoneInfo
-from match_times import due_checkpoint
+from match_times import due_checkpoint, daily_schedule_due
 
 ROOT = Path(__file__).resolve().parents[1]
 OUTPUT = ROOT / 'u20/data.json'
@@ -209,11 +209,16 @@ def build(force=False):
     now = datetime.now(ZoneInfo('Europe/Stockholm'))
     old = json.loads(OUTPUT.read_text()) if OUTPUT.exists() else {'games': []}
     pending = any(due_checkpoint(g, 'lineup', now, g.get('lineupChecks', {})) for g in old.get('games', []))
-    if not force and not pending and old.get('scheduleCheckedAt', '').startswith(now.date().isoformat()):
-        print('No lineup checkpoint due; daily schedule already checked.')
+    daily = daily_schedule_due(now, old.get('scheduleDailyCheckedAt'))
+    if not force and not pending and not daily:
+        print('No lineup or daily schedule checkpoint due.')
         return
-    config = screen_config(download(SCREEN_URL))
-    csv_games = parse_csv(download(config['csv']))
+    if force or daily or not old.get('screenConfig'):
+        config = screen_config(download(SCREEN_URL))
+        csv_games = parse_csv(download(config['csv']))
+    else:
+        config = old['screenConfig']
+        csv_games = [dict(game) for game in old.get('games', [])]
     # Read the exact same CSV and resolve IDs through the existing screen worker.
     home_games = [g for g in csv_games if g['home'] == TEAM]
     if not home_games or len({g['matchNumber'] for g in csv_games}) != len(csv_games):
@@ -280,7 +285,9 @@ def build(force=False):
     payload = {'team': TEAM, 'competition': 'U20 Herr Nationell Norra', 'season': '2026–2027',
                'scheduleUrl': SCHEDULE, 'csvUrl': config['csv'], 'configurationSource': SCREEN_URL,
                'workerUrl': config['live'], 'scheduleCheckedAt': now.isoformat(),
-               'games': home_games, 'demo': demo, 'errors': errors}
+               'games': home_games, 'demo': demo, 'errors': errors,
+               'screenConfig': config,
+               'scheduleDailyCheckedAt': now.isoformat() if daily else old.get('scheduleDailyCheckedAt')}
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
     temporary = OUTPUT.with_suffix('.tmp')
     temporary.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + '\n')
