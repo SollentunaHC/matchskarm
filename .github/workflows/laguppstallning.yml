@@ -26,7 +26,7 @@ jobs:
         with:
           python-version: '3.12'
       - name: Hämta samtliga lag
-        run: python scripts/update-all-teams.py ${{ github.event_name != 'schedule' && '--force' || '' }}
+        run: python scripts/update-all-teams.py ${{ github.event_name == 'workflow_dispatch' && '--force' || '' }}
       - name: Spara uppdatering även om en annan källa misslyckades
         if: always()
         run: |
