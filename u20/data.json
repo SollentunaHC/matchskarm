@@ -6,7 +6,7 @@
   "csvUrl": "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/Spelschema_2627.csv",
   "configurationSource": "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/nyindex_tizen.html",
   "workerUrl": "https://sollentuna-hockey-live.gunnar-127.workers.dev/live?match=",
-  "scheduleCheckedAt": "2026-10-17T02:00:19.372754+02:00",
+  "scheduleCheckedAt": "2026-10-17T10:28:20.052976+02:00",
   "games": [
     {
       "date": "2026-09-12",
@@ -162,7 +162,7 @@
         },
         "source": "https://stats.swehockey.se/Game/LineUps/1111131"
       },
-      "checkedAt": "2026-10-15T16:12:09.269197+02:00",
+      "checkedAt": "2026-10-17T10:28:20.052976+02:00",
       "status": "published",
       "lineupChecks": {}
     },
@@ -320,7 +320,7 @@
         },
         "source": "https://stats.swehockey.se/Game/LineUps/1111137"
       },
-      "checkedAt": "2026-10-15T16:12:09.269197+02:00",
+      "checkedAt": "2026-10-17T10:28:20.052976+02:00",
       "status": "published",
       "lineupChecks": {}
     },
@@ -478,7 +478,7 @@
         },
         "source": "https://stats.swehockey.se/Game/LineUps/1111161"
       },
-      "checkedAt": "2026-10-15T16:12:09.269197+02:00",
+      "checkedAt": "2026-10-17T10:28:20.052976+02:00",
       "status": "published",
       "lineupChecks": {}
     },
@@ -631,7 +631,7 @@
         },
         "source": "https://stats.swehockey.se/Game/LineUps/1111155"
       },
-      "checkedAt": "2026-10-15T16:12:09.269197+02:00",
+      "checkedAt": "2026-10-17T10:28:20.052976+02:00",
       "status": "published",
       "lineupChecks": {}
     },
@@ -789,7 +789,7 @@
         },
         "source": "https://stats.swehockey.se/Game/LineUps/1111188"
       },
-      "checkedAt": "2026-10-15T16:12:09.269197+02:00",
+      "checkedAt": "2026-10-17T10:28:20.052976+02:00",
       "status": "published",
       "lineupChecks": {}
     },
@@ -947,7 +947,7 @@
         },
         "source": "https://stats.swehockey.se/Game/LineUps/1111193"
       },
-      "checkedAt": "2026-10-15T16:12:09.269197+02:00",
+      "checkedAt": "2026-10-17T10:28:20.052976+02:00",
       "status": "published",
       "lineupChecks": {}
     },
@@ -1330,7 +1330,7 @@
       "source": "https://stats.swehockey.se/Game/LineUps/1111188"
     },
     "status": "published",
-    "checkedAt": "2026-10-15T16:12:09.269197+02:00"
+    "checkedAt": "2026-10-17T10:28:20.052976+02:00"
   },
   "errors": [],
   "screenConfig": {
