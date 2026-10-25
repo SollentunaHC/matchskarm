@@ -17,9 +17,156 @@
       "matchNumber": "90255086",
       "competition": "Hockeyettan Norra",
       "gameId": "1112839",
-      "lineup": null,
-      "checkedAt": null,
-      "status": "error",
+      "lineup": {
+        "schemaVersion": 2,
+        "lines": {
+          "1": {
+            "forwards": [
+              {
+                "number": "45",
+                "lastName": "Ekström",
+                "firstName": "Andreas"
+              },
+              {
+                "number": "62",
+                "lastName": "Ringström",
+                "firstName": "Pelle"
+              },
+              {
+                "number": "23",
+                "lastName": "Ahlzén",
+                "firstName": "Jonathan"
+              }
+            ],
+            "defenders": [
+              {
+                "number": "7",
+                "lastName": "Strömberg",
+                "firstName": "Karl"
+              },
+              {
+                "number": "76",
+                "lastName": "Wedemo",
+                "firstName": "Marwin"
+              }
+            ]
+          },
+          "2": {
+            "forwards": [
+              {
+                "number": "27",
+                "lastName": "Molin",
+                "firstName": "Linus"
+              },
+              {
+                "number": "25",
+                "lastName": "Bergsdorf",
+                "firstName": "Filip"
+              },
+              {
+                "number": "20",
+                "lastName": "Paulsson",
+                "firstName": "Lukas"
+              }
+            ],
+            "defenders": [
+              {
+                "number": "44",
+                "lastName": "Ek",
+                "firstName": "Elias"
+              },
+              {
+                "number": "39",
+                "lastName": "Persson",
+                "firstName": "Gusten"
+              }
+            ]
+          },
+          "3": {
+            "forwards": [
+              {
+                "number": "26",
+                "lastName": "Wiberg",
+                "firstName": "Erik"
+              },
+              {
+                "number": "18",
+                "lastName": "Blom",
+                "firstName": "Axel"
+              },
+              {
+                "number": "33",
+                "lastName": "Boman",
+                "firstName": "Simon"
+              }
+            ],
+            "defenders": [
+              {
+                "number": "37",
+                "lastName": "Möllerstedt",
+                "firstName": "Filip"
+              },
+              {
+                "number": "36",
+                "lastName": "Magnusson",
+                "firstName": "Oliver"
+              }
+            ]
+          },
+          "4": {
+            "forwards": [
+              {
+                "number": "40",
+                "lastName": "Logren",
+                "firstName": "Victor"
+              },
+              {
+                "number": "19",
+                "lastName": "Crozzoli",
+                "firstName": "Isac"
+              },
+              {
+                "number": "43",
+                "lastName": "Marinkovic",
+                "firstName": "Keanu"
+              }
+            ],
+            "defenders": [
+              {
+                "number": "28",
+                "lastName": "Ersmark",
+                "firstName": "Hannes"
+              }
+            ]
+          }
+        },
+        "goalies": [
+          {
+            "number": "31",
+            "lastName": "Grönhagen",
+            "firstName": "Isac"
+          },
+          {
+            "number": "60",
+            "lastName": "Rajalin-Scharp",
+            "firstName": "Alec"
+          }
+        ],
+        "extras": [
+          {
+            "number": "11",
+            "lastName": "Sunebäck",
+            "firstName": "Elias"
+          }
+        ],
+        "coaches": {
+          "head": "Kjell G Lindqvist",
+          "assistant": "Andreas Paulsson"
+        },
+        "source": "https://stats.swehockey.se/Game/LineUps/1112839"
+      },
+      "checkedAt": "2026-10-25T14:31:00.890Z",
+      "status": "published",
       "lineupChecks": {
         "90255086|2026-10-25T15:30:00+01:00|lineup|2026-10-25T14:35:00+01:00": {
           "key": "90255086|2026-10-25T15:30:00+01:00|lineup|2026-10-25T14:35:00+01:00",
@@ -424,9 +571,7 @@
     "status": "published",
     "checkedAt": "2026-10-17T10:28:11.669428+02:00"
   },
-  "errors": [
-    "90255086: Unrecognized lineup row positions"
-  ],
+  "errors": [],
   "screenConfig": {
     "csv": "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/Spelschema_2627.csv",
     "live": "https://sollentuna-hockey-live.gunnar-127.workers.dev/live?match=",
