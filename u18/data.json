@@ -6,7 +6,7 @@
   "csvUrl": "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/Spelschema_2627.csv",
   "configurationSource": "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/nyindex_tizen.html",
   "workerUrl": "https://sollentuna-hockey-live.gunnar-127.workers.dev/live?match=",
-  "scheduleCheckedAt": "2026-10-25T17:35:17.269150+01:00",
+  "scheduleCheckedAt": "2026-10-25T17:40:16.943766+01:00",
   "games": [
     {
       "date": "2026-09-27",
@@ -681,13 +681,19 @@
       "competition": "U18H Allettan Östra",
       "gameId": "1115231",
       "lineup": null,
-      "checkedAt": "2026-10-25T17:35:17.269150+01:00",
+      "checkedAt": "2026-10-25T17:40:16.943766+01:00",
       "status": "unpublished",
       "lineupChecks": {
         "95752043|2026-10-25T18:30:00+01:00|lineup|2026-10-25T17:35:00+01:00": {
           "key": "95752043|2026-10-25T18:30:00+01:00|lineup|2026-10-25T17:35:00+01:00",
           "scheduledAt": "2026-10-25T17:35:00+01:00",
           "checkedAt": "2026-10-25T17:35:17.269150+01:00",
+          "result": "attempted"
+        },
+        "95752043|2026-10-25T18:30:00+01:00|lineup|2026-10-25T17:40:00+01:00": {
+          "key": "95752043|2026-10-25T18:30:00+01:00|lineup|2026-10-25T17:40:00+01:00",
+          "scheduledAt": "2026-10-25T17:40:00+01:00",
+          "checkedAt": "2026-10-25T17:40:16.943766+01:00",
           "result": "attempted"
         }
       }
