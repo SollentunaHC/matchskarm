@@ -169,6 +169,7 @@ def parse_lineup(markup):
     section = re.split(r'<h3\b', section, maxsplit=1, flags=re.I)[0]
     lines = {str(i): {'forwards': [], 'defenders': []} for i in range(1, 5)}
     goalies = []
+    extras = []
     group = None
     first_row = False
     for row in re.findall(r'<tr\b[^>]*>(.*?)</tr>', section, re.S | re.I):
@@ -176,15 +177,19 @@ def parse_lineup(markup):
         if label:
             group = label[1]
             first_row = True
+        elif 'Extra Players' in row:
+            group = 'extras'
         elif 'Goalies' in row:
             group = 'goalies'
         players = []
         for raw in re.findall(r'<div\b[^>]*class="lineUpPlayer[^\"]*"[^>]*>(.*?)</div>', row, re.S | re.I):
-            player = re.fullmatch(r'(\d+)\.\s*(.+?),\s*(.+)', text(raw))
+            player = re.fullmatch(r'(\d+)\.\s*(.+?),\s*(.+)', re.sub(r'\s*\((?:LW|RW|CE|LD|RD|D|F|G)\)\s*$', '', text(raw)))
             if not player:
                 raise ValueError('Unrecognized player entry')
             players.append({'number': player[1], 'lastName': player[2], 'firstName': player[3]})
-        if group == 'goalies':
+        if group == 'extras':
+            extras.extend(players)
+        elif group == 'goalies':
             goalies.extend(players)
         elif group and players:
             lines[group]['defenders' if first_row else 'forwards'].extend(players)
@@ -201,7 +206,7 @@ def parse_lineup(markup):
         return None
     if not goalies or not any(v['forwards'] for v in lines.values()):
         raise ValueError('Incomplete or unexpected lineup structure')
-    return {'lines': lines, 'goalies': goalies, 'coaches': coaches,
+    return {'lines': lines, 'goalies': goalies, 'extras': extras, 'coaches': coaches,
             'source': BASE + '/Game/LineUps/'}
 
 
