@@ -6,7 +6,7 @@
   "csvUrl": "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/Spelschema_2627.csv",
   "configurationSource": "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/nyindex_tizen.html",
   "workerUrl": "https://sollentuna-hockey-live.gunnar-127.workers.dev/live?match=",
-  "scheduleCheckedAt": "2026-10-27T18:35:19.960827+01:00",
+  "scheduleCheckedAt": "2026-10-27T18:55:40.346091+01:00",
   "games": [
     {
       "date": "2026-09-12",
@@ -156,13 +156,14 @@
             "firstName": "Nils"
           }
         ],
+        "extras": [],
         "coaches": {
           "head": "Carl-Johan Klint",
           "assistant": "Axel Lindgren"
         },
         "source": "https://stats.swehockey.se/Game/LineUps/1111131"
       },
-      "checkedAt": "2026-10-17T10:28:20.052976+02:00",
+      "checkedAt": "2026-10-27T18:55:40.346091+01:00",
       "status": "published",
       "lineupChecks": {}
     },
@@ -286,11 +287,6 @@
                 "number": "22",
                 "lastName": "Olsson",
                 "firstName": "Filip"
-              },
-              {
-                "number": "21",
-                "lastName": "Mannerhill",
-                "firstName": "Elton (LW)"
               }
             ],
             "defenders": [
@@ -314,13 +310,20 @@
             "firstName": "Elias"
           }
         ],
+        "extras": [
+          {
+            "number": "21",
+            "lastName": "Mannerhill",
+            "firstName": "Elton"
+          }
+        ],
         "coaches": {
           "head": "Carl-Johan Klint",
           "assistant": "Axel Lindgren"
         },
         "source": "https://stats.swehockey.se/Game/LineUps/1111137"
       },
-      "checkedAt": "2026-10-17T10:28:20.052976+02:00",
+      "checkedAt": "2026-10-27T18:55:40.346091+01:00",
       "status": "published",
       "lineupChecks": {}
     },
@@ -472,13 +475,14 @@
             "firstName": "Theo"
           }
         ],
+        "extras": [],
         "coaches": {
           "head": "Carl-Johan Klint",
           "assistant": "Axel Lindgren"
         },
         "source": "https://stats.swehockey.se/Game/LineUps/1111161"
       },
-      "checkedAt": "2026-10-17T10:28:20.052976+02:00",
+      "checkedAt": "2026-10-27T18:55:40.346091+01:00",
       "status": "published",
       "lineupChecks": {}
     },
@@ -625,13 +629,14 @@
             "firstName": "Elias"
           }
         ],
+        "extras": [],
         "coaches": {
           "head": "Carl-Johan Klint",
           "assistant": "Axel Lindgren"
         },
         "source": "https://stats.swehockey.se/Game/LineUps/1111155"
       },
-      "checkedAt": "2026-10-17T10:28:20.052976+02:00",
+      "checkedAt": "2026-10-27T18:55:40.346091+01:00",
       "status": "published",
       "lineupChecks": {}
     },
@@ -783,13 +788,14 @@
             "firstName": "Elias"
           }
         ],
+        "extras": [],
         "coaches": {
           "head": "Carl-Johan Klint",
           "assistant": "Axel Lindgren"
         },
         "source": "https://stats.swehockey.se/Game/LineUps/1111188"
       },
-      "checkedAt": "2026-10-17T10:28:20.052976+02:00",
+      "checkedAt": "2026-10-27T18:55:40.346091+01:00",
       "status": "published",
       "lineupChecks": {}
     },
@@ -941,13 +947,14 @@
             "firstName": "Elias"
           }
         ],
+        "extras": [],
         "coaches": {
           "head": "Carl-Johan Klint",
           "assistant": "Axel Lindgren"
         },
         "source": "https://stats.swehockey.se/Game/LineUps/1111193"
       },
-      "checkedAt": "2026-10-17T10:28:20.052976+02:00",
+      "checkedAt": "2026-10-27T18:55:40.346091+01:00",
       "status": "published",
       "lineupChecks": {}
     },
@@ -1188,7 +1195,7 @@
         },
         "source": "https://stats.swehockey.se/Game/LineUps/1111247"
       },
-      "checkedAt": "2026-10-27T18:35:19.960827+01:00",
+      "checkedAt": "2026-10-27T18:55:40.346091+01:00",
       "status": "published",
       "lineupChecks": {
         "97032133|2026-10-27T18:40:00+01:00|lineup|2026-10-27T17:45:00+01:00": {
@@ -1589,6 +1596,7 @@
           "firstName": "Elias"
         }
       ],
+      "extras": [],
       "coaches": {
         "head": "Carl-Johan Klint",
         "assistant": "Axel Lindgren"
@@ -1596,9 +1604,11 @@
       "source": "https://stats.swehockey.se/Game/LineUps/1111188"
     },
     "status": "published",
-    "checkedAt": "2026-10-17T10:28:20.052976+02:00"
+    "checkedAt": "2026-10-27T18:55:40.346091+01:00"
   },
-  "errors": [],
+  "errors": [
+    "97032108: Match-ID är ännu inte tillgängligt i Swehockeys spelschema eller Live."
+  ],
   "screenConfig": {
     "csv": "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/Spelschema_2627.csv",
     "live": "https://sollentuna-hockey-live.gunnar-127.workers.dev/live?match=",
