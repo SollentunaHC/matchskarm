@@ -6,7 +6,7 @@
   "csvUrl": "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/Spelschema_2627.csv",
   "configurationSource": "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/nyindex_tizen.html",
   "workerUrl": "https://sollentuna-hockey-live.gunnar-127.workers.dev/live?match=",
-  "scheduleCheckedAt": "2026-11-05T02:00:19.566586+01:00",
+  "scheduleCheckedAt": "2026-11-05T18:15:19.360117+01:00",
   "games": [
     {
       "date": "2026-09-27",
@@ -908,8 +908,16 @@
       "gameId": null,
       "lineup": null,
       "checkedAt": null,
-      "status": "unpublished",
-      "lineupChecks": {}
+      "status": "unresolved",
+      "lineupChecks": {
+        "95752055|2026-11-05T19:10:00+01:00|lineup|2026-11-05T18:15:00+01:00": {
+          "key": "95752055|2026-11-05T19:10:00+01:00|lineup|2026-11-05T18:15:00+01:00",
+          "scheduledAt": "2026-11-05T18:15:00+01:00",
+          "checkedAt": "2026-11-05T18:15:19.360117+01:00",
+          "result": "attempted"
+        }
+      },
+      "resolutionMessage": "Match-ID är ännu inte tillgängligt i Swehockeys spelschema eller Live."
     },
     {
       "date": "2026-11-09",
@@ -1101,7 +1109,9 @@
     "status": "published",
     "checkedAt": "2026-10-27T18:56:02.097991+01:00"
   },
-  "errors": [],
+  "errors": [
+    "95752055: Match-ID är ännu inte tillgängligt i Swehockeys spelschema eller Live."
+  ],
   "screenConfig": {
     "csv": "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/Spelschema_2627.csv",
     "live": "https://sollentuna-hockey-live.gunnar-127.workers.dev/live?match=",
