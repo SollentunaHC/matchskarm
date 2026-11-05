@@ -6,7 +6,7 @@
   "csvUrl": "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/Spelschema_2627.csv",
   "configurationSource": "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/nyindex_tizen.html",
   "workerUrl": "https://sollentuna-hockey-live.gunnar-127.workers.dev/live?match=",
-  "scheduleCheckedAt": "2026-11-05T18:15:19.360117+01:00",
+  "scheduleCheckedAt": "2026-11-05T18:20:21.743290+01:00",
   "games": [
     {
       "date": "2026-09-27",
@@ -914,6 +914,12 @@
           "key": "95752055|2026-11-05T19:10:00+01:00|lineup|2026-11-05T18:15:00+01:00",
           "scheduledAt": "2026-11-05T18:15:00+01:00",
           "checkedAt": "2026-11-05T18:15:19.360117+01:00",
+          "result": "attempted"
+        },
+        "95752055|2026-11-05T19:10:00+01:00|lineup|2026-11-05T18:20:00+01:00": {
+          "key": "95752055|2026-11-05T19:10:00+01:00|lineup|2026-11-05T18:20:00+01:00",
+          "scheduledAt": "2026-11-05T18:20:00+01:00",
+          "checkedAt": "2026-11-05T18:20:21.743290+01:00",
           "result": "attempted"
         }
       },
