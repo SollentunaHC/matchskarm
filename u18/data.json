@@ -6,7 +6,7 @@
   "csvUrl": "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/Spelschema_2627.csv",
   "configurationSource": "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/nyindex_tizen.html",
   "workerUrl": "https://sollentuna-hockey-live.gunnar-127.workers.dev/live?match=",
-  "scheduleCheckedAt": "2026-11-09T18:25:17.607764+01:00",
+  "scheduleCheckedAt": "2026-11-09T18:30:19.355431+01:00",
   "games": [
     {
       "date": "2026-09-27",
@@ -1128,9 +1128,150 @@
       "matchNumber": "95752059",
       "competition": "U18H Allettan Östra",
       "gameId": "1115247",
-      "lineup": null,
-      "checkedAt": "2026-11-09T18:25:17.607764+01:00",
-      "status": "unpublished",
+      "lineup": {
+        "schemaVersion": 2,
+        "lines": {
+          "1": {
+            "forwards": [
+              {
+                "number": "16",
+                "lastName": "Clerkestam",
+                "firstName": "Axel"
+              },
+              {
+                "number": "19",
+                "lastName": "Ahnsjö",
+                "firstName": "Melker"
+              },
+              {
+                "number": "20",
+                "lastName": "Dahlberg",
+                "firstName": "Hugo"
+              }
+            ],
+            "defenders": [
+              {
+                "number": "3",
+                "lastName": "Gillberg",
+                "firstName": "Oskar"
+              },
+              {
+                "number": "6",
+                "lastName": "Jäderlund",
+                "firstName": "Nils"
+              }
+            ]
+          },
+          "2": {
+            "forwards": [
+              {
+                "number": "18",
+                "lastName": "Ronquist",
+                "firstName": "Caspian"
+              },
+              {
+                "number": "11",
+                "lastName": "Lindqvist",
+                "firstName": "Noah"
+              },
+              {
+                "number": "12",
+                "lastName": "Mattsson",
+                "firstName": "Isac"
+              }
+            ],
+            "defenders": [
+              {
+                "number": "24",
+                "lastName": "Srobar",
+                "firstName": "Peter"
+              },
+              {
+                "number": "25",
+                "lastName": "Öhman",
+                "firstName": "Albert"
+              }
+            ]
+          },
+          "3": {
+            "forwards": [
+              {
+                "number": "10",
+                "lastName": "Persson",
+                "firstName": "Anton"
+              },
+              {
+                "number": "23",
+                "lastName": "Paulsson",
+                "firstName": "Loui"
+              },
+              {
+                "number": "27",
+                "lastName": "Thulin",
+                "firstName": "Erik"
+              }
+            ],
+            "defenders": [
+              {
+                "number": "29",
+                "lastName": "Johansson",
+                "firstName": "Julian"
+              },
+              {
+                "number": "17",
+                "lastName": "Sjöström",
+                "firstName": "Levi"
+              }
+            ]
+          },
+          "4": {
+            "forwards": [
+              {
+                "number": "9",
+                "lastName": "Kalata",
+                "firstName": "Karol"
+              },
+              {
+                "number": "28",
+                "lastName": "Sandberg",
+                "firstName": "Bruno"
+              },
+              {
+                "number": "7",
+                "lastName": "Fennrup",
+                "firstName": "Edvin"
+              }
+            ],
+            "defenders": [
+              {
+                "number": "14",
+                "lastName": "Lejelöv",
+                "firstName": "Hannes"
+              }
+            ]
+          }
+        },
+        "goalies": [
+          {
+            "number": "1",
+            "lastName": "Kurrti",
+            "firstName": "Elja"
+          },
+          {
+            "number": "35",
+            "lastName": "Segerbrant",
+            "firstName": "Theo"
+          }
+        ],
+        "extras": [],
+        "coaches": {
+          "head": "Claes Lundén",
+          "assistant": "Jan Lindekrans"
+        },
+        "source": "https://stats.swehockey.se/Game/LineUps/1115247"
+      },
+      "checkedAt": "2026-11-09T18:30:19.355431+01:00",
+      "status": "published",
       "lineupChecks": {
         "95752059|2026-11-09T19:10:00+01:00|lineup|2026-11-09T18:15:00+01:00": {
           "key": "95752059|2026-11-09T19:10:00+01:00|lineup|2026-11-09T18:15:00+01:00",
@@ -1149,6 +1290,12 @@
           "scheduledAt": "2026-11-09T18:25:00+01:00",
           "checkedAt": "2026-11-09T18:25:17.607764+01:00",
           "result": "attempted"
+        },
+        "95752059|2026-11-09T19:10:00+01:00|lineup|2026-11-09T18:30:00+01:00": {
+          "key": "95752059|2026-11-09T19:10:00+01:00|lineup|2026-11-09T18:30:00+01:00",
+          "scheduledAt": "2026-11-09T18:30:00+01:00",
+          "checkedAt": "2026-11-09T18:30:19.355431+01:00",
+          "result": "published"
         }
       }
     },
