@@ -2,7 +2,7 @@
 <html lang="sv">
 <head>
 <meta charset="UTF-8">
-<title>Sollentuna Hockey – Tizen version 18.4</title>
+<title>Sollentuna Hockey – Tizen version 18.17</title>
 
 <style>
 
@@ -132,6 +132,7 @@ h2 {
 .score-check-error { color: #ff4d57; border-color: #ff4d57; }
 .live-score { color: #071d10; background: #46d17d; border-color: #46d17d; }
 .score-error { min-width: 0; color: #ffd447; font-size: 0.55em; letter-spacing: 0; }
+.score-not-shown { min-width: 0; font-size: 0.58em; color: #b9c7df; white-space: nowrap; }
 .score-detail { display: block; margin-top: 0.25em; color: #46d17d; font-size: 0.58em; font-weight: 900; white-space: nowrap; overflow: hidden; }
 .score-detail-result { text-align: center; }
 .score-detail-live { text-align: left; }
@@ -273,19 +274,14 @@ footer {
 /* ====== CYLOQ-HALLLOGGA ====== */
 .hall-logo {
   display: inline-block;
-  width: 60px;
-  height: 60px;
-  background-size: contain;
-  background-repeat: no-repeat;
+  width: 88px;
+  height: 42px;
+  object-fit: contain;
   vertical-align: middle;
-  margin-right: 4px;
+  margin-right: 7px;
   position: relative;
-  top: 4px; /* justerar loggan nedåt för perfekt centrering */
+  top: 2px;
 }
-
-.hall-cyloq {
-  background-image: url('sponsors/Cyloq.png'); /* lokal bild */
-}  
 
 /* ==================================================================
    ARENA PUBLIK 15.1 – VISUELLT LAGER FÖR TIZEN
@@ -476,7 +472,7 @@ html,body{height:100%;width:100%;margin:0;overflow:hidden}header.topbar,.ad-bar,
 
 <script>
 
-var ARENA_VERSION = "VERSION 18.4 TIZEN";
+var ARENA_VERSION = "VERSION 18.17 TIZEN";
 var CSV_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/Spelschema_2627.csv";
 var SPONSOR_LIST_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/sponsors/list.txt";
 var SPONSOR_BASE_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/sponsors/";
@@ -499,6 +495,18 @@ try { latestLiveResults = JSON.parse(sessionStorage.getItem("shc-live-v178") || 
 function liveMatchKey(match) {
   return [match.date, match.time, match.matchNumber, match.home, match.away].join("|");
 }
+function isPoolspel(match) {
+  return !!(match && String(match.series || "").toLowerCase().indexOf("poolspel") >= 0);
+}
+function isYoungYouthMatch(match) {
+  return !!(match && /\b(?:U(?:9|10|11|12)(?:P|F)|F(?:9|10|11|12))\b/i.test(String(match.series || "")));
+}
+function youngYouthMatchHasExpired(match, nowMs) {
+  if (!isYoungYouthMatch(match)) return false;
+  var startMs = new Date(match.date + "T" + match.time).getTime();
+  if (isNaN(startMs)) return false;
+  return nowMs >= startMs + 90 * 60 * 1000;
+}
 function resultProgress(result) {
   if (String(result.status).toUpperCase() === "SLUT") return 10000000;
   var p = Number(result.period);
@@ -517,7 +525,9 @@ function hallWithLogo(arena) {
   var lower = arena.toLowerCase();
   if (lower.indexOf("cyloq") === 0) {
     var suffix = arena.replace(/cyloq\s*/i, "");
-    return "<span class='hall-logo hall-cyloq'></span>" + suffix.trim();
+    return "<img class='hall-logo' " +
+      "src='https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/sponsors/Cyloq.png' " +
+      "alt='CYLOQ'>" + suffix.trim();
   }
   return arena;
 }  
@@ -611,10 +621,18 @@ for (var j = firstMatchRow; j < filteredLines.length; j++) {
 
   var homeRaw = cols[idx.Hemma] || "";
   var awayRaw = cols[idx.Borta] || "";
+  var seriesRaw = cols[idx.Serie] || "";
+  var homeLower = homeRaw.toLowerCase();
+  var awayLower = awayRaw.toLowerCase();
 
   /* Samma urval som originalet: alla matcher där Sollentuna deltar. */
-  if (homeRaw.toLowerCase().indexOf("sollentuna") < 0 &&
-      awayRaw.toLowerCase().indexOf("sollentuna") < 0) continue;
+  if (homeLower.indexOf("sollentuna") < 0 &&
+      awayLower.indexOf("sollentuna") < 0) continue;
+
+  /* Bortamatcher för U9P–U12P och U9F–U12F visas inte på arenaskärmarna. */
+  var isSollentunaAway = awayLower.indexOf("sollentuna") >= 0 &&
+    homeLower.indexOf("sollentuna") < 0;
+  if (isSollentunaAway && isYoungYouthMatch({ series: seriesRaw })) continue;
 
   matches.push({
     matchNumber: idx.Matchnr >= 0 ? (cols[idx.Matchnr] || "").replace(/\D/g, "") : "",
@@ -624,7 +642,7 @@ for (var j = firstMatchRow; j < filteredLines.length; j++) {
     away: awayRaw,
     arena: cols[idx.Arena],
       /* Kortare serienamn för publikskärmen: dölj distriktsändelserna. */
-      series: (cols[idx.Serie] || "")
+      series: seriesRaw
         .replace(/\[[0-9]+\]/g, "")
         .replace(/\s*,\s*Stockholms Ishockeyförbund\s*/gi, "")
         .replace(/\s*,\s*Region Öst\s*/gi, "")
@@ -666,6 +684,14 @@ function renderPendingIndicator(matchNumber) {
   if (!scoreCell || scoreCell.getAttribute("data-has-result") === "yes") return;
 
   var match = findActiveMatch(matchNumber);
+  if (isYoungYouthMatch(match)) {
+    scoreCell.innerHTML = "<span class='score score-not-shown'>VISAS INTE</span>";
+    return;
+  }
+  if (isPoolspel(match)) {
+    scoreCell.innerHTML = "";
+    return;
+  }
   var state = scoreCell.getAttribute("data-check-state") || "";
   var className = "";
   if (match && minutesUntilMatch(match) > 15) {
@@ -870,7 +896,7 @@ function maybeRunFutureChecks() {
 
 /* Hämtar resultat från Cloudflare Workern med Tizen-kompatibel XMLHttpRequest. */
 function loadLiveResult(match) {
-  if (!match || !match.matchNumber) return;
+  if (!match || !match.matchNumber || isPoolspel(match) || isYoungYouthMatch(match)) return;
   var key = liveMatchKey(match);
   var requestNumber = (liveRequestNumbers[key] || 0) + 1;
   liveRequestNumbers[key] = requestNumber;
@@ -941,6 +967,7 @@ function updateLiveResult(matchNumber, result) {
   if (!scoreCell || typeof result.homeScore !== "number" || typeof result.awayScore !== "number") return;
   var match = findActiveMatch(matchNumber);
   if (!match) return;
+  if (isPoolspel(match) || isYoungYouthMatch(match)) return;
   var key = liveMatchKey(match);
   var previous = latestLiveResults[key];
   var homeGoal = false;
@@ -1055,6 +1082,7 @@ function splitTodayAndUpcoming(matches) {
     var m = matches[i];
     if (!m.date) continue;
     if (m.date === todayKey) {
+      if (youngYouthMatchHasExpired(m, now.getTime())) continue;
       today.push(m);
       continue;
     }
@@ -1089,13 +1117,15 @@ function renderTodayMatches(todayMatches) {
   } else {
     for (var i = 0; i < todayMatches.length; i++) {
       var m = todayMatches[i];
-      html += "<tr>" +
+      html += "<tr id='match-row-" + m.matchNumber + "'>" +
         "<td>" + formatDate(m.date) + "</td>" +
         "<td>" + m.time + "<span class='time-status' id='status-" + m.matchNumber + "'>" + getStatus(m.date, m.time) + "</span></td>" +
         "<td>" + m.series + "</td>" +
         teamCell(m.home) +
         teamCell(m.away) +
-        "<td class='score-cell' id='score-" + m.matchNumber + "'><span class='score'>–</span></td>" +
+        "<td class='score-cell' id='score-" + m.matchNumber + "'>" +
+          (isYoungYouthMatch(m) ? "<span class='score score-not-shown'>VISAS INTE</span>" :
+            (isPoolspel(m) ? "" : "<span class='score'>–</span>")) + "</td>" +
         "<td>" + hallWithLogo(m.arena) + "</td>" +
       "</tr>";
     }
@@ -1103,6 +1133,9 @@ function renderTodayMatches(todayMatches) {
 
   tbody.innerHTML = html;
   activeTodayMatches = todayMatches || [];
+  for (var y = 0; y < activeTodayMatches.length; y++) {
+    scheduleYoungYouthRemoval(activeTodayMatches[y]);
+  }
   // Återställ resultatet innan nya nätverksanrop så SNART/resultat inte blinkar.
   for (var j = 0; j < activeTodayMatches.length; j++) {
     var saved = latestLiveResults[liveMatchKey(activeTodayMatches[j])];
@@ -1110,6 +1143,26 @@ function renderTodayMatches(todayMatches) {
   }
   loadAllLiveResults(activeTodayMatches);
   maybeRunDailyChecks();
+}
+
+/* Ta bort U9P–U12P och U9F–U12F exakt 90 minuter efter start även mellan
+   de ordinarie omladdningarna av spelschemat. */
+function scheduleYoungYouthRemoval(match) {
+  if (!isYoungYouthMatch(match)) return;
+  var startMs = new Date(match.date + "T" + match.time).getTime();
+  if (isNaN(startMs)) return;
+  var delay = startMs + 90 * 60 * 1000 - new Date().getTime();
+  function removeRow() {
+    var row = document.getElementById("match-row-" + match.matchNumber);
+    if (row && row.parentNode) row.parentNode.removeChild(row);
+    var remaining = [];
+    for (var i = 0; i < activeTodayMatches.length; i++) {
+      if (liveMatchKey(activeTodayMatches[i]) !== liveMatchKey(match)) remaining.push(activeTodayMatches[i]);
+    }
+    activeTodayMatches = remaining;
+  }
+  if (delay <= 0) removeRow();
+  else setTimeout(removeRow, delay);
 }
 
 /* Render: kommande matcher */
@@ -1258,3 +1311,4 @@ initArena();
 <span class="shc-signature">G. Olsson 2026</span>
 <script>setInterval(function(){var ids=['tomorrowCheck','dayAfterCheck','thirdDayCheck','fourthDayCheck'];var checks=ids.map(function(id){var e=document.getElementById(id);return e?{text:e.textContent.trim(),ok:e.className.indexOf('verification-ok')>=0,error:e.className.indexOf('verification-error')>=0}:null});var info=document.getElementById('updatedInfo');parent.postMessage({type:'arena-update',info:info?info.textContent:'',checks:checks},location.origin)},2000);</script></body>
 </html>
+
