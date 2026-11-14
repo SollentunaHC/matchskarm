@@ -2,7 +2,7 @@
 <html lang="sv">
 <head>
 <meta charset="UTF-8">
-<title>Sollentuna Hockey – Tizen version 18.16</title>
+<title>Sollentuna Hockey – Tizen version 18.17</title>
 
 <style>
 
@@ -485,7 +485,7 @@ footer { display: none; }
 
 <script>
 
-var ARENA_VERSION = "VERSION 18.16 TIZEN";
+var ARENA_VERSION = "VERSION 18.17 TIZEN";
 var CSV_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/Spelschema_2627.csv";
 var SPONSOR_LIST_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/sponsors/list.txt";
 var SPONSOR_BASE_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/sponsors/";
@@ -528,7 +528,7 @@ function isPoolspel(match) {
   return !!(match && String(match.series || "").toLowerCase().indexOf("poolspel") >= 0);
 }
 function isYoungYouthMatch(match) {
-  return !!(match && /\bU(?:9|10|11|12)(?:P|F)\b/i.test(String(match.series || "")));
+  return !!(match && /\b(?:U(?:9|10|11|12)(?:P|F)|F(?:9|10|11|12))\b/i.test(String(match.series || "")));
 }
 /* U9P–U12P och U9F–U12F har normalt ingen säker slutstatus. För att ge plats
    åt kommande matcher tas de därför bort 90 minuter efter schemalagd start. */
@@ -741,12 +741,12 @@ function renderPendingIndicator(matchNumber) {
   if (!scoreCell || scoreCell.getAttribute("data-has-result") === "yes") return;
 
   var match = findActiveMatch(matchNumber);
-  if (isPoolspel(match)) {
-    scoreCell.innerHTML = "";
-    return;
-  }
   if (isYoungYouthMatch(match)) {
     scoreCell.innerHTML = "<span class='score score-not-shown'>VISAS INTE</span>";
+    return;
+  }
+  if (isPoolspel(match)) {
+    scoreCell.innerHTML = "";
     return;
   }
   var state = scoreCell.getAttribute("data-check-state") || "";
@@ -1025,7 +1025,7 @@ function updateLiveResult(matchNumber, result, skipLayoutRefresh) {
   if (typeof result.homeScore !== "number" || typeof result.awayScore !== "number") return;
   var match = findActiveMatch(matchNumber);
   if (!match) return;
-  if (isPoolspel(match)) return;
+  if (isPoolspel(match) || isYoungYouthMatch(match)) return;
   var key = liveMatchKey(match);
   var previous = latestLiveResults[key];
   var homeGoal = false;
@@ -1268,9 +1268,8 @@ function renderTodayRows(todayMatches, animateRollingRows) {
         teamCell(m.home) +
         teamCell(m.away) +
         "<td class='score-cell' id='score-" + m.matchNumber + "'>" +
-          (isPoolspel(m) ? "" :
-            (isYoungYouthMatch(m) ? "<span class='score score-not-shown'>VISAS INTE</span>" :
-              "<span class='score'>–</span>")) + "</td>" +
+          (isYoungYouthMatch(m) ? "<span class='score score-not-shown'>VISAS INTE</span>" :
+            (isPoolspel(m) ? "" : "<span class='score'>–</span>")) + "</td>" +
         "<td>" + hallWithLogo(m.arena) + "</td>" +
       "</tr>";
     }
