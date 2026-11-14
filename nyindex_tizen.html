@@ -2,7 +2,7 @@
 <html lang="sv">
 <head>
 <meta charset="UTF-8">
-<title>Sollentuna Hockey – Tizen version 18.15</title>
+<title>Sollentuna Hockey – Tizen version 18.16</title>
 
 <style>
 
@@ -274,19 +274,14 @@ footer {
 /* ====== CYLOQ-HALLLOGGA ====== */
 .hall-logo {
   display: inline-block;
-  width: 60px;
-  height: 60px;
-  background-size: contain;
-  background-repeat: no-repeat;
+  width: 88px;
+  height: 42px;
+  object-fit: contain;
   vertical-align: middle;
-  margin-right: 4px;
+  margin-right: 7px;
   position: relative;
-  top: 4px; /* justerar loggan nedåt för perfekt centrering */
+  top: 2px;
 }
-
-.hall-cyloq {
-  background-image: url('sponsors/Cyloq.png'); /* lokal bild */
-}  
 
 /* ==================================================================
    ARENA PUBLIK 15.1 – VISUELLT LAGER FÖR TIZEN
@@ -490,7 +485,7 @@ footer { display: none; }
 
 <script>
 
-var ARENA_VERSION = "VERSION 18.15 TIZEN";
+var ARENA_VERSION = "VERSION 18.16 TIZEN";
 var CSV_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/Spelschema_2627.csv";
 var SPONSOR_LIST_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/sponsors/list.txt";
 var SPONSOR_BASE_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/sponsors/";
@@ -582,7 +577,9 @@ function hallWithLogo(arena) {
   var lower = arena.toLowerCase();
   if (lower.indexOf("cyloq") === 0) {
     var suffix = arena.replace(/cyloq\s*/i, "");
-    return "<span class='hall-logo hall-cyloq'></span>" + suffix.trim();
+    return "<img class='hall-logo' " +
+      "src='https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/sponsors/Cyloq.png' " +
+      "alt='CYLOQ'>" + suffix.trim();
   }
   return arena;
 }  
