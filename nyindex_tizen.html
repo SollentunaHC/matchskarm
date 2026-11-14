@@ -132,6 +132,7 @@ h2 {
 .score-check-error { color: #ff4d57; border-color: #ff4d57; }
 .live-score { color: #071d10; background: #46d17d; border-color: #46d17d; }
 .score-error { min-width: 0; color: #ffd447; font-size: 0.55em; letter-spacing: 0; }
+.score-not-shown { min-width: 0; font-size: 0.58em; color: #b9c7df; white-space: nowrap; }
 .score-detail { display: block; margin-top: 0.25em; color: #46d17d; font-size: 0.58em; font-weight: 900; white-space: nowrap; overflow: hidden; }
 .score-detail-result { text-align: center; }
 .score-detail-live { text-align: left; }
@@ -489,7 +490,7 @@ footer { display: none; }
 
 <script>
 
-var ARENA_VERSION = "VERSION 18.13 TIZEN";
+var ARENA_VERSION = "VERSION 18.15 TIZEN";
 var CSV_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/Spelschema_2627.csv";
 var SPONSOR_LIST_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/sponsors/list.txt";
 var SPONSOR_BASE_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/sponsors/";
@@ -530,6 +531,17 @@ function liveMatchKey(match) {
 /* Poolspel redovisar inte resultat och ska därför inte livehämtas. */
 function isPoolspel(match) {
   return !!(match && String(match.series || "").toLowerCase().indexOf("poolspel") >= 0);
+}
+function isYoungYouthMatch(match) {
+  return !!(match && /\bU(?:9|10|11|12)(?:P|F)\b/i.test(String(match.series || "")));
+}
+/* U9P–U12P och U9F–U12F har normalt ingen säker slutstatus. För att ge plats
+   åt kommande matcher tas de därför bort 90 minuter efter schemalagd start. */
+function youngYouthMatchHasExpired(match, nowMs) {
+  if (!isYoungYouthMatch(match)) return false;
+  var startMs = new Date(match.date + "T" + match.time).getTime();
+  if (isNaN(startMs)) return false;
+  return nowMs >= startMs + 90 * 60 * 1000;
 }
 function matchResult(match) {
   return match ? latestLiveResults[liveMatchKey(match)] : null;
@@ -736,6 +748,10 @@ function renderPendingIndicator(matchNumber) {
     scoreCell.innerHTML = "";
     return;
   }
+  if (isYoungYouthMatch(match)) {
+    scoreCell.innerHTML = "<span class='score score-not-shown'>VISAS INTE</span>";
+    return;
+  }
   var state = scoreCell.getAttribute("data-check-state") || "";
   var className = "";
   if (match && minutesUntilMatch(match) > 15) {
@@ -938,7 +954,7 @@ function maybeRunFutureChecks() {
 
 /* Hämtar resultat från Cloudflare Workern med Tizen-kompatibel XMLHttpRequest. */
 function loadLiveResult(match) {
-  if (!match || !match.matchNumber || isPoolspel(match)) return;
+  if (!match || !match.matchNumber || isPoolspel(match) || isYoungYouthMatch(match)) return;
   var key = liveMatchKey(match);
   if (livePollInFlight[key]) return;
   livePollInFlight[key] = true;
@@ -1120,7 +1136,7 @@ function pollTodayResults() {
   var nowMs = new Date().getTime();
   for (var i = 0; i < activeTodayMatches.length; i++) {
     var match = activeTodayMatches[i];
-    if (!match || !match.matchNumber || isPoolspel(match)) continue;
+    if (!match || !match.matchNumber || isPoolspel(match) || isYoungYouthMatch(match)) continue;
     var key = liveMatchKey(match);
     var previous = matchResult(match);
     var status = matchStatus(match);
@@ -1202,7 +1218,8 @@ function selectVisibleTodayMatches() {
   /* Välj den första matchen som ännu inte har startat. */
   for (var n = 0; n < allTodayMatches.length; n++) {
     var possibleNext = allTodayMatches[n];
-    if (finishedMatchHasExpired(possibleNext, nowMs)) continue;
+    if (finishedMatchHasExpired(possibleNext, nowMs) ||
+        youngYouthMatchHasExpired(possibleNext, nowMs)) continue;
     var startMs = new Date(possibleNext.date + "T" + possibleNext.time).getTime();
     if (startMs > nowMs && (!nextMatch || startMs < new Date(nextMatch.date + "T" + nextMatch.time).getTime())) {
       nextMatch = possibleNext;
@@ -1211,7 +1228,8 @@ function selectVisibleTodayMatches() {
 
   for (var i = 0; i < allTodayMatches.length; i++) {
     var match = allTodayMatches[i];
-    if (finishedMatchHasExpired(match, nowMs)) continue;
+    if (finishedMatchHasExpired(match, nowMs) ||
+        youngYouthMatchHasExpired(match, nowMs)) continue;
     if (matchStatus(match) === "LIVE" || match === nextMatch) {
       fixed.push(match);
       fixedTodayMatchKeys[liveMatchKey(match)] = true;
@@ -1253,7 +1271,9 @@ function renderTodayRows(todayMatches, animateRollingRows) {
         teamCell(m.home) +
         teamCell(m.away) +
         "<td class='score-cell' id='score-" + m.matchNumber + "'>" +
-          (isPoolspel(m) ? "" : "<span class='score'>–</span>") + "</td>" +
+          (isPoolspel(m) ? "" :
+            (isYoungYouthMatch(m) ? "<span class='score score-not-shown'>VISAS INTE</span>" :
+              "<span class='score'>–</span>")) + "</td>" +
         "<td>" + hallWithLogo(m.arena) + "</td>" +
       "</tr>";
     }
