@@ -2,7 +2,7 @@
 <html lang="sv">
 <head>
 <meta charset="UTF-8">
-<title>Sollentuna Hockey – Tizen version 18.17</title>
+<title>Sollentuna Hockey – Tizen version 18.18</title>
 
 <style>
 
@@ -485,7 +485,7 @@ footer { display: none; }
 
 <script>
 
-var ARENA_VERSION = "VERSION 18.17 TIZEN";
+var ARENA_VERSION = "VERSION 18.18 TIZEN";
 var CSV_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/Spelschema_2627.csv";
 var SPONSOR_LIST_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/sponsors/list.txt";
 var SPONSOR_BASE_URL = "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/sponsors/";
@@ -496,7 +496,8 @@ var MATCH_CHECK_URL = "https://sollentuna-hockey-live.gunnar-127.workers.dev/che
   Matchnr till det interna ID:t från länken Game/LineUps eller Game/Events.
 */
 var SWEHOCKEY_ID_MAP = {
-  "95097052": "1121968"
+  "95097052": "1121968",
+  "1194774": "1194774"
 };
 // Worker v1.18: samma URL på alla skärmar för delad edge-cache.
 // Uppdatera live oftare, men gör inte resultatfrågor långt före start.
@@ -962,13 +963,15 @@ function loadLiveResult(match) {
   if (directId) {
     /* Med ett känt internt ID ska Workern inte försöka slå upp GamesByDate. */
     query = LIVE_RESULT_PROXY + encodeURIComponent(directId) +
-      "&series=" + encodeURIComponent(match.series || "");
+      "&series=" + encodeURIComponent(match.series || "") +
+      "&nocache=" + new Date().getTime();
   } else {
     query = LIVE_RESULT_PROXY + encodeURIComponent(match.matchNumber) +
       "&date=" + encodeURIComponent(match.date || "") +
       "&home=" + encodeURIComponent(match.home || "") +
       "&away=" + encodeURIComponent(match.away || "") +
-      "&series=" + encodeURIComponent(match.series || "");
+      "&series=" + encodeURIComponent(match.series || "") +
+      "&nocache=" + new Date().getTime();
   }
   var xhr = new XMLHttpRequest();
   xhr.open("GET", query, true);
