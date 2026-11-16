@@ -16,3 +16,4 @@ Teamgear.png
 max.png
 trygga hiss.jpg
 smartsign.png
+washtek.png
