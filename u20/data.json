@@ -6,7 +6,7 @@
   "csvUrl": "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/Spelschema_2627.csv",
   "configurationSource": "https://raw.githubusercontent.com/SollentunaHC/matchskarm/main/nyindex_tizen.html",
   "workerUrl": "https://sollentuna-hockey-live.gunnar-127.workers.dev/live?match=",
-  "scheduleCheckedAt": "2026-11-21T02:00:20.628874+01:00",
+  "scheduleCheckedAt": "2026-11-21T11:45:17.374397+01:00",
   "games": [
     {
       "date": "2026-09-12",
@@ -1865,11 +1865,163 @@
       "venue": "CYLOQ Arena",
       "matchNumber": "97032162",
       "competition": "U20 Herr Nationell Norra",
-      "gameId": null,
-      "lineup": null,
-      "checkedAt": null,
-      "status": "unpublished",
-      "lineupChecks": {}
+      "gameId": "1111276",
+      "lineup": {
+        "lines": {
+          "1": {
+            "forwards": [
+              {
+                "number": "78",
+                "lastName": "Fatul",
+                "firstName": "Branislav"
+              },
+              {
+                "number": "22",
+                "lastName": "Crozzoli",
+                "firstName": "Isac"
+              },
+              {
+                "number": "26",
+                "lastName": "Wiberg",
+                "firstName": "Erik"
+              }
+            ],
+            "defenders": [
+              {
+                "number": "9",
+                "lastName": "Edin",
+                "firstName": "Jonathan"
+              },
+              {
+                "number": "8",
+                "lastName": "Tamir",
+                "firstName": "Itay"
+              }
+            ]
+          },
+          "2": {
+            "forwards": [
+              {
+                "number": "34",
+                "lastName": "Klint",
+                "firstName": "Carl-Edward"
+              },
+              {
+                "number": "11",
+                "lastName": "Borgström",
+                "firstName": "Alexander"
+              },
+              {
+                "number": "6",
+                "lastName": "Kastevik",
+                "firstName": "Melker"
+              }
+            ],
+            "defenders": [
+              {
+                "number": "7",
+                "lastName": "Svedlund",
+                "firstName": "David"
+              },
+              {
+                "number": "25",
+                "lastName": "Wiberg",
+                "firstName": "Hugo"
+              }
+            ]
+          },
+          "3": {
+            "forwards": [
+              {
+                "number": "19",
+                "lastName": "Ruzicka",
+                "firstName": "Milan Jiri"
+              },
+              {
+                "number": "17",
+                "lastName": "Kazimov",
+                "firstName": "Daniel"
+              },
+              {
+                "number": "27",
+                "lastName": "Fredén Ericsson",
+                "firstName": "Olle"
+              }
+            ],
+            "defenders": [
+              {
+                "number": "65",
+                "lastName": "Wideberg",
+                "firstName": "Noah"
+              },
+              {
+                "number": "4",
+                "lastName": "Ferm",
+                "firstName": "Alvin"
+              }
+            ]
+          },
+          "4": {
+            "forwards": [
+              {
+                "number": "16",
+                "lastName": "Alkas Alias",
+                "firstName": "Nikolaj"
+              },
+              {
+                "number": "20",
+                "lastName": "Kolm",
+                "firstName": "William"
+              },
+              {
+                "number": "21",
+                "lastName": "Mannerhill",
+                "firstName": "Elton"
+              }
+            ],
+            "defenders": [
+              {
+                "number": "18",
+                "lastName": "Lindberg",
+                "firstName": "Alfred"
+              },
+              {
+                "number": "5",
+                "lastName": "Larsson",
+                "firstName": "Filip"
+              }
+            ]
+          }
+        },
+        "goalies": [
+          {
+            "number": "1",
+            "lastName": "Nilsson",
+            "firstName": "Elias"
+          },
+          {
+            "number": "35",
+            "lastName": "Dalgård",
+            "firstName": "Nils"
+          }
+        ],
+        "extras": [],
+        "coaches": {
+          "head": "Carl-Johan Klint",
+          "assistant": "Axel Lindgren"
+        },
+        "source": "https://stats.swehockey.se/Game/LineUps/1111276"
+      },
+      "checkedAt": "2026-11-21T11:45:17.374397+01:00",
+      "status": "published",
+      "lineupChecks": {
+        "97032162|2026-11-21T12:40:00+01:00|lineup|2026-11-21T11:45:00+01:00": {
+          "key": "97032162|2026-11-21T12:40:00+01:00|lineup|2026-11-21T11:45:00+01:00",
+          "scheduledAt": "2026-11-21T11:45:00+01:00",
+          "checkedAt": "2026-11-21T11:45:17.374397+01:00",
+          "result": "published"
+        }
+      }
     },
     {
       "date": "2026-11-22",
