@@ -3,8 +3,8 @@
   "teamId": 494,
   "season": "2026-2027",
   "previousSeason": "2025-2026",
-  "status": "ready",
-  "message": null,
+  "status": "error",
+  "message": "Statistics contain an unverified player",
   "updatedAt": "2026-11-22T15:30:29.807353+00:00",
   "source": "https://stats.swehockey.se/Teams/Info/PlayersByTeam/21043",
   "players": [
@@ -877,7 +877,7 @@
       "historyStatus": "verified"
     }
   ],
-  "attemptedAt": "2026-11-22T15:30:29.807353+00:00",
+  "attemptedAt": "2026-11-27T05:00:19.583047+00:00",
   "mode": "saved_profiles_swehockey",
   "profileDigest": "df5cad88bfec2c751a7688f3175520ce03fe6e69d23ac6913bc6a2d23488c6c2",
   "profileCount": 24,
@@ -1176,6 +1176,12 @@
       "scheduledAt": "2026-11-22T16:30:00+01:00",
       "checkedAt": "2026-11-22T16:30:29.807353+01:00",
       "result": "updated"
+    },
+    "90255057|2026-11-27T19:00:00+01:00|players|2026-11-27T06:00:00+01:00": {
+      "key": "90255057|2026-11-27T19:00:00+01:00|players|2026-11-27T06:00:00+01:00",
+      "scheduledAt": "2026-11-27T06:00:00+01:00",
+      "checkedAt": "2026-11-27T06:00:19.583047+01:00",
+      "result": "attempted"
     }
   },
   "historyWarnings": [
