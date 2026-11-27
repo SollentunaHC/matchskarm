@@ -877,7 +877,7 @@
       "historyStatus": "verified"
     }
   ],
-  "attemptedAt": "2026-11-27T05:00:19.583047+00:00",
+  "attemptedAt": "2026-11-27T11:00:22.190479+00:00",
   "mode": "saved_profiles_swehockey",
   "profileDigest": "df5cad88bfec2c751a7688f3175520ce03fe6e69d23ac6913bc6a2d23488c6c2",
   "profileCount": 24,
@@ -1181,6 +1181,12 @@
       "key": "90255057|2026-11-27T19:00:00+01:00|players|2026-11-27T06:00:00+01:00",
       "scheduledAt": "2026-11-27T06:00:00+01:00",
       "checkedAt": "2026-11-27T06:00:19.583047+01:00",
+      "result": "attempted"
+    },
+    "90255057|2026-11-27T19:00:00+01:00|players|2026-11-27T12:00:00+01:00": {
+      "key": "90255057|2026-11-27T19:00:00+01:00|players|2026-11-27T12:00:00+01:00",
+      "scheduledAt": "2026-11-27T12:00:00+01:00",
+      "checkedAt": "2026-11-27T12:00:22.190479+01:00",
       "result": "attempted"
     }
   },
