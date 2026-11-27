@@ -183,8 +183,10 @@ def update(force=False):
             profiles[key] = profile
         roster = parse_roster(download(ROSTER_URL))
         stats = parse_stats(download(STATS_URL))
-        if not set(stats).issubset(set(roster) | set(profiles)):
-            raise ValueError('Statistics contain an unverified player')
+        # Official team statistics can include loaned or departed players.
+        # Keep their team statistics, but do not infer personal identity.
+        for key in sorted(set(stats) - (set(roster) | set(profiles))):
+            print('::warning::A-lag: statistics-only player: ' + stats[key]['name'])
         players = []
         for key in sorted(set(roster) | set(profiles) | set(stats)):
             saved = profiles.get(key)
@@ -199,9 +201,9 @@ def update(force=False):
                           goalieStats=(counted or {}).get('goalieStats'),
                           statsSource=STATS_URL, statsUpdatedAt=stamp, updatedAt=stamp)
             if not saved:
-                player.update(dateOfBirth=listed['dateOfBirth'], birthYear=listed['birthYear'],
-                              youthTeam=listed['youthTeam'], previousSeason=PREVIOUS, previousTeams=[],
-                              source=ROSTER_URL, profileSourceLabel='Swehockey', profileCheckedAt=stamp)
+                player.update(dateOfBirth=(listed or {}).get('dateOfBirth'), birthYear=(listed or {}).get('birthYear'),
+                              youthTeam=(listed or {}).get('youthTeam'), previousSeason=PREVIOUS, previousTeams=[],
+                              source=ROSTER_URL if listed else STATS_URL, profileSourceLabel='Swehockey', profileCheckedAt=stamp)
             else:
                 player['profileSourceLabel'] = 'Eliteprospects'
             players.append(player)
